@@ -1,0 +1,131 @@
+body {
+
+    font-size: 20px;
+    font-family: Arial;
+    color: #000000;
+    background: #eeeeee;
+    min-width: 1000px;
+}
+
+a {
+
+    color: #6fb4eb;
+}
+
+.wrapper {
+
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+
+    margin-top: 24px;
+}
+
+.formApplication {
+
+    margin: 100px auto 0;
+    padding: 35px 40px;
+
+    background: #ffff;
+    box-sizing: border-box;
+    width: 930px;
+    height: 520px;
+
+    border: 4px solid #999999;
+
+    border-radius: 15px;
+
+    box-shadow: 0 0 30px grey;
+}
+
+.warning {
+
+    font-size: 24px;
+    color: #FF0000;
+    margin-top: 20px;
+}
+
+.formApplication button {
+
+    color: #ffff;
+    background: #377bb5;
+    border-style: solid;
+    border-radius: 7px;
+    border-color: #326ea2;
+    border-width: 2px;
+    height: 58px;
+    width: 112px;
+}
+
+.formApplication .labels {
+
+    border: 1px solid red;
+    font-size: 28px;
+    width: 250px;
+    float: left;
+}
+
+.formApplication .inputFields {
+
+    border: 1px solid red;
+    float: right;
+}
+
+
+.formApplication::after {
+
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.formApplication span {
+    font-size: 45px;
+}
+
+.formApplication input {
+
+    width: 500px;
+    height: 47px;
+
+    border: 2px solid #cccccc;
+    border-radius: 7px;
+
+
+}
+
+.formApplication .inputFields {
+
+    float: right;
+}
+
+.formApplication .inputFields div {
+
+    padding-bottom: 35px;
+}
+
+.formApplication .labels label {
+
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 100px;
+}
+
+::placeholder {
+
+    padding-left: 14px;
+    font-size: 28px;
+}
+
+.inputFields label {
+
+    margin-top: 20px;
+}
+
+.header hr {
+
+    margin-top: 20px;
+    border: 1px solid #999999;
+}

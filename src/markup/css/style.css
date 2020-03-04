@@ -17,7 +17,7 @@ body {
 header h1 {
 
     font-size: 22px;
-
+    font-weight: bold;
     height: 40px;
     border-bottom: 2px solid #999999;
 
@@ -55,7 +55,11 @@ label {
     border-radius: 7px;
 
     padding: 0 10px;
-    margin-top: 2px;
+}
+
+input:focus{
+
+    border-color: #377bb5;
 }
 
 .usernameFields, .passwordFields, .confirmPasswordFields {

@@ -1,6 +1,6 @@
 body {
 
-    font-size: 20px;
+    font-size: 28px;
     font-family: Arial;
     color: #000000;
     background: #eeeeee;
@@ -14,8 +14,7 @@ a {
     color: #6fb4eb;
     font-size: 24px;
 
-    margin-top: 50px;
-
+    margin-top: 18px;
     float: right;
 }
 
@@ -68,28 +67,12 @@ a {
     border-width: 2px;
 
     height: 62px;
-    width: 126px;
-
-    margin-top: 30px;
-
-}
-
-.formApplication .labels {
-
-    font-size: 28px;
-    width: 250px;
-    float: left;
+    width: 124px;
 
 
 }
 
-.formApplication .inputFields {
-
-    float: right;
-}
-
-
-.formApplication::after {
+::after {
 
     display: block;
     clear: both;
@@ -97,6 +80,7 @@ a {
 }
 
 .formApplication span {
+
     font-size: 45px;
 }
 
@@ -109,30 +93,6 @@ a {
     border-radius: 7px;
 
     margin-top: 2px;
-}
-
-.formApplication .inputFields {
-
-    float: right;
-}
-
-
-.formApplication .labels label {
-
-    display: block;
-    margin-top: 15px;
-    margin-bottom: 95px;
-}
-
-
-.formApplication .password {
-
-    margin-top: 30px;
-}
-
-.formApplication .confirmPassword {
-
-    margin-top: 20px;
 }
 
 
@@ -153,7 +113,52 @@ a {
     border: 1px solid #999999;
 }
 
-.passwordHolder {
+.usernameLabel {
 
-    margin-top: 30px;
+    margin-top: 15px;
+    float: left;
+}
+
+.usernameFields {
+
+    float: right;
+}
+
+.passwordLabel {
+
+    margin-top: 15px;
+    float: left;
+}
+
+.passwordFields {
+
+    float: right;
+}
+
+.confirmPasswordLabel {
+
+    margin-top: 15px;
+    float: left;
+}
+
+.confirmPasswordFields {
+
+    float: right;
+}
+
+.content div {
+
+    margin-bottom: 10px;
+}
+
+.navigation {
+
+    float: right;
+    width: 505px;
+}
+
+.submit {
+
+    float: top;
+
 }

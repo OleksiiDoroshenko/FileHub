@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/registration.css">
+    <link rel="stylesheet" href="css/style.css">
 
 
     <title>FileHub</title>
@@ -12,53 +12,58 @@
 <div class="wrapper">
     <div class="formApplication">
 
-        <div class="header">
-            <span><strong>Registration</strong></span>
-            <hr/>
-        </div>
-        <div class="content">
+        <header class="header">
+            <span><h1>Registration</h1></span>
 
+        </header>
+        <!----------------------------------CONTENT--------------------------------------------->
+        <main class="content">
+            <!----------------------------------Email block--------------------------------------------->
             <div class="email">
 
-                <div class="usernameLabel">Username</div>
+                <label class="usernameLabel" for="emailHolder">Username</label>
                 <div class="usernameFields">
 
-                    <input type="text" placeholder="Email" class="emailHolder"/>
+                    <input type="text" name="email" placeholder="Email" id="emailHolder"
+                           class="emailHolder"/>
                     <br>
                     <div class="warning">Username can't be empty</div>
                 </div>
             </div>
-
+            <!----------------------------------Password block--------------------------------------------->
             <div class="password">
 
-                <div class="passwordLabel">Password</div>
+                <label class="passwordLabel" for="passwordHolder">Password</label>
 
                 <div class="passwordFields">
-                    <input type="password" placeholder="Password" class="passwordHolder"/>
+                    <input type="password" name="password" placeholder="Password"
+                           id="passwordHolder" class="passwordHolder"/>
                     <br>
-                    <div class="warning">Password can't be empty and should contain<br></div>
-                    <div class="warning">letters and numbers</div>
+                    <div class="warning">Password can't be empty and should contain
+                        letters and numbers
+                    </div>
                 </div>
             </div>
-
+            <!----------------------------------Confirm Password block--------------------------------------------->
             <div class="confirmPassword">
 
-                <div class="confirmPasswordLabel">Confirm Password</div>
+                <label class="confirmPasswordLabel" for="confirmPasswordHolder">Confirm Password</label>
 
                 <div class="confirmPasswordFields">
-                    <input type="password" placeholder="Confirm password" class="confirmPasswordHolder"/>
+                    <input type="password" name="confirmPassword" placeholder="Confirm password"
+                           id="confirmPasswordHolder" class="confirmPasswordHolder"/>
                     <br>
                     <div class="warning">Passwords do not match</div>
                 </div>
             </div>
             <div class="navigation">
+                <!----------------------------------Navigation block--------------------------------------------->
+                <button class="btn"><span>Register</span></button>
 
-                <button class="submit">Register</button>
-
-                <a href="authentication.html">Already have an account?</a>
+                <a class="hyperlink" href="authentication.html">Already have an account?</a>
             </div>
 
-        </div>
+        </main>
     </div>
 </div>
 </body>

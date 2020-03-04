@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>FileHub</title>
 </head>
@@ -12,40 +12,45 @@
 <div class="wrapper">
     <div class="formApplication">
 
-        <div class="header">
-            <span><strong>Login</strong></span>
-            <hr/>
-        </div>
-        <div class="content">
+        <header class="header">
+            <span><h1>Login</h1></span>
 
+        </header>
+        <!----------------------------------CONTENT--------------------------------------------->
+
+        <div class="content">
+            <!----------------------------------Email block--------------------------------------------->
             <div class="email">
 
-                <div class="usernameLabel">Username</div>
+                <label class="usernameLabel" for="emailHolder">Username</label>
                 <div class="usernameFields">
 
-                    <input type="text" placeholder="Email" class="emailHolder"/>
+                    <input type="text" name="email" placeholder="Email"
+                           id="emailHolder" class="emailHolder"/>
                     <br>
                     <div class="warning">Username can't be empty</div>
                 </div>
             </div>
-
+            <!----------------------------------Password block--------------------------------------------->
             <div class="password">
 
-                <div class="passwordLabel">Password</div>
+                <label class="passwordLabel" for="passwordHolder">Password</label>
 
                 <div class="passwordFields">
-                    <input type="password" placeholder="Password" class="passwordHolder"/>
+                    <input type="password" name="password" placeholder="Password"
+                           id="passwordHolder" class="passwordHolder"/>
                     <br>
-                    <div class="warning">Password can't be empty and should contain<br></div>
-                    <div class="warning">letters and numbers</div>
+                    <div class="warning">Password can't be empty and should contain
+                        letters and numbers
+                    </div>
                 </div>
             </div>
-
+            <!----------------------------------Navigation block--------------------------------------------->
             <div class="navigation">
 
-                <button class="submit">Log in</button>
+                <button class="btn"><span>Log in</span></button>
 
-                <a href="registration.html">Don't have an account yet?</a>
+                <a class="hyperlink" href="registration.html">Don't have an account yet?</a>
             </div>
 
         </div>

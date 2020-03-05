@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/explorer.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <title>FileHub</title>
 </head>
@@ -17,22 +18,53 @@
             <img class="logo" src="images/teamdev.png" width="150" height="70">
 
             <ul class="menu">
-                <li><i>Username</i></li>
+
+                <li><i class="glyphicon glyphicon-user"></i></li>
+                <li class="username">Username</li>
                 <li>|</li>
-                <li><i>Log out</i></li>
+                <li class="logout">Log out <i class="glyphicon glyphicon-log-out"></i></li>
             </ul>
 
             <span><h1>File Explorer</h1></span>
         </header>
         <!----------------------------------CONTENT--------------------------------------------->
-
         <div class="content">
+
+            <table>
+                <tr>
+                    <td class="folderIcon"><i class="glyphicon glyphicon-folder-open"></i></td>
+                    <td class="folderName"> Documents</td>
+                    <td class="items"> 2 items</td>
+                    <td class="uploadFile"><i class="glyphicon glyphicon-upload"></i></td>
+                    <td class="removeFolder"><i class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+                <tr>
+                    <td class="folderIcon"><i class="glyphicon glyphicon-folder-open"></i></td>
+                    <td class="folderName"> Images</td>
+                    <td class="items"> 2 items</td>
+                    <td class="uploadFile"><i class="glyphicon glyphicon-upload"></i></td>
+                    <td class="removeFolder"><i class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+                <tr>
+                    <td class="folderIcon"><i class="glyphicon glyphicon-folder-open"></i></td>
+                    <td class="folderName"> Videos</td>
+                    <td class="items"> 1 item</td>
+                    <td class="uploadFile"><i class="glyphicon glyphicon-upload"></i></td>
+                    <td class="removeFolder"><i class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+                <tr>
+                    <td class="folderIcon"><i class="glyphicon glyphicon-folder-open"></i></td>
+                    <td class="folderName"> Music</td>
+                    <td class="items"> 0 items</td>
+                    <td class="uploadFile"><i class="glyphicon glyphicon-upload"></i></td>
+                    <td class="removeFolder"><i class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+            </table>
 
         </div>
         <!----------------------------------Footer block--------------------------------------------->
         <footer class="footer">
-
-            <a class="hyperlink" target="_blank" href="https://www.teamdev.com/">TeamDev</a>
+           Copyright © 2020 <a class="link" target="_blank" href="https://www.teamdev.com/">TeamDev.</a> All rights reserved.
         </footer>
 
     </div>

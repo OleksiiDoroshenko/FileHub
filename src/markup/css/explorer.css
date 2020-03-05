@@ -7,6 +7,8 @@
 
     margin-top: 100px;
     padding: 20px 20px;
+
+    font-size: 16px;
 }
 
 .logo {
@@ -17,13 +19,17 @@
 
 }
 
+header h1 {
+
+    margin-bottom: 10px;
+}
 
 .menu li {
 
     display: inline-block;
 }
 
-.menu{
+.menu {
 
     position: absolute;
     right: 20px;
@@ -34,4 +40,89 @@ a {
 
     text-decoration: none;
 }
+
+.logout {
+
+    color: #66afe9;
+}
+
+.folderName {
+
+    color: #66afe9;
+}
+
+.folderIcon {
+
+    width: 40px;
+    font-size: 20px;
+}
+
+.folderName {
+
+    width: 600px;
+}
+
+.items {
+
+    width: 100px;
+}
+
+.uploadFile, .removeFolder {
+
+    width: 30px;
+
+}
+
+.uploadFile i, .removeFolder i {
+
+    opacity: 0;
+
+}
+
+
+.uploadFile {
+
+    color: #6ebd4b;
+}
+
+.removeFolder {
+    color: #cf2030;
+}
+
+.content table tr {
+
+    height: 50px;
+    border-bottom: 1px solid #999999;
+
+}
+
+.content table td {
+
+    vertical-align: middle;
+}
+
+.content table tr:hover, .content table tr:hover .uploadFile i,
+.content table tr:hover .removeFolder i {
+
+    opacity: 1;
+
+    background: #f4f4f4;
+
+}
+
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 95%;
+
+    border-top: 1px solid #999999;
+    padding: 5px 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+
+
+
 

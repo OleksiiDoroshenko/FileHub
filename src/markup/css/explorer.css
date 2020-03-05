@@ -1,113 +1,117 @@
-.formApplication {
-
-    position: relative;
-
-    width: 850px;
+.form-application {
     min-height: 650px;
-
-    margin-top: 100px;
-    padding: 20px 20px;
-
+    width: 850px;
     font-size: 16px;
 }
 
 .logo {
-
     position: absolute;
     top: -70px;
     left: 0;
-
 }
 
-header h1 {
 
-    margin-bottom: 10px;
-}
-
-.menu li {
-
+.logout-menu li {
     display: inline-block;
+    border-left: 1px solid #000;
+    padding-left: 4px;
 }
 
-.menu {
+.logout-menu li:first-child {
+    border: 0;
+}
 
+.logout-menu {
     position: absolute;
     right: 20px;
     top: -30px;
 }
 
-a {
+.path-manager {
+    border-bottom: 2px solid #999;
+    padding-bottom: 15px;
 
-    text-decoration: none;
+}
+
+.current-position-menu li {
+    display: inline-block;
+    padding-right: 4px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.current-position-menu {
+    float: left;
+}
+
+.button-menu {
+    float: right;
+}
+
+.path-manager:after {
+
+    display: block;
+    clear: both;
+    content: "";
+
 }
 
 .logout {
-
-    color: #66afe9;
+    color: rgb(102, 175, 233);
 }
 
-.folderName {
-
-    color: #66afe9;
+.folder-name {
+    color: rgb(102, 175, 233);
+    width: 600px;
 }
 
-.folderIcon {
-
+.folder-icon {
     width: 40px;
     font-size: 20px;
 }
 
-.folderName {
-
-    width: 600px;
-}
-
 .items {
-
     width: 100px;
 }
 
-.uploadFile, .removeFolder {
-
+.clickable {
     width: 30px;
-
 }
 
-.uploadFile i, .removeFolder i {
-
+.clickable i {
     opacity: 0;
 
 }
 
-
-.uploadFile {
-
-    color: #6ebd4b;
+.upload-file {
+    color: rgb(110, 189, 75);
 }
 
-.removeFolder {
-    color: #cf2030;
+.remove-folder {
+    color: rgb(207, 32, 48);
 }
 
-.content table tr {
-
+.content .file-container tr {
     height: 50px;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #999;
 
 }
 
-.content table td {
-
+.content .file-container td {
     vertical-align: middle;
 }
 
-.content table tr:hover, .content table tr:hover .uploadFile i,
-.content table tr:hover .removeFolder i {
-
+.content .file-container tr:hover,
+.content .file-container tr:hover .clickable i {
     opacity: 1;
+    transition: 0.5s;
+    background: rgb(244, 244, 244);
 
-    background: #f4f4f4;
+}
 
+
+.file-explorer {
+    color: rgb(102, 175, 233);
 }
 
 
@@ -117,7 +121,7 @@ a {
     width: 95%;
 
     border-top: 1px solid #999999;
-    padding: 5px 0;
+    padding: 10px 0;
     text-align: center;
     white-space: nowrap;
 }

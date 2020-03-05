@@ -1,75 +1,109 @@
 body {
 
-    font: 16px/18px Arial, Hervetic;
-    color: #000000;
-    background: #eeeeee;
+    font: 18px/20px Arial, Helvetic;
+    color: #000;
+    background: #eee;
     min-width: 1000px;
 }
 
 
-.wrapper {
+/*Link properties*/
+a {
 
-    margin: 0;
-    padding: 0;
+    color: rgb(111, 180, 235);
+    text-decoration: none;
+}
+
+a:hover {
+
+    text-decoration: underline;
+}
+
+.form-link {
+
+    margin-top: 18px;
+    float: right;
 }
 
 /*Header properties*/
-header h1 {
-
-    font-size: 22px;
+.header h1 {
+    font-size: 26px;
     font-weight: bold;
-    height: 40px;
-    border-bottom: 2px solid #999999;
+    float: left;
 
+}
+
+.header .user-icon {
+
+    font-size: 26px;
+
+    position: absolute;
+    right: 40px;
+    top: 25px;
+}
+
+.header {
+
+    border-bottom: 2px solid #999;
     margin-bottom: 20px;
+    padding-bottom: 15px;
+
 }
 
 /*Content properties*/
-.formApplication {
+.form-application {
 
-    margin: 150px auto 0;
+    position: relative;
+    margin: 100px auto 0;
     padding: 30px 40px;
 
-    background: #ffff;
+    background: #fff;
     box-sizing: border-box;
     width: 700px;
 
-    border: 4px solid #999999;
+    border: 4px solid #999;
     border-radius: 15px;
     box-shadow: 0 0 30px grey;
 }
 
-label {
+.rowFields {
+
+    width: 400px;
+}
+
+.rowLabel {
 
     float: left;
     width: 200px;
     margin-top: 15px;
+    font-size: 18px;
+    margin-left: 10px;
 }
 
-.formApplication input {
+.form-application .rowFields input {
 
     width: 380px;
     height: 47px;
 
-    border: 2px solid #cccccc;
+    border: 2px solid rgb(204, 204, 204);
     border-radius: 7px;
 
     margin-bottom: 15px;
     padding: 0 10px;
 }
 
-input:focus {
+.rowFields input:focus {
 
-    border-color: #377bb5;
+    border-color: rgb(55, 123, 181);
 }
 
-.usernameFields, .passwordFields, .confirmPasswordFields {
+.rowFields {
 
     float: right;
 }
 
 
-.content div {
+.content .row {
 
     margin-bottom: 10px;
 }
@@ -83,25 +117,36 @@ input:focus {
 
 .warning {
 
-    color: #FF0000;
+    color: rgb(255, 0, 0);
     margin-left: 2px;
-    width: 400px;
+
+    margin-bottom: 10px;
 }
 
 /*Button properties*/
+
+.button{
+
+    border-radius: 4px;
+    background-color: rgb(55, 123, 181);
+    border: none;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 10px;
+}
+
+
 .btn {
     border-radius: 4px;
-    background-color: #377bb5;
+    background-color: rgb(55, 123, 181);
     border: none;
-    color: #FFFFFF;
+    color: rgb(255, 255, 255);
     text-align: center;
     font-size: 16px;
-    padding: 5px;
+    padding: 10px;
     width: 100px;
-    height: 50px;
     transition: all 0.5s;
     cursor: pointer;
-    margin: 5px;
 }
 
 .btn span {
@@ -129,23 +174,8 @@ input:focus {
     right: 0;
 }
 
-/*Hyperlinks properties*/
-.hyperlink {
 
-    display: block;
-    color: #6fb4eb;
-
-    margin-top: 18px;
-    float: right;
-}
-
-.hyperlink:hover {
-
-    text-decoration: none;
-}
-
-
-::after {
+.form-application:after, .header:after {
 
     display: block;
     clear: both;

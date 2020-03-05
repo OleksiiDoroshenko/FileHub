@@ -2,72 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <title>FileHub</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/explorer.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <title>FileHub</title>
 </head>
 <body>
-<div class="wrapper">
-    <div class="formApplication">
+<div class="form-application">
 
-        <header class="header">
+    <header class="header">
 
-            <img class="logo" alt="logo" src="images/teamdev.png" width="150" height="70">
+        <img class="logo" alt="logo" src="images/teamdev.png" width="150">
 
-            <ul class="menu">
+        <ul class="logout-menu">
 
-                <li><i class="glyphicon glyphicon-user"></i></li>
-                <li class="username">Username</li>
-                <li>|</li>
-                <li class="logout">Log out <i class="glyphicon glyphicon-log-out"></i></li>
+            <li class="username"><i class="glyphicon glyphicon-user"></i> Username</li>
+            <li class="logout">Log out <i class="glyphicon glyphicon-log-out"></i></li>
+        </ul>
+
+        <h1 class="file-explorer">File Explorer</h1>
+    </header>
+    <!----------------------------------CONTENT--------------------------------------------->
+    <form class="content">
+
+        <div class="path-manager">
+
+            <ul class="current-position-menu">
+                <li><i class="glyphicon glyphicon-folder-open"></i></li>
+                <li>/</li>
+                <li>Root</li>
             </ul>
-
-            <h1>File Explorer</h1>
-        </header>
-        <!----------------------------------CONTENT--------------------------------------------->
-        <div class="content">
-
-            <table>
-                <tr>
-                    <td class="folderIcon"><i class="glyphicon glyphicon-folder-open"></i></td>
-                    <td class="folderName"> Documents</td>
-                    <td class="items"> 2 items</td>
-                    <td class="uploadFile"><i class="glyphicon glyphicon-upload"></i></td>
-                    <td class="removeFolder"><i class="glyphicon glyphicon-remove-circle"></i></td>
-                </tr>
-                <tr>
-                    <td class="folderIcon"><i class="glyphicon glyphicon-folder-open"></i></td>
-                    <td class="folderName"> Images</td>
-                    <td class="items"> 2 items</td>
-                    <td class="uploadFile"><i class="glyphicon glyphicon-upload"></i></td>
-                    <td class="removeFolder"><i class="glyphicon glyphicon-remove-circle"></i></td>
-                </tr>
-                <tr>
-                    <td class="folderIcon"><i class="glyphicon glyphicon-folder-open"></i></td>
-                    <td class="folderName"> Videos</td>
-                    <td class="items"> 1 item</td>
-                    <td class="uploadFile"><i class="glyphicon glyphicon-upload"></i></td>
-                    <td class="removeFolder"><i class="glyphicon glyphicon-remove-circle"></i></td>
-                </tr>
-                <tr>
-                    <td class="folderIcon"><i class="glyphicon glyphicon-folder-open"></i></td>
-                    <td class="folderName"> Music</td>
-                    <td class="items"> 0 items</td>
-                    <td class="uploadFile"><i class="glyphicon glyphicon-upload"></i></td>
-                    <td class="removeFolder"><i class="glyphicon glyphicon-remove-circle"></i></td>
-                </tr>
-            </table>
-
+            <div class="button-menu">
+                <button type="submit" class="button"><i class="glyphicon glyphicon-plus"></i>
+                    Create directory
+                </button>
+                <button type="submit" class="button"><i class="glyphicon glyphicon-upload"></i>
+                    Upload File
+                </button>
+            </div>
         </div>
-        <!----------------------------------Footer block--------------------------------------------->
-        <footer class="footer">
-           Copyright © 2020 <a class="link" target="_blank" href="https://www.teamdev.com/">TeamDev.</a> All rights reserved.
-        </footer>
 
-    </div>
+        <table class="file-container">
+            <tr>
+                <td class="folder-pointer"><i class="glyphicon glyphicon-triangle-right"></i></td>
+                <td class="folder-icon"><i class="glyphicon glyphicon-folder-open"></i></td>
+                <td class="folder-name"> Documents</td>
+                <td class="items"> 2 items</td>
+                <td class="upload-file clickable"><i class="glyphicon glyphicon-upload"></i></td>
+                <td class="remove-folder clickable"><i class="glyphicon glyphicon-remove-circle"></i></td>
+            </tr>
+            <tr>
+                <td class="folder-pointer"><i class="glyphicon glyphicon-triangle-right"></i></td>
+                <td class="folder-icon"><i class="glyphicon glyphicon-folder-open"></i></td>
+                <td class="folder-name"> Images</td>
+                <td class="items"> 2 items</td>
+                <td class="upload-file clickable"><i class="glyphicon glyphicon-upload"></i></td>
+                <td class="remove-folder clickable"><i class="glyphicon glyphicon-remove-circle"></i></td>
+            </tr>
+            <tr>
+                <td class="folder-pointer"><i class="glyphicon glyphicon-triangle-right"></i></td>
+                <td class="folder-icon"><i class="glyphicon glyphicon-folder-open"></i></td>
+                <td class="folder-name"> Videos</td>
+                <td class="items"> 1 item</td>
+                <td class="upload-file clickable"><i class="glyphicon glyphicon-upload"></i></td>
+                <td class="remove-folder clickable"><i class="glyphicon glyphicon-remove-circle"></i></td>
+            </tr>
+            <tr>
+                <td class="folder-pointer"><i class="glyphicon glyphicon-triangle-right"></i></td>
+                <td class="folder-icon"><i class="glyphicon glyphicon-folder-open"></i></td>
+                <td class="folder-name"> Music</td>
+                <td class="items"> 0 items</td>
+                <td class="upload-file clickable"><i class="glyphicon glyphicon-upload"></i></td>
+                <td class="remove-folder clickable"><i class="glyphicon glyphicon-remove-circle"></i></td>
+            </tr>
+        </table>
+
+    </form>
+    <!----------------------------------Footer block--------------------------------------------->
+    <footer class="footer">
+        Copyright © 2020
+        <a class="copyright-link" target="_blank" href="https://www.teamdev.com/">TeamDev.</a>
+        All rights reserved.
+    </footer>
+
 </div>
+
 </body>
 </html>

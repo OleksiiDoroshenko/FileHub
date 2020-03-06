@@ -2,58 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <title>FileHub</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
 
-    <title>FileHub</title>
 </head>
 <body>
-<div class="wrapper">
-    <div class="formApplication">
+<div class="form-application login-form">
 
-        <header class="header">
-            <span><h1>Login</h1></span>
+    <header class="header">
+        <h1>Login</h1>
+    </header>
+    <!----------------------------------CONTENT--------------------------------------------->
 
-        </header>
-        <!----------------------------------CONTENT--------------------------------------------->
+    <form class="content">
+        <!----------------------------------Email block--------------------------------------------->
+        <div class="row">
 
-        <div class="content">
-            <!----------------------------------Email block--------------------------------------------->
-            <div class="email">
+            <label class="row-label" for="email-holder">Username</label>
+            <div class="row-fields">
 
-                <label class="usernameLabel" for="emailHolder">Username</label>
-                <div class="usernameFields">
-
-                    <input type="text" name="email" placeholder="Email"
-                           id="emailHolder" class="emailHolder"/>
-                    <br>
-                    <div class="warning">Username can't be empty</div>
-                </div>
+                <input type="text" name="email" placeholder="Email"
+                       id="email-holder" class="email-holder input"/>
+                <p class="warning">Username can't be empty</p>
             </div>
-            <!----------------------------------Password block--------------------------------------------->
-            <div class="password">
-
-                <label class="passwordLabel" for="passwordHolder">Password</label>
-
-                <div class="passwordFields">
-                    <input type="password" name="password" placeholder="Password"
-                           id="passwordHolder" class="passwordHolder"/>
-                    <br>
-                    <div class="warning">Password can't be empty and should contain
-                        letters and numbers
-                    </div>
-                </div>
-            </div>
-            <!----------------------------------Navigation block--------------------------------------------->
-            <div class="navigation">
-
-                <button class="btn"><span>Log in</span></button>
-
-                <a class="hyperlink" href="registration.html">Don't have an account yet?</a>
-            </div>
-
         </div>
-    </div>
+        <!----------------------------------Password block--------------------------------------------->
+        <div class="row">
+
+            <label class="row-label" for="password-holder">Password</label>
+
+            <div class="row-fields">
+                <input type="password" name="password" placeholder="Password"
+                       id="password-holder" class="password-holder input"/>
+                <p class="warning">Password can't be empty and should contain
+                    letters and numbers
+                </p>
+            </div>
+        </div>
+        <!----------------------------------Navigation block--------------------------------------------->
+        <div class="navigation">
+
+            <button type="submit" class="btn"><span>Log in</span></button>
+
+            <a class="form-link" href="registration.html">Don't have an account yet?</a>
+        </div>
+
+    </form>
 </div>
 </body>
 </html>

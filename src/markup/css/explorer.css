@@ -1,126 +1,137 @@
-.formApplication {
-
-    position: relative;
-
-    width: 850px;
-    min-height: 650px;
-
-    margin-top: 100px;
-    padding: 20px 20px;
-
-    font-size: 16px;
-}
 
 .logo {
-
     position: absolute;
     top: -70px;
     left: 0;
-
 }
 
-header h1 {
 
-    margin-bottom: 10px;
-}
-
-.menu li {
-
+.logout-menu li {
     display: inline-block;
+    border-left: 1px solid #000;
+    padding-left: 4px;
 }
 
-.menu {
+.logout-menu li:first-child {
+    border: 0;
+}
 
+.logout-menu {
     position: absolute;
-    right: 20px;
+    right: 40px;
     top: -30px;
 }
 
-a {
+.path-manager {
+    border-bottom: 2px solid #999;
+    padding-bottom: 15px;
 
-    text-decoration: none;
 }
 
-.logout {
+.glyphicon-level-up {
+    color: rgb(102, 175, 233);
 
-    color: #66afe9;
 }
 
-.folderName {
-
-    color: #66afe9;
+.current-position-menu li {
+    display: inline-block;
+    padding-right: 4px;
+    font-size: 22px;
+    font-weight: bold;
 }
 
-.folderIcon {
-
-    width: 40px;
-    font-size: 20px;
+.current-position-menu {
+    float: left;
 }
 
-.folderName {
+.button-menu {
+    float: right;
+}
+
+.path-manager:after {
+
+    display: block;
+    clear: both;
+    content: "";
+
+}
+
+
+.name {
 
     width: 600px;
 }
 
-.items {
+.folder-icon {
+    width: 40px;
+    font-size: 20px;
+}
 
+.items {
     width: 100px;
 }
 
-.uploadFile, .removeFolder {
-
-    width: 30px;
-
+.clickable {
+    width: 60px;
 }
 
-.uploadFile i, .removeFolder i {
-
+.clickable i {
     opacity: 0;
 
 }
 
-
-.uploadFile {
-
-    color: #6ebd4b;
+.file-container .glyphicon-upload {
+    color: rgb(110, 189, 75);
 }
 
-.removeFolder {
-    color: #cf2030;
+.file-container .glyphicon-download {
+    color: rgb(102, 175, 233);
 }
 
-.content table tr {
+.file-container .glyphicon-remove-circle {
+    color: rgb(207, 32, 48);
+}
 
+.table {
+    height: 500px;
+    overflow-x: auto;
+}
+
+.content .file-container tr {
     height: 50px;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #999;
 
 }
+.content{
+    min-height: 600px;
+}
 
-.content table td {
-
+.content .file-container td {
     vertical-align: middle;
 }
 
-.content table tr:hover, .content table tr:hover .uploadFile i,
-.content table tr:hover .removeFolder i {
-
+.content .file-container tr:hover,
+.content .file-container tr:hover .clickable i {
     opacity: 1;
-
-    background: #f4f4f4;
+    transition: 0.5s;
+    background: rgb(244, 244, 244);
 
 }
 
 
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 95%;
 
+    padding-top: 10px;
     border-top: 1px solid #999999;
-    padding: 5px 0;
     text-align: center;
     white-space: nowrap;
 }
+
+.input{
+
+    padding: 0;
+}
+
 
 
 

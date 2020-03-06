@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>FileHub</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/explorer.css">
+    <script src="js/script.js"></script>
+
+</head>
+<body>
+<div class="form-application">
+
+    <header class="header">
+
+        <img class="logo" alt="logo" src="images/teamdev.png" width="150">
+
+        <ul class="logout-menu">
+
+            <li class="username"><i class="glyphicon glyphicon-user"></i> Username</li>
+            <li class="logout"><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i> </a></li>
+        </ul>
+
+        <a href="file-explorer-index.html"><h1>File Explorer</h1></a>
+    </header>
+    <!----------------------------------CONTENT--------------------------------------------->
+    <form class="content">
+
+        <div class="path-manager">
+
+            <ul class="current-position-menu">
+                <li><a href="#"><i class="glyphicon glyphicon-level-up"></i></a></li>
+                <li>/</li>
+                <li>Shared with me</li>
+            </ul>
+            <div class="button-menu">
+                <button type="submit" onclick="addDirectory(); return false;" class="button"><i class="glyphicon glyphicon-plus"></i>
+                    Create directory
+                </button>
+                <button type="submit" onclick="uploadFile()" class="button"><i class="glyphicon glyphicon-upload"></i>
+                    Upload File
+                </button>
+                <input type="file" id="upload-file">
+            </div>
+        </div>
+        <div class="table">
+            <table id="file-container" class="file-container">
+
+                <!--            Folders block         -->
+                <tr>
+                    <td class="folder-pointer"><i class="glyphicon glyphicon-triangle-right"></i></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-folder-close"></i></td>
+                    <td class="name"><a href="#"> Documents</a></td>
+                    <td class="items"> 2 items</td>
+                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i onclick="deleteElement(this)" class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+                <tr>
+                    <td class="folder-pointer"><i class="glyphicon glyphicon-triangle-right"></i></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-folder-close"></i></td>
+                    <td class="name"><a href="#"> Images</a></td>
+                    <td class="items"> 2 items</td>
+                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+                <tr>
+                    <td class="folder-pointer"><i class="glyphicon glyphicon-triangle-right"></i></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-folder-close"></i></td>
+                    <td class="name"><a href="#"> Videos</a></td>
+                    <td class="items"> 1 item</td>
+                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+                <tr>
+                    <td class="folder-pointer"><i class="glyphicon glyphicon-triangle-right"></i></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-folder-close"></i></td>
+                    <td class="name"><a href="#"> Music</a></td>
+                    <td class="items"> 0 items</td>
+                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+                <!--            Files block              -->
+                <!--PDF-->
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-book"></i></td>
+                    <td class="name"><input class="input" type="text" value="HTML_guidlines.pdf"></td>
+                    <td class="items"> 10KB</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-book"></i></td>
+                    <td class="name"> Bootstrap 3.3.7 documentation.pdf</td>
+                    <td class="items"> 40KB</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td> </tr>
+                <!--IMG-->
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-picture"></i></td>
+                    <td class="name"> Paris.jpg</td>
+                    <td class="items"> 350M</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td></tr>
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-picture"></i></td>
+                    <td class="name"> Logo.png</td>
+                    <td class="items"> 999M</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td> </tr>
+                <!--Videos-->
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-film"></i></td>
+                    <td class="name"> How to HTML5.avi</td>
+                    <td class="items"> 1GB</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td> </tr>
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-film"></i></td>
+                    <td class="name"> How to CSS3.mp4</td>
+                    <td class="items"> 20GB</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td></tr>
+                <!--Music-->
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-music"></i></td>
+                    <td class="name"> Linkin Park - Numb.mp3</td>
+                    <td class="items"> 79M</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td> </tr>
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-music"></i></td>
+                    <td class="name"> Rammstein - Du Hust.mp3</td>
+                    <td class="items"> 80M</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td> </tr>
+                <!--XLS/XML/DOCX......-->
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-list-alt"></i></td>
+                    <td class="name"> Customers data.xls</td>
+                    <td class="items"> 98GB</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td></tr>
+                <tr>
+                    <td></td>
+                    <td class="folder-icon"><i class="glyphicon glyphicon-list-alt"></i></td>
+                    <td class="name"> Products.xml</td>
+                    <td class="items"> 1TB</td>
+                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i></td></tr>
+            </table>
+        </div>
+    </form>
+    <!----------------------------------Footer block--------------------------------------------->
+    <footer class="footer">
+        Copyright © 2020
+        <a class="copyright-link" target="_blank" href="https://www.teamdev.com/">TeamDev.</a>
+        All rights reserved.
+    </footer>
+
+</div>
+
+</body>
+</html>

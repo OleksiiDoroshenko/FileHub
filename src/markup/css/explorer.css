@@ -1,8 +1,3 @@
-.form-application {
-    min-height: 650px;
-    width: 850px;
-    font-size: 16px;
-}
 
 .logo {
     position: absolute;
@@ -23,13 +18,18 @@
 
 .logout-menu {
     position: absolute;
-    right: 20px;
+    right: 40px;
     top: -30px;
 }
 
 .path-manager {
     border-bottom: 2px solid #999;
     padding-bottom: 15px;
+
+}
+
+.glyphicon-level-up {
+    color: rgb(102, 175, 233);
 
 }
 
@@ -56,12 +56,9 @@
 
 }
 
-.logout {
-    color: rgb(102, 175, 233);
-}
 
-.folder-name {
-    color: rgb(102, 175, 233);
+.name {
+
     width: 600px;
 }
 
@@ -75,7 +72,7 @@
 }
 
 .clickable {
-    width: 30px;
+    width: 60px;
 }
 
 .clickable i {
@@ -83,18 +80,30 @@
 
 }
 
-.upload-file {
+.file-container .glyphicon-upload {
     color: rgb(110, 189, 75);
 }
 
-.remove-folder {
+.file-container .glyphicon-download {
+    color: rgb(102, 175, 233);
+}
+
+.file-container .glyphicon-remove-circle {
     color: rgb(207, 32, 48);
+}
+
+.table {
+    height: 500px;
+    overflow-x: auto;
 }
 
 .content .file-container tr {
     height: 50px;
     border-bottom: 1px solid #999;
 
+}
+.content{
+    min-height: 600px;
 }
 
 .content .file-container td {
@@ -110,21 +119,19 @@
 }
 
 
-.file-explorer {
-    color: rgb(102, 175, 233);
-}
-
-
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 95%;
 
+    padding-top: 10px;
     border-top: 1px solid #999999;
-    padding: 10px 0;
     text-align: center;
     white-space: nowrap;
 }
+
+.input{
+
+    padding: 0;
+}
+
 
 
 

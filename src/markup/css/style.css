@@ -34,12 +34,10 @@ a:hover {
 }
 
 .header .user-icon {
-
     font-size: 26px;
-
     position: absolute;
-    right: 40px;
-    top: 25px;
+    right: 20px;
+    top: 15px;
 }
 
 .header {
@@ -60,20 +58,20 @@ a:hover {
 
     position: relative;
     margin: 100px auto 0;
-    padding: 30px 40px 15px;
+    padding: 20px 20px 15px;
 
     background: #fff;
     box-sizing: border-box;
-    width: 850px;
+    width: 900px;
 
     border: 4px solid #999;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0 0 30px grey;
 }
 
 .login-form {
 
-    width: 700px;
+    width: 650px;
 }
 
 .row-fields {
@@ -87,7 +85,7 @@ a:hover {
     width: 30%;
     margin-top: 15px;
     font-size: 18px;
-    margin-left: 10px;
+    margin-left: 15px;
 }
 
 .input {
@@ -98,7 +96,7 @@ a:hover {
 
 .form-application .row-fields .input {
 
-    width: 380px;
+    width: 97%;
     height: 47px;
 
     margin-bottom: 15px;
@@ -131,7 +129,7 @@ a:hover {
 
     color: rgb(255, 0, 0);
     margin-left: 2px;
-
+    width: 95%;
     margin-bottom: 10px;
 }
 

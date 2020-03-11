@@ -31,6 +31,7 @@ function addDirectory() {
     cell3.innerHTML = "<i onclick=\"uploadFile()\" class=\"glyphicon glyphicon-upload\"></i>" +
         "                        <i onclick='deleteElement(this)' class=\"glyphicon glyphicon-remove-circle\"></i>";
 
+
     cell.classList.add("item-icon");
     cell.classList.add("folder-icon");
     cell1.classList.add("name");

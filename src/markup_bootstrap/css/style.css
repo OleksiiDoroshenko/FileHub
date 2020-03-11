@@ -1,0 +1,184 @@
+body {
+
+    font: 16px/22px Arial, Helvetic, sans-serif;
+    color: #000;
+    background: #eee;
+    min-width: 800px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.base-form {
+    position: relative;
+    margin: 100px auto 0;
+    padding: 3px 27px;
+    background: #fff;
+    box-sizing: border-box;
+    width: 900px;
+    border: 4px solid #999;
+    border-radius: 10px;
+    box-shadow: 0 0 30px grey;
+}
+
+.login-form {
+    width: 650px;
+}
+
+.logo {
+    position: absolute;
+    top: -70px;
+    left: 0;
+}
+
+.header h1 {
+    font-size: 30px;
+}
+
+.header {
+    border-bottom: 2px solid #999;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+    height: 40px;
+}
+
+.text-danger {
+    color: rgb(255, 0, 0);
+    margin-bottom: 15px;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+}
+
+.form-horizontal .input-filed {
+    float: right;
+}
+
+.btn {
+    font-size: 20px;
+    padding: 10px;
+}
+
+.nav-link {
+    padding-top: 10px;
+}
+
+.header .user-icon {
+    float: right;
+    font-size: 26px;
+    margin-top: 5px;
+}
+
+/*File-explorer*/
+.logout-menu {
+    position: absolute;
+    right: 20px;
+    top: -40px;
+}
+
+.logout-menu li {
+    border-left: 1px solid #000;
+    padding-left: 4px;
+}
+
+.logout-menu li:first-child {
+    border: 0;
+}
+
+.current-position-menu {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.container #upload-file {
+    display: none;
+}
+
+.content .btn-menu {
+    position: static;
+    float: right;
+    margin-right: 15px;
+}
+
+.content .btn-menu .btn {
+    font-size: 16px;
+}
+
+.path-manager {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #999;
+}
+.path-manager:after {
+
+    display: block;
+    clear: both;
+    content: "";
+}
+
+
+.name {
+    width: 650px;
+}
+
+.file-container .item-icon {
+    width: 65px;
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+.file-icon {
+    text-align: right;
+}
+
+.items {
+    width: 100px;
+}
+
+.clickable {
+    width: 60px;
+}
+
+.clickable i {
+    opacity: 0;
+}
+
+.file-container .glyphicon-upload {
+    color: rgb(110, 189, 75);
+}
+
+.file-container .glyphicon-download {
+    color: rgb(102, 175, 233);
+}
+
+.file-container .glyphicon-remove-circle {
+    color: rgb(207, 32, 48);
+}
+
+.file-container {
+    height: 500px;
+    overflow-x: auto;
+}
+
+.content .file-container tr:hover,
+.content .file-container tr:hover .clickable i {
+    opacity: 1;
+    transition: 0.5s;
+    background: rgb(244, 244, 244);
+}
+.footer {
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid #999999;
+    text-align: center;
+    white-space: nowrap;
+}

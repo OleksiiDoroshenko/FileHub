@@ -33,6 +33,9 @@ function addDirectory() {
 
     cell.classList.add("item-icon");
     cell.classList.add("folder-icon");
+    cell1.classList.add("name");
+    cell1.classList.add("folder");
+    cell2.classList.add("items");
     cell3.classList.add("clickable");
     return false;
 }

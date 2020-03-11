@@ -117,6 +117,7 @@ a:hover {
     padding-bottom: 10px;
     border-bottom: 2px solid #999;
 }
+
 .path-manager:after {
 
     display: block;
@@ -125,9 +126,6 @@ a:hover {
 }
 
 
-.name {
-    width: 650px;
-}
 
 .file-container .item-icon {
     width: 65px;
@@ -163,9 +161,14 @@ a:hover {
     color: rgb(207, 32, 48);
 }
 
+.table {
+    width: 100%;
+    table-layout: fixed;
+}
+
 .file-container {
     height: 500px;
-    overflow-x: auto;
+    overflow-y: scroll;
 }
 
 .content .file-container tr:hover,
@@ -174,6 +177,7 @@ a:hover {
     transition: 0.5s;
     background: rgb(244, 244, 244);
 }
+
 .footer {
 
     padding-top: 10px;
@@ -181,4 +185,12 @@ a:hover {
     border-top: 1px solid #999999;
     text-align: center;
     white-space: nowrap;
+}
+
+
+.name span {
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

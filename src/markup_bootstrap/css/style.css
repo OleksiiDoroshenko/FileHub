@@ -1,6 +1,6 @@
 body {
 
-    font: 16px/22px Arial, Helvetic, sans-serif;
+    font: 14px/22px Arial, Helvetic, sans-serif;
     color: #000;
     background: #eee;
     min-width: 800px;
@@ -72,6 +72,10 @@ a:hover {
     padding-top: 10px;
 }
 
+.nav-link a {
+    float: right;
+}
+
 .header .user-icon {
     float: right;
     font-size: 26px;
@@ -125,6 +129,15 @@ a:hover {
     content: "";
 }
 
+.input {
+    border: 2px solid rgb(204, 204, 204);
+    border-radius: 7px;
+    padding: 0 9px;
+}
+
+.input:focus {
+    border-color: rgb(55, 123, 181);
+}
 
 .file-container .item-icon {
     width: 65px;
@@ -192,4 +205,5 @@ a:hover {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    margin-left: 10px;
 }

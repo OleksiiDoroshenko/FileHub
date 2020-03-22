@@ -2,173 +2,250 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <title>FileHub</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>FileHub - File Explorer</title>
+    <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-
     <script src="js/script.js"></script>
-
 </head>
 <body>
-<div class="form-application">
-
-    <header class="header">
-
-        <img class="logo" title="Logo" alt="logo" src="images/teamdev.png" width="150">
-
-        <ul class="logout-menu">
-
-            <li class="username"><i class="glyphicon glyphicon-user"></i> Username</li>
-            <li class="logout"><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i> </a></li>
+<div class="application-box">
+    <div class="outer-menu">
+        <img class="logo" alt="logo" src="images/teamdev.png" width="150">
+        <ul class="user-menu">
+            <li class="username"><i class="glyphicon glyphicon-user"></i>Username</li>
+            <li class="logout"><a href="#" title="Log out">Log out<i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
-
-        <a href="file-explorer-index.html"><h1>File Explorer</h1></a>
+    </div>
+    <header class="header">
+        <h1><a href="file-explorer-index.html"> File Explorer</a></h1>
     </header>
-    <!----------------------------------CONTENT--------------------------------------------->
+    <!-------------CONTENT--------------->
     <form class="content">
-
         <div class="path-manager">
-
-            <ul class="current-position-menu">
-                <li><a href="#"><i class="glyphicon glyphicon-level-up"></i></a></li>
-                <li>/</li>
-                <li>Shared with me</li>
-            </ul>
+            <div class="current-position-menu">
+                <p>
+                    <a href="#" title="Step back"><i class="glyphicon glyphicon-level-up"></i></a>
+                    /
+                    Shared with me
+                </p>
+            </div>
             <div class="button-menu">
-                <button type="submit" onclick="addDirectory(); return false;" class="button"><i
-                        class="glyphicon glyphicon-plus"></i>
+                <button onclick="addDirectory(); return false;" class="btn">
+                    <i class="glyphicon glyphicon-plus"></i>
                     Create directory
                 </button>
-                <button type="submit" onclick="uploadFile()" class="button"><i class="glyphicon glyphicon-upload"></i>
+                <button onclick="uploadFile()" class="btn">
+                    <i class="glyphicon glyphicon-upload"></i>
                     Upload File
                 </button>
-                <input type="file" id="upload-file">
+                <input type="file" class="upload-file">
             </div>
         </div>
-        <div class="table">
-            <table id="file-container" class="file-container">
-
+        <div class="file-container">
+            <table class="table">
                 <!--            Folders block         -->
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name"><span><a href="#"> Documents</a></span></td>
-                    <td class="items"> 2 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i onclick="deleteElement(this)" class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text"><a href="#">Documents</a></span>
+                    </td>
+                    <td class="cell-size">2 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i onclick="deleteElement(this)" class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name"><span><a href="#"> Images</a></span></td>
-                    <td class="items"> 2 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text"><a href="#">Images</a></span>
+                    </td>
+                    <td class="cell-size">2 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name"><span><a href="#"> Videos</a></span></td>
-                    <td class="items"> 1 item</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text"><a href="#">Videos</a></span>
+                    </td>
+                    <td class="cell-size">1 item</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name"><span><a href="#"> Music</a></span></td>
-                    <td class="items"> 0 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text"><a href="#">Music</a></span>
+                    </td>
+                    <td class="cell-size">0 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <!--            Files block              -->
                 <!--PDF-->
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-book"></i></td>
-                    <td class="name"><input class="input file-name-input" type="text"
-                                                  value="HTML_guidlines.pdf"></td>
-                    <td class="items"> 10KB</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-book"></i>
+                    </td>
+                    <td class="cell-name">
+                        <input class="input" type="text" value="HTML_guidlines.pdf">
+                    </td>
+                    <td class="cell-size">10KB</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-book"></i></td>
-                    <td class="name"><span> Bootstrap 3.3.7 documentation.pdf</span></td>
-                    <td class="items"> 40KB</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-book"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">Bootstrap 3.3.7 documentation.pdf</span>
+                    </td>
+                    <td class="cell-size">40KB</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <!--IMG-->
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-picture"></i></td>
-                    <td class="name"><span> Paris.jpg</span></td>
-                    <td class="items"> 350M</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-picture"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">Paris.jpg</span>
+                    </td>
+                    <td class="cell-size">350M</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-picture"></i></td>
-                    <td class="name"><span> Logo.png</span></td>
-                    <td class="items"> 999M</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-picture"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">Logo.png</span></td>
+                    <td class="cell-size">999M</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <!--Videos-->
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-film"></i></td>
-                    <td class="name"><span> How to HTML5.avi</span></td>
-                    <td class="items"> 1GB</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-film"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">How to HTML5.avi</span>
+                    </td>
+                    <td class="cell-size">1GB</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-film"></i></td>
-                    <td class="name"><span> How to CSS3.mp4</span></td>
-                    <td class="items"> 20GB</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-film"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">How to CSS3.mp4</span>
+                    </td>
+                    <td class="cell-size">20GB</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <!--Music-->
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-music"></i></td>
-                    <td class="name"><span>Linkin Park - Numb.mp3</span></td>
-                    <td class="items"> 79M</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-music"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">Linkin Park - Numb.mp3</span>
+                    </td>
+                    <td class="cell-size">79M</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-music"></i></td>
-                    <td class="name"><span> Rammstein - Du Hust.mp3</span></td>
-                    <td class="items"> 80M</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-music"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">Rammstein - Du Hust.mp3</span>
+                    </td>
+                    <td class="cell-size">80M</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <!--XLS/XML/DOCX......-->
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-list-alt"></i></td>
-                    <td class="name"><span> Customers data.xls</span></td>
-                    <td class="items"> 98GB</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">Customers data.xls</span>
+                    </td>
+                    <td class="cell-size">98GB</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon file-icon"><i class="glyphicon glyphicon-list-alt"></i></td>
-                    <td class="name"><span> Products.xml</span></td>
-                    <td class="items"> 1TB</td>
-                    <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon file-icon">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">Products.xml</span>
+                    </td>
+                    <td class="cell-size">1TB</td>
+                    <td class="cell-actions">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
             </table>
         </div>
     </form>
-    <!----------------------------------Footer block--------------------------------------------->
+    <!--------------Footer block---------------->
     <footer class="footer">
-        Copyright © 2020
-        <a class="copyright-link" target="_blank" href="https://www.teamdev.com/">TeamDev.</a>
-        All rights reserved.
+        <p>
+            Copyright &copy 2020
+            <a class="copyright-link" target="_blank" href="https://www.teamdev.com/">TeamDev.</a>
+            All rights reserved.
+        </p>
     </footer>
 
 </div>

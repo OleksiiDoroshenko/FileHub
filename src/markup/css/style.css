@@ -1,56 +1,51 @@
 body {
-    font: 14px/18px Arial, Helvetic, sans-serif;
+    font: 14px/16px Arial, Helvetica, sans-serif;
     color: #000;
     background: #eee;
     min-width: 800px;
 }
 
-
 /*Link properties*/
 a {
-    color: rgb(111, 180, 235);
+    color: #6fb4eb;
     text-decoration: none;
 }
 
 a:hover {
-    color: rgb(111, 180, 235);
+    color: #6fb4eb;
     text-decoration: underline;
 }
 
 .form-link {
-    margin-top: 18px;
     float: right;
+    margin-top: 10px;
 }
 
 /*Header properties*/
 .header h1 {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
-    float: left;
-
 }
 
-.header .user-icon {
+.outer-menu .user-icon {
     font-size: 26px;
     position: absolute;
     right: 20px;
-    top: 15px;
+    top: 10px;
 }
 
 .header {
     border-bottom: 2px solid #999;
     margin-bottom: 20px;
     padding-bottom: 15px;
-
 }
 
-.header i {
+.outer-menu i {
     padding: 5px;
 }
 
 /*Content properties*/
-
-.form-application {
+.application-box {
     position: relative;
     margin: 100px auto 0;
     padding: 20px 20px 15px;
@@ -59,122 +54,69 @@ a:hover {
     width: 900px;
     border: 4px solid #999;
     border-radius: 10px;
-    box-shadow: 0 0 30px grey;
+    box-shadow: 0 0 30px #808080;
 }
 
-.login-form {
-    width: 650px;
+.login-box {
+    width: 530px;
 }
 
 .row-fields {
     width: 60%;
+    float: right;
 }
 
 .row-label {
     float: left;
     width: 30%;
     margin-top: 15px;
-    font-size: 18px;
-    margin-left: 15px;
+    font-size: 16px;
 }
 
 .input {
-    border: 2px solid rgb(204, 204, 204);
+    border: 2px solid #ccc;
     border-radius: 7px;
-    padding: 0 10px;
+    height: 35px;
 }
 
-.form-application .row-fields .input {
-    width: 97%;
-    height: 47px;
-    margin-bottom: 15px;
+.input::placeholder {
+    padding-left: 10px;
+}
+
+.row-fields .input {
+    width: 100%;
+    margin-bottom: 5px;
 }
 
 .input:focus {
-    border-color: rgb(55, 123, 181);
+    border-color: #377bb5;
 }
-
-.row-fields {
-
-    float: right;
-}
-
-
-.content .row {
-    margin-bottom: 10px;
-}
-
-.navigation {
-    float: right;
-    width: 60%;
-}
-
 
 .warning {
-    color: rgb(255, 0, 0);
+    color: #ff0000;
     margin-left: 2px;
-    width: 95%;
-    margin-bottom: 10px;
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 /*Button properties*/
-
-.button {
-    border-radius: 4px;
-    background-color: rgb(55, 123, 181);
-    border: none;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    padding: 10px;
-}
-
-
 .btn {
     border-radius: 4px;
-    background-color: rgb(55, 123, 181);
+    background-color: #377bb5;
     border: none;
-    color: rgb(255, 255, 255);
+    color: #fff;
     text-align: center;
     font-size: 16px;
     padding: 10px;
-    width: 100px;
-    transition: all 0.5s;
-    cursor: pointer;
 }
 
-.btn span {
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-    transition: 0.5s;
-}
-
-.btn span:after {
-    content: '\00bb';
-    position: absolute;
-    opacity: 0;
-    top: 0;
-    right: -5px;
-    transition: 0.5s;
-}
-
-.btn:hover span {
-    padding-right: 15px;
-}
-
-.btn:hover span:after {
-    opacity: 1;
-    right: 0;
-}
-
-
-.form-application:after, .header:after {
+.header:after, .row:after {
     display: block;
     clear: both;
     content: "";
 }
 
-#upload-file {
+.upload-file {
     display: none;
 }
 
@@ -184,18 +126,17 @@ a:hover {
     left: 0;
 }
 
-
-.logout-menu li {
+.user-menu li {
     display: inline-block;
     border-left: 1px solid #000;
     padding-left: 4px;
 }
 
-.logout-menu li:first-child {
+.user-menu li:first-child {
     border: 0;
 }
 
-.logout-menu {
+.user-menu {
     position: absolute;
     right: 40px;
     top: -40px;
@@ -204,14 +145,13 @@ a:hover {
 .path-manager {
     border-bottom: 2px solid #999;
     padding-bottom: 15px;
-
 }
 
-.current-position-menu li {
-    display: inline-block;
+.current-position-menu {
     padding-right: 4px;
     font-size: 22px;
     font-weight: bold;
+    margin-top: 5px;
 }
 
 .current-position-menu {
@@ -222,100 +162,88 @@ a:hover {
     float: right;
 }
 
-
 .path-manager:after {
     display: block;
     clear: both;
     content: "";
-
 }
 
-.name span {
+.cell-name .cell-name-text {
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     margin-left: 10px;
+    padding: 12px 0;
 }
 
-
-
-.file-container .item-icon {
+.table .cell-icon {
     width: 65px;
     font-size: 20px;
     margin-right: 15px;
 }
 
-.file-icon {
-    text-align: center;
-
+.table tr .file-icon {
+    width: 40px;
+    padding-left: 25px;
 }
 
-.items {
+.cell-size {
     width: 100px;
 }
 
-.clickable {
+.cell-actions {
     width: 60px;
 }
 
-.clickable i {
+.cell-actions i {
     opacity: 0;
 }
 
-.file-container .glyphicon-upload {
-    color: rgb(110, 189, 75);
+.table .glyphicon-upload {
+    color: #6ebd4b;
 }
 
-.file-container .glyphicon-download {
-    color: rgb(102, 175, 233);
+.table .glyphicon-download {
+    color: #66afe9;
 }
 
-.file-container .glyphicon-remove-circle {
-    color: rgb(207, 32, 48);
+.table .glyphicon-remove-circle {
+    color: #cf2030;
 }
 
-.file-container {
+.table {
     width: 100%;
     table-layout: fixed;
 }
 
-.table {
+.file-container {
     height: 500px;
     overflow-y: scroll;
 }
 
-.content .file-container tr {
-    height: 50px;
+.content .table tr {
     border-bottom: 1px solid #999;
-
 }
 
-
-.content .file-container td {
+.content .table td {
     vertical-align: middle;
 }
 
-.content .file-container tr:hover,
-.content .file-container tr:hover .clickable i {
-    opacity: 1;
+.content .table tr:hover {
+    background: #f4f4f4;
     transition: 0.5s;
-    background: rgb(244, 244, 244);
 }
 
+.content .table tr:hover .cell-actions i {
+    opacity: 1;
+    transition: 0.5s;
+}
 
 .footer {
     padding-top: 10px;
-    border-top: 1px solid #999999;
+    border-top: 1px solid #999;
     text-align: center;
-    white-space: nowrap;
 }
 
-.file-name-input {
-    padding: 0 10px;
-}
-
-.login-form {
-    width: 650px;
-}
 

@@ -2,47 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FileHub</title>
-
+    <title>FileHub - File Explorer</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js"></script>
-
 </head>
 <body>
-<section class="container base-form">
-    <header class="header">
-
+<section class="container base-box">
+    <div class="outer-menu">
         <img class="logo" alt="logo" data-toggle="tooltip" data-placement="top"
              title="Logo" src="images/teamdev.png" width="150">
-
-        <ul class="list-inline logout-menu">
-
+        <ul class="list-inline user-menu">
             <li class="username" data-toggle="tooltip" data-placement="top" title="Current user">
-                <i class="glyphicon glyphicon-user"></i> Username
+                <i class="glyphicon glyphicon-user"></i>
+                Username
             </li>
             <li class="logout" data-toggle="tooltip" data-placement="top" title="Log out">
                 <a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
-
-        <a href="file-explorer-index.html" data-toggle="tooltip" data-placement="top" title="Root page">
-            <h1 class="file-explorer">File Explorer</h1></a>
+    </div>
+    <header class="header">
+        <h1 class="file-explorer">
+            <a href="file-explorer-index.html" data-toggle="tooltip" data-placement="top" title="Root page">
+                File Explorer
+            </a>
+        </h1>
     </header>
-
     <div class="content">
-
         <header class="path-manager">
-
             <div class="form-group">
-                <ul class="list-inline col-sm-4 current-position-menu">
-
-                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="Root page">
-                        <i class="glyphicon glyphicon-folder-open"></i></a></li>
-                    <li>/</li>
-                    <li data-toggle="tooltip" data-placement="top" title="Current path">Root</li>
-                </ul>
+                <div class="col-sm-4 current-position-menu">
+                    <p>
+                        <a href="#" data-toggle="tooltip" data-placement="top" title="Root page">
+                            <i class="glyphicon glyphicon-folder-open"></i></a>
+                        /
+                        Root
+                    </p>
+                </div>
             </div>
-
             <div class="btn-menu">
                 <button type="submit" data-toggle="tooltip" data-placement="top" title="Create new directory"
                         onclick="addDirectory(); return false;" class="btn btn-primary"><i
@@ -54,60 +51,72 @@
                     <i class="glyphicon glyphicon-upload"></i>
                     Upload File
                 </button>
-                <input type="file" id="upload-file">
+                <input type="file" class="upload-file">
             </div>
         </header>
-
         <div class="file-container" data-toggle="tooltip" data-placement="top" title="File storage">
-
             <table class="table" id="file-container">
-
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name folder" data-toggle="tooltip" data-placement="top" title="Documents">
-                        <span><a href="file-explorer-inner.html"> Documents</a></span></td>
-                    <td class="items"> 2 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
-
+                    <td class="cell-icon"><i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name folder" data-toggle="tooltip" data-placement="top" title="Documents">
+                        <span class="cell-name-text"><a href="file-explorer-inner.html">Documents</a></span>
+                    </td>
+                    <td class="cell-size">2 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
+                    <td class="cell-icon"><i class="glyphicon glyphicon-triangle-right"></i>
                         <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name" data-toggle="tooltip" data-placement="top" title="Images">
-                        <span><a href="#"> Images</a></span></td>
-                    <td class="items"> 2 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-name" data-toggle="tooltip" data-placement="top" title="Images">
+                        <span class="cell-name-text"><a href="#">Images</a></span>
+                    </td>
+                    <td class="cell-size">2 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name" data-toggle="tooltip" data-placement="top" title="Videos">
-                        <span><a href="#"> Videos</a></span></td>
-                    <td class="items"> 1 item</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name" data-toggle="tooltip" data-placement="top" title="Videos">
+                        <span class="cell-name-text"><a href="#">Videos</a></span></td>
+                    <td class="cell-size">1 item</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
                         <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name" data-toggle="tooltip" data-placement="top" title="Music">
-                        <span><a href="#"> Music</a></span></td>
-                    <td class="items"> 0 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-name" data-toggle="tooltip" data-placement="top" title="Music">
+                        <span class="cell-name-text"><a href="#">Music</a></span>
+                    </td>
+                    <td class="cell-size">0 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
-
             </table>
         </div>
     </div>
     <footer class="footer">
-        Copyright © 2020
-        <a class="copyright-link" target="_blank" href="https://www.teamdev.com/" data-toggle="tooltip"
-           data-placement="top" title="TeamDev site">TeamDev.</a>
-        All rights reserved.
+        <p>
+            Copyright &copy 2020
+            <a class="copyright-link" target="_blank" href="https://www.teamdev.com/" data-toggle="tooltip"
+               data-placement="top" title="TeamDev site">TeamDev.</a>
+            All rights reserved.
+        </p>
     </footer>
 </section>
 </body>

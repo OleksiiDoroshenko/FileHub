@@ -1,3 +1,3 @@
 export function isNotEmpty(string) {
-    return string.length > 0;
+  return string.length > 0;
 }

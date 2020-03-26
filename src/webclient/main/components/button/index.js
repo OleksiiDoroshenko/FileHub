@@ -4,33 +4,27 @@ import Component from '../component.js';
  * Implements html button rendering into another html element(container).
  */
 export default class Button extends Component {
+  /**
+   * @typedef {Object} ButtonConfig.
+   * @param {string} type - html button attribute 'type' value.
+   * @param {string} text - html button inner text value.
+   */
+
+  /**
+   * Class constructor.
+   * @param {HTMLElement} container - container for element rendering.
+   * @param {ButtonConfig} componentConfig - button configuration.
+   */
   constructor(container, componentConfig) {
     super(container, componentConfig);
   }
 
   /**
-   * Returns representation of button in html.
-   * @return {string} Button html code.
+   * @inheritDoc
    */
   markup() {
     return `
             <button class="btn btn-primary" ${this.type}>${this.text}</button>
         `;
-  }
-
-  set type(value) {
-    this._type = value;
-  }
-
-  set text(value) {
-    this._text = value;
-  }
-
-  get type() {
-    return this._type;
-  }
-
-  get text() {
-    return this._text;
   }
 }

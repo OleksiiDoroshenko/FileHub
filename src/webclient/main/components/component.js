@@ -2,6 +2,10 @@
  * Base component for html elements manipulation.
  */
 export default class Component {
+  /**
+   * @param {HTMLElement} container - container for element rendering.
+   * @param {Object} componentConfig - initial configuration for current html element.
+   */
   constructor(container, componentConfig) {
     this.container = container;
     Object.assign(this, componentConfig);
@@ -25,7 +29,7 @@ export default class Component {
   }
 
   /**
-   * Adds event listener to container or inner html elements;
+   * Adds event listener to container or inner html elements.
    */
   addEventListener() {
   }

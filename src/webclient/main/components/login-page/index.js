@@ -1,19 +1,14 @@
 import Component from '../component.js';
 import FormRow from '../form-row';
 import FormActions from '../form-actions';
-import {isNotEmpty} from '../../valiator.js';
+import Validator from '../../valiator.js';
 
 /**
  * Implements html page that allows user to log in.
  */
 export default class LoginPage extends Component {
-  constructor(container, componentConfig) {
-    super(container, componentConfig);
-  }
-
   /**
-   * Returns html frame for login page.
-   * @return {string} html code.
+   * @inheritDoc
    */
   markup() {
     return `
@@ -30,11 +25,8 @@ export default class LoginPage extends Component {
   }
 
   /**
-   * Fills login html frame with :
-   * 1) row for collecting username
-   * 2) row for collecting password
-   * 3) row with button for log in and link for navigation to registration page.
-   */
+   * @inheritDoc
+   * */
   initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
     const usernameRow = new FormRow(formRoot, {
@@ -64,19 +56,14 @@ export default class LoginPage extends Component {
       usernameRow.hideWarning();
       pwdRow.hideWarning();
 
-      const username = usernameRow.value;
-      const pwd = pwdRow.value;
+      const validator = new Validator();
+      const loginValidation = validator.validateLoginRow(usernameRow);
+      const passwordValidation = validator.validatePasswordRow(pwdRow);
 
-      if (isNotEmpty(username) && isNotEmpty(pwd)) {
-        alert('You have been successfully logged in.');
-      } else {
-        if (!isNotEmpty(usernameRow.value)) {
-          usernameRow.showWarning('User name should not be empty.');
-        }
-        if (!isNotEmpty(pwdRow.value)) {
-          pwdRow.showWarning('Password should not be empty.');
-        }
+      if (loginValidation && passwordValidation) {
+        alert('Success');
       }
+
       event.preventDefault();
       event.stopPropagation();
     });

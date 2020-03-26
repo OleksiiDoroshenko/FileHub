@@ -6,13 +6,25 @@ import Button from '../button';
  * that can navigate user to another page.
  */
 export default class FormActions extends Component {
+  /**
+   * @typedef {Object} FormActionsConfig.
+   * @param {string} btnType - inner html button 'type' attribute value.
+   * @param {string} btnText - inner html button text value.
+   * @param {string} linkHref - html link 'href' attribute value.
+   * @param {string} linkText - html link text value.
+   */
+
+  /**
+   * Class constructor.
+   * @param {HTMLElement} container - container for element rendering.
+   * @param {FormActionsConfig} componentConfig - initial configuration of action form.
+   */
   constructor(container, componentConfig) {
     super(container, componentConfig);
   }
 
   /**
-   * Returns form row that contains button and link in html.
-   * @return {string} row html code.
+   * @inheritDoc
    */
   markup() {
     return `
@@ -27,7 +39,7 @@ export default class FormActions extends Component {
   }
 
   /**
-   * Renders button into existed form and adds 'onclick' listener to it.
+   * @inheritDoc
    */
   initInnerComponents() {
     const btnRoot = this.container.querySelector('.col-sm-2');
@@ -37,40 +49,12 @@ export default class FormActions extends Component {
     });
   }
 
+  /**
+   * @param {string} event - event to handle.
+   * @param {Function} handler - function which should be called whet event comes.
+   */
   addEventListener(event, handler) {
     const btn = this.container.querySelector('.btn');
     btn.addEventListener(event, handler);
-  }
-
-  set btnType(value) {
-    this._btnType = value;
-  }
-
-  get btnType() {
-    return this._btnType;
-  }
-
-  set btnText(value) {
-    this._btnText = value;
-  }
-
-  get btnText() {
-    return this._btnText;
-  }
-
-  set linkText(value) {
-    this._linkText = value;
-  }
-
-  get linkText() {
-    return this._linkText;
-  }
-
-  set linkHref(value) {
-    this._linkHref = value;
-  }
-
-  get linkHref() {
-    return this._linkHref;
   }
 }

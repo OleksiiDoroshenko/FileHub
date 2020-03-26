@@ -5,21 +5,34 @@ import Component from '../component.js';
  * that can collect user information.
  */
 export default class FormRow extends Component {
+  /**
+   * @typedef {Object} FormRowConfig.
+   * @param {string} id - html input 'id' attribute value.
+   * @param {string} labelText - html label text.
+   * @param {string} inputType - html input 'type' attribute value.
+   * @param {string} placeHolder - html input 'placeHolder' attribute value.
+   * @param {string} warning - html 'p' tag inner text .
+   */
+
+  /**
+   * Class constructor.
+   * @param {HTMLElement} container - container for element rendering.
+   * @param {FormRowConfig} componentConfig - initial configuration of row form.
+   */
   constructor(container, componentConfig) {
     super(container, componentConfig);
     this.root = this.container.lastChild;
   }
 
   /**
-   * Returns form row that contains label, input and in text place(tag '<p>') in html.
-   * @return {string} row html code.
+   * @inheritDoc
    */
   markup() {
     return `
          <div class="row">
             <label class="control-label col-sm-4" for=${this.id}>${this.labelText}</label>
             <div class="col-sm-8 input-filed">
-                <input ${this.inputType} class="form-control" ${this.id} 
+                <input type=${this.inputType} class="form-control" ${this.id} 
                 placeholder=${this.placeHolder} name=${this.id}>
                 <p class="text-danger">${this.warning}</p>
             </div>
@@ -27,55 +40,27 @@ export default class FormRow extends Component {
         `;
   }
 
+  /**
+   * Returns current html input value.
+   * @return {string} input value.
+   */
   get value() {
     return this.root.querySelector('.form-control').value;
   }
 
+  /**
+   * Renders waring text in the current row.
+   * <p> Text is placed under html input.
+   * @param {string} text - text to render.
+   */
   showWarning(text) {
     this.root.querySelector('.text-danger').innerText = text;
   }
 
+  /**
+   * Deletes warning text from current row.
+   */
   hideWarning() {
     this.root.querySelector('.text-danger').innerText = '';
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  set id(value) {
-    this._id = value;
-  }
-
-  get labelText() {
-    return this._labelText;
-  }
-
-  set labelText(value) {
-    this._labelText = value;
-  }
-
-  get inputType() {
-    return this._inputType;
-  }
-
-  set inputType(value) {
-    this._inputType = value;
-  }
-
-  get placeHolder() {
-    return this._placeHolder;
-  }
-
-  set placeHolder(value) {
-    this._placeHolder = value;
-  }
-
-  get warning() {
-    return this._warning;
-  }
-
-  set warning(value) {
-    this._warning = value;
   }
 }

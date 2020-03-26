@@ -4,13 +4,8 @@ import Component from '../component.js';
  * Implements html page that alerts user that page not found.
  */
 export default class ErrorPage extends Component {
-  constructor(container, componentConfig) {
-    super(container, componentConfig);
-  }
-
   /**
-   * Returns html frame for error 404 page.
-   * @return {string} html code.
+   * @inheritDoc
    */
   markup() {
     return `

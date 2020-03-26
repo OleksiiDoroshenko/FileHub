@@ -19,21 +19,18 @@ export default module('Router test', function(hook) {
   });
 
   test('should generate correct page from valid hash', (assert) => {
-    fixture.innerHTML = '';
     router.renderPage('/login');
     const currentPage = fixture.querySelector('h1').innerText;
     assert.strictEqual(currentPage, 'Login', 'Should show correct page from valid hash.');
   });
 
   test('should generate error page from invalid hash', (assert) => {
-    fixture.innerHTML = '';
     router.renderPage('/dasdafsfasfa');
     const currentPage = fixture.querySelector('h1').innerText;
     assert.strictEqual(currentPage, 'Error 404. Page not found.', 'Should generate error page from invalid hash.');
   });
 
   test('should generate default page from empty hash', (assert) => {
-    fixture.innerHTML = '';
     router.renderPage('#/');
     const currentPage = fixture.querySelector('h1').innerText;
     assert.strictEqual(currentPage, 'Login', 'Should generate default page from empty hash.');

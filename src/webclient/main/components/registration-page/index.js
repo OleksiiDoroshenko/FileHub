@@ -1,18 +1,14 @@
 import Component from '../component.js';
 import FormRow from '../form-row';
 import FormActions from '../form-actions';
+import Validator from '../../valiator.js';
 
 /**
  * Implements html page that allows user to register.
  */
 export default class RegistrationPage extends Component {
-  constructor(container, componentConfig) {
-    super(container, componentConfig);
-  }
-
   /**
-   * Returns html frame for registration page.
-   * @return {string} html code.
+   * @inheritDoc
    */
   markup() {
     return `
@@ -29,15 +25,11 @@ export default class RegistrationPage extends Component {
   }
 
   /**
-   * Fills registration html frame with :
-   * 1) row for collecting username
-   * 2) row for collecting password
-   * 3) row for collecting repeated password
-   * 4) row with button for register and link for navigation to log in page.
+   @inheritDoc
    */
   initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
-    new FormRow(formRoot, {
+    const usernameRow = new FormRow(formRoot, {
       id: 'email',
       labelText: 'Username',
       inputType: 'text',
@@ -45,7 +37,7 @@ export default class RegistrationPage extends Component {
       warning: '',
     });
 
-    new FormRow(formRoot, {
+    const pwdRow = new FormRow(formRoot, {
       id: 'pwd',
       labelText: 'Password',
       inputType: 'password',
@@ -53,7 +45,7 @@ export default class RegistrationPage extends Component {
       warning: '',
     });
 
-    new FormRow(formRoot, {
+    const cnfPwdRow = new FormRow(formRoot, {
       id: 'cnfPwd',
       labelText: 'Confirm Password',
       inputType: 'password',
@@ -68,7 +60,21 @@ export default class RegistrationPage extends Component {
       btnType: 'Submit',
     });
 
+
     actions.addEventListener('click', (event) => {
+      usernameRow.hideWarning();
+      pwdRow.hideWarning();
+      cnfPwdRow.hideWarning();
+
+      const validator = new Validator();
+      const loginValidation = validator.validateLoginRow(usernameRow);
+      const pwdValidation = validator.validatePasswordRow(pwdRow);
+      const cnfPwdValidation = validator.validateCnfPasswordRow(cnfPwdRow, pwdRow);
+
+      if (loginValidation && pwdValidation && cnfPwdValidation) {
+        alert('Success');
+      }
+
       event.preventDefault();
       event.stopPropagation();
     });

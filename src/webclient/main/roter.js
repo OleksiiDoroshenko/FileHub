@@ -1,15 +1,16 @@
 /**
- *Implements page changing by changing url hash.
+ * Implements page changing by changing url hash.
  */
 export default class Router {
   constructor(container, pageMapping) {
     this.container = container;
     this.pageMapping = pageMapping;
     this.init();
+    this.renderPage(window.location.hash.slice(1));
   }
 
   /**
-   *Adds event listener for hash changing process.
+   * Adds event listener for hash changing process.
    */
   init() {
     window.addEventListener('hashchange', () => {
@@ -19,7 +20,7 @@ export default class Router {
   }
 
   /**
-   *Renders page from map with all possible url hashes.
+   * Renders page from map with all possible url hashes.
    * <p> If such hash isn't found, calls another method.
    * @param{string} hash url hash("#/...")
    */
@@ -34,12 +35,12 @@ export default class Router {
   }
 
   /**
-   *If url hash equals '#/' renders default page from pages map with key 'default'.
+   * If url hash equals '#/' renders default page from pages map with key 'default'.
    * If url hash equals something else that not contains in pages map renders error 404 page.
    */
   defaultPage() {
     this.container.innerHTML = '';
-    if (window.location.hash === '#/') {
+    if (window.location.hash === '#/' || window.location.hash === '') {
       window.location.hash = `#${this.pageMapping['default']}`;
     } else {
       const Page = this.pageMapping['error'];

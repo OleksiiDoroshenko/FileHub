@@ -9,15 +9,14 @@ import ErrorPage from './components/error-page';
  */
 export default class Application extends Component {
   /**
-   * Returns html application frame.
-   * @return {string}
+   * @inheritDoc
    */
   markup() {
     return `<div class="app"></div>`;
   }
 
   /**
-   * Renders necessary page;
+   * @inheritDoc
    */
   initInnerComponents() {
     const root = this.container.querySelector('.app');

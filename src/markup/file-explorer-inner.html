@@ -10,15 +10,13 @@
 </head>
 <body>
 <div class="application-box">
-    <div class="outer-menu">
         <img class="logo" alt="logo" src="images/teamdev.png" width="150">
         <ul class="user-menu">
             <li><i class="glyphicon glyphicon-user"></i>Username</li>
             <li><a href="#" title="Log out">Log out<i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
-    </div>
     <header class="header">
-        <h1><a href="file-explorer-index.html"> File Explorer</a></h1>
+        <h1><a title="Root page" href="file-explorer-index.html">File Explorer</a></h1>
     </header>
     <!-------------CONTENT--------------->
     <form class="content">
@@ -31,21 +29,15 @@
                 </p>
             </div>
             <div class="button-menu">
-                <button onclick="addDirectory(); return false;" class="btn">
+                <button title="Create Directory" onclick="addDirectory(); return false;" class="btn">
                     <i class="glyphicon glyphicon-plus"></i>
                     Create directory
                 </button>
-                <button onclick="uploadFile()" class="btn">
+                <button title="Upload File" onclick="uploadFile()" class="btn">
                     <i class="glyphicon glyphicon-upload"></i>
                     Upload File
                 </button>
                 <input type="file" class="upload-file">
-            </div>
-            <div class="current-position-menu">
-                <p>
-                    <a href="#"><i class="glyphicon glyphicon-folder-open"></i></a>
-                    /
-                    Root</p>
             </div>
         </div>
         <div class="file-container">
@@ -57,7 +49,9 @@
                         <i class="glyphicon glyphicon-folder-close"></i>
                     </td>
                     <td class="cell-name">
-                        <span class="cell-name-text"><a href="#">Documents</a></span>
+                        <span class="cell-name-text">
+                            <a title="Documents directory" href="#">Documents</a>
+                        </span>
                     </td>
                     <td class="cell-size">2 items</td>
                     <td class="cell-actions">
@@ -71,7 +65,9 @@
                         <i class="glyphicon glyphicon-folder-close"></i>
                     </td>
                     <td class="cell-name">
-                        <span class="cell-name-text"><a href="#">Images</a></span>
+                        <span class="cell-name-text">
+                            <a title="Images directory" href="#">Images</a>
+                        </span>
                     </td>
                     <td class="cell-size">2 items</td>
                     <td class="cell-actions">
@@ -85,7 +81,9 @@
                         <i class="glyphicon glyphicon-folder-close"></i>
                     </td>
                     <td class="cell-name">
-                        <span class="cell-name-text"><a href="#">Videos</a></span>
+                        <span class="cell-name-text">
+                            <a title="Videos directory" href="#">Videos</a>
+                        </span>
                     </td>
                     <td class="cell-size">1 item</td>
                     <td class="cell-actions">
@@ -99,7 +97,9 @@
                         <i class="glyphicon glyphicon-folder-close"></i>
                     </td>
                     <td class="cell-name">
-                        <span class="cell-name-text"><a href="#">Music</a></span>
+                        <span class="cell-name-text">
+                            <a title="Music directory" href="#">Music</a>
+                        </span>
                     </td>
                     <td class="cell-size">0 items</td>
                     <td class="cell-actions">
@@ -249,7 +249,8 @@
     <footer class="footer">
         <p>
             Copyright &copy 2020
-            <a class="copyright-link" target="_blank" href="https://www.teamdev.com/">TeamDev.</a>
+            <a class="copyright-link" title="TeamDev main site" target="_blank"
+               href="https://www.teamdev.com/">TeamDev.</a>
             All rights reserved.
         </p>
     </footer>

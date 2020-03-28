@@ -7,7 +7,7 @@ import Button from '../button';
  */
 export default class FormActions extends Component {
   /**
-   * @typedef {Object} FormActionsConfig.
+   * @typedef {[string]} FormActionsConfig.
    * @param {string} btnType - inner html button 'type' attribute value.
    * @param {string} btnText - inner html button text value.
    * @param {string} linkHref - html link 'href' attribute value.
@@ -17,7 +17,7 @@ export default class FormActions extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {FormActionsConfig} componentConfig - initial configuration of action form.
+   * @param {FormActions} componentConfig - initial configuration of action form.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);

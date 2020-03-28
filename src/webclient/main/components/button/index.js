@@ -13,7 +13,7 @@ export default class Button extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {ButtonConfig} componentConfig - button configuration.
+   * @param {{text: string, type: string}} componentConfig - button configuration.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);

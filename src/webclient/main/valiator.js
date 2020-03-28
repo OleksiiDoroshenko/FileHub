@@ -2,17 +2,16 @@
  * Implements methods for login, password and confirm password inputs.
  * */
 export default class Validator {
-
   /**
    *  Validates login string value if it is fully matches regex rules.
    *  <p> Rules: Login should contains only latin letters or numbers.
    *  <p> Not case sensitive.
    * @param {string} login - username.
-   * @returns {boolean} if login fits special rules returns true,
+   * @return {boolean} if login fits special rules returns true,
    *  if not returns false.
    */
   validateLogin(login) {
-    let rules = /^\w+/;
+    const rules = /^\w+/;
     return rules.test(login.toLowerCase());
   }
 
@@ -23,11 +22,11 @@ export default class Validator {
    *        2) Password  contain at least 1 uppercase and lowercase letters and 1 digit.
    *  <p> Not case sensitive.
    * @param {string} password - user password.
-   * @returns {boolean} if login fits special rules returns true,
+   * @return {boolean} if login fits special rules returns true,
    *  if not returns false.
    */
   validatePassword(password) {
-    let rules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
+    const rules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
     return rules.test(password);
   }
 
@@ -38,7 +37,7 @@ export default class Validator {
    *      2)Login should contains only latin letters or numbers.
    *  <p> Not case sensitive.
    * @param {FormRow} usernameRow - form row that contains fields with user username.
-   * @returns {boolean} returns true if login is valid,
+   * @return {boolean} returns true if login is valid,
    * if it is not:
    *      1)Renders warning message under the login input.
    *      <p> Message contains explanation of what is not ok.
@@ -62,7 +61,7 @@ export default class Validator {
    *      2)Password  contain at least 1 uppercase and lowercase letters and 1 digit.
    *  <p> Not case sensitive.
    * @param {FormRow} pwdRow - form row that contains fields with user password.
-   * @returns {boolean} returns true if password is valid,
+   * @return {boolean} returns true if password is valid,
    * if it is not:
    *      1)Renders warning message under the password input.
    *      <p> Message contains explanation of what is not ok.
@@ -85,7 +84,7 @@ export default class Validator {
    *      1)passwords should be strict equal.
    * @param {FormRow} cnfPwdRow - form row that contains user confirmation password.
    * @param {FormRow} pwdRow - form row that contains user password.
-   * @returns {boolean} returns true if confirmation password and password are strict equal,
+   * @return {boolean} returns true if confirmation password and password are strict equal,
    * if they are not:
    *      1)Renders warning message under the confirmation password input.
    *      <p> Message contains explanation of what is not ok.

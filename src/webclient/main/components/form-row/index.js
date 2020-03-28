@@ -6,7 +6,7 @@ import Component from '../component.js';
  */
 export default class FormRow extends Component {
   /**
-   * @typedef {Object} FormRowConfig.
+   * @typedef {[string]} FormRowConfig.
    * @param {string} id - html input 'id' attribute value.
    * @param {string} labelText - html label text.
    * @param {string} inputType - html input 'type' attribute value.

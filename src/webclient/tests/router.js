@@ -7,32 +7,38 @@ const {module, test} = QUnit;
 export default module('Router test', function(hook) {
   let fixture;
   let router;
+  let window;
+
   const pageMapping = {
-    '/login': LoginPage,
-    'error': ErrorPage,
-    'default': LoginPage,
+    '/login': () => new LoginPage(fixture, {}),
+    'error': () => new ErrorPage(fixture, {}),
+    'default': '/login',
   };
 
   hook.beforeEach(() => {
     fixture = document.getElementById('qunit-fixture');
-    router = new Router(fixture, pageMapping);
+    window = {
+      location: {
+        hash: '',
+      },
+      addEventListener: () => {
+      },
+    };
+    router = new Router(fixture, window, pageMapping);
   });
 
   test('should generate correct page from valid hash', (assert) => {
     router.renderPage('/login');
-    const currentPage = fixture.querySelector('h1').innerText;
-    assert.strictEqual(currentPage, 'Login', 'Should show correct page from valid hash.');
+    assert.strictEqual(window.location.hash, '#/login', 'Should show correct page from valid hash.');
   });
 
   test('should generate error page from invalid hash', (assert) => {
     router.renderPage('/dasdafsfasfa');
-    const currentPage = fixture.querySelector('h1').innerText;
-    assert.strictEqual(currentPage, 'Error 404. Page not found.', 'Should generate error page from invalid hash.');
+    assert.strictEqual(window.location.hash, '#/error', 'Should generate error page from invalid hash.');
   });
 
   test('should generate default page from empty hash', (assert) => {
-    router.renderPage('#/');
-    const currentPage = fixture.querySelector('h1').innerText;
-    assert.strictEqual(currentPage, 'Login', 'Should generate default page from empty hash.');
+    router.renderPage('');
+    assert.strictEqual(window.location.hash, '#/login', 'Should generate default page from empty hash.');
   });
 });

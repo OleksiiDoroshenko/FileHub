@@ -20,11 +20,11 @@ export default class Application extends Component {
    */
   initInnerComponents() {
     const root = this.container.querySelector('.app');
-    new Router(root, {
-      '/login': LoginPage,
-      '/registration': RegistrationPage,
+    new Router(root, window, {
+      '/login': () => new LoginPage(root, {}),
+      '/registration': () => new RegistrationPage(root, {}),
       'default': '/login',
-      'error': ErrorPage,
+      'error': () => new ErrorPage(root, {}),
     });
   }
 }

@@ -8,7 +8,19 @@ import Validator from '../../valiator.js';
  */
 export default class LoginPage extends Component {
   /**
-   * @inheritDoc
+   * Class constructor.
+   * @param {HTMLElement} container - root container for element rendering.
+   * @param {AuthenticationService} service - handles login and registration operations logic.
+   * @param {Object} componentConfig - empty object.
+   */
+  constructor(container, service, componentConfig) {
+    super(container, componentConfig);
+    this.service = service;
+  }
+
+
+  /**
+   * @inheritdoc
    */
   markup() {
     return `
@@ -25,7 +37,7 @@ export default class LoginPage extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    * */
   initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
@@ -61,7 +73,12 @@ export default class LoginPage extends Component {
       const passwordValidation = validator.validatePasswordRow(pwdRow);
 
       if (loginValidation && passwordValidation) {
-        alert('Success');
+        const response = this.service.login(usernameRow.value, pwdRow.value);
+        response.then((callback) => {
+          callback();
+        }).catch((error) => {
+          alert(error.message);
+        });
       }
 
       event.preventDefault();

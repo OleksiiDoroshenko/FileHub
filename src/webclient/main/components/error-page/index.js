@@ -5,7 +5,7 @@ import Component from '../component.js';
  */
 export default class ErrorPage extends Component {
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   markup() {
     return `

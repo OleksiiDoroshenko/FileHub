@@ -20,7 +20,7 @@ export default class Button extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   markup() {
     return `

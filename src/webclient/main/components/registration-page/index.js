@@ -8,7 +8,18 @@ import Validator from '../../valiator.js';
  */
 export default class RegistrationPage extends Component {
   /**
-   * @inheritDoc
+   * Class constructor.
+   * @param {HTMLElement} container - root container for element rendering.
+   * @param {AuthenticationService} service - handles login and registration operations logic.
+   * @param {Object} componentConfig - empty object.
+   */
+  constructor(container, service, componentConfig) {
+    super(container, componentConfig);
+    this.service = service;
+  }
+
+  /**
+   * @inheritdoc
    */
   markup() {
     return `
@@ -25,7 +36,7 @@ export default class RegistrationPage extends Component {
   }
 
   /**
-   @inheritDoc
+   @inheritdoc
    */
   initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
@@ -72,11 +83,36 @@ export default class RegistrationPage extends Component {
       const cnfPwdValidation = validator.validateCnfPasswordRow(cnfPwdRow, pwdRow);
 
       if (loginValidation && pwdValidation && cnfPwdValidation) {
-        alert('Success');
+        const response = this.service.register(usernameRow.value, pwdRow.value);
+        response.then((callback) => {
+          callback();
+        }).catch((error) => {
+          if (error.code === 401) {
+            this.handleVerificationError(error, usernameRow, pwdRow);
+          } else {
+            alert(error.message);
+          }
+        });
       }
 
       event.preventDefault();
       event.stopPropagation();
     });
+  }
+
+  /**
+   * Handles verification errors with code '401' from {@link AuthenticationService}
+   * @param {VerificationError} error - error that throws by server when login or password are invalid.
+   * @param {FormRow} usernameRow - registration form row that contains data about users login.
+   * @param {FormRow} pwdRow -registration form row that contains data about users password.
+   */
+  handleVerificationError(error, usernameRow, pwdRow) {
+    if (error.field === 'pwd') {
+      pwdRow.showWarning(error.message);
+    } else if (error.field === 'login') {
+      usernameRow.showWarning(error.message);
+    } else {
+      alert('Unknown validation error.');
+    }
   }
 }

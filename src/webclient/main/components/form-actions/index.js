@@ -24,7 +24,7 @@ export default class FormActions extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   markup() {
     return `
@@ -39,7 +39,7 @@ export default class FormActions extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   initInnerComponents() {
     const btnRoot = this.container.querySelector('.col-sm-2');

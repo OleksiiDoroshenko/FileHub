@@ -29,7 +29,7 @@ export default class Router {
   /**
    * Renders page from map with all possible url hashes.
    * <p> If such hash isn't found, calls another method.
-   * @param{string} hash url hash("#/...")
+   * @param {string} hash - url hash("#/...")
    */
   renderPage(hash) {
     this.container.innerHTML = '';

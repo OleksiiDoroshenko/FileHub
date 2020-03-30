@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint src/webclient/**",
-    "eslint-fix": "eslint src/webclient/main/** --fix"
+    "eslint-fix": "npm run eslint -- --fix"
   },
   "repository": {
     "type": "git",

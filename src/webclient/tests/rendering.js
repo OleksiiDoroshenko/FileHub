@@ -7,7 +7,6 @@ import RegistrationPage from '../main/components/registration-page';
 const {module, test} = QUnit;
 
 export default module('Components rendering test', function(hook) {
-
   let fixture;
 
   hook.beforeEach(() => {

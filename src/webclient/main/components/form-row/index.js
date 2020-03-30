@@ -25,7 +25,7 @@ export default class FormRow extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   markup() {
     return `

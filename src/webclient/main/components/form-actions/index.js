@@ -24,7 +24,7 @@ export default class FormActions extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc.
    */
   markup() {
     return `
@@ -39,11 +39,11 @@ export default class FormActions extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc.
    */
   initInnerComponents() {
-    const btnRoot = this.container.querySelector('.col-sm-2');
-    new Button(btnRoot, {
+    const btnRoot = this.container.querySelector('.nav-panel').querySelector('div');
+    this._btn = new Button(btnRoot, {
       text: this.btnText,
       type: this.btnType,
     });
@@ -54,7 +54,6 @@ export default class FormActions extends Component {
    * @param {Function} handler - function which should be called whet event comes.
    */
   addEventListener(event, handler) {
-    const btn = this.container.querySelector('.btn');
-    btn.addEventListener(event, handler);
+    this._btn.addEventListener(event, handler);
   }
 }

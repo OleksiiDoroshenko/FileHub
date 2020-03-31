@@ -1,5 +1,5 @@
 import Button from '../main/components/button';
-import FormRow from '../main/components/form-row';
+import FormInput from '../main/components/form-input';
 import FormActions from '../main/components/form-actions';
 import LoginPage from '../main/components/login-page';
 import RegistrationPage from '../main/components/registration-page';
@@ -24,7 +24,7 @@ export default module('Components rendering test', function(hook) {
   });
 
   test('FormRow should be rendering correctly', (assert) => {
-    new FormRow(fixture, {
+    new FormInput(fixture, {
       id: 'Test',
       labelText: 'Test',
       inputType: 'text',

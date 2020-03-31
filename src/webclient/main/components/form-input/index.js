@@ -4,7 +4,7 @@ import Component from '../component.js';
  * Implements group of elements such as labels and inputs,
  * that can collect user information.
  */
-export default class FormRow extends Component {
+export default class FormInput extends Component {
   /**
    * @typedef {[string]} FormRowConfig.
    * @param {string} id - html input 'id' attribute value.
@@ -25,7 +25,7 @@ export default class FormRow extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   markup() {
     return `

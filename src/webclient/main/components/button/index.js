@@ -20,11 +20,18 @@ export default class Button extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc.
    */
   markup() {
     return `
             <button class="btn btn-primary" ${this.type}>${this.text}</button>
         `;
+  }
+
+  /**
+   * @inheritdoc.
+   */
+  addEventListener(event, handler) {
+    this.container.querySelector('.btn').addEventListener(event, handler);
   }
 }

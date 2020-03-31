@@ -1,5 +1,5 @@
 import Component from './components/component.js';
-import Router from './roter.js';
+import Router from './router.js';
 import LoginPage from './components/login-page';
 import RegistrationPage from './components/registration-page';
 import ErrorPage from './components/error-page';

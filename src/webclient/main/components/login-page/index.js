@@ -1,14 +1,14 @@
 import Component from '../component.js';
-import FormRow from '../form-row';
+import FormInput from '../form-input';
 import FormActions from '../form-actions';
-import Validator from '../../valiator.js';
+import Validator from '../../services/validator';
 
 /**
  * Implements html page that allows user to log in.
  */
 export default class LoginPage extends Component {
   /**
-   * @inheritDoc
+   * @inheritdoc.
    */
   markup() {
     return `
@@ -25,11 +25,11 @@ export default class LoginPage extends Component {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc.
    * */
   initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
-    const usernameRow = new FormRow(formRoot, {
+    const usernameInput = new FormInput(formRoot, {
       id: 'email',
       labelText: 'Username',
       inputType: 'text',
@@ -37,7 +37,7 @@ export default class LoginPage extends Component {
       warning: '',
     });
 
-    const pwdRow = new FormRow(formRoot, {
+    const passwordInput = new FormInput(formRoot, {
       id: 'pwd',
       labelText: 'Password',
       inputType: 'password',
@@ -53,14 +53,25 @@ export default class LoginPage extends Component {
     });
 
     actions.addEventListener('click', (event) => {
-      usernameRow.hideWarning();
-      pwdRow.hideWarning();
+      usernameInput.hideWarning();
+      passwordInput.hideWarning();
 
       const validator = new Validator();
-      const loginValidation = validator.validateLoginRow(usernameRow);
-      const passwordValidation = validator.validatePasswordRow(pwdRow);
+      let loginValid = false;
+      let passwordValid = false;
 
-      if (loginValidation && passwordValidation) {
+      validator.validateLogin(usernameInput.value).then(() => {
+        loginValid = true;
+      }).catch((message) => {
+        usernameInput.showWarning(message);
+      });
+      validator.validatePassword(passwordInput.value).then(() => {
+        passwordValid = true;
+      }).catch((message) => {
+        passwordInput.showWarning(message);
+      });
+
+      if (loginValid && passwordValid) {
         alert('Success');
       }
 

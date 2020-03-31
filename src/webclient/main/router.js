@@ -43,6 +43,7 @@ export default class Router {
   /**
    * If url hash equals '#/' renders default page from pages map with key 'default'.
    * If url hash equals something else that not contains in pages map renders error 404 page.
+   * @param {string} hash - string type of '#/...'.
    */
   _renderDefaultOrErrorPage(hash) {
     hash = hash.startsWith('#', 0) ? hash.slice(1) : hash;

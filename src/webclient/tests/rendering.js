@@ -7,7 +7,6 @@ import RegistrationPage from '../main/components/registration-page';
 const {module, test} = QUnit;
 
 export default module('Components rendering module: ', function(hook) {
-
   let fixture;
 
   hook.beforeEach(() => {
@@ -62,5 +61,4 @@ export default module('Components rendering module: ', function(hook) {
       assert.strictEqual(currentState.innerText, 'Registration', 'RegistrationPage should be rendered.');
     });
   });
-
 });

@@ -9,7 +9,7 @@ export default module('Authentication service test', function(hook) {
     const password = 'maksdlo21';
     const response = service.register(login, password);
     response.catch((error) => {
-      assert.strictEqual(error().code, 401, 'Should throw error with code 401.');
+      assert.strictEqual(error.code, 401, 'Should throw error with code 401.');
     });
   });
 
@@ -17,9 +17,8 @@ export default module('Authentication service test', function(hook) {
     const login = 'Alex';
     const password = 'Markizon4ik160998';
     const response = service.register(login, password);
-    response.then((callback) => {
-      callback();
-      assert.strictEqual(window.location.hash, '#/login', 'Should register and redirect user.');
+    response.then((code) => {
+      assert.strictEqual(code, 200, 'Should register user.');
     });
   });
 
@@ -30,7 +29,7 @@ export default module('Authentication service test', function(hook) {
 
     const response = service.register(login, password);
     response.catch((error) => {
-      assert.strictEqual(error().code, 422, 'Should throw error with code 422.');
+      assert.strictEqual(error.code, 422, 'Should throw error with code 422.');
     });
   });
 
@@ -39,7 +38,7 @@ export default module('Authentication service test', function(hook) {
     const password = 'Markizon4ik160998';
     const response = service.login(login, password);
     response.catch((error) => {
-      assert.strictEqual(error().code, 422, 'Should throw error with code 422.');
+      assert.strictEqual(error.code, 422, 'Should throw error with code 422.');
     });
   });
 
@@ -48,9 +47,8 @@ export default module('Authentication service test', function(hook) {
     const password = 'Markizon4ik160998';
     service.register(login, password);
     const response = service.login(login, password);
-    response.then((callback) => {
-      callback();
-      assert.strictEqual(window.location.hash, '#/fileHub', 'Should register and redirect user.');
+    response.then((code) => {
+      assert.strictEqual(code, 200, 'Should register and redirect user.');
     });
   });
 });

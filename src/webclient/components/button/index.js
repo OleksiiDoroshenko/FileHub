@@ -4,7 +4,6 @@ import Component from '../component.js';
  * Implements html button rendering into another html element(container).
  */
 export default class Button extends Component {
-
   /**
    * @inheritdoc
    */

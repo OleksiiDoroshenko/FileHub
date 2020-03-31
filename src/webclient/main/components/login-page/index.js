@@ -8,6 +8,17 @@ import Validator from '../../services/validator';
  */
 export default class LoginPage extends Component {
   /**
+   * Class constructor.
+   * @param {HTMLElement} container - root container for element rendering.
+   * @param {AuthenticationService} service - instance of {@link AuthenticationService}.
+   * @param {Object} componentConfig - empty object.
+   */
+  constructor(container, service, componentConfig) {
+    super(container, componentConfig);
+    this._service = service;
+  }
+
+  /**
    * @inheritdoc.
    */
   markup() {
@@ -56,27 +67,45 @@ export default class LoginPage extends Component {
       usernameInput.hideWarning();
       passwordInput.hideWarning();
 
-      const validator = new Validator();
-      let loginValid = false;
-      let passwordValid = false;
+      const login = usernameInput.value;
+      const password = passwordInput.value;
 
-      validator.validateLogin(usernameInput.value).then(() => {
-        loginValid = true;
-      }).catch((message) => {
-        usernameInput.showWarning(message);
-      });
-      validator.validatePassword(passwordInput.value).then(() => {
-        passwordValid = true;
-      }).catch((message) => {
-        passwordInput.showWarning(message);
-      });
-
-      if (loginValid && passwordValid) {
-        alert('Success');
+      if (this._validateForm(login, password)) {
+        this._service.login(login, password).then(() => {
+          window.location.hash = '/#fileHub';
+        }).catch((error) => {
+          alert(error.message);
+        });
       }
-
       event.preventDefault();
       event.stopPropagation();
     });
+  }
+
+  /**
+   * Validates form inputs.
+   * <p> If some of the inputs are invalid renders warning message with explanations what is not ok.
+   * @param {string} login - users username.
+   * @param {string} password - users password.
+   * @returns {boolean} returns true if form is valid / false if it is not;
+   * @private
+   */
+  _validateForm(login, password) {
+    const validator = new Validator();
+    let loginValid = false;
+    let passwordValid = false;
+
+    validator.validateLogin(login).then(() => {
+      loginValid = true;
+    }).catch((error) => {
+      this.usernameInput.showWarning(error.message);
+    });
+    validator.validatePassword(password).then(() => {
+      passwordValid = true;
+    }).catch((error) => {
+      this.passwordInput.showWarning(error.message);
+    });
+
+    return loginValid && passwordValid;
   }
 }

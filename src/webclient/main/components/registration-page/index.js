@@ -8,6 +8,17 @@ import Validator from '../../services/validator';
  */
 export default class RegistrationPage extends Component {
   /**
+   * Class constructor.
+   * @param {HTMLElement} container - root container for element rendering.
+   * @param {AuthenticationService} service - instance of {@link AuthenticationService}.
+   * @param {Object} componentConfig - empty object.
+   */
+  constructor(container, service, componentConfig) {
+    super(container, componentConfig);
+    this._service = service;
+  }
+
+  /**
    * @inheritdoc.
    */
   markup() {
@@ -29,7 +40,8 @@ export default class RegistrationPage extends Component {
    */
   initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
-    const usernameInput = new FormInput(formRoot, {
+
+    this.usernameInput = new FormInput(formRoot, {
       id: 'email',
       labelText: 'Username',
       inputType: 'text',
@@ -37,7 +49,7 @@ export default class RegistrationPage extends Component {
       warning: '',
     });
 
-    const passwordInput = new FormInput(formRoot, {
+    this.passwordInput = new FormInput(formRoot, {
       id: 'pwd',
       labelText: 'Password',
       inputType: 'password',
@@ -45,7 +57,7 @@ export default class RegistrationPage extends Component {
       warning: '',
     });
 
-    const confirmPasswordInput = new FormInput(formRoot, {
+    this.confirmPasswordInput = new FormInput(formRoot, {
       id: 'cnfPwd',
       labelText: 'Confirm Password',
       inputType: 'password',
@@ -53,7 +65,7 @@ export default class RegistrationPage extends Component {
       warning: '',
     });
 
-    const actions = new FormActions(formRoot, {
+    this.actions = new FormActions(formRoot, {
       linkText: 'Already have an account?',
       linkHref: '#/login',
       btnText: 'Register',
@@ -61,39 +73,77 @@ export default class RegistrationPage extends Component {
     });
 
 
-    actions.addEventListener('click', (event) => {
-      usernameInput.hideWarning();
-      passwordInput.hideWarning();
-      confirmPasswordInput.hideWarning();
+    this.actions.addEventListener('click', (event) => {
+      this.usernameInput.hideWarning();
+      this.passwordInput.hideWarning();
+      this.confirmPasswordInput.hideWarning();
 
-      const validator = new Validator();
-      let loginValid = false;
-      let passwordValid = false;
-      let confirmPasswordValid = false;
+      const login = this.usernameInput.value;
+      const password = this.passwordInput.value;
+      const confirmPassword = this.confirmPasswordInput.value;
 
-      validator.validateLogin(usernameInput.value).then(() => {
-        loginValid = true;
-      }).catch((message) => {
-        usernameInput.showWarning(message);
-      });
-      validator.validatePassword(passwordInput.value).then(() => {
-        passwordValid = true;
-      }).catch((message) => {
-        passwordInput.showWarning(message);
-      });
-
-      validator.comparePasswords(confirmPasswordInput.value, passwordInput.value).then(() => {
-        confirmPasswordValid = true;
-      }).catch((message) => {
-        confirmPasswordInput.showWarning(message);
-      });
-
-      if (loginValid && passwordValid && confirmPasswordValid) {
-        alert('Success');
+      if (this._validateForm(login, password, confirmPassword)) {
+        this._service.register(login, password).then(() => {
+          window.location.hash = '#/login';
+        }).catch((error) => {
+          if (error.code === 422) {
+            alert(error.message);
+          } else if (error.code === 401) {
+            this._verificationErrorHandler(error);
+          }
+        });
       }
 
       event.preventDefault();
       event.stopPropagation();
     });
+  }
+
+  /**
+   * Validates form inputs.
+   * <p> If some of the inputs are invalid renders warning message with explanations what is not ok.
+   * @param {string} login - users username.
+   * @param {string} password - users password.
+   * @param {string} confirmPassword - users repeated password.
+   * @returns {boolean} returns true if form is valid / false if it is not;
+   * @private
+   */
+  _validateForm(login, password, confirmPassword) {
+    const validator = new Validator();
+    let loginValid = false;
+    let passwordValid = false;
+    let confirmPasswordValid = false;
+
+    validator.validateLogin(login).then(() => {
+      loginValid = true;
+    }).catch((error) => {
+      this.usernameInput.showWarning(error.message);
+    });
+    validator.validatePassword(password).then(() => {
+      passwordValid = true;
+    }).catch((error) => {
+      this.passwordInput.showWarning(error.message);
+    });
+    validator.comparePasswords(confirmPassword, password).then(() => {
+      confirmPasswordValid = true;
+    }).catch((error) => {
+      this.confirmPasswordInput.showWarning(error.message);
+    });
+
+    return loginValid && passwordValid && confirmPasswordValid;
+  }
+
+  /**
+   * Handles authentication errors.
+   * <p> renders warning messages below invalid inputs.
+   * @param {VerificationError} error - instance of {@link VerificationError} .
+   * @private
+   */
+  _verificationErrorHandler(error) {
+    if (error.field === 'password') {
+      this.passwordInput.showWarning(error.message);
+    } else if (error.field === 'login') {
+      this.usernameInput.showWarning(error.message);
+    }
   }
 }

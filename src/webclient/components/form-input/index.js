@@ -5,7 +5,6 @@ import Component from '../component.js';
  * that can collect user information.
  */
 export default class FormInput extends Component {
-
   /**
    * @inheritdoc.
    */
@@ -41,5 +40,4 @@ export default class FormInput extends Component {
   hideWarning() {
     this.root.querySelector('.text-danger').innerText = '';
   }
-
 }

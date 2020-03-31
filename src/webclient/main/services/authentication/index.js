@@ -1,5 +1,5 @@
-import VerificationError from '../verification-error';
-import AuthorizationError from '../authorization-error';
+import VerificationError from '../../../models/errors/verification-error';
+import AuthorizationError from '../../../models/errors/authorization-error';
 
 /**
  * Implements login and registration methods logic.
@@ -28,13 +28,9 @@ export default class AuthenticationService {
   login(login, password) {
     return new Promise(((resolve, reject) => {
       if (this.isRegistered(login, password)) {
-        resolve(() => {
-          window.location.hash = '#/fileHub';
-        });
+        resolve(200);
       } else {
-        reject(() => {
-          return new AuthorizationError(422, 'User with this login is not found.');
-        });
+        reject(new AuthorizationError(422, 'User with this login is not found.'));
       }
     }));
   }
@@ -50,18 +46,12 @@ export default class AuthenticationService {
   register(login, password) {
     return new Promise(((resolve, reject) => {
       if (this.isRegistered(login, password)) {
-        reject(() => {
-          return new AuthorizationError(422, 'User with this login already exists.');
-        });
+        reject(new AuthorizationError(422, 'User with this login already exists.'));
       } else if (password.length >= 10) {
         this.users[login] = password;
-        resolve(() => {
-          window.location.hash = '#/login';
-        });
+        resolve(200);
       } else {
-        reject(() => {
-          return new VerificationError(401, 'pwd', 'Password should be longer than 10 characters.');
-        });
+        reject(new VerificationError(401, 'password', 'Password should be longer than 10 characters.'));
       }
     }));
   }

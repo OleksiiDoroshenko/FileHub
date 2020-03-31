@@ -7,7 +7,6 @@ import {isNotEmpty} from '../../validator.js';
  * Implements html page that allows user to log in.
  */
 export default class LoginPage extends Component {
-
   /**
    * @inheritdoc.
    */
@@ -75,6 +74,5 @@ export default class LoginPage extends Component {
       event.preventDefault();
       event.stopPropagation();
     });
-
   }
 }

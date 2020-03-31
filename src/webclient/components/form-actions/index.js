@@ -6,7 +6,6 @@ import Button from '../button';
  * that can navigate user to another page.
  */
 export default class FormActions extends Component {
-
   /**
    * @inheritdoc.
    */

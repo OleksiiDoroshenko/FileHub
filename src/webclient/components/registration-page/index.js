@@ -6,7 +6,6 @@ import FormActions from '../form-actions';
  * Implements html page that allows user to register.
  */
 export default class RegistrationPage extends Component {
-
   /**
    * @inheritdoc.
    */
@@ -64,6 +63,5 @@ export default class RegistrationPage extends Component {
       event.preventDefault();
       event.stopPropagation();
     });
-
   }
 }

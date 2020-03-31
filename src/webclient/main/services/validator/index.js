@@ -1,6 +1,8 @@
 /**
  * Implements methods for login, password and confirm password inputs.
  * */
+import VerificationError from '../../../models/errors/verification-error';
+
 export default class Validator {
   /**
    *  Validates login string value if it is fully matches regex rules.
@@ -18,9 +20,11 @@ export default class Validator {
         resolve();
       } else {
         if (login.length < minLength) {
-          reject(`Login should be longer than ${minLength} symbols.`);
+          reject(new VerificationError(422, 'login',
+            `Login should be longer than ${minLength} symbols.`));
         } else {
-          reject('Login should contains only latin letters or numbers.');
+          reject(new VerificationError(422, 'login',
+            'Login should contains only latin letters or numbers.'));
         }
       }
     }));
@@ -44,9 +48,11 @@ export default class Validator {
         resolve();
       } else {
         if (password.length < minLength) {
-          reject(`Password should be longer than ${minLength} symbols.`);
+          reject(new VerificationError(422, 'password',
+            `Password should be longer than ${minLength} symbols.`));
         } else {
-          reject('Password should contain at least 1 uppercase and lowercase letters and 1 digit.');
+          reject(new VerificationError(422, 'password',
+            'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
         }
       }
     }));
@@ -69,7 +75,7 @@ export default class Validator {
       if (confirmPassword === password) {
         resolve();
       } else {
-        reject('Passwords do not match.');
+        reject(new VerificationError(422, 'confirmPassword', 'Passwords do not match.'));
       }
     }));
   }

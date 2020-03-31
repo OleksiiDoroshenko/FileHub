@@ -36,7 +36,7 @@ export default class Router {
     if (this.pageMapping[hash]) {
       this.pageMapping[hash]();
     } else {
-      this.defaultPage(hash);
+      this._renderDefaultOrErrorPage(hash);
     }
   }
 
@@ -44,7 +44,7 @@ export default class Router {
    * If url hash equals '#/' renders default page from pages map with key 'default'.
    * If url hash equals something else that not contains in pages map renders error 404 page.
    */
-  defaultPage(hash) {
+  _renderDefaultOrErrorPage(hash) {
     hash = hash.startsWith('#', 0) ? hash.slice(1) : hash;
     this.container.innerHTML = '';
     if (hash === '#/' || hash === '') {

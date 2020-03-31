@@ -28,7 +28,7 @@ export default module('Router test', function(hook) {
   });
 
   test('should generate correct page from valid hash', (assert) => {
-    router.renderPage('/login');
+    router.renderPage('error');
     assert.strictEqual(window.location.hash, '#/login', 'Should show correct page from valid hash.');
   });
 

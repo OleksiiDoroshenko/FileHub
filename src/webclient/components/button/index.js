@@ -1,37 +1,39 @@
-import Component from "../component.js";
+import Component from '../component.js';
 
 /**
  * Implements html button rendering into another html element(container).
  */
 export default class Button extends Component {
 
-    constructor(container, componentConfig) {
-        super(container, componentConfig);
-    }
-
-    /**
-     * Returns representation of button in html.
-     * @returns {string} Button html code.
-     */
-    markup() {
-        return `
+  /**
+   * @inheritdoc
+   */
+  markup() {
+    return `
             <button class="btn btn-primary" ${this.type}>${this.text}</button>
         `;
-    }
+  }
 
-    set type(value) {
-        this._type = value;
-    }
+  /**
+   * @inheritdoc.
+   * */
+  addEventListener(event, handler) {
+    this.container.querySelector('.btn').addEventListener(event, handler);
+  }
 
-    set text(value) {
-        this._text = value;
-    }
+  set type(value) {
+    this._type = value;
+  }
 
-    get type() {
-        return this._type;
-    }
+  set text(value) {
+    this._text = value;
+  }
 
-    get text() {
-        return this._text;
-    }
+  get type() {
+    return this._type;
+  }
+
+  get text() {
+    return this._text;
+  }
 }

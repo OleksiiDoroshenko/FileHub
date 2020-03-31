@@ -1,26 +1,21 @@
-import Component from "../component.js";
-import FormRow from "../form-row";
-import FormActions from "../form-actions";
-import {isNotEmpty} from "../../valiator.js";
+import Component from '../component.js';
+import FormInput from '../form-input';
+import FormActions from '../form-actions';
+import {isNotEmpty} from '../../validator.js';
 
 /**
  * Implements html page that allows user to log in.
  */
 export default class LoginPage extends Component {
 
-    constructor(container, componentConfig) {
-        super(container, componentConfig);
-    }
-
-    /**
-     * Returns html frame for login page.
-     * @returns {string}
-     */
-    markup() {
-        return `
+  /**
+   * @inheritdoc.
+   */
+  markup() {
+    return `
             <section class="container base-form login-form">
                  <header class="header">
-<!--                    <img class="logo" alt="logo" src="../../images/teamdev.png" width="150">-->
+                    <img class="logo" alt="logo" src="../../img/logo.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>
                     <h1>Login</h1>
                 </header>
@@ -28,59 +23,58 @@ export default class LoginPage extends Component {
                 </form>
             </section>
         `;
-    }
+  }
 
-    /**
-     * Fills login html frame with :
-     * 1) row for collecting username
-     * 2) row for collecting password
-     * 3) row with button for log in and link for navigation to registration page.
-     */
-    initInnerComponents() {
-        const formRoot = this.container.querySelector(".form-horizontal");
-        const usernameRow = new FormRow(formRoot, {
-            id: "email",
-            labelText: "Username",
-            inputType: "text",
-            placeHolder: "Email",
-            warning: ""
-        });
+  /**
+   * @inheritdoc.
+   */
+  initInnerComponents() {
+    const formRoot = this.container.querySelector('.form-horizontal');
+    const usernameInput = new FormInput(formRoot, {
+      id: 'email',
+      labelText: 'Username',
+      inputType: 'text',
+      placeHolder: 'Email',
+      warning: '',
+    });
 
-        const pwdRow = new FormRow(formRoot, {
-            id: "pwd",
-            labelText: "Password",
-            inputType: "password",
-            placeHolder: "Password",
-            warning: ""
-        });
+    const passwordInput = new FormInput(formRoot, {
+      id: 'pwd',
+      labelText: 'Password',
+      inputType: 'password',
+      placeHolder: 'Password',
+      warning: '',
+    });
 
-        const actions = new FormActions(formRoot, {
-            linkText: "Don't have an account yet?",
-            linkHref: "#/registration",
-            btnText: "Log in",
-            btnType: "Submit"
-        });
+    const actions = new FormActions(formRoot, {
+      linkText: 'Don\'t have an account yet?',
+      linkHref: '#/registration',
+      btnText: 'Log in',
+      btnType: 'Submit',
+    });
 
-        actions.addEventListener("click", (event) => {
-            usernameRow.hideWarning();
-            pwdRow.hideWarning();
+    actions.addEventListener('click', (event) => {
+      usernameInput.hideWarning();
+      passwordInput.hideWarning();
 
-            const username = usernameRow.value;
-            const pwd = pwdRow.value;
+      const username = usernameInput.value;
+      const password = passwordInput.value;
 
-            if (isNotEmpty(username) && isNotEmpty(pwd)) {
-                alert("You have been successfully logged in.")
-            } else {
-                if (!isNotEmpty(usernameRow.value)) {
-                    usernameRow.showWarning("User name should not be empty.");
-                }
-                if (!isNotEmpty(pwdRow.value)) {
-                    pwdRow.showWarning("Password should not be empty.")
-                }
-            }
-            event.preventDefault();
-            event.stopPropagation();
-        })
+      const usernameNotEmpty = isNotEmpty(username);
+      const passwordNotEmpty = isNotEmpty(password);
+      if (usernameNotEmpty && passwordNotEmpty) {
+        alert('You have been successfully logged in.');
+      } else {
+        if (!usernameNotEmpty) {
+          username.showWarning('User name should not be empty.');
+        }
+        if (!passwordNotEmpty) {
+          passwordInput.showWarning('Password should not be empty.');
+        }
+      }
+      event.preventDefault();
+      event.stopPropagation();
+    });
 
-    }
+  }
 }

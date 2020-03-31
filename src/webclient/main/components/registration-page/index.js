@@ -1,25 +1,14 @@
 import Component from '../component.js';
-import FormRow from '../form-row';
+import FormInput from '../form-input';
 import FormActions from '../form-actions';
-import Validator from '../../valiator.js';
+import Validator from '../../services/validator';
 
 /**
  * Implements html page that allows user to register.
  */
 export default class RegistrationPage extends Component {
   /**
-   * Class constructor.
-   * @param {HTMLElement} container - root container for element rendering.
-   * @param {AuthenticationService} service - handles login and registration operations logic.
-   * @param {Object} componentConfig - empty object.
-   */
-  constructor(container, service, componentConfig) {
-    super(container, componentConfig);
-    this.service = service;
-  }
-
-  /**
-   * @inheritdoc
+   * @inheritdoc.
    */
   markup() {
     return `
@@ -36,11 +25,11 @@ export default class RegistrationPage extends Component {
   }
 
   /**
-   @inheritdoc
+   @inheritdoc.
    */
   initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
-    const usernameRow = new FormRow(formRoot, {
+    const usernameInput = new FormInput(formRoot, {
       id: 'email',
       labelText: 'Username',
       inputType: 'text',
@@ -48,7 +37,7 @@ export default class RegistrationPage extends Component {
       warning: '',
     });
 
-    const pwdRow = new FormRow(formRoot, {
+    const passwordInput = new FormInput(formRoot, {
       id: 'pwd',
       labelText: 'Password',
       inputType: 'password',
@@ -56,7 +45,7 @@ export default class RegistrationPage extends Component {
       warning: '',
     });
 
-    const cnfPwdRow = new FormRow(formRoot, {
+    const confirmPasswordInput = new FormInput(formRoot, {
       id: 'cnfPwd',
       labelText: 'Confirm Password',
       inputType: 'password',
@@ -73,46 +62,38 @@ export default class RegistrationPage extends Component {
 
 
     actions.addEventListener('click', (event) => {
-      usernameRow.hideWarning();
-      pwdRow.hideWarning();
-      cnfPwdRow.hideWarning();
+      usernameInput.hideWarning();
+      passwordInput.hideWarning();
+      confirmPasswordInput.hideWarning();
 
       const validator = new Validator();
-      const loginValidation = validator.validateLoginRow(usernameRow);
-      const pwdValidation = validator.validatePasswordRow(pwdRow);
-      const cnfPwdValidation = validator.validateCnfPasswordRow(cnfPwdRow, pwdRow);
+      let loginValid = false;
+      let passwordValid = false;
+      let confirmPasswordValid = false;
 
-      if (loginValidation && pwdValidation && cnfPwdValidation) {
-        const response = this.service.register(usernameRow.value, pwdRow.value);
-        response.then((callback) => {
-          callback();
-        }).catch((error) => {
-          if (error.code === 401) {
-            this.handleVerificationError(error, usernameRow, pwdRow);
-          } else {
-            alert(error.message);
-          }
-        });
+      validator.validateLogin(usernameInput.value).then(() => {
+        loginValid = true;
+      }).catch((message) => {
+        usernameInput.showWarning(message);
+      });
+      validator.validatePassword(passwordInput.value).then(() => {
+        passwordValid = true;
+      }).catch((message) => {
+        passwordInput.showWarning(message);
+      });
+
+      validator.comparePasswords(confirmPasswordInput.value, passwordInput.value).then(() => {
+        confirmPasswordValid = true;
+      }).catch((message) => {
+        confirmPasswordInput.showWarning(message);
+      });
+
+      if (loginValid && passwordValid && confirmPasswordValid) {
+        alert('Success');
       }
 
       event.preventDefault();
       event.stopPropagation();
     });
-  }
-
-  /**
-   * Handles verification errors with code '401' from {@link AuthenticationService}
-   * @param {VerificationError} error - error that throws by server when login or password are invalid.
-   * @param {FormRow} usernameRow - registration form row that contains data about users login.
-   * @param {FormRow} pwdRow -registration form row that contains data about users password.
-   */
-  handleVerificationError(error, usernameRow, pwdRow) {
-    if (error.field === 'pwd') {
-      pwdRow.showWarning(error.message);
-    } else if (error.field === 'login') {
-      usernameRow.showWarning(error.message);
-    } else {
-      alert('Unknown validation error.');
-    }
   }
 }

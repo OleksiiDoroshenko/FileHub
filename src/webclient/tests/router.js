@@ -1,6 +1,6 @@
 import LoginPage from '../main/components/login-page';
 import ErrorPage from '../main/components/error-page';
-import Router from '../main/roter.js';
+import Router from '../main/router.js';
 
 const {module, test} = QUnit;
 
@@ -28,7 +28,7 @@ export default module('Router test', function(hook) {
   });
 
   test('should generate correct page from valid hash', (assert) => {
-    router.renderPage('/login');
+    router.renderPage('error');
     assert.strictEqual(window.location.hash, '#/login', 'Should show correct page from valid hash.');
   });
 

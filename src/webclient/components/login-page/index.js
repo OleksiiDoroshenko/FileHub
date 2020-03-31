@@ -1,12 +1,13 @@
 import Component from '../component.js';
 import FormInput from '../form-input';
 import FormActions from '../form-actions';
-import Validator from '../../services/validator';
+import {isNotEmpty} from '../../validator.js';
 
 /**
  * Implements html page that allows user to log in.
  */
 export default class LoginPage extends Component {
+
   /**
    * @inheritdoc.
    */
@@ -14,7 +15,7 @@ export default class LoginPage extends Component {
     return `
             <section class="container base-form login-form">
                  <header class="header">
-<!--                    <img class="logo" alt="logo" src="../../images/teamdev.png" width="150">-->
+                    <img class="logo" alt="logo" src="../../img/logo.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>
                     <h1>Login</h1>
                 </header>
@@ -26,7 +27,7 @@ export default class LoginPage extends Component {
 
   /**
    * @inheritdoc.
-   * */
+   */
   initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
     const usernameInput = new FormInput(formRoot, {
@@ -56,27 +57,24 @@ export default class LoginPage extends Component {
       usernameInput.hideWarning();
       passwordInput.hideWarning();
 
-      const validator = new Validator();
-      let loginValid = false;
-      let passwordValid = false;
+      const username = usernameInput.value;
+      const password = passwordInput.value;
 
-      validator.validateLogin(usernameInput.value).then(() => {
-        loginValid = true;
-      }).catch((message) => {
-        usernameInput.showWarning(message);
-      });
-      validator.validatePassword(passwordInput.value).then(() => {
-        passwordValid = true;
-      }).catch((message) => {
-        passwordInput.showWarning(message);
-      });
-
-      if (loginValid && passwordValid) {
-        alert('Success');
+      const usernameNotEmpty = isNotEmpty(username);
+      const passwordNotEmpty = isNotEmpty(password);
+      if (usernameNotEmpty && passwordNotEmpty) {
+        alert('You have been successfully logged in.');
+      } else {
+        if (!usernameNotEmpty) {
+          username.showWarning('User name should not be empty.');
+        }
+        if (!passwordNotEmpty) {
+          passwordInput.showWarning('Password should not be empty.');
+        }
       }
-
       event.preventDefault();
       event.stopPropagation();
     });
+
   }
 }

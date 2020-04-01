@@ -15,7 +15,7 @@ export default class LoginPage extends Component {
     return `
             <section class="container base-form login-form">
                  <header class="header">
-                    <img class="logo" alt="logo" src="../../img/logo.png" width="150">
+                    <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>
                     <h1>Login</h1>
                 </header>

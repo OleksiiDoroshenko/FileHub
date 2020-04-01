@@ -1,5 +1,5 @@
-import Application from "./app.js";
+import Application from './app.js';
 
-const root = document.querySelector("body");
+const root = document.querySelector('body');
 
 new Application(root, {});

@@ -9,7 +9,7 @@
     <script src="js/script.js"></script>
 </head>
 <body>
-<div class="application-box">
+<section class="application-box">
         <img class="logo" alt="logo" src="images/teamdev.png" width="150">
         <ul class="user-menu">
             <li><i class="glyphicon glyphicon-user"></i>Username</li>
@@ -18,15 +18,15 @@
     <header class="header">
         <h1><a title="Root page" href="file-explorer-index.html">File Explorer</a></h1>
     </header>
-    <!-------------CONTENT--------------->
-    <form class="content">
+    <!--    CONTENT      -->
+    <div class="content">
         <div class="path-manager">
             <div class="current-position-menu">
-                <p>
+                <h2>
                     <a href="#" title="Step back"><i class="glyphicon glyphicon-level-up"></i></a>
                     /
                     Shared with me
-                </p>
+                </h2>
             </div>
             <div class="button-menu">
                 <button title="Create Directory" onclick="addDirectory(); return false;" class="btn">
@@ -108,7 +108,7 @@
                     </td>
                 </tr>
                 <!--            Files block              -->
-                <!--PDF-->
+                <!--    PDF      -->
                 <tr>
                     <td class="cell-icon file-icon">
                         <i class="glyphicon glyphicon-book"></i>
@@ -135,7 +135,7 @@
                         <i class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
-                <!--IMG-->
+                <!--     IMG      -->
                 <tr>
                     <td class="cell-icon file-icon">
                         <i class="glyphicon glyphicon-picture"></i>
@@ -161,7 +161,7 @@
                         <i class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
-                <!--Videos-->
+                <!--    Videos      -->
                 <tr>
                     <td class="cell-icon file-icon">
                         <i class="glyphicon glyphicon-film"></i>
@@ -188,7 +188,7 @@
                         <i class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
-                <!--Music-->
+                <!--    Music       -->
                 <tr>
                     <td class="cell-icon file-icon">
                         <i class="glyphicon glyphicon-music"></i>
@@ -215,7 +215,7 @@
                         <i class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
-                <!--XLS/XML/DOCX......-->
+                <!--    XLS/XML/DOCX    -->
                 <tr>
                     <td class="cell-icon file-icon">
                         <i class="glyphicon glyphicon-list-alt"></i>
@@ -244,18 +244,16 @@
                 </tr>
             </table>
         </div>
-    </form>
-    <!--------------Footer block---------------->
+    </div>
+    <!--    Footer block    -->
     <footer class="footer">
         <p>
-            Copyright &copy 2020
+            Copyright &copy; 2020
             <a class="copyright-link" title="TeamDev main site" target="_blank"
                href="https://www.teamdev.com/">TeamDev.</a>
             All rights reserved.
         </p>
     </footer>
-
-</div>
-
+</section>
 </body>
 </html>

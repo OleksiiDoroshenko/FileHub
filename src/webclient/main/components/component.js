@@ -9,23 +9,23 @@ export default class Component {
   constructor(container, componentConfig) {
     this.container = container;
     Object.assign(this, componentConfig);
-    this.render();
-    this.initInnerComponents();
+    this._render();
+    this._initInnerComponents();
   }
 
   /**
    * Renders inner html representation into another html element(container).
    */
-  render() {
+  _render() {
     const div = document.createElement('div');
-    div.innerHTML = this.markup().trim();
+    div.innerHTML = this._markup().trim();
     this.container.appendChild(div.firstChild);
   }
 
   /**
    * Returns html representation of element or group of elements.
    */
-  markup() {
+  _markup() {
   }
 
   /**
@@ -37,6 +37,6 @@ export default class Component {
   /**
    * Renders components into container.
    */
-  initInnerComponents() {
+  _initInnerComponents() {
   }
 }

@@ -27,7 +27,7 @@ export default class FormInput extends Component {
   /**
    * @inheritdoc
    */
-  markup() {
+  _markup() {
     return `
          <div class="row">
             <label class="control-label col-sm-4" for=${this.id}>${this.labelText}</label>

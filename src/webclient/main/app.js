@@ -9,16 +9,16 @@ import ErrorPage from './components/error-page';
  */
 export default class Application extends Component {
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
-  markup() {
+  _markup() {
     return `<div class="app"></div>`;
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
-  initInnerComponents() {
+  _initInnerComponents() {
     const root = this.container.querySelector('.app');
     new Router(root, window, {
       '/login': () => new LoginPage(root, {}),

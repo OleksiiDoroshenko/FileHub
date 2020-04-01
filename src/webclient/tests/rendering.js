@@ -7,21 +7,21 @@ import RegistrationPage from '../main/components/registration-page';
 const {module, test} = QUnit;
 
 export default module('Components rendering module: ', function(hook) {
-
   let fixture;
 
   hook.beforeEach(() => {
     fixture = document.getElementById('qunit-fixture');
   });
 
-  module('Button rendering module: ');
-  test('Button should be rendered correctly', (assert) => {
-    new Button(fixture, {
-      type: 'submit',
-      text: 'Test',
+  module('Button rendering module:', function(hook) {
+    test('Button should be rendered correctly', (assert) => {
+      new Button(fixture, {
+        type: 'submit',
+        text: 'Test',
+      });
+      const currentState = fixture.querySelector('.btn');
+      assert.strictEqual(currentState.innerText, 'Test', 'Button should be rendered.');
     });
-    const currentState = fixture.querySelector('.btn');
-    assert.strictEqual(currentState.innerText, 'Test', 'Button should be rendered.');
   });
 
   module('Form fields rendering module:', function(hook) {
@@ -62,5 +62,4 @@ export default module('Components rendering module: ', function(hook) {
       assert.strictEqual(currentState.innerText, 'Registration', 'RegistrationPage should be rendered.');
     });
   });
-
 });

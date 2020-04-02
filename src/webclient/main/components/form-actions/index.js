@@ -2,7 +2,7 @@ import Component from '../component.js';
 import Button from '../button';
 
 /**
- * Implements form row that contains button and link,
+ * Implements login-form row that contains button and link,
  * that can navigate user to another page.
  */
 export default class FormActions extends Component {
@@ -17,7 +17,7 @@ export default class FormActions extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {FormActions} componentConfig - initial configuration of action form.
+   * @param {FormActions} componentConfig - initial configuration of action login-form.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);

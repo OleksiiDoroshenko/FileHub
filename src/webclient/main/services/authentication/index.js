@@ -19,50 +19,55 @@ export default class AuthenticationService {
 
   /**
    *  Implements logic for user login.
-   * @param {string} login - users login.
-   * @param {string} password - users password.
+   * @param {UserData} userData -instance of {@link UserData}.
    * @return {Promise<AuthorizationError>} if user with this login and password is already registered then
    * method resolve contains welcoming alert.
    * If user is not registered than method reject returns {@link AuthorizationError}.
    */
-  login(login, password) {
+  login(userData) {
     return new Promise(((resolve, reject) => {
-      if (this.isRegistered(login, password)) {
+      if (this.isRegistered(userData)) {
         resolve(200);
       } else {
-        reject(new AuthorizationError(422, 'User with this login is not found.'));
+        reject(new AuthorizationError('User with this login is not found.'));
       }
     }));
   }
 
   /**
    * Implements logic for user registration.
-   * @param {string} login - users login.
-   * @param {string} password - users password.
+   * @param {UserData} userData -instance of {@link UserData}.
    * @return {Promise<Error>} if user with this login is already registered then method reject returns
    * {@link AuthorizationError}. If user's is not registered, but his password is not valid method reject returns
    * {@link VerificationError}. If everything is alright method resolve contains redirection to {@link LoginPage}
    */
-  register(login, password) {
+  register(userData) {
+    const login = userData.login;
+    const password = userData.password;
     return new Promise(((resolve, reject) => {
-      if (this.isRegistered(login, password)) {
-        reject(new AuthorizationError(422, 'User with this login already exists.'));
-      } else if (password.length >= 10) {
+      if (password.length >= 10 && !this.isRegistered(userData)) {
         this.users[login] = password;
         resolve(200);
       } else {
-        reject(new VerificationError(401, 'password', 'Password should be longer than 10 characters.'));
+        let errors = [];
+        if (this.isRegistered(userData)) {
+          reject(new AuthorizationError('User with this login already exists.'));
+        } else {
+          errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
+          reject(errors);
+        }
       }
     }));
   }
 
   /**
    * Checks if user with this login and password is registered.
-   * @param {string} login - users login.
-   * @param {string} password - users password.
+   * @param {UserData} userData - instance of {@link UserData}.
    * @return {boolean} if user is registered returns true if it's not returns false.
    */
-  isRegistered(login, password) {
+  isRegistered(userData) {
+    const login = userData.login;
+    const password = userData.password;
     return this.users[login] && this.users[login] === password;
   }
 }

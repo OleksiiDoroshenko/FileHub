@@ -1,5 +1,5 @@
 body {
-    font: 15px/18px Arial, Helvetica, sans-serif;
+    font: 15px/19px Arial, Helvetica, sans-serif;
     color: #000;
     background: #eee;
     min-width: 800px;
@@ -16,6 +16,7 @@ a:hover {
 }
 
 .form-link {
+    font-size: 14px;
     float: right;
     margin-top: 10px;
 }
@@ -45,7 +46,7 @@ a:hover {
 .application-box {
     position: relative;
     margin: 100px auto 0;
-    padding: 20px 20px 15px;
+    padding: 15px 20px 15px;
     background: #fff;
     box-sizing: border-box;
     width: 900px;
@@ -67,7 +68,7 @@ a:hover {
 .row-label {
     float: left;
     width: 30%;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .input {
@@ -101,8 +102,8 @@ a:hover {
     border: none;
     color: #fff;
     text-align: center;
-    font-size: 16px;
-    padding: 10px;
+    font-size: 15px;
+    padding: 10px 12px;
     cursor: pointer;
 }
 
@@ -169,6 +170,20 @@ a:hover {
     table-layout: fixed;
 }
 
+.table tr {
+    border-bottom: 1px solid #999;
+}
+
+.table tr:hover {
+    background: #f4f4f4;
+    transition: 0.5s;
+}
+
+.table tr .file-icon {
+    width: 40px;
+    padding-left: 25px;
+}
+
 .table tr td {
     padding: 5px;
     vertical-align: middle;
@@ -186,16 +201,6 @@ a:hover {
 .table .cell-icon {
     width: 65px;
     font-size: 20px;
-    margin-right: 15px;
-}
-
-.table tr {
-    border-bottom: 1px solid #999;
-}
-
-.table tr .file-icon {
-    width: 40px;
-    padding-left: 25px;
 }
 
 .table .cell-size {
@@ -220,12 +225,6 @@ a:hover {
 
 .table .glyphicon-remove-circle {
     color: #cf2030;
-}
-
-
-.table tr:hover {
-    background: #f4f4f4;
-    transition: 0.5s;
 }
 
 .table tr:hover .cell-actions i {

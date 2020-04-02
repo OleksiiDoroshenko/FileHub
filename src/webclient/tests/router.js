@@ -24,21 +24,23 @@ export default module('Router test', function(hook) {
       addEventListener: () => {
       },
     };
-    router = new Router(fixture, window, pageMapping);
   });
 
   test('should generate correct page from valid hash', (assert) => {
-    router.renderPage('error');
+    window.location.hash = '#/login';
+    router = new Router(fixture, window, pageMapping);
     assert.strictEqual(window.location.hash, '#/login', 'Should show correct page from valid hash.');
   });
 
   test('should generate error page from invalid hash', (assert) => {
-    router.renderPage('/dasdafsfasfa');
+    window.location.hash = '#/dadawdwads';
+    router = new Router(fixture, window, pageMapping);
     assert.strictEqual(window.location.hash, '#/error', 'Should generate error page from invalid hash.');
   });
 
   test('should generate default page from empty hash', (assert) => {
-    router.renderPage('');
+    window.location.hash = '#/';
+    router = new Router(fixture, window, pageMapping);
     assert.strictEqual(window.location.hash, '#/login', 'Should generate default page from empty hash.');
   });
 });

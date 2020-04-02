@@ -22,7 +22,7 @@ export default class Button extends Component {
   /**
    * @inheritdoc.
    */
-  markup() {
+  _markup() {
     return `
             <button class="btn btn-primary" ${this.type}>${this.text}</button>
         `;

@@ -10,16 +10,16 @@ import AuthenticationService from './services/authentication';
  */
 export default class Application extends Component {
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
-  markup() {
+  _markup() {
     return `<div class="app"></div>`;
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
-  initInnerComponents() {
+  _initInnerComponents() {
     const root = this.container.querySelector('.app');
     const service = new AuthenticationService();
     new Router(root, window, {

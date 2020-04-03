@@ -180,8 +180,8 @@ a:hover {
 }
 
 .table tr .file-icon {
-    width: 40px;
-    padding-left: 25px;
+    width: 65px;
+    padding-left: 40px;
 }
 
 .table tr td {
@@ -203,12 +203,16 @@ a:hover {
     font-size: 20px;
 }
 
+.table .glyphicon-triangle-right {
+    margin-right: 10px;
+}
+
 .table .cell-size {
-    width: 100px;
+    width: 155px;
 }
 
 .table .cell-actions {
-    width: 60px;
+    width: 65px;
 }
 
 .table .cell-actions i {

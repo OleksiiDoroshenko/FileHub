@@ -1,5 +1,6 @@
 import Component from '../component.js';
 import RegistrationForm from '../registration-form';
+import AuthorizationError from '../../../models/errors/authorization-error';
 
 /**
  * Implements html page that allows user to register.
@@ -36,8 +37,17 @@ export default class RegistrationPage extends Component {
    */
   _initInnerComponents() {
     const formRoot = this.container.querySelector('.login-form');
-    new RegistrationForm(formRoot, {});
+    const form = new RegistrationForm(formRoot, {});
+    form.onSubmit((userData) => {
+      this._service.register(userData).then(() => {
+        window.location.hash = '#/login';
+      }).catch((error) => {
+        if (error instanceof AuthorizationError) {
+          alert(error.message);
+        } else {
+          form.handleError(error);
+        }
+      });
+    });
   }
-
-
 }

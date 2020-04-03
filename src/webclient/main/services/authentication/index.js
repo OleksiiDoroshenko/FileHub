@@ -49,7 +49,7 @@ export default class AuthenticationService {
         this.users[login] = password;
         resolve(200);
       } else {
-        let errors = [];
+        const errors = [];
         if (this.isRegistered(userData)) {
           reject(new AuthorizationError('User with this login already exists.'));
         } else {

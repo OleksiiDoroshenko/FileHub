@@ -4,7 +4,16 @@ import FormActions from '../form-actions';
 import Validator from '../../services/validator';
 import UserData from '../../../models/user-data';
 
+/**
+ * Renders fields for user to log in.
+ */
 export default class LoginForm extends Component {
+  /**
+   * Contains all handlers that should be executed when form passes validation.
+   * @type {[function]}
+   */
+  submitHandlers = [];
+
   /**
    * @inheritdoc.
    * */
@@ -12,9 +21,13 @@ export default class LoginForm extends Component {
     return `<form class="form-horizontal"></form>`;
   }
 
+  /**
+   * @inheritdoc
+   * @private
+   */
   _initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
-   this.usernameInput = new FormInput(formRoot, {
+    this.usernameInput = new FormInput(formRoot, {
       id: 'email',
       labelText: 'Username',
       inputType: 'text',
@@ -45,11 +58,7 @@ export default class LoginForm extends Component {
       const password = this.passwordInput.value;
 
       if (this._validateForm(login, password)) {
-        this._service.login(new UserData(login, password)).then(() => {
-          window.location.hash = '/#fileHub';
-        }).catch((error) => {
-          alert(error.message);
-        });
+        this._executeHandlers(new UserData(login, password));
       }
       event.preventDefault();
       event.stopPropagation();
@@ -61,7 +70,7 @@ export default class LoginForm extends Component {
    * <p> If some of the inputs are invalid renders warning message with explanations what is not ok.
    * @param {string} login - users username.
    * @param {string} password - users password.
-   * @returns {boolean} returns true if login-form is valid / false if it is not;
+   * @return {boolean} returns true if login-form is valid / false if it is not;
    * @private
    */
   _validateForm(login, password) {
@@ -81,5 +90,24 @@ export default class LoginForm extends Component {
     });
 
     return loginValid && passwordValid;
+  }
+
+  /**
+   * Adds handler to the handler array.
+   * @param {function} handler - function that should be executed when form passes validation.
+   */
+  onSubmit(handler) {
+    this.submitHandlers.push(handler);
+  }
+
+  /**
+   * Execute every handler.
+   * @param {UserData} userData - instance of {@link UserData}.
+   * @private
+   */
+  _executeHandlers(userData) {
+    this.submitHandlers.forEach((handler) => {
+      handler(userData);
+    });
   }
 }

@@ -53,6 +53,7 @@ export default class Validator {
             'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
           resolve();
         }
+        resolve();
       }
     ));
   }

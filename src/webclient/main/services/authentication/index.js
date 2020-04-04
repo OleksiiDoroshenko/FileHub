@@ -16,7 +16,7 @@ export default class AuthenticationService {
    * @type {{User}}
    */
   users = {};
-
+  
   /**
    *  Implements logic for user login.
    * @param {UserData} userData -instance of {@link UserData}.

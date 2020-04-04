@@ -78,12 +78,14 @@ export default class LoginForm extends Component {
     let loginValid = false;
     let passwordValid = false;
 
-    validator.validateLogin(login).then(() => {
+    validator.validateLogin(login)
+      .then(() => {
       loginValid = true;
     }).catch((error) => {
       this.usernameInput.showWarning(error.message);
     });
-    validator.validatePassword(password).then(() => {
+    validator.validatePassword(password)
+      .then(() => {
       passwordValid = true;
     }).catch((error) => {
       this.passwordInput.showWarning(error.message);

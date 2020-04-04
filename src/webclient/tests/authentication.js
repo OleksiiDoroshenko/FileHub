@@ -7,7 +7,8 @@ import ServerValidationError from '../models/errors/server-validation-error';
 const {module, test} = QUnit;
 const service = new AuthenticationService();
 
-export default module('Authentication service test', function(hook) {
+export default module('Authentication service', function(hook) {
+
   test('Register method should returns exception when password is invalid.', (assert) => {
     const userData = new UserData('Alex', 'maksdlo21');
     const response = service.register(userData);

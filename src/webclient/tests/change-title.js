@@ -2,7 +2,7 @@ import TitleService from '../main/services/change-title';
 
 const {module, test} = QUnit;
 
-export default module('Change title test', function(hook) {
+export default module('Change title', function(hook) {
   test('Should change document title.', (assert) => {
     const title = 'Test';
     new TitleService().changeTitle(title);

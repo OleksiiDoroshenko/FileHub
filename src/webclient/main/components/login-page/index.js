@@ -38,8 +38,9 @@ export default class LoginPage extends Component {
     const formRoot = this.container.querySelector('.login-form');
     const form = new LoginForm(formRoot, {});
     form.onSubmit((userData) => {
-      this._service.login(userData).then(() => {
-        window.location.hash = '/#fileHub';
+      this._service.login(userData)
+        .then((message) => {
+        alert(message);
       }).catch((error) => {
         alert(error.message);
       });

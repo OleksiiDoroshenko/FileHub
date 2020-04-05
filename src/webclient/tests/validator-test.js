@@ -72,6 +72,6 @@ export default module('Validator test', function(hook) {
     promise.catch(error => {
       assert.strictEqual(error.message, 'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
         'Should not validate password without uppercase letter.');
-    });;
+    });
   });
 });

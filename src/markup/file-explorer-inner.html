@@ -10,7 +10,7 @@
 </head>
 <body>
 <section class="application-box">
-    <img class="logo" alt="TeamDev" src="images/teamdev.png" width="150">
+    <img class="logo" alt="TeamDev" src="images/teamdev.png">
     <ul class="user-menu">
         <li><i class="glyphicon glyphicon-user"></i>Username</li>
         <li><a href="#" title="Log out">Log out<i class="glyphicon glyphicon-log-out"></i></a></li>
@@ -50,13 +50,13 @@
                     </td>
                     <td class="cell-name">
                         <span class="cell-name-text">
-                            <a title="Documents directory" href="#">Documents</a>
+                            <a title="Documents" href="#">Documents</a>
                         </span>
                     </td>
                     <td class="cell-size">2 items</td>
                     <td class="cell-actions">
-                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i onclick="deleteElement(this)" class="glyphicon glyphicon-remove-circle"></i>
+                        <i onclick="uploadFile()" title="Upload" class="glyphicon glyphicon-upload"></i>
+                        <i onclick="deleteElement(this)" title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <tr>
@@ -66,13 +66,13 @@
                     </td>
                     <td class="cell-name">
                         <span class="cell-name-text">
-                            <a title="Images directory" href="#">Images</a>
+                            <a title="Images" href="#">Images</a>
                         </span>
                     </td>
                     <td class="cell-size">2 items</td>
                     <td class="cell-actions">
-                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i onclick="uploadFile()" title="Upload" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <tr>
@@ -82,13 +82,13 @@
                     </td>
                     <td class="cell-name">
                         <span class="cell-name-text">
-                            <a title="Videos directory" href="#">Videos</a>
+                            <a title="Videos" href="#">Videos</a>
                         </span>
                     </td>
                     <td class="cell-size">1 item</td>
                     <td class="cell-actions">
-                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i onclick="uploadFile()" title="Upload" class="glyphicon glyphicon-upload"></i>
+                        <i title="Remove" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <tr>
@@ -98,13 +98,13 @@
                     </td>
                     <td class="cell-name">
                         <span class="cell-name-text">
-                            <a title="Music directory" href="#">Music</a>
+                            <a title="Music" href="#">Music</a>
                         </span>
                     </td>
                     <td class="cell-size">0 items</td>
                     <td class="cell-actions">
-                        <i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i onclick="uploadFile()" title="Upload" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <!--  Files block   -->
@@ -118,8 +118,8 @@
                     </td>
                     <td class="cell-size">10KB</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <tr>
@@ -131,8 +131,8 @@
                     </td>
                     <td class="cell-size">40KB</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <!--     IMG      -->
@@ -145,8 +145,8 @@
                     </td>
                     <td class="cell-size">350M</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <tr>
@@ -157,8 +157,8 @@
                         <span class="cell-name-text">Logo.png</span></td>
                     <td class="cell-size">999M</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <!--    Videos      -->
@@ -171,8 +171,8 @@
                     </td>
                     <td class="cell-size">1GB</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <tr>
@@ -184,8 +184,8 @@
                     </td>
                     <td class="cell-size">20GB</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <!--    Music       -->
@@ -198,8 +198,8 @@
                     </td>
                     <td class="cell-size">79M</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <tr>
@@ -211,8 +211,8 @@
                     </td>
                     <td class="cell-size">80M</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <!--    XLS/XML/DOCX    -->
@@ -225,8 +225,8 @@
                     </td>
                     <td class="cell-size">98GB</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
                 <tr>
@@ -238,8 +238,8 @@
                     </td>
                     <td class="cell-size">1TB</td>
                     <td class="cell-actions">
-                        <i class="glyphicon glyphicon-download"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                        <i title="Download" class="glyphicon glyphicon-download"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
             </table>
@@ -249,7 +249,7 @@
     <footer class="footer">
         <p>
             Copyright &copy; 2020
-            <a class="copyright-link" title="TeamDev main site" target="_blank"
+            <a class="copyright-link" title="TeamDev" target="_blank"
                href="https://www.teamdev.com/">TeamDev.</a>
             All rights reserved.
         </p>

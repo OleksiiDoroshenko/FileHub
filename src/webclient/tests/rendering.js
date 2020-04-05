@@ -62,4 +62,6 @@ export default module('Components rendering module: ', function(hook) {
       assert.strictEqual(currentState.innerText, 'Registration', 'RegistrationPage should be rendered.');
     });
   });
+
+  //todo tests for file explorer page and its components.
 });

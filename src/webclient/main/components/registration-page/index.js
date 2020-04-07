@@ -42,7 +42,7 @@ export default class RegistrationPage extends Component {
       this._service.register(userData).then(() => {
         window.location.hash = '#/login';
       }).catch((error) => {
-        if (error instanceof AuthorizationError) {
+        if (!Array.isArray(error)) {
           alert(error.message);
         } else {
           form.handleError(error);

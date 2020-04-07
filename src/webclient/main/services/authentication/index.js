@@ -1,5 +1,7 @@
 import VerificationError from '../../../models/errors/verification-error';
 import AuthorizationError from '../../../models/errors/authorization-error';
+import fetchMock from '../../../../../node_modules/fetch-mock/esm/client.js';
+import UserData from '../../../models/user-data';
 
 /**
  * Implements login and registration methods logic.
@@ -15,23 +17,89 @@ export default class AuthenticationService {
    * Registered users.
    * @type {{User}}
    */
-  users = {};
+  users = {
+    admin: 'Admin123456',
+  };
+
+  /**
+   * Creates object that intercepts requests for the server.
+   */
+  constructor() {
+    console.log('Current users');
+    this.printUsers();
+
+    fetchMock
+      .post('/login', ((url, request) => {
+        const userData = new UserData(request.body.login, request.body.password);
+        if (this.isUserRegistered(userData)) {
+          return {
+            status: 200,
+            body: {token: `${userData.login}-token`},
+          };
+        } else {
+          return 401;
+        }
+      }));
+
+    fetchMock
+      .post('/registration', ((url, request) => {
+        const userData = new UserData(request.body.login, request.body.password);
+        if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
+          console.log(`New user ${userData.login} has been registered`);
+          this.users[userData.login.toLowerCase()] = userData.password;
+          return 200;
+        } else {
+          if (this.isLoginRegistered(userData)) {
+            return {
+              status: 401,
+              body: {
+                error: new AuthorizationError('User with this login already exists.'),
+              },
+            };
+          } else {
+            let errors = [];
+            errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
+            return {
+              status: 422,
+              body: {
+                errors,
+              },
+            };
+          }
+        }
+      }));
+  }
+
+
+  printUsers() {
+    for (let p in this.users) {
+      console.log(p);
+    }
+  }
 
   /**
    *  Implements logic for user login.
    * @param {UserData} userData -instance of {@link UserData}.
-   * @return {Promise<AuthorizationError>} if user with this login and password is already registered then
+   * @return {Promise<Response>} if user with this login and password is already registered then
    * method resolve contains welcoming alert.
    * If user is not registered than method reject returns {@link AuthorizationError}.
    */
   login(userData) {
-    return new Promise(((resolve, reject) => {
-      if (this.isRegistered(userData)) {
-        resolve(200);
-      } else {
-        reject(new AuthorizationError('User with this login is not found.'));
-      }
-    }));
+    return new Promise((resolve, reject) => {
+      fetch('/login', {
+        method: 'POST',
+        body: userData,
+      }).then(response => {
+        if (response.ok) {
+          const result = response.json();
+          result.then(body => {
+            resolve(body.token);
+          });
+        } else {
+          reject(new AuthorizationError('Invalid login or password.'));
+        }
+      });
+    });
   }
 
   /**
@@ -42,21 +110,39 @@ export default class AuthenticationService {
    * {@link VerificationError}. If everything is alright method resolve contains redirection to {@link LoginPage}
    */
   register(userData) {
-    const login = userData.login;
-    const password = userData.password;
     return new Promise(((resolve, reject) => {
-      if (password.length >= 10 && !this.isRegistered(userData)) {
-        this.users[login] = password;
-        resolve(200);
-      } else {
-        const errors = [];
-        if (this.isRegistered(userData)) {
-          reject(new AuthorizationError('User with this login already exists.'));
-        } else {
-          errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
-          reject(errors);
+      fetch('/registration', {
+        method: 'POST',
+        body: userData,
+      }).then(response => {
+        if (response.ok) {
+          resolve();
         }
-      }
+        let result = response.json();
+        switch (response.status) {
+          case 401: {
+            result.then(errors => {
+              console.log(errors.error.message);
+              reject(errors.error);
+            });
+            break;
+          }
+          case 422: {
+            let serverErrors = [];
+            result.then(errors => {
+              errors.errors.forEach(error => {
+                serverErrors.push(new VerificationError(error.field, error.message));
+              });
+              reject(serverErrors);
+            });
+            break;
+          }
+          case 500: {
+            reject(new Error('Internal server error.'));
+            break;
+          }
+        }
+      });
     }));
   }
 
@@ -65,9 +151,15 @@ export default class AuthenticationService {
    * @param {UserData} userData - instance of {@link UserData}.
    * @return {boolean} if user is registered returns true if it's not returns false.
    */
-  isRegistered(userData) {
-    const login = userData.login;
+  isUserRegistered(userData) {
+    const login = userData.login.toLowerCase();
     const password = userData.password;
-    return this.users[login] && this.users[login] === password;
+    return this.users.hasOwnProperty(login) && this.users[login] === password;
+  }
+
+  isLoginRegistered(userData) {
+    const login = userData.login.toLowerCase();
+    console.log(`login ${login} is ${this.users.hasOwnProperty(login)}`);
+    return this.users.hasOwnProperty(login);
   }
 }

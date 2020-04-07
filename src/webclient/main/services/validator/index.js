@@ -38,7 +38,6 @@ export default class Validator {
    *  <p> Rules:
    *        1) Password should contains only latin letters or numbers.
    *        2) Password should contain at least 1 uppercase and lowercase letters and 1 digit.
-   *  <p> Not case sensitive.
    * @param {string} password - user password.
    * @return {Promise} if login fits special rules returns true,
    *  if not returns false.
@@ -47,7 +46,7 @@ export default class Validator {
     const rules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
     const minLength = 8;
     return new Promise(((resolve, reject) => {
-      if (rules.test(password.toLowerCase()) && password.length >= minLength) {
+      if (rules.test(password) && password.length >= minLength) {
         resolve();
       } else {
         if (password.length < minLength) {

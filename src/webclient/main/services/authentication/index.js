@@ -162,4 +162,28 @@ export default class AuthenticationService {
     console.log(`login ${login} is ${this.users.hasOwnProperty(login)}`);
     return this.users.hasOwnProperty(login);
   }
+
+  getItems() {
+    return new Promise((resolve, reject) => {
+      const items = [
+        {
+          type: 'folder',
+          config: {name: 'Documents', itemsAmount: '2'},
+        },
+        {
+          type: 'folder',
+          config: {name: 'Images', itemsAmount: '2'},
+        },
+        {
+          type: 'folder',
+          config: {name: 'Videos', itemsAmount: '1'},
+        },
+        {
+          type: 'file',
+          config: {name: 'test.txt', mimeType: 'text', size: '20KB'},
+        },
+      ];
+      resolve(items);
+    });
+  }
 }

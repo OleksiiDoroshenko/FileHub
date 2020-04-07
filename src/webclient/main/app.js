@@ -5,6 +5,7 @@ import RegistrationPage from './components/registration-page';
 import ErrorPage from './components/error-page';
 import AuthenticationService from './services/authentication';
 import FileExplorer from './components/file-explorer';
+import StateManager from './services/state-manager';
 
 /**
  * Implements entry point for rendering every application page.
@@ -23,10 +24,12 @@ export default class Application extends Component {
   _initInnerComponents() {
     const root = this.container.querySelector('.app');
     const service = new AuthenticationService();
+    const stateManager = new StateManager({items: []}, service);
+    debugger;
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),
-      '/file-explorer': () => new FileExplorer(root, {}),
+      '/file-explorer': () => new FileExplorer(root, {}, stateManager),
       'default': '/login',
       'error': () => new ErrorPage(root, {}),
     });

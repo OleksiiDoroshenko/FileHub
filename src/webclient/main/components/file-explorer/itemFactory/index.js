@@ -15,20 +15,25 @@ import FileItem from '../file-item';
  */
 
 /**
+ * @typedef Item
+ * @param type - item type file or folder.
+ * @param config - FileConfig|FolderConfig.
+ */
+
+/**
  * Returns instance of {@link FileItem} or {@link FolderItem}.
- * @param {string} type - item type, folder or file.
  * @param {HTMLElement} container - container for element rendering.
- * @param {FileConfig|FolderConfig} config - configuration for render item.
+ * @param {Item} items - configuration for render item.
  * @return {FileItem|FolderItem}
  */
-export default function createItem(type, container, config) {
-  switch (type) {
+export default function createItem(container, item) {
+  switch (item.type) {
     case 'folder': {
-      return new FolderItem(container, config);
+      return new FolderItem(container, item.config);
     }
     case 'file': {
-      config['fileIcon'] = _getFileIcon(config.mimeType);
-      return new FileItem(container, config);
+      config['fileIcon'] = _getFileIcon(item.config.mimeType);
+      return new FileItem(container, item.config);
     }
   }
 }

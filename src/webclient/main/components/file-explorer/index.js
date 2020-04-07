@@ -1,11 +1,17 @@
-import Component from '../component.js';
 import FileContainer from '../file-container';
 import Button from '../button';
+import StateAwareComponent from '../state-aware.js';
 
 /**
  * Renders file explorer page.
  */
-export default class FileExplorer extends Component {
+export default class FileExplorer extends StateAwareComponent {
+
+  constructor(container, config, stateManager) {
+    super(container, config, stateManager);
+    console.log(stateManager);
+  }
+
   /**
    * @inheritdoc.
    * @private
@@ -70,6 +76,12 @@ export default class FileExplorer extends Component {
     });
 
     const fileContainerRoot = this.container.querySelector('.file-container');
-    new FileContainer(fileContainerRoot, {});
+    this.fileContainer = new FileContainer(fileContainerRoot, {});
+  }
+
+  initState() {
+    this.stateManager.onStateChanged('items', (items) => {
+      this.fileContainer.renderItems(items);
+    });
   }
 }

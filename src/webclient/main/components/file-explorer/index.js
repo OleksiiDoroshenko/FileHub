@@ -1,5 +1,6 @@
 import Component from '../component.js';
 import FileContainer from '../file-container';
+import Button from '../button';
 
 /**
  * Renders file explorer page.
@@ -35,15 +36,6 @@ export default class FileExplorer extends Component {
                 </ul>
             </div>
             <div class="btn-menu">
-                <button type="submit" data-toggle="tooltip" data-placement="top" title="Create new directory"
-                        class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>
-                    Create directory
-                </button>
-                <button type="submit" data-toggle="tooltip" data-placement="top" title="Upload file from driver"
-                        onclick="uploadFile()" class="btn btn-primary">
-                    <i class="glyphicon glyphicon-upload"></i>
-                    Upload File
-                </button>
                 <input type="file" id="upload-file">
             </div>
         </header>
@@ -65,6 +57,18 @@ export default class FileExplorer extends Component {
    * @private
    */
   _initInnerComponents() {
+
+    const btnMenuRoot = this.container.querySelector('.btn-menu');
+
+    const createDirBtn = new Button(btnMenuRoot, {
+      text: '<i class="glyphicon glyphicon-plus"></i>Create directory',
+      type: '',
+    });
+    const uploadFileBtn = new Button(btnMenuRoot, {
+      text: '<i class="glyphicon glyphicon-upload"></i>Upload File',
+      type: '',
+    });
+
     const fileContainerRoot = this.container.querySelector('.file-container');
     new FileContainer(fileContainerRoot, {});
   }

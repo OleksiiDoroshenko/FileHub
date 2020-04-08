@@ -1,6 +1,7 @@
 import FileContainer from '../file-container';
 import Button from '../button';
-import StateAwareComponent from '../state-aware.js';
+import StateAwareComponent from '../state-aware-component.js';
+import GetItemsAction from '../../services/state-manager/actions/get-items';
 
 /**
  * Renders file explorer page.
@@ -9,7 +10,9 @@ export default class FileExplorer extends StateAwareComponent {
 
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
-    console.log(stateManager);
+
+    this._render();
+    this.stateManager.dispatch(new GetItemsAction());
   }
 
   /**
@@ -80,8 +83,8 @@ export default class FileExplorer extends StateAwareComponent {
   }
 
   initState() {
-    this.stateManager.onStateChanged('items', (items) => {
-      this.fileContainer.renderItems(items);
+    this.stateManager.onStateChanged('items', (state) => {
+      this.fileContainer.renderItems(state.items);
     });
   }
 }

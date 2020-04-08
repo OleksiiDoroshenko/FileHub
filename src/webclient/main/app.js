@@ -23,9 +23,8 @@ export default class Application extends Component {
    */
   _initInnerComponents() {
     const root = this.container.querySelector('.app');
-    const service = new AuthenticationService();
+    const service = new AuthenticationService(true);
     const stateManager = new StateManager({items: []}, service);
-    debugger;
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),

@@ -25,6 +25,10 @@ export default class StateManager extends EventTarget {
     return action.apply(this.state, this.apiService);
   }
 
+  /**
+   *
+   * @param {Mutator} mutator
+   */
   mutate(mutator) {
     mutator.apply(this.state);
   }

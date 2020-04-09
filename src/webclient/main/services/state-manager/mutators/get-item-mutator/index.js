@@ -1,12 +1,19 @@
 import Mutator from '../mutator.js';
 
-export default class FilesMutator extends Mutator {
-  constructor(files) {
+export default class ItemsMutator extends Mutator {
+  /**
+   * Returns instance of {@link ItemsMutator}.
+   * @param {[object]} items - {@link FileExplorerPage} content items.
+   */
+  constructor(items) {
     super();
-    this.files = files;
+    this.items = items;
   }
 
+  /**
+   * @inheritdoc
+   */
   apply(state) {
-    state.files = this.files;
+    state.items = this.items;
   }
 }

@@ -23,6 +23,8 @@ export default class MockServer {
     console.log('Current users');
     this.printUsers();
 
+    fetchMock.config.overwriteRoutes = true;
+
     fetchMock
       .post('/login', ((url, request) => {
         const userData = new UserData(request.body.login, request.body.password);
@@ -66,7 +68,6 @@ export default class MockServer {
 
     fetchMock
       .get('/get-items', ((url, request) => {
-        debugger;
         const items = [
           {
             type: 'folder',

@@ -1,10 +1,17 @@
-import createItem from '../file-explorer/itemFactory';
+import createItem from './itemFactory';
 import Component from '../component.js';
 
 /**
  * Class for files table rendering.
  */
 export default class FileContainer extends Component {
+
+
+  constructor(container, componentConfig) {
+    super(container, componentConfig);
+    this.items = componentConfig.items;
+    this._render();
+  }
 
   /**
    * @inheritdoc
@@ -20,12 +27,24 @@ export default class FileContainer extends Component {
    */
   _initInnerComponents() {
     this.itemsRoot = this.container.querySelector('.table');
+    this.renderItems();
   }
 
-  renderItems(items) {
-    this.items = items;
-    if (items.length > 0) {
-      for (let item in items) {
+  set items(items) {
+    console.log(items);
+    debugger;
+    this._items = items;
+    this.renderItems();
+
+  }
+
+  get items() {
+    return this._items;
+  }
+
+  renderItems() {
+    if (this.items.length > 0) {
+      for (let item of this.items) {
         createItem(this.itemsRoot, item);
       }
     }

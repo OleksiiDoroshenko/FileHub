@@ -1,9 +1,9 @@
-import AuthenticationService from '../main/services/authentication';
+import AppService from '../main/services/app-secrvice';
 import UserData from '../models/user-data';
 import AuthorizationError from '../models/errors/authorization-error';
 
 const {module, test} = QUnit;
-const service = new AuthenticationService();
+const service = new AppService(true);
 
 export default module('Authentication service test', function(hook) {
   test('Register method should returns exception when password is invalid.', async (assert) => {

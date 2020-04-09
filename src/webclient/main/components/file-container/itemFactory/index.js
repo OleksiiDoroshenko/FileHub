@@ -32,7 +32,7 @@ export default function createItem(container, item) {
       return new FolderItem(container, item.config);
     }
     case 'file': {
-      config['fileIcon'] = _getFileIcon(item.config.mimeType);
+      item.config['fileIcon'] = _getFileIcon(item.config.mimeType);
       return new FileItem(container, item.config);
     }
   }

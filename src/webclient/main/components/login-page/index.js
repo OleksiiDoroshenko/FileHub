@@ -8,7 +8,7 @@ export default class LoginPage extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - root container for element rendering.
-   * @param {AuthenticationService} service - instance of {@link AuthenticationService}.
+   * @param {AppService} service - instance of {@link AppService}.
    * @param {Object} componentConfig - empty object.
    */
   constructor(container, service, componentConfig) {
@@ -39,7 +39,7 @@ export default class LoginPage extends Component {
     const form = new LoginForm(formRoot, {});
     form.onSubmit((userData) => {
       this._service.login(userData)
-        .then((message) => {
+        .then((token) => {
           window.location.hash = '#/file-explorer';
         }).catch((error) => {
         alert(error.message);

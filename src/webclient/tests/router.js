@@ -1,6 +1,7 @@
 import LoginPage from '../main/components/login-page';
 import ErrorPage from '../main/components/error-page';
 import Router from '../main/router.js';
+import AppService from '../main/services/app-secrvice';
 
 const {module, test} = QUnit;
 
@@ -10,7 +11,7 @@ export default module('Router test', function(hook) {
   let window;
 
   const pageMapping = {
-    '/login': () => new LoginPage(fixture, {}),
+    '/login': () => new LoginPage(fixture, new AppService(true), {}),
     'error': () => new ErrorPage(fixture, {}),
     'default': '/login',
   };

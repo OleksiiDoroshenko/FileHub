@@ -7,7 +7,7 @@ import MockServer from '../mock-server';
 /**
  * Implements login and registration methods logic.
  */
-export default class AuthenticationService {
+export default class AppService {
   /**
    * Creates object that intercepts requests for the server.
    */
@@ -91,11 +91,9 @@ export default class AuthenticationService {
       fetch('/get-items', {
         method: 'GET',
       }).then(response => {
-        debugger;
         const result = response.json();
-        result.then(items => {
-          console.log(items);
-          resolve(items);
+        result.then(result => {
+          resolve(result.items);
         });
       });
     });

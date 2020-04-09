@@ -6,12 +6,10 @@ import GetItemsAction from '../../services/state-manager/actions/get-items';
 /**
  * Renders file explorer page.
  */
-export default class FileExplorer extends StateAwareComponent {
+export default class FileExplorerPage extends StateAwareComponent {
 
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
-
-    this._render();
     this.stateManager.dispatch(new GetItemsAction());
   }
 
@@ -79,12 +77,12 @@ export default class FileExplorer extends StateAwareComponent {
     });
 
     const fileContainerRoot = this.container.querySelector('.file-container');
-    this.fileContainer = new FileContainer(fileContainerRoot, {});
+    this.fileContainer = new FileContainer(fileContainerRoot, {items: []});
   }
 
   initState() {
     this.stateManager.onStateChanged('items', (state) => {
-      this.fileContainer.renderItems(state.items);
+      this.fileContainer.items = state.items;
     });
   }
 }

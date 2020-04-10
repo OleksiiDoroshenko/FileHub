@@ -86,9 +86,9 @@ export default class AppService {
     }));
   }
 
-  getItems() {
+  getItems(id) {
     return new Promise((resolve, reject) => {
-      fetch('/get-items', {
+      fetch(`/get-items/${id}`, {
         method: 'GET',
       }).then(response => {
         const result = response.json();

@@ -4,12 +4,17 @@ import ItemLoadingMutator from '../../mutators/item-loading-mutator';
 import ItemLoadingErrorMutator from '../../mutators/item-loading-error-mutator';
 
 export default class GetItemsAction extends Action {
+  constructor(id) {
+    super();
+    this.id = id;
+  }
+
   /**
    * @inheritdoc
    */
   apply(stateManager, appService) {
     stateManager.mutate(new ItemLoadingMutator(true));
-    appService.getItems()
+    appService.getItems(this.id)
       .then(items => {
         console.log('Server response ' + items.length);
         stateManager.mutate(new ItemsMutator(items));

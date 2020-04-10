@@ -10,7 +10,7 @@ export default class FileExplorerPage extends StateAwareComponent {
 
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
-    this.stateManager.dispatch(new GetItemsAction());
+    this.stateManager.dispatch(new GetItemsAction(this.id));
   }
 
   /**
@@ -24,7 +24,7 @@ export default class FileExplorerPage extends StateAwareComponent {
         <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
         <ul class="list-inline logout-menu">
             <li class="username" data-toggle="tooltip" data-placement="top" title="Current user">
-                <i class="glyphicon glyphicon-user"></i> Username
+                <i class="glyphicon glyphicon-user"></i> ${this.username}
             </li>
             <li class="logout" data-toggle="tooltip" data-placement="top" title="Log out">
                 <a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>

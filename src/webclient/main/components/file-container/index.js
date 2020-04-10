@@ -31,8 +31,6 @@ export default class FileContainer extends Component {
   }
 
   set items(items) {
-    console.log(items);
-    debugger;
     this._items = items;
     this.renderItems();
 

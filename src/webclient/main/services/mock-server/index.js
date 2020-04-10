@@ -3,6 +3,10 @@ import AuthorizationError from '../../../models/errors/authorization-error';
 import VerificationError from '../../../models/errors/verification-error';
 import fetchMock from '../../../../../node_modules/fetch-mock/esm/client.js';
 
+/**
+ * Pretending to be a server.
+ * <p> Can answer to some of requests.
+ */
 export default class MockServer {
 
   /**
@@ -19,6 +23,10 @@ export default class MockServer {
     admin: 'Admin123456',
   };
 
+  /**
+   * Returns instance of {@link MockServer}.
+   * <p> Instance has mocked HTTP requests.
+   */
   constructor() {
     console.log('Current users');
     this.printUsers();
@@ -67,30 +75,36 @@ export default class MockServer {
       }));
 
     fetchMock
-      .get('/get-items', ((url, request) => {
-        const items = [
-          {
-            type: 'folder',
-            config: {name: 'Documents', itemsAmount: '2'},
-          },
-          {
-            type: 'folder',
-            config: {name: 'Images', itemsAmount: '2'},
-          },
-          {
-            type: 'folder',
-            config: {name: 'Videos', itemsAmount: '1'},
-          },
-          {
-            type: 'file',
-            config: {name: 'test.txt', mimeType: 'text', size: '20KB'},
-          },
-        ];
+      .get('express:/get-items/:id', ((url, request) => {
+        const id = url.split('/')[2];
+        let items = [];
+        if (id === '0') {
+          items = [
+            {
+              type: 'folder',
+              config: {name: 'Documents', itemsAmount: '2'},
+            },
+            {
+              type: 'folder',
+              config: {name: 'Images', itemsAmount: '2'},
+            },
+            {
+              type: 'folder',
+              config: {name: 'Videos', itemsAmount: '1'},
+            },
+            {
+              type: 'file',
+              config: {name: 'test.txt', mimeType: 'text', size: '20KB'},
+            },
+          ];
+        }
         return {items: items};
       }));
   }
 
-
+  /**
+   * Prints all registered users.
+   */
   printUsers() {
     for (let p in this.users) {
       console.log(p);
@@ -108,6 +122,11 @@ export default class MockServer {
     return this.users.hasOwnProperty(login) && this.users[login] === password;
   }
 
+  /**
+   * Checks if this login is registered.
+   * @param {UserData} userData - instance of {@link UserData}.
+   * @returns {boolean} if login is already registered returns True if not, false.
+   */
   isLoginRegistered(userData) {
     const login = userData.login.toLowerCase();
     console.log(`login ${login} is ${this.users.hasOwnProperty(login)}`);

@@ -9,7 +9,8 @@ export default class RegistrationPage extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - root container for element rendering.
-   * @param {AuthenticationService} service - instance of {@link AuthenticationService}.
+   * @param {AppService} service - instance of {@link AppService}.
+   *
    * @param {Object} componentConfig - empty object.
    */
   constructor(container, service, componentConfig) {

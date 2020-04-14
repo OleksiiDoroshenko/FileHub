@@ -15,7 +15,7 @@ export default class LoginPage extends Component {
   constructor(container, service, componentConfig) {
     super(container, componentConfig);
     this._service = service;
-    changeTitle('Login - FileHub');
+    changeTitle('Login');
   }
 
   /**

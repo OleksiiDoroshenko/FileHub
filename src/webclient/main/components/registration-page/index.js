@@ -15,7 +15,7 @@ export default class RegistrationPage extends Component {
   constructor(container, service, componentConfig) {
     super(container, componentConfig);
     this._service = service;
-    changeTitle('Registration - FileHub');
+    changeTitle('Registration');
   }
 
   /**

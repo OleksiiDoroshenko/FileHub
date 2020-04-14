@@ -8,7 +8,6 @@ import fetchMock from '../../../../../node_modules/fetch-mock/esm/client.js';
  * <p> Can answer to some of requests.
  */
 export default class MockServer {
-
   /**
    * @typedef User
    *  @param {string} login - users login.
@@ -22,6 +21,25 @@ export default class MockServer {
   users = {
     admin: 'Admin123456',
   };
+
+  items = [
+    {
+      type: 'folder',
+      config: {id: '0', parentId: '0', name: 'Documents', itemsAmount: '2'},
+    },
+    {
+      type: 'folder',
+      config: {id: '1', parentId: '0', name: 'Images', itemsAmount: '2'},
+    },
+    {
+      type: 'folder',
+      config: {id: '2', parentId: '0', name: 'Videos', itemsAmount: '1'},
+    },
+    {
+      type: 'file',
+      config: {id: '3', parentId: '0', name: 'test.txt', mimeType: 'text', size: '20KB'},
+    },
+  ];
 
   /**
    * Returns instance of {@link MockServer}.
@@ -62,7 +80,7 @@ export default class MockServer {
               },
             };
           } else {
-            let errors = [];
+            const errors = [];
             errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
             return {
               status: 422,
@@ -79,26 +97,33 @@ export default class MockServer {
         const id = url.split('/')[2];
         let items = [];
         if (id === '0') {
-          items = [
-            {
-              type: 'folder',
-              config: {name: 'Documents', itemsAmount: '2'},
-            },
-            {
-              type: 'folder',
-              config: {name: 'Images', itemsAmount: '2'},
-            },
-            {
-              type: 'folder',
-              config: {name: 'Videos', itemsAmount: '1'},
-            },
-            {
-              type: 'file',
-              config: {name: 'test.txt', mimeType: 'text', size: '20KB'},
-            },
-          ];
+          items = this.items;
         }
         return {items: items};
+      }));
+
+    fetchMock
+      .delete('express:/delete-folder/:id', ((url) => {
+        const id = url.split('/')[2];
+        this.items = Object.entries(this.items).reduce((acc, [index, item]) => {
+          if (item.config.id !== id) {
+            acc.push(item);
+          }
+          return acc;
+        }, []);
+        return 200;
+      }));
+
+    fetchMock
+      .delete('express:/delete-item/:id', ((url) => {
+        const id = url.split('/')[2];
+        this.items = Object.entries(this.items).reduce((acc, [index, item]) => {
+          if (item.config.id !== id) {
+            acc.push(item);
+          }
+          return acc;
+        }, []);
+        return 200;
       }));
   }
 
@@ -106,7 +131,7 @@ export default class MockServer {
    * Prints all registered users.
    */
   printUsers() {
-    for (let p in this.users) {
+    for (const p in this.users) {
       console.log(p);
     }
   }
@@ -125,7 +150,7 @@ export default class MockServer {
   /**
    * Checks if this login is registered.
    * @param {UserData} userData - instance of {@link UserData}.
-   * @returns {boolean} if login is already registered returns True if not, false.
+   * @return {boolean} if login is already registered returns True if not, false.
    */
   isLoginRegistered(userData) {
     const login = userData.login.toLowerCase();

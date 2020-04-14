@@ -2,12 +2,18 @@ import FileContainer from '../file-container';
 import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
+import DeleteItemAction from '../../services/state-manager/actions/delete-item';
 
 /**
  * Renders file explorer page.
  */
 export default class FileExplorerPage extends StateAwareComponent {
-
+  /**
+   * Returns instance of {@link FileExplorerPage}.
+   * @param {HTMLElement} container - element for data rendering.
+   * @param {Object} config - initial configuration.
+   * @param {StateManager} stateManager - instance of {@link StateManager}.
+   */
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
     this.stateManager.dispatch(new GetItemsAction(this.id));
@@ -64,7 +70,6 @@ export default class FileExplorerPage extends StateAwareComponent {
    * @private
    */
   _initInnerComponents() {
-
     const btnMenuRoot = this.container.querySelector('.btn-menu');
 
     const createDirBtn = new Button(btnMenuRoot, {
@@ -78,8 +83,15 @@ export default class FileExplorerPage extends StateAwareComponent {
 
     const fileContainerRoot = this.container.querySelector('.file-container');
     this.fileContainer = new FileContainer(fileContainerRoot, {items: []});
+    this.fileContainer.onItemDelete((item) => {
+      console.log('delete = ' + item.id);
+      this.stateManager.dispatch(new DeleteItemAction(item));
+    });
   }
 
+  /**
+   * @inheritdoc
+   */
   initState() {
     this.stateManager.onStateChanged('items', (state) => {
       this.fileContainer.items = state.items;

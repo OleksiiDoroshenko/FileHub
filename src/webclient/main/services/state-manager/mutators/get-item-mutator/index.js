@@ -1,5 +1,8 @@
 import Mutator from '../mutator.js';
 
+/**
+ * Class that can change 'items' filed in the {@link StateManager} state.
+ */
 export default class ItemsMutator extends Mutator {
   /**
    * Returns instance of {@link ItemsMutator}.

@@ -36,7 +36,7 @@ export default module('Router test', function(hook) {
   test('should generate error page from invalid hash', (assert) => {
     window.location.hash = '#/dadawdwads';
     router = new Router(fixture, window, pageMapping);
-    assert.strictEqual(window.location.hash, '#/error', 'Should generate error page from invalid hash.');
+    assert.strictEqual(window.location.hash, '#/dadawdwads', 'Should generate error page from invalid hash.');
   });
 
   test('should generate default page from empty hash', (assert) => {

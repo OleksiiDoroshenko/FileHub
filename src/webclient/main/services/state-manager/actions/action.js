@@ -1,3 +1,6 @@
+/**
+ * Class for inheritance of methods for changing {@link StateManager} state by creating {@link Mutator}.
+ */
 export default class Action {
   /**
    * Mutate {@link StateManager} state according to certain rules.
@@ -5,5 +8,5 @@ export default class Action {
    * @param {AppService} appService - instance of {@link AppService}.
    */
   apply(stateManager, appService) {
-  };
+  }
 }

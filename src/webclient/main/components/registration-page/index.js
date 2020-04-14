@@ -1,6 +1,5 @@
 import Component from '../component.js';
 import RegistrationForm from '../registration-form';
-import AuthorizationError from '../../../models/errors/authorization-error';
 
 /**
  * Implements html page that allows user to register.

@@ -1,3 +1,6 @@
+/**
+ * Class for inheritance of method that can change state in the {@link StateManager}.
+ */
 export default class Mutator {
   /**
    * Applies specified in  the constructor field to the {@link StateManager} state.
@@ -5,5 +8,4 @@ export default class Mutator {
    */
   apply(state) {
   }
-
 }

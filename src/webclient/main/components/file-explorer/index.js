@@ -2,6 +2,7 @@ import FileContainer from '../file-container';
 import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
+import TitleService from '../../services/change-title';
 
 /**
  * Renders file explorer page.
@@ -11,6 +12,7 @@ export default class FileExplorerPage extends StateAwareComponent {
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
     this.stateManager.dispatch(new GetItemsAction(this.id));
+    new TitleService().changeTitle('File Explorer');
   }
 
   /**

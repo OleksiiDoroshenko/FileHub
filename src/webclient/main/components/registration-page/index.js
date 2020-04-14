@@ -1,6 +1,6 @@
 import Component from '../component.js';
 import RegistrationForm from '../registration-form';
-import AuthorizationError from '../../../models/errors/authorization-error';
+import TitleService from '../../services/change-title';
 
 /**
  * Implements html page that allows user to register.
@@ -16,6 +16,7 @@ export default class RegistrationPage extends Component {
   constructor(container, service, componentConfig) {
     super(container, componentConfig);
     this._service = service;
+    new TitleService().changeTitle('Registration');
   }
 
   /**

@@ -21,7 +21,7 @@ export default class Router {
    */
   _init() {
     this.window.addEventListener('hashchange', () => {
-      const hash = window.location.hash.slice(1);
+      const hash = this.window.location.hash.slice(1);
       this._renderPage(hash);
     });
   }
@@ -34,7 +34,7 @@ export default class Router {
   _renderPage(hash) {
     this.container.innerHTML = '';
     const staticPart = `/${hash.split('/')[1]}`;
-    if (this._getUrlTemplate(staticPart)) {
+    if (staticPart.length > 1 && this._getUrlTemplate(staticPart)) {
       const urlTemplate = this._getUrlTemplate(staticPart);
       this._createPage(hash, urlTemplate);
     } else {

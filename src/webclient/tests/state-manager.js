@@ -8,15 +8,15 @@ import ItemsMutator from '../main/services/state-manager/mutators/get-item-mutat
 import GetItemsAction from '../main/services/state-manager/actions/get-items';
 
 const {module, test} = QUnit;
-const service = new AppService();
 
-export default module('State manager nad actions test', function(hook) {
-  const stateManager = new StateManager({}, new AppService());
+export default module('State manager actions test', function(hook) {
+  let stateManager = new StateManager({}, new AppService(true));
 
-  test('Should mutate its state', async (assert) => {
+  test('Should mutate its state', (assert) => {
     let isLoadingMutator = new ItemLoadingMutator(true);
     stateManager.mutate(isLoadingMutator);
     assert.ok(stateManager.state.isLoading, 'Should assign true to the isLoading flag.');
+
     isLoadingMutator = new ItemLoadingMutator(false);
     stateManager.mutate(isLoadingMutator);
     assert.notOk(stateManager.state.isLoading, 'Should assign false to the isLoading flag.');
@@ -28,18 +28,18 @@ export default module('State manager nad actions test', function(hook) {
 
     const itemsMutator = new ItemsMutator([{0: 'Test'}]);
     stateManager.mutate(itemsMutator);
-    debugger;
     assert.strictEqual(stateManager.state.items.length, 1
       , 'Should assign items to the state.');
   });
 
   test('Should dispatch action', async (assert) => {
-    const getItemsAction = new GetItemsAction();
+    const getItemsAction = new GetItemsAction(0);
+    stateManager = new StateManager({}, new AppService(true));
     stateManager.onStateChanged('items', (state) => {
       assert.strictEqual(state.items.length, 4
         , 'Should dispatch get items action.');
     });
-    stateManager.dispatch(getItemsAction);
+    await stateManager.dispatch(getItemsAction);
     assert.ok(true, '');
   });
 });

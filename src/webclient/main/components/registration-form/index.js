@@ -4,7 +4,17 @@ import FormActions from '../form-actions';
 import Validator from '../../services/validator';
 import UserData from '../../../models/user-data';
 
+
+/**
+ * Renders fields for user to register.
+ */
 export default class RegistrationForm extends Component {
+  /**
+   * Contains all handlers that should be executed when form passes validation.
+   * @type {[function]}
+   */
+  submitHandlers = [];
+
   /**
    * @inheritdoc.
    * */
@@ -12,6 +22,10 @@ export default class RegistrationForm extends Component {
     return `<form class="form-horizontal"></form>`;
   }
 
+  /**
+   * @inheritdoc
+   * @private
+   */
   _initInnerComponents() {
     const formRoot = this.container.querySelector('.form-horizontal');
     this.usernameInput = new FormInput(formRoot, {
@@ -56,15 +70,7 @@ export default class RegistrationForm extends Component {
       const confirmPassword = this.confirmPasswordInput.value;
 
       if (this._validateForm(login, password, confirmPassword)) {
-        this._service.register(new UserData(login, password)).then(() => {
-          window.location.hash = '#/login';
-        }).catch((error) => {
-          if (error.code === 422) {
-            alert(error.message);
-          } else if (error.code === 401) {
-            this._verificationErrorHandler(error);
-          }
-        });
+        this._executeHandlers(new UserData(login, password));
       }
       event.preventDefault();
       event.stopPropagation();
@@ -77,7 +83,7 @@ export default class RegistrationForm extends Component {
    * @param {string} login - users username.
    * @param {string} password - users password.
    * @param {string} confirmPassword - users repeated password.
-   * @returns {boolean} returns true if login-form is valid / false if it is not;
+   * @return {boolean} returns true if login-form is valid / false if it is not;
    * @private
    */
   _validateForm(login, password, confirmPassword) {
@@ -109,13 +115,31 @@ export default class RegistrationForm extends Component {
    * Handles authentication errors.
    * <p> renders warning messages below invalid inputs.
    * @param {VerificationError} error - instance of {@link VerificationError} .
-   * @private
    */
-  _verificationErrorHandler(error) {
+  handleError(error) {
     if (error.field === 'password') {
       this.passwordInput.showWarning(error.message);
     } else if (error.field === 'login') {
       this.usernameInput.showWarning(error.message);
     }
+  }
+
+  /**
+   * Adds handler to the handler array.
+   * @param {function} handler - function that should be executed when form passes validation.
+   */
+  onSubmit(handler) {
+    this.submitHandlers.push(handler);
+  }
+
+  /**
+   * Execute every handler.
+   * @param {UserData} userData - instance of {@link UserData}.
+   * @private
+   */
+  _executeHandlers(userData) {
+    this.submitHandlers.forEach((handler) => {
+      handler(userData);
+    });
   }
 }

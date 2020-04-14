@@ -16,7 +16,7 @@ export default module('Authentication service test', function(hook) {
   });
 
   test('Register method should register and redirect user to the login page.', (assert) => {
-    const userData = new UserData('Alex','Mdaskjdsdasa1543');
+    const userData = new UserData('Alex', 'Mdaskjdsdasa1543');
     const response = service.register(userData);
     response.then((code) => {
       assert.strictEqual(code, 200, 'Should register user.');
@@ -24,7 +24,7 @@ export default module('Authentication service test', function(hook) {
   });
 
   test('Register method should return exception if user with this login already registered.', (assert) => {
-    const userData = new UserData('Alex1','Mdaskjdsdasa1543');
+    const userData = new UserData('Alex1', 'Mdaskjdsdasa1543');
     service.register(userData);
     const response = service.register(userData);
     response.catch((error) => {
@@ -33,7 +33,7 @@ export default module('Authentication service test', function(hook) {
   });
 
   test('Login method should return exception if user with this login is not registered.', (assert) => {
-    const userData = new UserData('Vas9','Mdaskjdsdasa1543');
+    const userData = new UserData('Vas9', 'Mdaskjdsdasa1543');
     const response = service.login(userData);
     response.catch((error) => {
       assert.ok(error instanceof AuthorizationError, 'Should throw AuthorizationError.');
@@ -41,7 +41,7 @@ export default module('Authentication service test', function(hook) {
   });
 
   test('Login method should redirect user to the fileHub page if everything is ok.', (assert) => {
-    const userData = new UserData('Pet9','Mdaskjdsdasa1543');
+    const userData = new UserData('Pet9', 'Mdaskjdsdasa1543');
     service.register(userData);
     const response = service.login(userData);
     response.then((code) => {

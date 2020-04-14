@@ -1,6 +1,6 @@
 import Component from '../component.js';
 import LoginForm from '../login-form';
-import {changeTitle} from '../../services/change-title';
+import TitleService from '../../services/change-title';
 
 /**
  * Implements html page that allows user to log in.
@@ -15,7 +15,7 @@ export default class LoginPage extends Component {
   constructor(container, service, componentConfig) {
     super(container, componentConfig);
     this._service = service;
-    changeTitle('Login');
+    new TitleService().changeTitle('Login');
   }
 
   /**
@@ -38,6 +38,13 @@ export default class LoginPage extends Component {
    * */
   _initInnerComponents() {
     const formRoot = this.container.querySelector('.login-form');
-    new LoginForm(formRoot, {});
+    const form = new LoginForm(formRoot, {});
+    form.onSubmit((userData) => {
+      this._service.login(userData).then(() => {
+        window.location.hash = '/#fileHub';
+      }).catch((error) => {
+        alert(error.message);
+      });
+    });
   }
 }

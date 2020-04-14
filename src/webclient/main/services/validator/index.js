@@ -3,6 +3,9 @@
  * */
 import VerificationError from '../../../models/errors/verification-error';
 
+/**
+ * Implements methods for user data validation.
+ */
 export default class Validator {
   /**
    *  Validates login string value if it is fully matches regex rules.

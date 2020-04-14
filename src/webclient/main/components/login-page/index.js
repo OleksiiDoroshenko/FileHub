@@ -1,5 +1,6 @@
 import Component from '../component.js';
 import LoginForm from '../login-form';
+import TitleService from '../../services/change-title';
 
 /**
  * Implements html page that allows user to log in.
@@ -14,6 +15,7 @@ export default class LoginPage extends Component {
   constructor(container, service, componentConfig) {
     super(container, componentConfig);
     this._service = service;
+    new TitleService().changeTitle('Login');
   }
 
   /**

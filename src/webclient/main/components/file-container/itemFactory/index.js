@@ -23,7 +23,7 @@ import FileItem from '../file-item';
 /**
  * Returns instance of {@link FileItem} or {@link FolderItem}.
  * @param {HTMLElement} container - container for element rendering.
- * @param {Item} items - configuration for render item.
+ * @param {Item} item - configuration for render item.
  * @return {FileItem|FolderItem}
  */
 export default function createItem(container, item) {

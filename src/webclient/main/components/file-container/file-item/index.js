@@ -1,4 +1,5 @@
 import Component from '../../component.js';
+import ActionIcon from '../action-icon';
 
 /**
  * Table file item.
@@ -15,10 +16,35 @@ export default class FileItem extends Component {
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.name}>
                 <span>${this.name}</span></td>
             <td class="items">${this.size}</td>
-            <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                <i class="glyphicon glyphicon-remove-circle"></i></td>
+            <td class="clickable"></td>
         </tr>
     `;
+  }
+
+  /**
+   * @inheritdoc
+   * @private
+   */
+  _initInnerComponents() {
+    const lastChild = this.container.lastChild.lastChild;
+    const actionIconsRoot = lastChild.querySelector('.clickable');
+    this.downloadIcon = new ActionIcon(actionIconsRoot, {type: 'download'});
+    this.deleteIcon = new ActionIcon(actionIconsRoot, {type: 'delete'});
+  }
+
+  /**
+   * Adds handler for item delete event.
+   * @param {function} handler - function that should be called when item delete event comes.
+   */
+  onDelete(handler) {
+    this.deleteIcon.addEventListener('click', () => {
+      const self = {
+        id: this.id,
+        parentId: this.parentId,
+        type: 'file',
+      };
+      handler(self);
+    });
   }
 
   /**

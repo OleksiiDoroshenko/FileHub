@@ -78,22 +78,22 @@ export default class LoginForm extends Component {
     return new Promise((resolve, reject) => {
       const validator = new Validator();
 
-      let loginValid = validator.validateLogin(login);
+      const loginValid = validator.validateLogin(login);
 
-      let passwordValid = validator.validatePassword(password);
+      const passwordValid = validator.validatePassword(password);
 
-      Promise.all([loginValid.catch(error => {
+      Promise.all([loginValid.catch((error) => {
         this._errorHandler(error);
-        reject();
+        reject(new Error());
       }),
-        passwordValid.catch(error => {
+        passwordValid.catch((error) => {
           this._errorHandler(error);
-          reject();
+          reject(new Error());
         })]).then(() => {
-        resolve();
-      }).catch(error => {
+        resolve(new Error());
+      }).catch((error) => {
         this._errorHandler(error);
-        reject();
+        reject(new Error());
       });
     });
   }

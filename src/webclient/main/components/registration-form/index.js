@@ -89,24 +89,24 @@ export default class RegistrationForm extends Component {
   _validateForm(login, password, confirmPassword) {
     return new Promise((resolve, reject) => {
       const validator = new Validator();
-      let loginValid = validator.validateLogin(login);
-      let passwordValid = validator.validatePassword(password);
-      let confirmPasswordValid = validator.comparePasswords(confirmPassword, password);
+      const loginValid = validator.validateLogin(login);
+      const passwordValid = validator.validatePassword(password);
+      const confirmPasswordValid = validator.comparePasswords(confirmPassword, password);
 
-      Promise.all([loginValid.catch(error => {
+      Promise.all([loginValid.catch((error) => {
         this._errorHandler(error);
         reject();
       }),
-        passwordValid.catch(error => {
-          this._errorHandler(error);
-          reject();
-        }),
-        confirmPasswordValid.catch(error => {
-          this._errorHandler(error);
-          reject();
-        })]).then(() => {
+      passwordValid.catch((error) => {
+        this._errorHandler(error);
+        reject();
+      }),
+      confirmPasswordValid.catch((error) => {
+        this._errorHandler(error);
+        reject();
+      })]).then(() => {
         resolve();
-      }).catch(error => {
+      }).catch((error) => {
         this._errorHandler(error);
         reject();
       });
@@ -119,7 +119,7 @@ export default class RegistrationForm extends Component {
    * @param {[VerificationError]} error - instance of {@link VerificationError} .
    */
   handleError(errors) {
-    errors.forEach(error => {
+    errors.forEach((error) => {
       if (error.field === 'password') {
         this.passwordInput.showWarning(error.message);
       } else if (error.field === 'login') {

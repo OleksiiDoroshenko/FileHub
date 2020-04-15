@@ -5,10 +5,11 @@ import Component from '../component.js';
  * Class for files table rendering.
  */
 export default class FileContainer extends Component {
-
-
+  /**
+   * @inheritdoc
+   */
   constructor(container, componentConfig) {
-    super(container, componentConfig);
+    super(container, {});
     this.items = componentConfig.items;
     this._render();
   }
@@ -27,23 +28,42 @@ export default class FileContainer extends Component {
    */
   _initInnerComponents() {
     this.itemsRoot = this.container.querySelector('.table');
-    this.renderItems();
   }
 
+  /**
+   * Sets handler for item delete event.
+   * @param handler
+   */
+  onItemDelete(handler) {
+    this.onitemDeleteHandler = handler;
+  }
+
+  /**
+   * Sets items filed value and calls render method.
+   * @param {[Object]}items
+   */
   set items(items) {
     this._items = items;
     this.renderItems();
-
   }
 
+  /**
+   * Returns user items.
+   * @return {[Object]}
+   */
   get items() {
     return this._items;
   }
 
+  /**
+   * Renders items into table.
+   */
   renderItems() {
+    this.itemsRoot.innerHTML = '';
     if (this.items.length > 0) {
-      for (let item of this.items) {
-        createItem(this.itemsRoot, item);
+      for (const item of this.items) {
+        const listItem = createItem(this.itemsRoot, item);
+        listItem.onDelete(this.onitemDeleteHandler);
       }
     }
   }

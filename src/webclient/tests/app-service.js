@@ -10,7 +10,7 @@ export default module('Authentication service test', function(hook) {
     const userData = new UserData('Alex', 'maksdlo21');
     const response = service.register(userData);
     await response.catch((errors) => {
-      let message = errors[0].message;
+      const message = errors[0].message;
       assert.strictEqual(message, 'Password should be longer than 10 characters.',
         'Should throw Verification error');
     });
@@ -48,7 +48,6 @@ export default module('Authentication service test', function(hook) {
     const userData = new UserData('admin', 'Admin123456');
     const response = service.login(userData);
     response.then((message) => {
-      console.log(message);
       assert.ok(`${userData.login}-token`, 'Should register and redirect user.');
     });
   });

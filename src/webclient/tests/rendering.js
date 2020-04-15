@@ -63,5 +63,5 @@ export default module('Components rendering module: ', function(hook) {
     });
   });
 
-  //todo tests for file explorer page and its components.
+  // todo tests for file explorer page and its components.
 });

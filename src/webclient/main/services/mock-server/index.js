@@ -100,6 +100,13 @@ export default class MockServer {
         }
         return {items: items};
       }));
+
+    fetchMock
+      .post('express:/upload-item/:id', (((url, request) => {
+        const file = request.body.file;
+        debugger;
+        console.log(file);
+      })));
   }
 
   /**

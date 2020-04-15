@@ -3,6 +3,8 @@ import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
+import FileInputButton from '../file-input';
+import UploadFileAction from '../../services/state-manager/actions/upload-file';
 
 /**
  * Renders file explorer page.
@@ -73,9 +75,13 @@ export default class FileExplorerPage extends StateAwareComponent {
       text: '<i class="glyphicon glyphicon-plus"></i>Create directory',
       type: '',
     });
-    const uploadFileBtn = new Button(btnMenuRoot, {
+    const uploadFileBtn = new FileInputButton(btnMenuRoot, {
       text: '<i class="glyphicon glyphicon-upload"></i>Upload File',
       type: '',
+    });
+
+    uploadFileBtn.uploadFileHandler((file) => {
+      this.stateManager.dispatch(new UploadFileAction(this.id, file));
     });
 
     const fileContainerRoot = this.container.querySelector('.file-container');

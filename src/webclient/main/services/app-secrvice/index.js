@@ -98,4 +98,19 @@ export default class AppService {
       });
     });
   }
+
+  uploadFile(parentId, file) {
+    return new Promise((resolve, reject) => {
+      fetch(`/upload-item/${parentId}`, {
+        method: 'POST',
+        body: {
+          file: file,
+        },
+      }).then(response => {
+        if (response.ok) {
+          resolve();
+        }
+      });
+    });
+  }
 }

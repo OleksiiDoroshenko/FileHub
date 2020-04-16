@@ -46,10 +46,10 @@ export default function createItem(container, item) {
  */
 function _getFileIcon(mimeType) {
   const icons = {
-    img: 'glyphicon-picture',
+    image: 'glyphicon-picture',
     text: 'glyphicon-book',
     video: 'glyphicon-film',
     audio: 'glyphicon-music',
   };
-  return icons[mimeType];
+  return icons[mimeType] ? icons[mimeType] : 'glyphicon-file';
 }

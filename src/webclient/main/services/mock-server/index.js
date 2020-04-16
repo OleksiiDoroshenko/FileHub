@@ -129,8 +129,20 @@ export default class MockServer {
     fetchMock
       .post('express:/upload-item/:id', (((url, request) => {
         const file = request.body.file;
+        let newFile = {type: 'file'};
+        let config = {};
+
+        config.id = this._getNextId();
+        config.parentId = url.split('/')[2];
+        config.name = file.name;
+        config.mimeType = this._getMimeType(file.name);
+        config.size = this._getFileSize(file.size);
+        newFile.config = config;
+
+
+        this.items.push(newFile);
         debugger;
-        console.log(file);
+        return 200;
       })));
   }
 
@@ -163,5 +175,51 @@ export default class MockServer {
     const login = userData.login.toLowerCase();
     console.log(`login ${login} is ${this.users.hasOwnProperty(login)}`);
     return this.users.hasOwnProperty(login);
+  }
+
+  /**
+   * Returns files mime type from its name.
+   * @param fileName - file name with its type.
+   * @returns {string} mime type.
+   * @private
+   */
+  _getMimeType(fileName) {
+    const type = fileName.split('.')[1];
+    const types = {
+      text: ['txt', 'doc', 'docx'],
+      video: ['mpeg', 'mp4'],
+      audio: ['mp3', 'aac'],
+      image: ['gif', 'jpeg', 'png', 'jpg'],
+    };
+    return Object.entries(types).reduce((acc, [key, value]) => {
+      if (value.includes(type)) {
+        acc = key;
+      }
+      return acc;
+    }, '');
+  }
+
+  /**
+   * Returns available id for list item.
+   * @returns {number} - item id.
+   * @private
+   */
+  _getNextId() {
+    return +this.items[this.items.length - 1].config.id + 1;
+
+  }
+
+  /**
+   * Converts file size to general view.
+   * @param {number} size - file seze.
+   * @returns {string} converted string.
+   * @private
+   */
+  _getFileSize(size) {
+    if (size === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(size) / Math.log(k));
+    return parseFloat((size / Math.pow(k, i)).toFixed(0)) + sizes[i];
   }
 }

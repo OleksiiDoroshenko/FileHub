@@ -40,8 +40,7 @@ export default class FileInputButton extends Component {
     input.setAttribute('type', 'file');
     input.click();
     input.addEventListener('change', () => {
-      debugger;
-      this._handler(input.files[0])
+      this._handler(input.files[0]);
     });
   }
 

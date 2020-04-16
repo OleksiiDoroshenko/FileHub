@@ -174,6 +174,8 @@ export default class AppService {
         if (response.ok) {
           resolve();
         }
+      }).catch(error => {
+        console.log(error);
       });
     });
   }

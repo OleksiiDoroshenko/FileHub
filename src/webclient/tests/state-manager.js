@@ -28,7 +28,6 @@ export default module('State manager nad actions test', function(hook) {
 
     const itemsMutator = new ItemsMutator([{0: 'Test'}]);
     stateManager.mutate(itemsMutator);
-    debugger;
     assert.strictEqual(stateManager.state.items.length, 1
       , 'Should assign items to the state.');
   });

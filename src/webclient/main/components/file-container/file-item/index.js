@@ -29,4 +29,10 @@ export default class FileItem extends Component {
     const row = this.container.insertRow(-1);
     row.innerHTML = this._markup();
   }
+
+  onRename(handler) {
+    const elementList = this.container.getElementsByClassName('name');
+    const element = elementList[elementList.length - 1];
+    element.addEventListener('dblclick', (element) => handler);
+  }
 }

@@ -44,9 +44,7 @@ export default class FileExplorerPage extends StateAwareComponent {
                     <li data-toggle="tooltip" data-placement="top" title="Current path">Root</li>
                 </ul>
             </div>
-            <div class="btn-menu">
-                <input type="file" id="upload-file">
-            </div>
+            <div class="btn-menu"></div>
         </header>
         <div class="file-container" data-toggle="tooltip" data-placement="top" title="File storage">
         </div>

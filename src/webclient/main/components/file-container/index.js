@@ -43,7 +43,11 @@ export default class FileContainer extends Component {
   renderItems() {
     if (this.items.length > 0) {
       for (let item of this.items) {
-        createItem(this.itemsRoot, item);
+        const listElement = createItem(this.itemsRoot, item);
+        listElement.onRename((element) => {
+          element.querySelector('a').classList.add('editing');
+          element.querySelector('.input').classList.remove('editing');
+        });
       }
     }
   }

@@ -129,8 +129,8 @@ export default class MockServer {
     fetchMock
       .post('express:/upload-item/:id', (((url, request) => {
         const file = request.body.file;
-        let newFile = {type: 'file'};
-        let config = {};
+        const newFile = {type: 'file'};
+        const config = {};
 
         config.id = this._getNextId();
         config.parentId = url.split('/')[2];
@@ -141,7 +141,7 @@ export default class MockServer {
 
 
         this.items.push(newFile);
-        debugger;
+
         return 200;
       })));
   }
@@ -169,7 +169,7 @@ export default class MockServer {
   /**
    * Checks if this login is registered.
    * @param {UserData} userData - instance of {@link UserData}.
-   * @returns {boolean} if login is already registered returns True if not, false.
+   * @return {boolean} if login is already registered returns True if not, false.
    */
   isLoginRegistered(userData) {
     const login = userData.login.toLowerCase();
@@ -179,8 +179,8 @@ export default class MockServer {
 
   /**
    * Returns files mime type from its name.
-   * @param fileName - file name with its type.
-   * @returns {string} mime type.
+   * @param {string} fileName - file name with its type.
+   * @return {string} mime type.
    * @private
    */
   _getMimeType(fileName) {
@@ -201,18 +201,17 @@ export default class MockServer {
 
   /**
    * Returns available id for list item.
-   * @returns {number} - item id.
+   * @return {number} - item id.
    * @private
    */
   _getNextId() {
     return +this.items[this.items.length - 1].config.id + 1;
-
   }
 
   /**
    * Converts file size to general view.
    * @param {number} size - file seze.
-   * @returns {string} converted string.
+   * @return {string} converted string.
    * @private
    */
   _getFileSize(size) {

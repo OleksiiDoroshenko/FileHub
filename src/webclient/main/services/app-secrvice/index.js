@@ -1,7 +1,7 @@
 import VerificationError from '../../../models/errors/verification-error';
 import AuthorizationError from '../../../models/errors/authorization-error';
 
-import UserData from '../../../models/user-data';
+
 import MockServer from '../mock-server';
 
 /**
@@ -105,6 +105,7 @@ export default class AppService {
     });
   }
 
+
   /**
    *  Sends request to the server for deleting item by its id.
    * @param {string} id - item id.
@@ -163,20 +164,18 @@ export default class AppService {
     }
   }
 
+  /**
+   * Sends request to server for uploading new file.
+   * @param {string} parentId - id of parent folder where file will be loaded.
+   * @param {File} file - file to be loaded.
+   * @returns {Promise<>}
+   */
   uploadFile(parentId, file) {
-    return new Promise((resolve, reject) => {
-      fetch(`/upload-item/${parentId}`, {
-        method: 'POST',
-        body: {
-          file: file,
-        },
-      }).then(response => {
-        if (response.ok) {
-          resolve();
-        }
-      }).catch(error => {
-        console.log(error);
-      });
+    return fetch(`/upload-item/${parentId}`, {
+      method: 'POST',
+      body: {
+        file: file,
+      },
     });
   }
 }

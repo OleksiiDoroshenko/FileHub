@@ -35,6 +35,10 @@ export default class FileInputButton extends Component {
     this.container.lastChild.addEventListener('click', () => this._openFileBrowser());
   }
 
+  /**
+   * Opens standard browser for uploading files from driver.
+   * @private
+   */
   _openFileBrowser() {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -44,8 +48,11 @@ export default class FileInputButton extends Component {
     });
   }
 
-  uploadFileHandler(handler) {
+  /**
+   * Sets handler for uploading file event.
+   * @param handler
+   */
+  set uploadFileHandler(handler) {
     this._handler = handler;
   }
-
 }

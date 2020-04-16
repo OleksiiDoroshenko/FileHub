@@ -16,8 +16,8 @@ import FileItem from '../file-item';
 
 /**
  * @typedef Item
- * @param type - item type file or folder.
- * @param config - FileConfig|FolderConfig.
+ * @param {string} type - item type file or folder.
+ * @param {FileConfig|FolderConfig} config - initial configuration of item.
  */
 
 /**

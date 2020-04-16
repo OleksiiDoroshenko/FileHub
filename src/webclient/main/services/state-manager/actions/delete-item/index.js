@@ -24,12 +24,12 @@ export default class DeleteItemAction extends Action {
     stateManager.mutate(new ItemLoadingMutator(true));
     appService.deleteItem(this.item.id, this.item.type).then(() => {
       appService.getItems(this.item.parentId)
-        .then((items) => {
-          console.log('Server response ' + items.length);
-          stateManager.mutate(new ItemsMutator(items));
-        }).catch((e) => {
-        stateManager.mutate(new ItemLoadingErrorMutator(e));
-      });
+          .then((items) => {
+            console.log('Server response ' + items.length);
+            stateManager.mutate(new ItemsMutator(items));
+          }).catch((e) => {
+            stateManager.mutate(new ItemLoadingErrorMutator(e));
+          });
     }).catch();
     stateManager.mutate(new ItemLoadingMutator(false));
   }

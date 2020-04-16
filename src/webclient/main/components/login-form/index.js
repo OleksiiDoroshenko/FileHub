@@ -86,10 +86,10 @@ export default class LoginForm extends Component {
         this._errorHandler(error);
         reject(new Error());
       }),
-        passwordValid.catch((error) => {
-          this._errorHandler(error);
-          reject(new Error());
-        })]).then(() => {
+      passwordValid.catch((error) => {
+        this._errorHandler(error);
+        reject(new Error());
+      })]).then(() => {
         resolve(new Error());
       }).catch((error) => {
         this._errorHandler(error);

@@ -12,7 +12,7 @@ export default module('Authentication service test', function(hook) {
     await response.catch((errors) => {
       const message = errors[0].message;
       assert.strictEqual(message, 'Password should be longer than 10 characters.',
-        'Should throw Verification error');
+          'Should throw Verification error');
     });
   });
 
@@ -31,7 +31,7 @@ export default module('Authentication service test', function(hook) {
       const response = service.register(userData);
       response.catch((errors) => {
         assert.strictEqual(errors.message, 'User with this login already exists.',
-          'Should throw exception that user already registered.');
+            'Should throw exception that user already registered.');
       });
     });
   });

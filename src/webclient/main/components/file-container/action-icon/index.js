@@ -32,7 +32,7 @@ export default class ActionIcon extends Component {
   /**
    * Returns bootstrap class by icon type.
    * @param {string} type - icon type 'download', 'delete', 'upload'.
-   * @returns {string} returns bootstrap icon class.
+   * @return {string} returns bootstrap icon class.
    */
   getClassByType(type) {
     switch (type) {

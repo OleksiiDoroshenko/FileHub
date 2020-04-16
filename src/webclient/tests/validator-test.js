@@ -30,7 +30,7 @@ export default module('Validator test', function(hook) {
     const promise = validator.validateLogin(login);
     promise.catch((error) => {
       assert.strictEqual(error.message, 'Login should contains only latin letters or numbers.',
-        'Should not validate login with special symbols.');
+          'Should not validate login with special symbols.');
     });
   });
 
@@ -40,7 +40,7 @@ export default module('Validator test', function(hook) {
     const promise = validator.validatePassword(password);
     promise.catch((error) => {
       assert.ok(error.message.startsWith('Password should be longer than'),
-        'Should not validate to short password');
+          'Should not validate to short password');
     });
   });
 
@@ -50,8 +50,8 @@ export default module('Validator test', function(hook) {
     const promise = validator.validatePassword(password);
     promise.catch((error) => {
       assert.strictEqual(error.message,
-        'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
-        'Should not validate password without uppercase letter.');
+          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
+          'Should not validate password without uppercase letter.');
     });
   });
 
@@ -61,8 +61,8 @@ export default module('Validator test', function(hook) {
     const promise = validator.validatePassword(password);
     promise.catch((error) => {
       assert.strictEqual(error.message,
-        'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
-        'Should not validate password without uppercase letter.');
+          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
+          'Should not validate password without uppercase letter.');
     });
   });
 
@@ -72,8 +72,8 @@ export default module('Validator test', function(hook) {
     const promise = validator.validatePassword(password);
     promise.catch((error) => {
       assert.strictEqual(error.message,
-        'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
-        'Should not validate password without uppercase letter.');
+          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
+          'Should not validate password without uppercase letter.');
     });
   });
 });

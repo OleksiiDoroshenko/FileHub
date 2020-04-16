@@ -97,14 +97,14 @@ export default class RegistrationForm extends Component {
         this._errorHandler(error);
         reject();
       }),
-      passwordValid.catch((error) => {
-        this._errorHandler(error);
-        reject();
-      }),
-      confirmPasswordValid.catch((error) => {
-        this._errorHandler(error);
-        reject();
-      })]).then(() => {
+        passwordValid.catch((error) => {
+          this._errorHandler(error);
+          reject();
+        }),
+        confirmPasswordValid.catch((error) => {
+          this._errorHandler(error);
+          reject();
+        })]).then(() => {
         resolve();
       }).catch((error) => {
         this._errorHandler(error);
@@ -116,7 +116,7 @@ export default class RegistrationForm extends Component {
   /**
    * Handles app-secrvice errors.
    * <p> renders warning messages below invalid inputs.
-   * @param {[VerificationError]} error - instance of {@link VerificationError} .
+   * @param {[VerificationError]} errors - instance of {@link VerificationError} .
    */
   handleError(errors) {
     errors.forEach((error) => {

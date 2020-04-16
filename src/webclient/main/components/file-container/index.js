@@ -32,7 +32,7 @@ export default class FileContainer extends Component {
 
   /**
    * Sets handler for item delete event.
-   * @param handler
+   * @param {function} handler - function that should be called when item is deleted.
    */
   onItemDelete(handler) {
     this.onitemDeleteHandler = handler;

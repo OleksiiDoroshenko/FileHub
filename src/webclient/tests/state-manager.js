@@ -5,6 +5,7 @@ import ItemLoadingErrorMutator from '../main/services/state-manager/mutators/ite
 import ItemsMutator from '../main/services/state-manager/mutators/get-item-mutator';
 import GetItemsAction from '../main/services/state-manager/actions/get-items';
 import DeleteItemAction from '../main/services/state-manager/actions/delete-item';
+import UploadFileAction from '../main/services/state-manager/actions/upload-file';
 
 const {module, test} = QUnit;
 
@@ -28,13 +29,13 @@ export default module('State manager actions test', function(hook) {
     const isLoadingErrorMutator = new ItemLoadingErrorMutator(new Error('Test'));
     stateManager.mutate(isLoadingErrorMutator);
     assert.strictEqual(stateManager.state.error.message, 'Test'
-      , 'Should assign error to the state.');
+        , 'Should assign error to the state.');
 
     const itemsMutator = new ItemsMutator([{0: 'Test'}]);
     stateManager.mutate(itemsMutator);
 
     assert.strictEqual(stateManager.state.items.length, 1
-      , 'Should assign items to the state.');
+        , 'Should assign items to the state.');
   });
 
   test('Should dispatch action', async (assert) => {
@@ -42,7 +43,7 @@ export default module('State manager actions test', function(hook) {
     stateManager = new StateManager({}, new AppService(true));
     stateManager.onStateChanged('items', (state) => {
       assert.strictEqual(state.items.length, 4
-        , 'Should dispatch get items action.');
+          , 'Should dispatch get items action.');
     });
     stateManager.dispatch(getItemsAction);
     assert.ok(true, '');
@@ -52,12 +53,21 @@ export default module('State manager actions test', function(hook) {
     const deleteItemAction = new DeleteItemAction({id: '0', parentId: '0', type: 'folder'});
     stateManager.onStateChanged('items', (state) => {
       const afterDeleteItemsLength = state.items.length;
-      assert.strictEqual(3, afterDeleteItemsLength, 'Should delete item from items list.');
+      assert.strictEqual(afterDeleteItemsLength, 3, 'Should delete item from items list.');
     });
     stateManager.dispatch(deleteItemAction);
   });
+
+  test('Should dispatch upload file action', async (assert) => {
+    stateManager = new StateManager({}, service);
+    const uploadFileAction = new UploadFileAction('0',
+        new File([], 'Test'));
+    stateManager.onStateChanged('items', (state) => {
+      const newItem = state.items[state.items.length - 1];
+      assert.strictEqual('Test', newItem.config.name, 'Should upload file to list.');
+    });
+    await stateManager.dispatch(uploadFileAction);
+  });
 });
-
-
 
 

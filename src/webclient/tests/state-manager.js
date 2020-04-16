@@ -1,4 +1,6 @@
 import AppService from '../main/services/app-secrvice';
+import UserData from '../models/user-data';
+import AuthorizationError from '../models/errors/authorization-error';
 import StateManager from '../main/services/state-manager';
 import ItemLoadingMutator from '../main/services/state-manager/mutators/item-loading-mutator';
 import ItemLoadingErrorMutator from '../main/services/state-manager/mutators/item-loading-error-mutator';
@@ -8,7 +10,7 @@ import DeleteItemAction from '../main/services/state-manager/actions/delete-item
 
 const {module, test} = QUnit;
 
-export default module('State manager nad actions test', function(hook) {
+export default module('State manager actions test', function(hook) {
   const service = new AppService(true);
   let stateManager;
 
@@ -20,6 +22,7 @@ export default module('State manager nad actions test', function(hook) {
     let isLoadingMutator = new ItemLoadingMutator(true);
     stateManager.mutate(isLoadingMutator);
     assert.ok(stateManager.state.isLoading, 'Should assign true to the isLoading flag.');
+
     isLoadingMutator = new ItemLoadingMutator(false);
     stateManager.mutate(isLoadingMutator);
     assert.notOk(stateManager.state.isLoading, 'Should assign false to the isLoading flag.');
@@ -42,7 +45,7 @@ export default module('State manager nad actions test', function(hook) {
       assert.strictEqual(state.items.length, 4
         , 'Should dispatch get items action.');
     });
-    stateManager.dispatch(getItemsAction);
+    await stateManager.dispatch(getItemsAction);
     assert.ok(true, '');
   });
 

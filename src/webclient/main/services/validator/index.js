@@ -14,15 +14,13 @@ export default class Validator {
     const rules = /^\w+/;
     const minLength = 4;
     return new Promise(((resolve, reject) => {
-      if (rules.test(login.toLowerCase()) && login.length >= minLength) {
-        resolve();
-      } else {
-        if (login.length < minLength) {
-          reject(`Login should be longer than ${minLength} symbols.`);
-        } else {
-          reject('Login should contains only latin letters or numbers.');
-        }
+      if (login.length < minLength) {
+        reject(`Login should be longer than ${minLength} symbols.`);
       }
+      if (!rules.test(login)) {
+        reject('Login should contains only latin letters or numbers.');
+      }
+      resolve();
     }));
   }
 
@@ -40,15 +38,13 @@ export default class Validator {
     const rules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
     const minLength = 8;
     return new Promise(((resolve, reject) => {
-      if (rules.test(password.toLowerCase()) && password.length >= minLength) {
-        resolve();
-      } else {
-        if (password.length < minLength) {
-          reject(`Password should be longer than ${minLength} symbols.`);
-        } else {
-          reject('Password should contain at least 1 uppercase and lowercase letters and 1 digit.');
-        }
+      if (password.length < minLength) {
+        reject(`Password should be longer than ${minLength} symbols.`);
       }
+      if (!rules.test(password)) {
+        reject('Password should contain at least 1 uppercase and lowercase letters and 1 digit.');
+      }
+      resolve();
     }));
   }
 

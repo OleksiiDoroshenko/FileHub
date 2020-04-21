@@ -49,7 +49,7 @@ export default class FormInput extends Component {
   }
 
   /**
-   * Renders waring text in the current row.
+   * Renders warning text in the current row.
    * <p> Text is placed under html input.
    * @param {string} text - text to render.
    */

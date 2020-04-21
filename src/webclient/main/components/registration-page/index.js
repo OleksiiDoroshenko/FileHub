@@ -12,7 +12,7 @@ export default class RegistrationPage extends Component {
    */
   _markup() {
     return `
-            <section class="container base-form login-form">
+            <section class="container base-form login-form" data-test="registration-page-rendered">
                  <header class="header">
                     <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>

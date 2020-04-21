@@ -1,5 +1,4 @@
 export default class StateManager extends EventTarget {
-
   /**
    * Returns instance of {@link StateManager} class.
    * <p> Adds set event handler for state properties.
@@ -46,4 +45,11 @@ export default class StateManager extends EventTarget {
     mutator.apply(this.state);
   }
 
+  /**
+   * Returns boolean value that describes is state being edit.
+   * @returns {boolean} - true if state is being edit? false if it is not.
+   */
+  isEditing() {
+    return this.state.isItemEditing;
+  }
 }

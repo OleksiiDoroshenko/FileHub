@@ -13,7 +13,9 @@ export default class FileItem extends Component {
        <tr>
             <td class="item-icon file-icon"><i class="glyphicon ${this.fileIcon}"></i></td>
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.name}>
-                <span>${this.name}</span></td>
+                <span>${this.name}</span>
+                <input class="input editing" value=${this.name}>
+            </td>
             <td class="items">${this.size}</td>
             <td class="clickable"><i class="glyphicon glyphicon-download"></i>
                 <i class="glyphicon glyphicon-remove-circle"></i></td>
@@ -32,7 +34,8 @@ export default class FileItem extends Component {
 
   onRename(handler) {
     const elementList = this.container.getElementsByClassName('name');
-    const element = elementList[elementList.length - 1];
-    element.addEventListener('dblclick', (element) => handler);
+    const nameField = elementList[elementList.length - 1];
+    nameField.addEventListener('dblclick', () => handler(this.id, nameField));
+    nameField.addEventListener('change', () => handler(this.id, nameField));
   }
 }

@@ -3,12 +3,14 @@ import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
+import FinishItemEditingAction from '../../services/state-manager/actions/finish-item-editing';
+import EditItemAction from '../../services/state-manager/actions/editing-item';
+import SetEditingItemAction from '../../services/state-manager/actions/set-edit-item';
 
 /**
  * Renders file explorer page.
  */
 export default class FileExplorerPage extends StateAwareComponent {
-
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
     this.stateManager.dispatch(new GetItemsAction(this.id));
@@ -64,7 +66,6 @@ export default class FileExplorerPage extends StateAwareComponent {
    * @private
    */
   _initInnerComponents() {
-
     const btnMenuRoot = this.container.querySelector('.btn-menu');
 
     const createDirBtn = new Button(btnMenuRoot, {
@@ -78,6 +79,14 @@ export default class FileExplorerPage extends StateAwareComponent {
 
     const fileContainerRoot = this.container.querySelector('.file-container');
     this.fileContainer = new FileContainer(fileContainerRoot, {items: []});
+    this.fileContainer.onItemRenameHandler((id, nameField) => {
+      if (this.stateManager.isEditing()) {
+        this.stateManager.dispatch(new FinishItemEditingAction());
+      }
+      this.stateManager.dispatch(new SetEditingItemAction(id, nameField));
+      nameField.querySelector('span').classList.add('editing');
+      nameField.querySelector('.input').classList.remove('editing');
+    });
   }
 
   initState() {

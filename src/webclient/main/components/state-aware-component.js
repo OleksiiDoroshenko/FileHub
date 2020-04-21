@@ -13,5 +13,4 @@ export default class StateAwareComponent extends Component {
   onStateChanged(filed, handler) {
     this.stateManager.onStateChanged(filed, handler);
   }
-
 }

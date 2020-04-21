@@ -24,12 +24,12 @@ export default module('State manager actions test', function(hook) {
     const isLoadingErrorMutator = new ItemLoadingErrorMutator(new Error('Test'));
     stateManager.mutate(isLoadingErrorMutator);
     assert.strictEqual(stateManager.state.error.message, 'Test'
-      , 'Should assign error to the state.');
+        , 'Should assign error to the state.');
 
     const itemsMutator = new ItemsMutator([{0: 'Test'}]);
     stateManager.mutate(itemsMutator);
     assert.strictEqual(stateManager.state.items.length, 1
-      , 'Should assign items to the state.');
+        , 'Should assign items to the state.');
   });
 
   test('Should dispatch action', async (assert) => {
@@ -37,7 +37,7 @@ export default module('State manager actions test', function(hook) {
     stateManager = new StateManager({}, new AppService(true));
     stateManager.onStateChanged('items', (state) => {
       assert.strictEqual(state.items.length, 4
-        , 'Should dispatch get items action.');
+          , 'Should dispatch get items action.');
     });
     await stateManager.dispatch(getItemsAction);
     assert.ok(true, '');

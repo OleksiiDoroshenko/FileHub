@@ -5,8 +5,6 @@ import Component from '../component.js';
  * Class for files table rendering.
  */
 export default class FileContainer extends Component {
-
-
   constructor(container, componentConfig) {
     super(container, componentConfig);
     this.items = componentConfig.items;
@@ -33,21 +31,21 @@ export default class FileContainer extends Component {
   set items(items) {
     this._items = items;
     this.renderItems();
-
   }
 
   get items() {
     return this._items;
   }
 
+  onItemRenameHandler(handler) {
+    this.onRenameHandler = handler;
+  }
+
   renderItems() {
     if (this.items.length > 0) {
-      for (let item of this.items) {
+      for (const item of this.items) {
         const listElement = createItem(this.itemsRoot, item);
-        listElement.onRename((element) => {
-          element.querySelector('a').classList.add('editing');
-          element.querySelector('.input').classList.remove('editing');
-        });
+        listElement.onRename(this.onRenameHandler);
       }
     }
   }

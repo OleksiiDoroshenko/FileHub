@@ -4,7 +4,6 @@ import Component from '../../component.js';
  * Table folder item.
  */
 export default class FolderItem extends Component {
-
   /**
    * @inheritdoc
    * @private
@@ -36,7 +35,8 @@ export default class FolderItem extends Component {
 
   onRename(handler) {
     const elementList = this.container.getElementsByClassName('name');
-    const element = elementList[elementList.length - 1];
-    element.addEventListener('dblclick', () => handler(element));
+    const nameField = elementList[elementList.length - 1];
+    nameField.addEventListener('dblclick', () => handler(this.id, nameField));
+    nameField.addEventListener('change', () => handler(this.id, nameField));
   }
 }

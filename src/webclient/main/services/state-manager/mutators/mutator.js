@@ -5,5 +5,4 @@ export default class Mutator {
    */
   apply(state) {
   }
-
 }

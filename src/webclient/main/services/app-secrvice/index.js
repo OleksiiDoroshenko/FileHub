@@ -18,7 +18,7 @@ export default class AppService {
   }
 
   /**
-   *  Implements logic for user login.
+   * Implements logic for user login.
    * @param {UserData} userData -instance of {@link UserData}.
    * @return {Promise<Response>} if user with this login and password is already registered then
    * method resolve contains welcoming alert.
@@ -29,10 +29,10 @@ export default class AppService {
       fetch('/login', {
         method: 'POST',
         body: userData,
-      }).then(response => {
+      }).then((response) => {
         if (response.ok) {
           const result = response.json();
-          result.then(body => {
+          result.then((body) => {
             resolve(body.token);
           });
         } else {
@@ -54,23 +54,23 @@ export default class AppService {
       fetch('/registration', {
         method: 'POST',
         body: userData,
-      }).then(response => {
+      }).then((response) => {
         if (response.ok) {
           resolve();
         }
-        let result = response.json();
+        const result = response.json();
         switch (response.status) {
           case 401: {
-            result.then(errors => {
+            result.then((errors) => {
               console.log(errors.error.message);
               reject(errors.error);
             });
             break;
           }
           case 422: {
-            let serverErrors = [];
-            result.then(errors => {
-              errors.errors.forEach(error => {
+            const serverErrors = [];
+            result.then((errors) => {
+              errors.errors.forEach((error) => {
                 serverErrors.push(new VerificationError(error.field, error.message));
               });
               reject(serverErrors);
@@ -90,12 +90,22 @@ export default class AppService {
     return new Promise((resolve, reject) => {
       fetch(`/get-items/${id}`, {
         method: 'GET',
-      }).then(response => {
+      }).then((response) => {
         const result = response.json();
-        result.then(result => {
+        result.then((result) => {
           resolve(result.items);
         });
       });
     });
   }
+
+  renameItem(id, newItemName) {
+    return fetch(`/rename-item/${id}`, {
+      method: 'POST',
+      body: {
+        newItemName,
+      },
+    });
+  }
 }
+

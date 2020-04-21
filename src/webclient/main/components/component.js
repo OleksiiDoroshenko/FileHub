@@ -3,34 +3,33 @@
  */
 export default class Component {
   /**
-   * Class constructor.
-   * @param {HTMLElement} container - root container for elements rendering.
-   * @param {Object} componentConfig - object with initial values.
+   * @param {HTMLElement} container - container for element rendering.
+   * @param {Object} componentConfig - initial configuration for current html element.
    */
   constructor(container, componentConfig) {
     this.container = container;
     Object.assign(this, componentConfig);
-    this.render();
-    this.initInnerComponents();
+    this._render();
+    this._initInnerComponents();
   }
 
   /**
    * Renders inner html representation into another html element(container).
    */
-  render() {
+  _render() {
     const div = document.createElement('div');
-    div.innerHTML = this.markup().trim();
+    div.innerHTML = this._markup().trim();
     this.container.appendChild(div.firstChild);
   }
 
   /**
    * Returns html representation of element or group of elements.
    */
-  markup() {
+  _markup() {
   }
 
   /**
-   * Adds event listener to container or inner html elements;
+   * Adds event listener to container or inner html elements.
    */
   addEventListener() {
   }
@@ -38,6 +37,6 @@ export default class Component {
   /**
    * Renders components into container.
    */
-  initInnerComponents() {
+  _initInnerComponents() {
   }
 }

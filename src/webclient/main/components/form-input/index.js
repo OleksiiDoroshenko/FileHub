@@ -5,9 +5,19 @@ import Component from '../component.js';
  * that can collect user information.
  */
 export default class FormInput extends Component {
+  /**
+   * @typedef {[string]} FormRowConfig.
+   * @param {string} id - html input 'id' attribute value.
+   * @param {string} labelText - html label text.
+   * @param {string} inputType - html input 'type' attribute value.
+   * @param {string} placeHolder - html input 'placeHolder' attribute value.
+   * @param {string} warning - html 'p' tag inner text .
+   */
 
   /**
-   * @inheritdoc.
+   * Class constructor.
+   * @param {HTMLElement} container - container for element rendering.
+   * @param {FormRowConfig} componentConfig - initial configuration of row form.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);
@@ -15,14 +25,14 @@ export default class FormInput extends Component {
   }
 
   /**
-   * @inheritdoc.
+   * @inheritdoc
    */
-  markup() {
+  _markup() {
     return `
          <div class="row">
             <label class="control-label col-sm-4" for=${this.id}>${this.labelText}</label>
             <div class="col-sm-8 input-filed">
-                <input ${this.inputType} class="form-control" ${this.id} 
+                <input type=${this.inputType} class="form-control" ${this.id} 
                 placeholder=${this.placeHolder} name=${this.id}>
                 <p class="text-danger">${this.warning}</p>
             </div>
@@ -30,16 +40,27 @@ export default class FormInput extends Component {
         `;
   }
 
+  /**
+   * Returns current html input value.
+   * @return {string} input value.
+   */
   get value() {
     return this.root.querySelector('.form-control').value;
   }
 
+  /**
+   * Renders warning text in the current row.
+   * <p> Text is placed under html input.
+   * @param {string} text - text to render.
+   */
   showWarning(text) {
     this.root.querySelector('.text-danger').innerText = text;
   }
 
+  /**
+   * Deletes warning text from current row.
+   */
   hideWarning() {
     this.root.querySelector('.text-danger').innerText = '';
   }
-
 }

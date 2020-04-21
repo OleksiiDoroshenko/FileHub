@@ -1,0 +1,27 @@
+{
+  "name": "filehub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint src/webclient/**",
+    "eslint-fix": "eslint src/webclient/main/** --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OleksiiDoroshenko/FileHub.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OleksiiDoroshenko/FileHub/issues"
+  },
+  "homepage": "https://github.com/OleksiiDoroshenko/FileHub#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.14.0",
+    "qunit": "^2.9.3"
+  }
+}

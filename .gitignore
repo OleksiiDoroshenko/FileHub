@@ -3,6 +3,7 @@
 *.iml
 *.ipr
 *.iws
+node_modules/
 
 # Gradle
 .gradle

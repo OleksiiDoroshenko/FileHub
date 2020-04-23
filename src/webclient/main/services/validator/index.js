@@ -24,10 +24,10 @@ export default class Validator {
       } else {
         if (login.length < minLength) {
           reject(new VerificationError('login',
-            `Login should be longer than ${minLength} symbols.`));
+              `Login should be longer than ${minLength} symbols.`));
         } else {
           reject(new VerificationError('login',
-            'Login should contains only latin letters or numbers.'));
+              'Login should contains only latin letters or numbers.'));
         }
       }
     }));
@@ -52,10 +52,10 @@ export default class Validator {
       } else {
         if (password.length < minLength) {
           reject(new VerificationError('password',
-            `Password should be longer than ${minLength} symbols.`));
+              `Password should be longer than ${minLength} symbols.`));
         } else {
           reject(new VerificationError('password',
-            'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
+              'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
         }
       }
     }));

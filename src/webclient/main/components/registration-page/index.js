@@ -40,6 +40,4 @@ export default class RegistrationPage extends Component {
     const formRoot = this.container.querySelector('.login-form');
     new RegistrationForm(formRoot, {});
   }
-
-
 }

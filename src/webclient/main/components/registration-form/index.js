@@ -61,10 +61,6 @@ export default class RegistrationForm extends Component {
 
 
     this.actions.addEventListener('click', (event) => {
-      this.usernameInput.hideWarning();
-      this.passwordInput.hideWarning();
-      this.confirmPasswordInput.hideWarning();
-
       const login = this.usernameInput.value;
       const password = this.passwordInput.value;
       const confirmPassword = this.confirmPasswordInput.value;
@@ -91,6 +87,10 @@ export default class RegistrationForm extends Component {
     let loginValid = false;
     let passwordValid = false;
     let confirmPasswordValid = false;
+
+    this.usernameInput.hideWarning();
+    this.passwordInput.hideWarning();
+    this.confirmPasswordInput.hideWarning();
 
     validator.validateLogin(login).then(() => {
       loginValid = true;

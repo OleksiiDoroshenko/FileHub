@@ -1,5 +1,5 @@
-import VerificationError from '../../../models/errors/verification-error';
 import AuthorizationError from '../../../models/errors/authorization-error';
+import ServerValidationError from '../../../models/errors/server-validation-error';
 
 /**
  * Implements login and registration methods logic.
@@ -18,13 +18,13 @@ export default class AuthenticationService {
   users = {};
 
   /**
-   *  Implements logic for user login.
+   *  Implements logic for user log in.
    * @param {UserData} userData -instance of {@link UserData}.
-   * @return {Promise<AuthorizationError>} if user with this login and password is already registered then
+   * @return {Promise<number>} if user with this login and password is already registered then
    * method resolve contains welcoming alert.
    * If user is not registered than method reject returns {@link AuthorizationError}.
    */
-  login(userData) {
+  logIn(userData) {
     return new Promise(((resolve, reject) => {
       if (this.isRegistered(userData)) {
         resolve(200);
@@ -37,9 +37,9 @@ export default class AuthenticationService {
   /**
    * Implements logic for user registration.
    * @param {UserData} userData -instance of {@link UserData}.
-   * @return {Promise<Error>} if user with this login is already registered then method reject returns
+   * @return {Promise<number>} if user with this login is already registered then method reject returns
    * {@link AuthorizationError}. If user's is not registered, but his password is not valid method reject returns
-   * {@link VerificationError}. If everything is alright method resolve contains redirection to {@link LoginPage}
+   * {@link ServerValidationError}. If everything is alright method resolve contains redirection to {@link LoginPage}
    */
   register(userData) {
     const login = userData.login;
@@ -53,7 +53,7 @@ export default class AuthenticationService {
         if (this.isRegistered(userData)) {
           reject(new AuthorizationError('User with this login already exists.'));
         } else {
-          errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
+          errors.push(new ServerValidationError('password', 'Password should be longer than 10 characters.'));
           reject(errors);
         }
       }

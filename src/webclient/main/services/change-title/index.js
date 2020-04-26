@@ -2,7 +2,7 @@
  * Provide function fir changing site title.
  */
 export default class TitleService {
-  applicationName = 'FIleHub';
+  applicationName = 'FileHub';
 
   /**
    * Changes site title.

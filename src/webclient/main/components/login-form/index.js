@@ -51,9 +51,6 @@ export default class LoginForm extends Component {
     });
 
     this.actions.addEventListener('click', (event) => {
-      this.usernameInput.hideWarning();
-      this.passwordInput.hideWarning();
-
       const login = this.usernameInput.value;
       const password = this.passwordInput.value;
 
@@ -77,6 +74,8 @@ export default class LoginForm extends Component {
     const validator = new Validator();
     let loginValid = false;
     let passwordValid = false;
+    this.usernameInput.hideWarning();
+    this.passwordInput.hideWarning();
 
     validator.validateLogin(login).then(() => {
       loginValid = true;

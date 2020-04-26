@@ -35,11 +35,12 @@ export default class FileExplorer extends Component {
                     <li data-toggle="tooltip" data-placement="top" title="Current path">Root</li>
                 </ul>
             </div>
-            <div class="btn-menu">
+            <div class="btn-menu" data-render="btn-menu">
                 <input type="file" id="upload-file">
             </div>
         </header>
-        <div class="file-container" data-toggle="tooltip" data-placement="top" title="File storage">
+        <div class="file-container" data-render="file-container" data-toggle="tooltip" 
+        data-placement="top" title="File storage">
         </div>
     </div>
     <footer class="footer">
@@ -58,7 +59,7 @@ export default class FileExplorer extends Component {
    */
   _initInnerComponents() {
 
-    const btnMenuRoot = this.container.querySelector('.btn-menu');
+    const btnMenuRoot = this.container.querySelector('[data-render="btn-menu"]');
 
     const createDirBtn = new Button(btnMenuRoot, {
       text: '<i class="glyphicon glyphicon-plus"></i>Create directory',
@@ -69,7 +70,7 @@ export default class FileExplorer extends Component {
       type: '',
     });
 
-    const fileContainerRoot = this.container.querySelector('.file-container');
+    const fileContainerRoot = this.container.querySelector('[data-render="file-container"]');
     new FileContainer(fileContainerRoot, {});
   }
 }

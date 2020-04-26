@@ -53,7 +53,10 @@ export default class AuthenticationService {
         if (this.isRegistered(userData)) {
           reject(new AuthorizationError('User with this login already exists.'));
         } else {
-          errors.push(new ServerValidationError('password', 'Password should be longer than 10 characters.'));
+          errors.push(new ServerValidationError({
+            filed: 'password',
+            message: 'Pass word should be longer than 10 characters.',
+          }));
           reject(errors);
         }
       }

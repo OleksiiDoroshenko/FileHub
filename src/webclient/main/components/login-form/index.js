@@ -47,7 +47,6 @@ export default class LoginForm extends Component {
       linkText: 'Don\'t have an account yet?',
       linkHref: '#/registration',
       btnText: 'Log in',
-      btnType: 'Submit',
     });
 
     this.actions.addEventListener('click', (event) => {

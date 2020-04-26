@@ -6,7 +6,6 @@ import Component from '../component.js';
 export default class Button extends Component {
   /**
    * @typedef {Object} ButtonConfig.
-   * @param {string} type - html button attribute 'type' value.
    * @param {string} text - html button inner text value.
    */
 
@@ -24,7 +23,7 @@ export default class Button extends Component {
    */
   _markup() {
     return `
-            <button class="btn btn-primary" ${this.type}>${this.text}</button>
+            <button class="btn btn-primary">${this.text}</button>
         `;
   }
 
@@ -33,5 +32,18 @@ export default class Button extends Component {
    */
   addEventListener(event, handler) {
     this.container.querySelector('.btn').addEventListener(event, handler);
+  }
+
+  set icon(value) {
+
+    this.text = `<i class="glyphicon ${this._getIcon(value)}"></i> ${this.text}`;
+  }
+
+  _getIcon(value) {
+    const icons = {
+      upload: 'glyphicon-upload',
+      create: 'glyphicon-plus',
+    };
+    return icons[value];
   }
 }

@@ -62,12 +62,12 @@ export default class FileExplorer extends Component {
     const btnMenuRoot = this.container.querySelector('[data-render="btn-menu"]');
 
     const createDirBtn = new Button(btnMenuRoot, {
-      text: '<i class="glyphicon glyphicon-plus"></i>Create directory',
-      type: '',
+      text: 'Create directory',
+      icon: 'create',
     });
     const uploadFileBtn = new Button(btnMenuRoot, {
-      text: '<i class="glyphicon glyphicon-upload"></i>Upload File',
-      type: '',
+      text: 'Upload File',
+      icon: 'upload',
     });
 
     const fileContainerRoot = this.container.querySelector('[data-render="file-container"]');

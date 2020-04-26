@@ -45,7 +45,6 @@ export default class FormActions extends Component {
     const btnRoot = this.container.querySelector('[data-render="nav-panel"]').querySelector('div');
     this._btn = new Button(btnRoot, {
       text: this.btnText,
-      type: this.btnType,
     });
   }
 

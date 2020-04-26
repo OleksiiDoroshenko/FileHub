@@ -28,7 +28,7 @@ export default class FormActions extends Component {
    */
   _markup() {
     return `
-            <div class="form-group nav-panel">
+            <div class="form-group nav-panel" data-render="nav-panel">
                 <div class="col-sm-offset-4 col-sm-2">
                 </div>
                 <div class="col-sm-offset-1 col-sm-5 nav-link">
@@ -42,7 +42,7 @@ export default class FormActions extends Component {
    * @inheritdoc.
    */
   _initInnerComponents() {
-    const btnRoot = this.container.querySelector('.nav-panel').querySelector('div');
+    const btnRoot = this.container.querySelector('[data-render="nav-panel"]').querySelector('div');
     this._btn = new Button(btnRoot, {
       text: this.btnText,
       type: this.btnType,

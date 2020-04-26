@@ -9,8 +9,8 @@ export default class ErrorPage extends Component {
    */
   _markup() {
     return `
-            <section class="container base-form login-form error">
-                 <header class="header">
+            <section class="container base-form login-form error" data-test="error-page">
+                 <header class="header" >
                     <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>
                     <h1>Error 404. Page not found.</h1>

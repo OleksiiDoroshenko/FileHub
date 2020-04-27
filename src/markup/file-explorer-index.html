@@ -2,99 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <title>FileHub</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>FileHub - File Explorer</title>
+    <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-
     <script src="js/script.js"></script>
-
 </head>
 <body>
-<section class="form-application">
-
+<section class="application-box">
+    <img class="logo" alt="TeamDev" src="images/teamdev.png">
+    <ul class="user-menu">
+        <li><i class="glyphicon glyphicon-user"></i>Username</li>
+        <li><a href="#" title="Log out">Log out<i class="glyphicon glyphicon-log-out"></i></a></li>
+    </ul>
     <header class="header">
-
-        <img class="logo" alt="logo" src="images/teamdev.png" width="150">
-
-        <ul class="logout-menu">
-
-            <li class="username"><i class="glyphicon glyphicon-user"></i> Username</li>
-            <li class="logout"><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
-        </ul>
-
-        <a href="file-explorer-index.html"><h1 class="file-explorer">File Explorer</h1></a>
+        <a href="file-explorer-index.html" title="File Explorer"><h1 class="file-explorer">File Explorer</h1></a>
     </header>
-    <!----------------------------------CONTENT--------------------------------------------->
-    <form class="content">
-
+    <!--    CONTENT     -->
+    <div class="content">
         <div class="path-manager">
-
             <div class="button-menu">
-                <button type="submit" onclick="addDirectory(); return false;" class="button"><i
-                        class="glyphicon glyphicon-plus"></i>
+                <button title="Create Directory" onclick="addDirectory(); return false;" class="btn">
+                    <i class="glyphicon glyphicon-plus"></i>
                     Create directory
                 </button>
-                <button type="submit" onclick="uploadFile()" class="button"><i class="glyphicon glyphicon-upload"></i>
+                <button title="Upload Dile" onclick="uploadFile()" class="btn">
+                    <i class="glyphicon glyphicon-upload"></i>
                     Upload File
                 </button>
-                <input type="file" id="upload-file">
+                <input type="file" class="upload-file">
             </div>
-
-            <ul class="current-position-menu">
-                <li><a href="#"><i class="glyphicon glyphicon-folder-open"></i></a></li>
-                <li>/</li>
-                <li>Root</li>
-            </ul>
+            <div class="current-position-menu">
+                <h2>
+                    <a href="#"><i class="glyphicon glyphicon-folder-open"></i></a>
+                    /
+                    Root
+                </h2>
+            </div>
         </div>
-
-        <div class="table">
-            <table id="file-container" class="file-container">
+        <div class="file-container">
+            <table class="table">
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                    <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name folder"><span><a href="file-explorer-inner.html"> Documents</a></span></td>
-                    <td class="items"> 2 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">
+                            <a title="Documents" href="file-explorer-inner.html">Documents</a>
+                        </span>
+                    </td>
+                    <td class="cell-size">2 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" title="Upload" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name"><span><a href="#"> Images</a></span></td>
-                    <td class="items"> 2 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">
+                            <a title="Images" href="#">Images</a>
+                        </span>
+                    </td>
+                    <td class="cell-size">2 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" title="Upload" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name"><span><a href="#"> Videos</a></span></td>
-                    <td class="items"> 1 item</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">
+                            <a title="Videos" href="#">Videos</a>
+                        </span>
+                    </td>
+                    <td class="cell-size">1 item</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" title="Upload" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                        <i class="glyphicon glyphicon-folder-close"></i></td>
-                    <td class="name"><span><a href="#"> Music</a></span></td>
-                    <td class="items"> 0 items</td>
-                    <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i></td>
+                    <td class="cell-icon">
+                        <i class="glyphicon glyphicon-triangle-right"></i>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                    </td>
+                    <td class="cell-name">
+                        <span class="cell-name-text">
+                            <a title="Music" href="#">Music</a>
+                        </span>
+                    </td>
+                    <td class="cell-size">0 items</td>
+                    <td class="cell-actions">
+                        <i onclick="uploadFile()" title="Upload" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete" class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
             </table>
         </div>
-    </form>
-    <!----------------------------------Footer block--------------------------------------------->
+    </div>
+    <!--    Footer block    -->
     <footer class="footer">
-        Copyright © 2020
-        <a class="copyright-link" target="_blank" href="https://www.teamdev.com/">TeamDev.</a>
-        All rights reserved.
+        <p>
+            Copyright &copy; 2020
+            <a class="copyright-link" target="_blank" title="TeamDev"
+               href="https://www.teamdev.com/">TeamDev.</a>
+            All rights reserved.
+        </p>
     </footer>
-
 </section>
-
 </body>
 </html>

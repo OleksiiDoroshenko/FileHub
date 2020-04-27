@@ -23,7 +23,7 @@ export default class LoginPage extends Component {
    */
   _markup() {
     return `
-            <section class="container base-form login-form">
+            <section class="container base-form login-form" data-test="login-page-rendered">
                  <header class="header">
                     <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>

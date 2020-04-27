@@ -1,6 +1,11 @@
 /**
  * Implements methods for login, password and confirm password inputs.
  * */
+import VerificationError from '../../../models/errors/verification-error';
+
+/**
+ * Implements methods for user data validation.
+ */
 export default class Validator {
   /**
    *  Validates login string value if it is fully matches regex rules.
@@ -65,7 +70,7 @@ export default class Validator {
       if (confirmPassword === password) {
         resolve();
       } else {
-        reject('Passwords do not match.');
+        reject(new VerificationError('confirmPassword', 'Passwords do not match.'));
       }
     }));
   }

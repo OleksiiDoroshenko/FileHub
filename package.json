@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint src/webclient/**",
-    "eslint-fix": "eslint src/webclient/main/** --fix"
+    "eslint-fix": "npm run eslint -- --fix"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "babel-eslint": "^8.2.6",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.14.0",
+    "jsdoc": "^3.6.3",
     "qunit": "^2.9.3"
   }
 }

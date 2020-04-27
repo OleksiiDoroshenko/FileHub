@@ -17,7 +17,7 @@ export default class FormInput extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {FormRowConfig} componentConfig - initial configuration of row form.
+   * @param {FormRowConfig} componentConfig - initial configuration of row login-form.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);

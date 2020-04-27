@@ -33,7 +33,7 @@ export default class Router {
   /**
    * Renders page from map with all possible url hashes.
    * <p> If such hash isn't found, calls another method.
-   * @param{string} hash url hash("#/...")
+   * @param {string} hash - url hash("#/...")
    */
   _renderPage(hash) {
     this.container.innerHTML = '';
@@ -47,6 +47,7 @@ export default class Router {
   /**
    * If url hash equals '#/' renders default page from pages map with key 'default'.
    * If url hash equals something else that not contains in pages map renders error 404 page.
+   * @param {string} hash - string type of '#/...'.
    */
   _renderDefaultOrErrorPage(hash) {
     this.container.innerHTML = '';

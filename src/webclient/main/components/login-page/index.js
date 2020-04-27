@@ -1,12 +1,23 @@
 import Component from '../component.js';
-import FormInput from '../form-input';
-import FormActions from '../form-actions';
-import Validator from '../../services/validator';
+import LoginForm from '../login-form';
+import TitleService from '../../services/change-title';
 
 /**
  * Implements html page that allows user to log in.
  */
 export default class LoginPage extends Component {
+  /**
+   * Class constructor.
+   * @param {HTMLElement} container - root container for element rendering.
+   * @param {AuthenticationService} service - instance of {@link AuthenticationService}.
+   * @param {Object} componentConfig - empty object.
+   */
+  constructor(container, service, componentConfig) {
+    super(container, componentConfig);
+    this._service = service;
+    new TitleService().changeTitle('Login');
+  }
+
   /**
    * @inheritdoc.
    */
@@ -18,8 +29,6 @@ export default class LoginPage extends Component {
                     <i class="glyphicon glyphicon-user user-icon"></i>
                     <h1>Login</h1>
                 </header>
-                <form class="form-horizontal">
-                </form>
             </section>
         `;
   }
@@ -28,55 +37,14 @@ export default class LoginPage extends Component {
    * @inheritdoc.
    * */
   _initInnerComponents() {
-    const formRoot = this.container.querySelector('.form-horizontal');
-    const usernameInput = new FormInput(formRoot, {
-      id: 'email',
-      labelText: 'Username',
-      inputType: 'text',
-      placeHolder: 'Email',
-      warning: '',
-    });
-
-    const passwordInput = new FormInput(formRoot, {
-      id: 'pwd',
-      labelText: 'Password',
-      inputType: 'password',
-      placeHolder: 'Password',
-      warning: '',
-    });
-
-    const actions = new FormActions(formRoot, {
-      linkText: 'Don\'t have an account yet?',
-      linkHref: '#/registration',
-      btnText: 'Log in',
-      btnType: 'Submit',
-    });
-
-    actions.addEventListener('click', (event) => {
-      usernameInput.hideWarning();
-      passwordInput.hideWarning();
-
-      const validator = new Validator();
-      let loginValid = false;
-      let passwordValid = false;
-
-      validator.validateLogin(usernameInput.value).then(() => {
-        loginValid = true;
-      }).catch((message) => {
-        usernameInput.showWarning(message);
+    const formRoot = this.container.querySelector('.login-form');
+    const form = new LoginForm(formRoot, {});
+    form.onSubmit((userData) => {
+      this._service.logIn(userData).then(() => {
+        window.location.hash = '/#fileHub';
+      }).catch((error) => {
+        alert(error.message);
       });
-      validator.validatePassword(passwordInput.value).then(() => {
-        passwordValid = true;
-      }).catch((message) => {
-        passwordInput.showWarning(message);
-      });
-
-      if (loginValid && passwordValid) {
-        alert('Success');
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
     });
   }
 }

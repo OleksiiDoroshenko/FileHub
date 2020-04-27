@@ -1,12 +1,23 @@
 import Component from '../component.js';
-import FormInput from '../form-input';
-import FormActions from '../form-actions';
-import Validator from '../../services/validator';
+import RegistrationForm from '../registration-form';
+import TitleService from '../../services/change-title';
 
 /**
  * Implements html page that allows user to register.
  */
 export default class RegistrationPage extends Component {
+  /**
+   * Class constructor.
+   * @param {HTMLElement} container - root container for element rendering.
+   * @param {AuthenticationService} service - instance of {@link AuthenticationService}.
+   * @param {Object} componentConfig - empty object.
+   */
+  constructor(container, service, componentConfig) {
+    super(container, componentConfig);
+    this._service = service;
+    new TitleService().changeTitle('Login');
+  }
+
   /**
    * @inheritdoc.
    */
@@ -18,8 +29,6 @@ export default class RegistrationPage extends Component {
                     <i class="glyphicon glyphicon-user user-icon"></i>
                     <h1>Registration</h1>
                 </header>
-                <form class="form-horizontal">
-                </form>
             </section>
         `;
   }
@@ -28,72 +37,7 @@ export default class RegistrationPage extends Component {
    @inheritdoc.
    */
   _initInnerComponents() {
-    const formRoot = this.container.querySelector('.form-horizontal');
-    const usernameInput = new FormInput(formRoot, {
-      id: 'email',
-      labelText: 'Username',
-      inputType: 'text',
-      placeHolder: 'Email',
-      warning: '',
-    });
-
-    const passwordInput = new FormInput(formRoot, {
-      id: 'pwd',
-      labelText: 'Password',
-      inputType: 'password',
-      placeHolder: 'Password',
-      warning: '',
-    });
-
-    const confirmPasswordInput = new FormInput(formRoot, {
-      id: 'cnfPwd',
-      labelText: 'Confirm Password',
-      inputType: 'password',
-      placeHolder: 'Confirm Password',
-      warning: '',
-    });
-
-    const actions = new FormActions(formRoot, {
-      linkText: 'Already have an account?',
-      linkHref: '#/login',
-      btnText: 'Register',
-      btnType: 'Submit',
-    });
-
-
-    actions.addEventListener('click', (event) => {
-      usernameInput.hideWarning();
-      passwordInput.hideWarning();
-      confirmPasswordInput.hideWarning();
-
-      const validator = new Validator();
-      let loginValid = false;
-      let passwordValid = false;
-      let confirmPasswordValid = false;
-
-      validator.validateLogin(usernameInput.value).then(() => {
-        loginValid = true;
-      }).catch((message) => {
-        usernameInput.showWarning(message);
-      });
-      validator.validatePassword(passwordInput.value).then(() => {
-        passwordValid = true;
-      }).catch((message) => {
-        passwordInput.showWarning(message);
-      });
-
-      validator.comparePasswords(confirmPasswordInput.value, passwordInput.value).then(() => {
-        confirmPasswordValid = true;
-      }).catch((message) => {
-        confirmPasswordInput.showWarning(message);
-      });
-
-      if (loginValid && passwordValid && confirmPasswordValid) {
-        alert('Success');
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-    });
+    const formRoot = this.container.querySelector('.login-form');
+    new RegistrationForm(formRoot, {});
   }
 }

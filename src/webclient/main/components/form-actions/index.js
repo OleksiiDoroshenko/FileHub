@@ -6,22 +6,7 @@ import Button from '../button';
  * that can navigate user to another page.
  */
 export default class FormActions extends Component {
-  /**
-   * @typedef {[string]} FormActionsConfig.
-   * @param {string} btnType - inner html button 'type' attribute value.
-   * @param {string} btnText - inner html button text value.
-   * @param {string} linkHref - html link 'href' attribute value.
-   * @param {string} linkText - html link text value.
-   */
 
-  /**
-   * Class constructor.
-   * @param {HTMLElement} container - container for element rendering.
-   * @param {FormActions} componentConfig - initial configuration of action login-form.
-   */
-  constructor(container, componentConfig) {
-    super(container, componentConfig);
-  }
 
   /**
    * @inheritdoc.

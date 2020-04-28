@@ -3,6 +3,7 @@ import FormInput from '../main/components/form-input';
 import FormActions from '../main/components/form-actions';
 import LoginPage from '../main/components/login-page';
 import RegistrationPage from '../main/components/registration-page';
+import ErrorPage from '../main/components/error-page';
 
 const {module, test} = QUnit;
 
@@ -50,16 +51,24 @@ export default module('Components rendering module: ', function(hook) {
   });
 
   module('Page rendering module:', function(hook) {
-    test('LoginPage should be rendered correctly.', (assert) => {
+    test('Login page should be rendered correctly.', (assert) => {
       new LoginPage(fixture, {});
-      const currentState = fixture.querySelector('h1');
-      assert.strictEqual(currentState.innerText, 'Login', 'LoginPage should be rendered.');
+      const page = fixture.querySelector('[data-render="login-page"]');
+      assert.ok(page, 'Login page should be rendered.');
     });
 
-    test('RegistrationPage should be rendered correctly.', (assert) => {
+    test('Registration page should be rendered correctly.', (assert) => {
       new RegistrationPage(fixture, {});
-      const currentState = fixture.querySelector('h1');
-      assert.strictEqual(currentState.innerText, 'Registration', 'RegistrationPage should be rendered.');
+      const page = fixture.querySelector('[data-render="registration-page"]');
+      assert.ok(page, 'Registration page should be rendered.');
+    });
+
+    test('Error page should be rendered correctly.', (assert) => {
+      new ErrorPage(fixture, {});
+      const page = fixture.querySelector('[data-render="error-page"]');
+      assert.ok(page, 'Error page should be rendered.');
     });
   });
+
+
 });

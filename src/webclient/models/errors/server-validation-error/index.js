@@ -7,9 +7,9 @@ export default class ServerValidationError extends Error {
    * @param {string} field - form input filed where data is invalid.
    * @param {string} message - server validation error message.
    */
-  constructor(field, message) {
+  constructor(error) {
     super();
-    this.field = field;
-    this.message = message;
+    this.field = error.field;
+    this.message = error.message;
   }
 }

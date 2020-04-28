@@ -56,7 +56,6 @@ export default class RegistrationForm extends Component {
       linkText: 'Already have an account?',
       linkHref: '#/login',
       btnText: 'Register',
-      btnType: 'Submit',
     });
 
 

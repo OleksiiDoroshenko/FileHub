@@ -1,11 +1,18 @@
 import Component from '../component.js';
-import FolderItem from './folder-item';
-import FileItem from './file-item';
+import createItem from './itemFactory';
 
 /**
  * Class for files table rendering.
  */
 export default class FileContainer extends Component {
+
+
+  constructor(container, componentConfig) {
+    super(container, componentConfig);
+    this.items = componentConfig.items;
+    this._render();
+  }
+
   /**
    * @inheritdoc
    * @private
@@ -19,27 +26,26 @@ export default class FileContainer extends Component {
    * @private
    */
   _initInnerComponents() {
-    const root = this.container.querySelector('.table');
-    this._createItem('folder', root, {name: 'Documents', itemsAmount: '2'});
-    this._createItem('folder', root, {name: 'Images', itemsAmount: '2'});
-    this._createItem('folder', root, {name: 'Videos', itemsAmount: '1'});
-    this._createItem('file', root, {name: 'test.txt', mimeType: 'text', size: '20KB'});
+    this.itemsRoot = this.container.querySelector('.table');
+    this.renderItems();
   }
 
-  /**
-   * Returns instance of {@link FileItem} or {@link FolderItem}.
-   * @param {string} type - item type, folder or file.
-   * @param {HTMLElement} container - container for element rendering.
-   * @param {FileConfig|FolderConfig} config - configuration for render item.
-   * @return {FileItem|FolderItem}
-   */
-  _createItem(type, container, config) {
-    switch (type) {
-      case 'folder': {
-        return new FolderItem(container, config);
-      }
-      case 'file': {
-        return new FileItem(container, config);
+  set items(items) {
+    console.log(items);
+    debugger;
+    this._items = items;
+    this.renderItems();
+
+  }
+
+  get items() {
+    return this._items;
+  }
+
+  renderItems() {
+    if (this.items.length > 0) {
+      for (let item of this.items) {
+        createItem(this.itemsRoot, item);
       }
     }
   }

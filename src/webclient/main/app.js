@@ -3,8 +3,9 @@ import Router from './router.js';
 import LoginPage from './components/login-page';
 import RegistrationPage from './components/registration-page';
 import ErrorPage from './components/error-page';
-import AuthenticationService from './services/authentication';
-import FileExplorer from './components/file-explorer';
+import AppService from './services/app-secrvice';
+import FileExplorerPage from './components/file-explorer';
+import StateManager from './services/state-manager';
 
 /**
  * Implements entry point for rendering every application page.
@@ -22,11 +23,12 @@ export default class Application extends Component {
    */
   _initInnerComponents() {
     const root = this.container.querySelector('.app');
-    const service = new AuthenticationService();
+    const service = new AppService(true);
+    const stateManager = new StateManager({items: []}, service);
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),
-      '/file-explorer': () => new FileExplorer(root, {}),
+      '/file-explorer': () => new FileExplorerPage(root, {}, stateManager),
       'default': '/login',
       'error': () => new ErrorPage(root, {}),
     });

@@ -1,6 +1,5 @@
 import Component from '../component.js';
 import LoginForm from '../login-form';
-import TitleService from '../../services/change-title';
 
 /**
  * Implements html page that allows user to log in.
@@ -15,7 +14,6 @@ export default class LoginPage extends Component {
   constructor(container, service, componentConfig) {
     super(container, componentConfig);
     this._service = service;
-    new TitleService().changeTitle('Login');
   }
 
   /**
@@ -23,7 +21,7 @@ export default class LoginPage extends Component {
    */
   _markup() {
     return `
-            <section class="container base-form login-form" data-render="login-page">
+            <section class="container base-form login-form">
                  <header class="header">
                     <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>
@@ -37,12 +35,13 @@ export default class LoginPage extends Component {
    * @inheritdoc.
    * */
   _initInnerComponents() {
-    const formRoot = this.container.querySelector('[data-render="login-page"]');
+    const formRoot = this.container.querySelector('.login-form');
     const form = new LoginForm(formRoot, {});
     form.onSubmit((userData) => {
-      this._service.logIn(userData).then(() => {
-        window.location.hash = '/#file-explorer';
-      }).catch((error) => {
+      this._service.login(userData)
+        .then((token) => {
+          window.location.hash = '#/file-explorer';
+        }).catch((error) => {
         alert(error.message);
       });
     });

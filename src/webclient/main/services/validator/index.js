@@ -36,7 +36,6 @@ export default class Validator {
    *  <p> Rules:
    *        1) Password should contains only latin letters or numbers.
    *        2) Password should contain at least 1 uppercase and lowercase letters and 1 digit.
-   *  <p> Not case sensitive.
    * @param {string} password - user password.
    * @return {Promise} if login fits special rules returns true,
    *  if not returns false.
@@ -45,17 +44,20 @@ export default class Validator {
     const rules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
     const minLength = 8;
     return new Promise(((resolve, reject) => {
-      if (password.length < minLength) {
-        reject(new VerificationError('password',
-          `Password should be longer than ${minLength} symbols.`));
+        if (password.length < minLength) {
+          reject(new VerificationError('password',
+            `Password should be longer than ${minLength} symbols.`));
+        }
+        if (!rules.test(password)) {
+          reject(new VerificationError('password',
+            'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
+          resolve();
+        }
+        resolve();
       }
-      if (!rules.test(password)) {
-        reject(new VerificationError('password',
-          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
-      }
-      resolve();
-    }));
+    ));
   }
+
 
   /**
    *  Validates confirm password row if its fully fits the rules.
@@ -71,7 +73,7 @@ export default class Validator {
    */
   comparePasswords(confirmPassword, password) {
     return new Promise(((resolve, reject) => {
-      if (confirmPassword === password) {
+      if (confirmPassword.password) {
         resolve();
       } else {
         reject(new VerificationError('confirmPassword', 'Passwords do not match.'));

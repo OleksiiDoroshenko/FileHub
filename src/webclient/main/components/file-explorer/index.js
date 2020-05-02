@@ -21,7 +21,7 @@ export default class FileExplorerPage extends StateAwareComponent {
    */
   _markup() {
     return `
-<section class="container base-form">
+<section class="container base-form" data-render="file-explorer">
        <header class="header">
         <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
         <ul class="list-inline logout-menu">
@@ -66,19 +66,18 @@ export default class FileExplorerPage extends StateAwareComponent {
    * @private
    */
   _initInnerComponents() {
-
-    const btnMenuRoot = this.container.querySelector('.btn-menu');
-
+    const btnMenuRoot = this.container.querySelector('[data-render="btn-menu"]');
     const createDirBtn = new Button(btnMenuRoot, {
-      text: '<i class="glyphicon glyphicon-plus"></i>Create directory',
-      type: '',
+      text: 'Create directory',
+      icon: 'glyphicon-plus',
     });
     const uploadFileBtn = new Button(btnMenuRoot, {
-      text: '<i class="glyphicon glyphicon-upload"></i>Upload File',
-      type: '',
+      text: 'Upload File',
+      icon: 'glyphicon-upload',
     });
 
-    const fileContainerRoot = this.container.querySelector('.file-container');
+    const fileContainerRoot = this.container.querySelector('[data-render="file-container"]');
+    this.fileContainer = new FileContainer(fileContainerRoot, {});
     this.fileContainer = new FileContainer(fileContainerRoot, {items: []});
   }
 

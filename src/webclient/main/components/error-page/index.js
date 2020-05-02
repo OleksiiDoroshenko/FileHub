@@ -9,7 +9,7 @@ export default class ErrorPage extends Component {
    */
   _markup() {
     return `
-            <section class="container base-form login-form error">
+            <section class="container base-form login-form error" data-render="error-page">
                  <header class="header">
                     <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>

@@ -56,15 +56,10 @@ export default class RegistrationForm extends Component {
       linkText: 'Already have an account?',
       linkHref: '#/login',
       btnText: 'Register',
-      btnType: 'Submit',
     });
 
 
     this.actions.addEventListener('click', (event) => {
-      this.usernameInput.hideWarning();
-      this.passwordInput.hideWarning();
-      this.confirmPasswordInput.hideWarning();
-
       const login = this.usernameInput.value;
       const password = this.passwordInput.value;
       const confirmPassword = this.confirmPasswordInput.value;
@@ -93,6 +88,19 @@ export default class RegistrationForm extends Component {
       let passwordValid = validator.validatePassword(password);
       let confirmPasswordValid = validator.comparePasswords(confirmPassword, password);
 
+    this.usernameInput.hideWarning();
+    this.passwordInput.hideWarning();
+    this.confirmPasswordInput.hideWarning();
+
+    validator.validateLogin(login).then(() => {
+      loginValid = true;
+    }).catch((error) => {
+      this.usernameInput.showWarning(error.message);
+    });
+    validator.validatePassword(password).then(() => {
+      passwordValid = true;
+    }).catch((error) => {
+      this.passwordInput.showWarning(error.message);
       Promise.all([loginValid.catch(error => {
         this._errorHandler(error);
         reject();

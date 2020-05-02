@@ -10,7 +10,6 @@ export default class FolderItem extends Component {
    */
   _markup() {
     return `
-        <tr>
             <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
                 <i class="glyphicon glyphicon-folder-close"></i></td>
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.name}>
@@ -18,7 +17,6 @@ export default class FolderItem extends Component {
             <td class="items">${this.itemsAmount} items</td>
             <td class="clickable"><i onclick="uploadFile()" class="glyphicon glyphicon-upload"></i>
                 <i class="glyphicon glyphicon-remove-circle"></i></td>
-        </tr>
     `;
   }
 

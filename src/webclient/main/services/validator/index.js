@@ -19,17 +19,15 @@ export default class Validator {
     const rules = /^\w+/;
     const minLength = 4;
     return new Promise(((resolve, reject) => {
-      if (rules.test(login.toLowerCase()) && login.length >= minLength) {
-        resolve();
-      } else {
-        if (login.length < minLength) {
-          reject(new VerificationError('login',
-              `Login should be longer than ${minLength} symbols.`));
-        } else {
-          reject(new VerificationError('login',
-              'Login should contains only latin letters or numbers.'));
-        }
+      if (login.length < minLength) {
+        reject(new VerificationError('login',
+          `Login should be longer than ${minLength} symbols.`));
       }
+      if (!rules.test(login)) {
+        reject(new VerificationError('login',
+          'Login should contains only latin letters or numbers.'));
+      }
+      resolve();
     }));
   }
 
@@ -46,17 +44,15 @@ export default class Validator {
     const rules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
     const minLength = 8;
     return new Promise(((resolve, reject) => {
-      if (rules.test(password) && password.length >= minLength) {
-        resolve();
-      } else {
-        if (password.length < minLength) {
-          reject(new VerificationError('password',
-              `Password should be longer than ${minLength} symbols.`));
-        } else {
-          reject(new VerificationError('password',
-              'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
-        }
+      if (password.length < minLength) {
+        reject(new VerificationError('password',
+          `Password should be longer than ${minLength} symbols.`));
       }
+      if (!rules.test(password)) {
+        reject(new VerificationError('password',
+          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
+      }
+      resolve();
     }));
   }
 
@@ -64,8 +60,8 @@ export default class Validator {
    *  Validates confirm password row if its fully fits the rules.
    *  Rules:
    *      1)passwords should be strict equal.
-   * @param {string} confirmPassword - login-form row that contains user confirmation password.
-   * @param {string} password - login-form row that contains user password.
+   * @param {string} confirmPassword - form row that contains user confirmation password.
+   * @param {string} password - form row that contains user password.
    * @return {Promise} returns true if confirmation password and password are strict equal,
    * if they are not:
    *      1)Renders warning message under the confirmation password input.

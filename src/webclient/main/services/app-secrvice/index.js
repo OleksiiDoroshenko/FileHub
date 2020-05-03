@@ -18,13 +18,13 @@ export default class AppService {
   }
 
   /**
-   *  Implements logic for user login.
+   * Sends request yo the server for user log in.
    * @param {UserData} userData -instance of {@link UserData}.
    * @return {Promise<Response>} if user with this login and password is already registered then
    * method resolve contains welcoming alert.
    * If user is not registered than method reject returns {@link AuthorizationError}.
    */
-  login(userData) {
+  logIn(userData) {
     return new Promise((resolve, reject) => {
       fetch('/login', {
         method: 'POST',
@@ -43,7 +43,7 @@ export default class AppService {
   }
 
   /**
-   * Implements logic for user registration.
+   * Sends request yo the server for user registration.
    * @param {UserData} userData -instance of {@link UserData}.
    * @return {Promise<Error>} if user with this login is already registered then method reject returns
    * {@link AuthorizationError}. If user's is not registered, but his password is not valid method reject returns
@@ -51,7 +51,7 @@ export default class AppService {
    */
   register(userData) {
     return new Promise(((resolve, reject) => {
-      fetch('/registration', {
+      fetch('/register', {
         method: 'POST',
         body: userData,
       }).then(response => {
@@ -86,16 +86,16 @@ export default class AppService {
     }));
   }
 
+  /**
+   * Sends request to the server for getting folder content.
+   * @param {string} id - folder id.
+   * @returns {Promise<[Object]>}
+   */
   getItems(id) {
-    return new Promise((resolve, reject) => {
-      fetch(`/get-items/${id}`, {
-        method: 'GET',
-      }).then(response => {
-        const result = response.json();
-        result.then(result => {
-          resolve(result.items);
-        });
-      });
+    return fetch(`/folder/${id}/content`, {
+      method: 'GET',
+    }).then(response => {
+      return response.json();
     });
   }
 }

@@ -28,8 +28,6 @@ export default class MockServer {
    * <p> Instance has mocked HTTP requests.
    */
   constructor() {
-    console.log('Current users');
-    this.printUsers();
 
     fetchMock.config.overwriteRoutes = true;
 
@@ -47,10 +45,9 @@ export default class MockServer {
       }));
 
     fetchMock
-      .post('/registration', ((url, request) => {
+      .post('/register', ((url, request) => {
         const userData = new UserData(request.body.login, request.body.password);
         if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
-          console.log(`New user ${userData.login} has been registered`);
           this.users[userData.login.toLowerCase()] = userData.password;
           return 200;
         } else {
@@ -75,7 +72,7 @@ export default class MockServer {
       }));
 
     fetchMock
-      .get('express:/get-items/:id', ((url, request) => {
+      .get('express:/folder/:id/content', ((url) => {
         const id = url.split('/')[2];
         let items = [];
         if (id === '0') {
@@ -100,15 +97,6 @@ export default class MockServer {
         }
         return {items: items};
       }));
-  }
-
-  /**
-   * Prints all registered users.
-   */
-  printUsers() {
-    for (let p in this.users) {
-      console.log(p);
-    }
   }
 
   /**

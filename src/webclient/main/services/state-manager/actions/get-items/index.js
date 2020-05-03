@@ -15,12 +15,13 @@ export default class GetItemsAction extends Action {
   apply(stateManager, appService) {
     stateManager.mutate(new ItemLoadingMutator(true));
     appService.getItems(this.id)
-      .then(items => {
-        console.log('Server response ' + items.length);
-        stateManager.mutate(new ItemsMutator(items));
+      .then(response => {
+        stateManager.mutate(new ItemsMutator(response.items));
       }).catch(e => {
       stateManager.mutate(new ItemLoadingErrorMutator(e));
+    }).finally(() => {
+      stateManager.mutate(new ItemLoadingMutator(false));
     });
-    stateManager.mutate(new ItemLoadingMutator(false));
+
   }
 }

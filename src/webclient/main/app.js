@@ -28,7 +28,7 @@ export default class Application extends Component {
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),
-      '/file-explorer/:username/folder/:id': ({username, id}) => new FileExplorerPage(root, {username,id}, stateManager),
+      '/file-explorer/folder/:id': ({id}) => new FileExplorerPage(root, {id}, stateManager),
       'default': '/login',
       'error': () => new ErrorPage(root, {}),
     });

@@ -88,38 +88,40 @@ export default class RegistrationForm extends Component {
       let passwordValid = validator.validatePassword(password);
       let confirmPasswordValid = validator.comparePasswords(confirmPassword, password);
 
-    this.usernameInput.hideWarning();
-    this.passwordInput.hideWarning();
-    this.confirmPasswordInput.hideWarning();
+      this.usernameInput.hideWarning();
+      this.passwordInput.hideWarning();
+      this.confirmPasswordInput.hideWarning();
 
-    validator.validateLogin(login).then(() => {
-      loginValid = true;
-    }).catch((error) => {
-      this.usernameInput.showWarning(error.message);
-    });
-    validator.validatePassword(password).then(() => {
-      passwordValid = true;
-    }).catch((error) => {
-      this.passwordInput.showWarning(error.message);
-      Promise.all([loginValid.catch(error => {
-        this._errorHandler(error);
-        reject();
-      }),
-        passwordValid.catch(error => {
+      validator.validateLogin(login).then(() => {
+        loginValid = true;
+      }).catch((error) => {
+        this.usernameInput.showWarning(error.message);
+      });
+      validator.validatePassword(password).then(() => {
+        passwordValid = true;
+      }).catch((error) => {
+        this.passwordInput.showWarning(error.message);
+        Promise.all([loginValid.catch(error => {
           this._errorHandler(error);
           reject();
         }),
-        confirmPasswordValid.catch(error => {
+          passwordValid.catch(error => {
+            this._errorHandler(error);
+            reject();
+          }),
+          confirmPasswordValid.catch(error => {
+            this._errorHandler(error);
+            reject();
+          })]).then(() => {
+          resolve();
+        }).catch(error => {
           this._errorHandler(error);
           reject();
-        })]).then(() => {
-        resolve();
-      }).catch(error => {
-        this._errorHandler(error);
-        reject();
+        });
       });
     });
   }
+
 
   /**
    * Handles app-secrvice errors.
@@ -162,11 +164,11 @@ export default class RegistrationForm extends Component {
    */
   _errorHandler(error) {
     switch (error.field) {
-      case 'login': {
+      case'login': {
         this.usernameInput.showWarning(error.message);
         break;
       }
-      case 'password': {
+      case'password': {
         this.passwordInput.showWarning(error.message);
         break;
       }

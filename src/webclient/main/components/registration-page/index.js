@@ -39,7 +39,7 @@ export default class RegistrationPage extends Component {
    */
   _initInnerComponents() {
     const formRoot = this.container.querySelector('[data-render="registration-page"]');
-    new RegistrationForm(formRoot, {});
+    const form = new RegistrationForm(formRoot, {});
 
     form.onSubmit((userData) => {
       this._service.register(userData).then(() => {

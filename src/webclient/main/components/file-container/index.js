@@ -7,11 +7,15 @@ import FileItem from './file-item';
  */
 export default class FileContainer extends Component {
 
-
+  /**
+   * Returns instance of {@link FileContainer}.
+   * @param {HTMLElement} container - container for element rendering.
+   * @param {Object} componentConfig - object that contains user items.
+   */
   constructor(container, componentConfig) {
     super(container, componentConfig);
     this.items = componentConfig.items;
-    this._render();
+    this._renderItems();
   }
 
   /**
@@ -28,43 +32,56 @@ export default class FileContainer extends Component {
    */
   _initInnerComponents() {
     this.itemsRoot = this.container.querySelector('.table');
-    this.renderItems();
   }
 
+  /**
+   * Sets user items, and calls method for their rendering.
+   * @param items
+   */
   set items(items) {
     this._items = items;
-    this.renderItems();
-
+    this._renderItems();
   }
 
+  /**
+   * Returns user items.
+   * @returns {Item}
+   */
   get items() {
     return this._items;
   }
 
-  renderItems() {
-    if (this.items.length > 0) {
-      for (let item of this.items) {
-        this._createItem(this.itemsRoot, item);
+  /**
+   * Renders user items into the table.
+   */
+  _renderItems() {
+    if (this.itemsRoot !== undefined) {
+      this.itemsRoot.innerHTML = '';
+      if (this._items !== undefined) {
+        this._items.forEach(item => {
+            this._createItem(this.itemsRoot, item);
+          },
+        );
       }
     }
   }
 
   /**
    * Returns instance of {@link FileItem} or {@link FolderItem}.
-   * @param {string} type - item type, folder or file.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {FileConfig|FolderConfig} config - configuration for render item.
+   * @param {Item} item - configuration for render item.
    * @return {FileItem|FolderItem}
    */
-  _createItem(type, container, config) {
-    switch (type) {
-      case 'folder': {
-        return new FolderItem(container, config);
+  _createItem( container, item) {
+    switch (item.type) {
+      case
+      'folder': {
+        return new FolderItem(container, item.config);
       }
-      case 'file': {
-        return new FileItem(container, config);
+      case
+      'file': {
+        return new FileItem(container, item.config);
       }
     }
   }
-}
 }

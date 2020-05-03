@@ -13,7 +13,7 @@ export default class Router {
     this.pageMapping = pageMapping;
     this.window = window;
     this._init();
-    this._hashchangeHandler();
+    this._hashChangeHandler();
   }
 
   /**
@@ -21,11 +21,11 @@ export default class Router {
    */
   _init() {
     this.window.addEventListener('hashchange', () => {
-      this._hashchangeHandler();
+      this._hashChangeHandler();
     });
   }
 
-  _hashchangeHandler() {
+  _hashChangeHandler() {
     const hash = this.window.location.hash.slice(1);
     this._renderPage(hash);
   }
@@ -55,7 +55,7 @@ export default class Router {
     this.container.innerHTML = '';
     if (hash === '/' || hash === '') {
       this.window.location.hash = `#${this.pageMapping['default']}`;
-      this._hashchangeHandler();
+      this._hashChangeHandler();
     } else {
       this.pageMapping['error']();
     }

@@ -24,6 +24,25 @@ export default class MockServer {
   };
 
   /**
+   * List of user items.
+   * @type {[ListItem]}
+   */
+  items = [
+    {
+      id: '1', parentId: '0', name: 'Documents', itemsAmount: '2', type: 'folder',
+    },
+    {
+      id: '2', parentId: '0', name: 'Images', itemsAmount: '2', type: 'folder',
+    },
+    {
+      id: '3', parentId: '0', name: 'Videos', itemsAmount: '1', type: 'folder',
+    },
+    {
+      id: '4', parentId: '0', name: 'test.txt', mimeType: 'text', size: '20KB', type: 'file',
+    },
+  ];
+
+  /**
    * Returns instance of {@link MockServer}.
    * <p> Instance has mocked HTTP requests.
    */
@@ -76,24 +95,7 @@ export default class MockServer {
         const id = url.split('/')[2];
         let items = [];
         if (id === '0') {
-          items = [
-            {
-              type: 'folder',
-              config: {name: 'Documents', itemsAmount: '2'},
-            },
-            {
-              type: 'folder',
-              config: {name: 'Images', itemsAmount: '2'},
-            },
-            {
-              type: 'folder',
-              config: {name: 'Videos', itemsAmount: '1'},
-            },
-            {
-              type: 'file',
-              config: {name: 'test.txt', mimeType: 'text', size: '20KB'},
-            },
-          ];
+          items = this.items;
         }
         return {items: items};
       }));

@@ -1,9 +1,9 @@
-import Component from '../../component.js';
+import ListItem from '../../../../models/list-item';
 
 /**
  * Table folder item.
  */
-export default class FolderItem extends Component {
+export default class FolderItem extends ListItem {
   /**
    * @inheritdoc
    * @private
@@ -20,12 +20,4 @@ export default class FolderItem extends Component {
     `;
   }
 
-  /**
-   * @inheritdoc
-   * @private
-   */
-  _render() {
-    const row = this.container.insertRow(-1);
-    row.innerHTML = this._markup();
-  }
 }

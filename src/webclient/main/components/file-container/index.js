@@ -69,18 +69,18 @@ export default class FileContainer extends Component {
   /**
    * Returns instance of {@link FileItem} or {@link FolderItem}.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {Item} item - configuration for render item.
+   * @param {ListItem} item - list item.
    * @return {FileItem|FolderItem}
    */
-  _createItem( container, item) {
+  _createItem(container, item) {
     switch (item.type) {
       case
       'folder': {
-        return new FolderItem(container, item.config);
+        return new FolderItem(container, item);
       }
       case
       'file': {
-        return new FileItem(container, item.config);
+        return new FileItem(container, item);
       }
     }
   }

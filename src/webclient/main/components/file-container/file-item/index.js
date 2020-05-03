@@ -1,9 +1,9 @@
-import Component from '../../component.js';
+import ListItem from '../../../../models/list-item';
 
 /**
  * Table file item.
  */
-export default class FileItem extends Component {
+export default class FileItem extends ListItem {
 
   /**
    * @inheritdoc
@@ -18,15 +18,6 @@ export default class FileItem extends Component {
             <td class="clickable"><i class="glyphicon glyphicon-download"></i>
                 <i class="glyphicon glyphicon-remove-circle"></i></td>
     `;
-  }
-
-  /**
-   * @inheritdoc
-   * @private
-   */
-  _render() {
-    const row = this.container.insertRow(-1);
-    row.innerHTML = this._markup();
   }
 
   /**

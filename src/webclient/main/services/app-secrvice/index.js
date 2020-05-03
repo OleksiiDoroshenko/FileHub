@@ -1,7 +1,6 @@
 import VerificationError from '../../../models/errors/verification-error';
 import AuthorizationError from '../../../models/errors/authorization-error';
 
-import UserData from '../../../models/user-data';
 import MockServer from '../mock-server';
 import ServerValidationErrors from '../../../models/errors/server-validation-errors';
 
@@ -29,10 +28,10 @@ export default class AppService {
     return fetch('/login', {
       method: 'POST',
       body: userData,
-    }).then(response => {
+    }).then(async (response) => {
       if (response.ok) {
         const result = response.json();
-        result.then(body => {
+       await result.then((body) => {
           this.token = body.token;
           return body.token;
         });
@@ -53,39 +52,48 @@ export default class AppService {
     return fetch('/register', {
       method: 'POST',
       body: userData,
-    }).then(response => {
+    }).then(async (response) => {
       if (response.ok) {
         return;
       }
-      let result = response.json();
-      switch (response.status) {
-        case 401: {
-          result.then(response => {
-            throw new AuthorizationError(response.error.message);
-          });
-          break;
-        }
-        case 422: {
-          let serverErrors = [];
-          result.then(errors => {
-            errors.errors.forEach(error => {
-              serverErrors.push(new VerificationError(error.field, error.message));
-            });
-            throw new ServerValidationErrors(serverErrors);
-          });
-          break;
-        }
-        case 500: {
-          throw new Error('Internal server error.');
-        }
-      }
+      throw await this.getError(response);
     });
+  }
+
+  /**
+   * Returns specific error instance from response code.
+   * @param {Response} response - server response.
+   * @return {Promise<AuthorizationError|Error|ServerValidationErrors>}
+   */
+  async getError(response) {
+    const result = response.json();
+    switch (response.status) {
+      case 401: {
+        let message = '';
+        await result.then((response) => {
+          message = response.error.message;
+        });
+        return new AuthorizationError(message);
+      }
+      case 422: {
+        const serverErrors = [];
+        await result.then((errors) => {
+          errors.errors.forEach((error) => {
+            serverErrors.push(new VerificationError(error.field, error.message));
+          });
+        });
+        return new ServerValidationErrors(serverErrors);
+      }
+      case 500: {
+        return new Error('Internal server error.');
+      }
+    }
   }
 
   /**
    * Sends request to the server for getting folder content.
    * @param {string} id - folder id.
-   * @returns {Promise<[Object]>}
+   * @return {Promise<[Object]>}
    */
   getItems(id) {
     return fetch(`/folder/${id}/content`, {
@@ -93,7 +101,7 @@ export default class AppService {
       headers: {
         token: this.token,
       },
-    }).then(response => {
+    }).then((response) => {
       return response.json();
     });
   }

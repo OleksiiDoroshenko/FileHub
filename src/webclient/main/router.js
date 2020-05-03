@@ -65,7 +65,7 @@ export default class Router {
    * Returns object with all dynamic parameters that hash contains.
    * @param {string} url - url.
    * @param {string} urlTemplate - url template that contains that describes rules for url parsing.
-   * @returns {{Object}} - contains dynamic url parameters.
+   * @return {{Object}} - contains dynamic url parameters.
    * @private
    */
   _getDynamicPart(url, urlTemplate) {
@@ -100,7 +100,7 @@ export default class Router {
   /**
    * Returns url template from pageMapping field.
    * @param {string} staticPart - url part that contains unchangeable part.
-   * @returns {string} url template.
+   * @return {string} url template.
    * @private
    */
   _getUrlTemplate(staticPart) {

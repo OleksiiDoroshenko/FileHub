@@ -4,7 +4,6 @@ import Component from '../../main/components/component.js';
  * Main list item class.
  */
 export default class ListItem extends Component {
-
   /**
    * Returns instance of {@link ListItem}.
    * @param {HTMLElement} container - container for rendering.

@@ -4,7 +4,6 @@ import ListItem from '../../../../models/list-item';
  * Table file item.
  */
 export default class FileItem extends ListItem {
-
   /**
    * @inheritdoc
    * @private
@@ -23,6 +22,7 @@ export default class FileItem extends ListItem {
   /**
    * Sets correct file icon depends on its mime type.
    * @param {string} mimeType - files mimeType.
+   * @returns {string} bootstrap icon class.
    * @private
    */
   _getFileIcon(mimeType) {

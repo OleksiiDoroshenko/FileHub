@@ -5,5 +5,5 @@ export default class Action {
    * @param {AppService} appService - instance of {@link AppService}.
    */
   apply(stateManager, appService) {
-  };
+  }
 }

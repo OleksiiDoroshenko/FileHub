@@ -1,5 +1,8 @@
 import Mutator from '../mutator.js';
 
+/**
+ * Allows {@link StateManager} state items field changing.
+ */
 export default class ItemsMutator extends Mutator {
   /**
    * Returns instance of {@link ItemsMutator}.

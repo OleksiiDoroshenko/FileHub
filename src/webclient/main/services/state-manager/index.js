@@ -1,5 +1,4 @@
 export default class StateManager extends EventTarget {
-
   /**
    * Returns instance of {@link StateManager} class.
    * <p> Adds set event handler for state properties.
@@ -45,5 +44,4 @@ export default class StateManager extends EventTarget {
   mutate(mutator) {
     mutator.apply(this.state);
   }
-
 }

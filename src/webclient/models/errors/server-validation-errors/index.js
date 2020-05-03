@@ -3,8 +3,8 @@
  */
 export default class ServerValidationErrors extends Error {
   /**
-   *
-   * @type {Error[]}
+   * List of server errors.
+   * @type {[Error]}
    */
   errors = [];
 

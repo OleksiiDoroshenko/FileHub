@@ -66,7 +66,7 @@ export default class RegistrationForm extends Component {
 
       this._validateForm(login, password, confirmPassword).then(() => {
         this._executeHandlers(new UserData(login, password));
-      }).catch(error => {
+      }).catch((error) => {
       });
       event.preventDefault();
       event.stopPropagation();
@@ -85,33 +85,32 @@ export default class RegistrationForm extends Component {
   _validateForm(login, password, confirmPassword) {
     return new Promise((resolve, reject) => {
       const validator = new Validator();
-      let loginValid = validator.validateLogin(login);
-      let passwordValid = validator.validatePassword(password);
-      let confirmPasswordValid = validator.comparePasswords(confirmPassword, password);
+      const loginValid = validator.validateLogin(login);
+      const passwordValid = validator.validatePassword(password);
+      const confirmPasswordValid = validator.comparePasswords(confirmPassword, password);
 
       this.usernameInput.hideWarning();
       this.passwordInput.hideWarning();
       this.confirmPasswordInput.hideWarning();
 
-      Promise.all([loginValid.catch(error => {
+      Promise.all([loginValid.catch((error) => {
         this._errorHandler(error);
         reject('login');
       }),
-        passwordValid.catch(error => {
-          this._errorHandler(error);
-          reject('password');
-        }),
-        confirmPasswordValid.catch(error => {
-          this._errorHandler(error);
-          reject('confirm');
-        })])
-        .then(() => {
-          resolve('general');
-        }).catch(error => {
+      passwordValid.catch((error) => {
         this._errorHandler(error);
-        console.log(error);
-        reject();
-      });
+        reject('password');
+      }),
+      confirmPasswordValid.catch((error) => {
+        this._errorHandler(error);
+        reject('confirm');
+      })])
+          .then(() => {
+            resolve('general');
+          }).catch((error) => {
+            this._errorHandler(error);
+            reject();
+          });
     });
   }
 
@@ -122,7 +121,7 @@ export default class RegistrationForm extends Component {
    * @param {[VerificationError]} errors - instance of {@link VerificationError} .
    */
   handleError(errors) {
-    errors.forEach(error => {
+    errors.forEach((error) => {
       if (error.field === 'password') {
         this.passwordInput.showWarning(error.message);
       } else if (error.field === 'login') {
@@ -159,11 +158,11 @@ export default class RegistrationForm extends Component {
    */
   _errorHandler(error) {
     switch (error.field) {
-      case'login': {
+      case 'login': {
         this.usernameInput.showWarning(error.message);
         break;
       }
-      case'password': {
+      case 'password': {
         this.passwordInput.showWarning(error.message);
         break;
       }

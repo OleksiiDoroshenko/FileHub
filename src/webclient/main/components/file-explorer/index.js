@@ -8,7 +8,6 @@ import TitleService from '../../services/change-title';
  * Renders file explorer page.
  */
 export default class FileExplorerPage extends StateAwareComponent {
-
   /**
    * Returns instance of {@link FileExplorerPage}.
    * @param {HTMLElement} container - container for rendering.
@@ -87,6 +86,9 @@ export default class FileExplorerPage extends StateAwareComponent {
     this.fileContainer = new FileContainer(fileContainerRoot, {items: []});
   }
 
+  /**
+   * @inheritdoc
+   */
   initState() {
     this.stateManager.onStateChanged('items', (state) => {
       this.fileContainer.items = state.items;

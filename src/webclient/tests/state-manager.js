@@ -6,10 +6,10 @@ import Action from '../main/services/state-manager/actions/action.js';
 const {module, test} = QUnit;
 
 export default module('State manager test: ', function(hook) {
-  let stateManager = new StateManager({}, new AppService(false));
+  const stateManager = new StateManager({}, new AppService(false));
 
   test('should mutate its state', (assert) => {
-    let mutator = new Mutator();
+    const mutator = new Mutator();
     mutator.apply = (state) => {
       assert.ok(true, 'Should apply mutator.');
     };
@@ -28,11 +28,10 @@ export default module('State manager test: ', function(hook) {
     stateManager.onStateChanged('test', (state) => {
       assert.ok(state.test, 'Should handle events');
     });
-    let mutator = new Mutator();
+    const mutator = new Mutator();
     mutator.apply = (state) => {
       state.test = true;
     };
     stateManager.mutate(mutator);
   });
-
 });

@@ -19,5 +19,4 @@ export default class FolderItem extends ListItem {
                 <i class="glyphicon glyphicon-remove-circle"></i></td>
     `;
   }
-
 }

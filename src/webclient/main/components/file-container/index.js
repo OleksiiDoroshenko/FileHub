@@ -6,7 +6,6 @@ import FileItem from './file-item';
  * Class for files table rendering.
  */
 export default class FileContainer extends Component {
-
   /**
    * Returns instance of {@link FileContainer}.
    * @param {HTMLElement} container - container for element rendering.
@@ -36,7 +35,7 @@ export default class FileContainer extends Component {
 
   /**
    * Sets user items, and calls method for their rendering.
-   * @param items
+   * @param {[ListItem]} items - user items.
    */
   set items(items) {
     this._items = items;
@@ -45,7 +44,7 @@ export default class FileContainer extends Component {
 
   /**
    * Returns user items.
-   * @returns {Item}
+   * @return {ListItem}
    */
   get items() {
     return this._items;
@@ -58,7 +57,7 @@ export default class FileContainer extends Component {
     if (this.itemsRoot !== undefined) {
       this.itemsRoot.innerHTML = '';
       if (this._items !== undefined) {
-        this._items.forEach(item => {
+        this._items.forEach((item) => {
             this._createItem(this.itemsRoot, item);
           },
         );

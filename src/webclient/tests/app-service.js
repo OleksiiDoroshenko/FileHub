@@ -6,7 +6,7 @@ const {module, test} = QUnit;
 const service = new AppService(true);
 
 export default module('App service test', function(hook) {
-  /*test('Register method should returns exception when password is invalid.', async (assert) => {
+  test('Register method should returns exception when password is invalid.', async (assert) => {
     assert.expect(1);
     const userData = new UserData('Alex', 'maksdlo21');
     service.register(userData)
@@ -15,34 +15,31 @@ export default module('App service test', function(hook) {
         assert.strictEqual(message, 'Password should be longer than 10 characters.',
           'Should throw Verification error');
       });
-  });*/
+  });
 
-  /*test('Register method should register user if data is valid.', async (assert) => {
+  test('Register method should register user if data is valid.', async (assert) => {
     assert.expect(1);
     const userData = new UserData('Alex', 'Mdaskjdsdasa1543');
     service.register(userData)
       .then(() => {
         assert.ok('ok', 'Register method should register user if data is valid.');
       });
-  });*/
+  });
 
   test('Register method should return exception if user with this login already registered.', async (assert) => {
     assert.expect(1);
     const userData = new UserData('Alex1', 'Mdaskjdsdasa1543');
     service.register(userData).then(() => {
-      try{
-      service.register(userData).catch(error=>{
-        assert.ok(true);
-      })}catch (e) {
-        console.log(e);
-      }
+      service.register(userData).catch((error) => {
+        assert.ok(true, 'Should return exception if user with this login already registered.');
+      });
     });
   });
 
-  /*test('Login method should return exception if user with this login is not registered.', async (assert) => {
+  test('Login method should return exception if user with this login is not registered.', async (assert) => {
     assert.expect(1);
     const userData = new UserData('Vas9', 'Mdaskjdsdasa1543');
-    service.logIn(userData).catch((error) => {
+    await service.logIn(userData).catch((error) => {
       assert.ok(error instanceof AuthorizationError, 'Should throw AuthorizationError.');
     });
   });
@@ -54,5 +51,5 @@ export default module('App service test', function(hook) {
       .then((message) => {
         assert.ok(`${userData.login}-token`, 'Should register and redirect user.');
       });
-  });*/
+  });
 });

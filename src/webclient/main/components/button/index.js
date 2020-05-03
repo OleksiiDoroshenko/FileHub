@@ -25,5 +25,4 @@ export default class Button extends Component {
   set icon(icon) {
     this.text = `<i class="glyphicon ${icon}"></i> ${this.text}`;
   }
-
 }

@@ -1,5 +1,8 @@
 import Mutator from '../mutator.js';
 
+/**
+ * Allows {@link StateManager} state isLoadingError field changing.
+ */
 export default class ItemLoadingErrorMutator extends Mutator {
   /**
    * Returns instance of {@link ItemLoadingErrorMutator}.

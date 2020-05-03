@@ -7,7 +7,7 @@ import ErrorPage from '../main/components/error-page';
 
 const {module, test} = QUnit;
 
-export default module('Components rendering module: ', function(hook) {
+export default module('Components rendering test: ', function(hook) {
   let fixture;
 
   hook.beforeEach(() => {
@@ -69,6 +69,4 @@ export default module('Components rendering module: ', function(hook) {
       assert.ok(page, 'Error page should be rendered.');
     });
   });
-
-
 });

@@ -5,7 +5,7 @@ import AuthorizationError from '../models/errors/authorization-error';
 const {module, test} = QUnit;
 const service = new AppService(true);
 
-export default module('Authentication service test', function(hook) {
+export default module('App service test', function(hook) {
   test('Register method should returns exception when password is invalid.', async (assert) => {
     const userData = new UserData('Alex', 'maksdlo21');
     const response = service.register(userData);
@@ -38,7 +38,7 @@ export default module('Authentication service test', function(hook) {
 
   test('Login method should return exception if user with this login is not registered.', async (assert) => {
     const userData = new UserData('Vas9', 'Mdaskjdsdasa1543');
-    const response = service.login(userData);
+    const response = service.logIn(userData);
     await response.catch((error) => {
       assert.ok(error instanceof AuthorizationError, 'Should throw AuthorizationError.');
     });
@@ -46,7 +46,7 @@ export default module('Authentication service test', function(hook) {
 
   test('Login method should redirect user to the fileHub page if everything is ok.', async (assert) => {
     const userData = new UserData('admin', 'Admin123456');
-    const response = service.login(userData);
+    const response = service.logIn(userData);
     response.then((message) => {
       console.log(message);
       assert.ok(`${userData.login}-token`, 'Should register and redirect user.');

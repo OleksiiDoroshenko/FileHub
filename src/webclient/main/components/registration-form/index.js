@@ -66,6 +66,7 @@ export default class RegistrationForm extends Component {
 
       this._validateForm(login, password, confirmPassword).then(() => {
         this._executeHandlers(new UserData(login, password));
+      }).catch(error => {
       });
       event.preventDefault();
       event.stopPropagation();
@@ -92,32 +93,24 @@ export default class RegistrationForm extends Component {
       this.passwordInput.hideWarning();
       this.confirmPasswordInput.hideWarning();
 
-      validator.validateLogin(login).then(() => {
-        loginValid = true;
-      }).catch((error) => {
-        this.usernameInput.showWarning(error.message);
-      });
-      validator.validatePassword(password).then(() => {
-        passwordValid = true;
-      }).catch((error) => {
-        this.passwordInput.showWarning(error.message);
-        Promise.all([loginValid.catch(error => {
+      Promise.all([loginValid.catch(error => {
+        this._errorHandler(error);
+        reject('login');
+      }),
+        passwordValid.catch(error => {
           this._errorHandler(error);
-          reject();
+          reject('password');
         }),
-          passwordValid.catch(error => {
-            this._errorHandler(error);
-            reject();
-          }),
-          confirmPasswordValid.catch(error => {
-            this._errorHandler(error);
-            reject();
-          })]).then(() => {
-          resolve();
-        }).catch(error => {
+        confirmPasswordValid.catch(error => {
           this._errorHandler(error);
-          reject();
-        });
+          reject('confirm');
+        })])
+        .then(() => {
+          resolve('general');
+        }).catch(error => {
+        this._errorHandler(error);
+        console.log(error);
+        reject();
       });
     });
   }
@@ -126,7 +119,7 @@ export default class RegistrationForm extends Component {
   /**
    * Handles app-secrvice errors.
    * <p> renders warning messages below invalid inputs.
-   * @param {[VerificationError]} error - instance of {@link VerificationError} .
+   * @param {[VerificationError]} errors - instance of {@link VerificationError} .
    */
   handleError(errors) {
     errors.forEach(error => {
@@ -134,6 +127,8 @@ export default class RegistrationForm extends Component {
         this.passwordInput.showWarning(error.message);
       } else if (error.field === 'login') {
         this.usernameInput.showWarning(error.message);
+      } else if (error.field === 'confirmPassword') {
+        this.confirmPasswordInput.showWarning(error.message);
       }
     });
   }

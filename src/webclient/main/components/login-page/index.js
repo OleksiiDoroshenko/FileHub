@@ -42,7 +42,7 @@ export default class LoginPage extends Component {
     form.onSubmit((userData) => {
       this._service.logIn(userData)
         .then((token) => {
-          window.location.hash = '#/file-explorer';
+          window.location.hash = `#/file-explorer/folder/${token}`;
         }).catch((error) => {
         alert(error.message);
       });

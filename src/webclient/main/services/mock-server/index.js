@@ -119,7 +119,6 @@ export default class MockServer {
    */
   isLoginRegistered(userData) {
     const login = userData.login.toLowerCase();
-    console.log(`login ${login} is ${this.users.hasOwnProperty(login)}`);
     return this.users.hasOwnProperty(login);
   }
 }

@@ -71,9 +71,6 @@ export default class LoginForm extends Component {
    * @private
    */
   _validateForm(login, password) {
-    const validator = new Validator();
-    let loginValid = false;
-    let passwordValid = false;
     this.usernameInput.hideWarning();
     this.passwordInput.hideWarning();
     return new Promise((resolve, reject) => {

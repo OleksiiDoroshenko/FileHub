@@ -3,6 +3,7 @@ import AuthorizationError from '../../../models/errors/authorization-error';
 
 import UserData from '../../../models/user-data';
 import MockServer from '../mock-server';
+import ServerValidationErrors from '../../../models/errors/server-validation-errors';
 
 /**
  * Implements login and registration methods logic.
@@ -25,65 +26,60 @@ export default class AppService {
    * If user is not registered than method reject returns {@link AuthorizationError}.
    */
   logIn(userData) {
-    return new Promise((resolve, reject) => {
-      fetch('/login', {
-        method: 'POST',
-        body: userData,
-      }).then(response => {
-        if (response.ok) {
-          const result = response.json();
-          result.then(body => {
-            resolve(body.token);
-          });
-        } else {
-          reject(new AuthorizationError('Invalid login or password.'));
-        }
-      });
+    return fetch('/login', {
+      method: 'POST',
+      body: userData,
+    }).then(response => {
+      if (response.ok) {
+        const result = response.json();
+        result.then(body => {
+          this.token = body.token;
+          return body.token;
+        });
+      } else {
+        throw new AuthorizationError('Invalid login or password.');
+      }
     });
   }
 
   /**
    * Sends request yo the server for user registration.
    * @param {UserData} userData -instance of {@link UserData}.
-   * @return {Promise<Error>} if user with this login is already registered then method reject returns
+   * @return {Promise<Response>} if user with this login is already registered then method reject returns
    * {@link AuthorizationError}. If user's is not registered, but his password is not valid method reject returns
    * {@link VerificationError}. If everything is alright method resolve contains redirection to {@link LoginPage}
    */
   register(userData) {
-    return new Promise(((resolve, reject) => {
-      fetch('/register', {
-        method: 'POST',
-        body: userData,
-      }).then(response => {
-        if (response.ok) {
-          resolve();
+    return fetch('/register', {
+      method: 'POST',
+      body: userData,
+    }).then(response => {
+      if (response.ok) {
+        return;
+      }
+      let result = response.json();
+      switch (response.status) {
+        case 401: {
+          result.then(response => {
+            throw new AuthorizationError(response.error.message);
+          });
+          break;
         }
-        let result = response.json();
-        switch (response.status) {
-          case 401: {
-            result.then(errors => {
-              console.log(errors.error.message);
-              reject(errors.error);
+        case 422: {
+          let serverErrors = [];
+          result.then(errors => {
+            errors.errors.forEach(error => {
+              serverErrors.push(new VerificationError(error.field, error.message));
             });
-            break;
-          }
-          case 422: {
-            let serverErrors = [];
-            result.then(errors => {
-              errors.errors.forEach(error => {
-                serverErrors.push(new VerificationError(error.field, error.message));
-              });
-              reject(serverErrors);
-            });
-            break;
-          }
-          case 500: {
-            reject(new Error('Internal server error.'));
-            break;
-          }
+            throw new ServerValidationErrors(serverErrors);
+          });
+          break;
         }
-      });
-    }));
+        case 500: {
+          throw new Error('Internal server error.');
+        }
+      }
+    });
   }
 
   /**
@@ -94,6 +90,9 @@ export default class AppService {
   getItems(id) {
     return fetch(`/folder/${id}/content`, {
       method: 'GET',
+      headers: {
+        token: this.token,
+      },
     }).then(response => {
       return response.json();
     });

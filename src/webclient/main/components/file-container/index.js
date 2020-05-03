@@ -83,4 +83,12 @@ export default class FileContainer extends Component {
       }
     }
   }
+
+  /**
+   * Renders loading message into the table.
+   */
+  showLoadingMessage() {
+    this.itemsRoot.innerHTML = 'Loading...';
+  }
+
 }

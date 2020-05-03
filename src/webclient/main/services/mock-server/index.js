@@ -49,54 +49,54 @@ export default class MockServer {
     fetchMock.config.overwriteRoutes = true;
 
     fetchMock
-        .post('/login', ((url, request) => {
-          const userData = new UserData(request.body.login, request.body.password);
-          if (this.isUserRegistered(userData)) {
+      .post('/login', ((url, request) => {
+        const userData = new UserData(request.body.login, request.body.password);
+        if (this.isUserRegistered(userData)) {
+          return {
+            status: 200,
+            body: {token: `${userData.login}-token`},
+          };
+        } else {
+          return 401;
+        }
+      }));
+
+    fetchMock
+      .post('/register', ((url, request) => {
+        const userData = new UserData(request.body.login, request.body.password);
+        if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
+          this.users[userData.login.toLowerCase()] = userData.password;
+          return 200;
+        } else {
+          if (this.isLoginRegistered(userData)) {
             return {
-              status: 200,
-              body: {token: `${userData.login}-token`},
+              status: 401,
+              body: {
+                error: new AuthorizationError('User with this login already exists.'),
+              },
             };
           } else {
-            return 401;
+            const errors = [];
+            errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
+            return {
+              status: 422,
+              body: {
+                errors,
+              },
+            };
           }
-        }));
+        }
+      }));
 
     fetchMock
-        .post('/register', ((url, request) => {
-          const userData = new UserData(request.body.login, request.body.password);
-          if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
-            this.users[userData.login.toLowerCase()] = userData.password;
-            return 200;
-          } else {
-            if (this.isLoginRegistered(userData)) {
-              return {
-                status: 401,
-                body: {
-                  error: new AuthorizationError('User with this login already exists.'),
-                },
-              };
-            } else {
-              const errors = [];
-              errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
-              return {
-                status: 422,
-                body: {
-                  errors,
-                },
-              };
-            }
-          }
-        }));
-
-    fetchMock
-        .get('express:/folder/:id/content', ((url) => {
-          const id = url.split('/')[2];
-          let items = [];
-          if (id === '0') {
-            items = this.items;
-          }
-          return {items: items};
-        }));
+      .get('express:/folder/:id/content', ((url) => {
+        const id = url.split('/')[2];
+        let items = [];
+        if (id === '0') {
+          items = this.items;
+        }
+        return {items: items};
+      }));
   }
 
   /**

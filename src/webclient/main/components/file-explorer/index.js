@@ -93,5 +93,10 @@ export default class FileExplorerPage extends StateAwareComponent {
     this.stateManager.onStateChanged('items', (state) => {
       this.fileContainer.items = state.items;
     });
+    this.stateManager.onStateChanged('isLoading', (state) => {
+      if (state.isLoading) {
+        this.fileContainer.showLoadingMessage();
+      }
+    });
   }
 }

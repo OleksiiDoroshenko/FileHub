@@ -3,7 +3,7 @@ import Router from './router.js';
 import LoginPage from './components/login-page';
 import RegistrationPage from './components/registration-page';
 import ErrorPage from './components/error-page';
-import ApiService from './services/api-secrvice';
+import ApiService from './services/api-service';
 import FileExplorerPage from './components/file-explorer';
 import StateManager from './services/state-manager';
 

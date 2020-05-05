@@ -1,7 +1,7 @@
 import LoginPage from '../main/components/login-page';
 import ErrorPage from '../main/components/error-page';
 import Router from '../main/router.js';
-import ApiService from '../main/services/api-secrvice';
+import ApiService from '../main/services/api-service';
 
 const {module, test} = QUnit;
 

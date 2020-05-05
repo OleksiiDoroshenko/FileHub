@@ -1,4 +1,4 @@
-import ApiService from '../main/services/api-secrvice';
+import ApiService from '../main/services/api-service';
 import StateManager from '../main/services/state-manager';
 import Mutator from '../main/services/state-manager/mutators/mutator.js';
 import Action from '../main/services/state-manager/actions/action.js';

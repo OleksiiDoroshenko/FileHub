@@ -1,4 +1,4 @@
-import AppService from '../main/services/app-secrvice';
+import ApiService from '../main/services/api-secrvice';
 import StateManager from '../main/services/state-manager';
 import Mutator from '../main/services/state-manager/mutators/mutator.js';
 import Action from '../main/services/state-manager/actions/action.js';
@@ -6,7 +6,7 @@ import Action from '../main/services/state-manager/actions/action.js';
 const {module, test} = QUnit;
 
 export default module('State manager test: ', function(hook) {
-  const stateManager = new StateManager({}, new AppService(false));
+  const stateManager = new StateManager({}, new ApiService(false));
 
   test('should mutate its state', (assert) => {
     const mutator = new Mutator();

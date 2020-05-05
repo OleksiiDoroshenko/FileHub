@@ -116,7 +116,7 @@ export default class RegistrationForm extends Component {
 
 
   /**
-   * Handles app-secrvice errors.
+   * Handles app-service errors.
    * <p> renders warning messages below invalid inputs.
    * @param {[VerificationError]} errors - instance of {@link VerificationError} .
    */

@@ -1,4 +1,4 @@
-import FileContainer from '../file-container';
+import FileList from '../file-list';
 import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
@@ -53,7 +53,7 @@ export default class FileExplorerPage extends StateAwareComponent {
                       <input type="file" id="upload-file">
                   </div>
               </header>
-              <div class="file-container" data-toggle="tooltip" data-render="file-container"
+              <div class="file-container" data-toggle="tooltip" data-render="file-list"
                data-placement="top" title="File storage">
               </div>
           </div>
@@ -82,8 +82,8 @@ export default class FileExplorerPage extends StateAwareComponent {
       icon: 'glyphicon-upload',
     });
 
-    const fileContainerRoot = this.container.querySelector('[data-render="file-container"]');
-    this.fileContainer = new FileContainer(fileContainerRoot, {items: []});
+    const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
+    this.fileContainer = new FileList(fileContainerRoot, {items: []});
   }
 
   /**

@@ -3,7 +3,7 @@ import Router from './router.js';
 import LoginPage from './components/login-page';
 import RegistrationPage from './components/registration-page';
 import ErrorPage from './components/error-page';
-import AppService from './services/app-secrvice';
+import ApiService from './services/api-secrvice';
 import FileExplorerPage from './components/file-explorer';
 import StateManager from './services/state-manager';
 
@@ -23,7 +23,7 @@ export default class Application extends Component {
    */
   _initInnerComponents() {
     const root = this.container.querySelector('.app');
-    const service = new AppService(true);
+    const service = new ApiService(true);
     const stateManager = new StateManager({items: []}, service);
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),

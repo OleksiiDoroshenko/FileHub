@@ -11,7 +11,6 @@ export default class RegistrationPage extends Component {
    * Class constructor.
    * @param {HTMLElement} container - root container for element rendering.
    * @param {AppService} service - instance of {@link AppService}.
-   *
    * @param {Object} componentConfig - empty object.
    */
   constructor(container, service, componentConfig) {
@@ -44,15 +43,15 @@ export default class RegistrationPage extends Component {
 
     form.onSubmit((userData) => {
       this._service.register(userData)
-          .then((response) => {
-            window.location.hash = '#/login';
-          }).catch((error) => {
-            if (error instanceof AuthorizationError) {
-              alert(error.message);
-            } else {
-              form.handleError(error);
-            }
-          });
+        .then((response) => {
+          window.location.hash = '#/login';
+        }).catch((error) => {
+        if (error instanceof AuthorizationError) {
+          alert(error.message);
+        } else {
+          form.handleError(error);
+        }
+      });
     });
   }
 }

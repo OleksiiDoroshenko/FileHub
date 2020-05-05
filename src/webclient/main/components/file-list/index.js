@@ -5,11 +5,12 @@ import FileItem from './file-item';
 /**
  * Class for files table rendering.
  */
-export default class FileContainer extends Component {
+export default class FileList extends Component {
   /**
-   * Returns instance of {@link FileContainer}.
+   * Returns instance of {@link FileList}.
    * @param {HTMLElement} container - container for element rendering.
    * @param {Object} componentConfig - object that contains user items.
+   * @param {[ListItem]} componentConfig.items = user items to render.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);
@@ -22,7 +23,7 @@ export default class FileContainer extends Component {
    * @private
    */
   _markup() {
-    return `<table class="table" id="file-container"></table>`;
+    return `<table class="table" id="file-container" data-render="table"></table>`;
   }
 
   /**
@@ -30,7 +31,7 @@ export default class FileContainer extends Component {
    * @private
    */
   _initInnerComponents() {
-    this.itemsRoot = this.container.querySelector('.table');
+    this.itemsRoot = this.container.querySelector('[data-render="table"]');
   }
 
   /**
@@ -56,7 +57,7 @@ export default class FileContainer extends Component {
   _renderItems() {
     if (this.itemsRoot !== undefined) {
       this.itemsRoot.innerHTML = '';
-      if (this._items !== undefined) {
+      if (Array.isArray(this._items)) {
         this._items.forEach((item) => {
             this._createItem(this.itemsRoot, item);
           },
@@ -68,18 +69,18 @@ export default class FileContainer extends Component {
   /**
    * Returns instance of {@link FileItem} or {@link FolderItem}.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {ListItem} item - list item.
+   * @param {ListItem} model - list item.
    * @return {FileItem|FolderItem}
    */
-  _createItem(container, item) {
-    switch (item.type) {
+  _createItem(container, model) {
+    switch (model.type) {
       case
       'folder': {
-        return new FolderItem(container, item);
+        return new FolderItem(container, {model});
       }
       case
       'file': {
-        return new FileItem(container, item);
+        return new FileItem(container, {model});
       }
     }
   }

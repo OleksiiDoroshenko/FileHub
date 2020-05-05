@@ -10,10 +10,10 @@ export default class FileItem extends ListItem {
    */
   _markup() {
     return `
-            <td class="item-icon file-icon"><i class='glyphicon ${this._getFileIcon(this.mimeType)}'></i></td>
-            <td class="name" data-toggle="tooltip" data-placement="top" title=${this.name}>
-                <span>${this.name}</span></td>
-            <td class="items">${this.size}</td>
+            <td class="item-icon file-icon"><i class='glyphicon ${this._getFileIcon(this.model.mimeType)}'></i></td>
+            <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
+                <span>${this.model.name}</span></td>
+            <td class="items">${this.model.size}</td>
             <td class="clickable"><i class="glyphicon glyphicon-download"></i>
                 <i class="glyphicon glyphicon-remove-circle"></i></td>
     `;

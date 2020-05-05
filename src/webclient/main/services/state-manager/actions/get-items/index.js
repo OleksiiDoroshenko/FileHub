@@ -12,15 +12,15 @@ export default class GetItemsAction extends Action {
   /**
    * @inheritdoc
    */
-  apply(stateManager, appService) {
+  apply(stateManager, apiService) {
     stateManager.mutate(new ItemLoadingMutator(true));
-    appService.getItems(this.id)
-        .then((response) => {
-          stateManager.mutate(new ItemsMutator(response.items));
-        }).catch((e) => {
-          stateManager.mutate(new ItemLoadingErrorMutator(e));
-        }).finally(() => {
-          stateManager.mutate(new ItemLoadingMutator(false));
-        });
+    apiService.getItems(this.id)
+      .then((response) => {
+        stateManager.mutate(new ItemsMutator(response.items));
+      }).catch((e) => {
+      stateManager.mutate(new ItemLoadingErrorMutator(e));
+    }).finally(() => {
+      stateManager.mutate(new ItemLoadingMutator(false));
+    });
   }
 }

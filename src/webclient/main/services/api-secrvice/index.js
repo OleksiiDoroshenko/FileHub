@@ -7,7 +7,7 @@ import ServerValidationErrors from '../../../models/errors/server-validation-err
 /**
  * Implements login and registration methods logic.
  */
-export default class AppService {
+export default class ApiService {
   /**
    * Creates object that intercepts requests for the server.
    */
@@ -31,7 +31,7 @@ export default class AppService {
     }).then(async (response) => {
       if (response.ok) {
         const result = response.json();
-       await result.then((body) => {
+        await result.then((body) => {
           this.token = body.token;
           return body.token;
         });
@@ -92,11 +92,11 @@ export default class AppService {
 
   /**
    * Sends request to the server for getting folder content.
-   * @param {string} id - folder id.
+   * @param {string} folderId - folder id.
    * @return {Promise<[Object]>}
    */
-  getItems(id) {
-    return fetch(`/folder/${id}/content`, {
+  getItems(folderId) {
+    return fetch(`/folder/${folderId}/content`, {
       method: 'GET',
       headers: {
         token: this.token,

@@ -36,7 +36,7 @@ export default class ApiService {
           return body.token;
         });
       } else {
-        throw new AuthorizationError('Invalid login or password.');
+        throw await this.getError(response);
       }
     });
   }
@@ -85,7 +85,11 @@ export default class ApiService {
         return new ServerValidationErrors(serverErrors);
       }
       case 500: {
-        return new Error('Internal server error.');
+        let message;
+        await result.then((response) => {
+          message = response.error.message;
+        });
+        return new Error(message);
       }
     }
   }
@@ -101,8 +105,11 @@ export default class ApiService {
       headers: {
         token: this.token,
       },
-    }).then((response) => {
-      return response.json();
+    }).then(async (response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw await this.getError(response);
     });
   }
 }

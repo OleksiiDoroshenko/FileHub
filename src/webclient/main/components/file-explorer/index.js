@@ -98,5 +98,8 @@ export default class FileExplorerPage extends StateAwareComponent {
         this.fileContainer.showLoadingMessage();
       }
     });
+    this.stateManager.onStateChanged('error', (state) => {
+      this.fileContainer.showError(state.error);
+    });
   }
 }

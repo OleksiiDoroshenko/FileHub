@@ -2,6 +2,7 @@ import UserData from '../../../models/user-data';
 import AuthorizationError from '../../../models/errors/authorization-error';
 import VerificationError from '../../../models/errors/verification-error';
 import fetchMock from '../../../../../node_modules/fetch-mock/esm/client.js';
+import ServerValidationError from '../../../models/errors/server-validation-error';
 
 /**
  * Pretending to be a server.
@@ -96,12 +97,16 @@ export default class MockServer {
     fetchMock
       .get('express:/folder/:id/content', ((url) => {
         const id = url.split('/')[2];
-        let items = [];
         if (id === '0') {
-          items = this.items;
+          return {items: this.items};
         }
-        return {items: items};
-      }));
+        return {
+          status: 422,
+          body: {
+            error: new ServerValidationError('No folder found.'),
+          },
+        };
+      }), 5000);
   }
 
   /**

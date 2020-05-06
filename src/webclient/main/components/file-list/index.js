@@ -92,4 +92,10 @@ export default class FileList extends Component {
     this.itemsRoot.innerHTML = 'Loading...';
   }
 
+  /**
+   * Renders error message into the table.
+   */
+  showError(error) {
+    this.itemsRoot.innerHTML = 'Sorry something went wrong, please try later';
+  }
 }

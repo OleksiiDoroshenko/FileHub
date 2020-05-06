@@ -47,4 +47,24 @@ export default module('API service test', function(hook) {
     assert.rejects(service.logIn(userData), new AuthorizationError('')
       , 'Should return exception if user with this login is not registered.');
   });
+
+  test('Login method should return user\'s root folder id when data is valid.', async (assert) => {
+    assert.expect(1);
+    fetchMock.post('/login', (((url, opts) => {
+      const userData = new UserData(opts.body.login, opts.body.password);
+      if (userData.login === 'Vas9' && userData.password == 'Mdaskjdsdasa1543') {
+        return {
+          status: 200,
+          body: {
+            rootId: '0',
+          },
+        };
+      }
+      return 200;
+    })));
+    const userData = new UserData('Vas9', 'Mdaskjdsdasa1543');
+    service.logIn(userData).then(id => {
+      assert.strictEqual(id, '0', 'Login method should return user\'s root folder id when data is valid.');
+    });
+  });
 });

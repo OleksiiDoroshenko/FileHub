@@ -8,7 +8,7 @@ const service = new ApiService(false);
 fetchMock.config.overwriteRoutes = true;
 
 export default module('API service test', function(hook) {
-  test('Register method should register user if data is valid.', async (assert) => {
+  test('Register method should register user with valid data.', async (assert) => {
     assert.expect(1);
     fetchMock.post('/register', (((url) => {
       return 200;
@@ -16,7 +16,7 @@ export default module('API service test', function(hook) {
     const userData = new UserData('Alex', 'Mdaskjdsdasa1543');
     service.register(userData)
       .then(() => {
-        assert.ok('ok', 'Register method should register user if data is valid.');
+        assert.ok('ok', 'Register method should register user with valid data.');
       });
   });
 

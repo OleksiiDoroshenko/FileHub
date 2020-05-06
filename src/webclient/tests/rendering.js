@@ -4,6 +4,7 @@ import FormActions from '../main/components/form-actions';
 import LoginPage from '../main/components/login-page';
 import RegistrationPage from '../main/components/registration-page';
 import ErrorPage from '../main/components/error-page';
+import FileList from '../main/components/file-list';
 
 const {module, test} = QUnit;
 
@@ -68,5 +69,24 @@ export default module('Components rendering test: ', function(hook) {
       const page = fixture.querySelector('[data-render="error-page"]');
       assert.ok(page, 'Error page should be rendered.');
     });
+  });
+  module('File list rendering module:', function(hook) {
+    test('File list should render files that were sent by constructor.', (assert) => {
+      const name = 'Test';
+      const items = [{id: '1', parentId: '0', name: 'Test', itemsAmount: '0', type: 'folder'}];
+      const fileList = new FileList(fixture, {items});
+      const result = fixture.querySelector('[data-render="table"] a').innerText;
+      assert.strictEqual(result, name, 'Should render files that were sent by constructor.');
+    });
+
+    test('File list should render files that were sent by setter.', (assert) => {
+      const name = 'Test';
+      const items = [{id: '1', parentId: '0', name: 'Test', itemsAmount: '0', type: 'folder'}];
+      const fileList = new FileList(fixture, {});
+      fileList.items = items;
+      const result = fixture.querySelector('[data-render="table"] a').innerText;
+      assert.strictEqual(result, name, 'Should render files that were sent by constructor.');
+    });
+
   });
 });

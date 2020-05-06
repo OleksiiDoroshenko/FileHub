@@ -1,13 +1,13 @@
-import APIService from '../main/services/api-service';
+import ApiService from '../main/services/api-service';
 import UserData from '../models/user-data';
 import AuthorizationError from '../models/errors/authorization-error';
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 
 const {module, test} = QUnit;
-const service = new APIService(false);
+const service = new ApiService(false);
 fetchMock.config.overwriteRoutes = true;
 
-export default module('App service test', function(hook) {
+export default module('API service test', function(hook) {
   test('Register method should register user if data is valid.', async (assert) => {
     assert.expect(1);
     fetchMock.post('/register', (((url) => {
@@ -25,12 +25,13 @@ export default module('App service test', function(hook) {
     fetchMock.post('/register', (((url, opts) => {
       const userData = new UserData(opts.body.login, opts.body.password);
       if (userData.login === 'Alex1') {
-        throw new Error();
+        throw new AuthorizationError('');
       }
       return 200;
     })));
     const userData = new UserData('Alex1', 'Mdaskjdsdasa1543');
-    assert.rejects(service.register(userData), 'Should return exception if user with this login already registered.');
+    assert.rejects(service.register(userData), new AuthorizationError(''),
+      'Should return exception if user with this login already registered.');
   });
 
   test('Login method should return exception if user with this login is not registered.', async (assert) => {
@@ -43,6 +44,7 @@ export default module('App service test', function(hook) {
       return 200;
     })));
     const userData = new UserData('Vas9', 'Mdaskjdsdasa1543');
-    assert.rejects(service.logIn(userData), 'Should return exception if user with this login is not registered.');
+    assert.rejects(service.logIn(userData), new AuthorizationError('')
+      , 'Should return exception if user with this login is not registered.');
   });
 });

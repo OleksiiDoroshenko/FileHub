@@ -55,6 +55,8 @@ export default class LoginForm extends Component {
 
       this._validateForm(login, password).then(() => {
         this._executeHandlers(new UserData(login, password));
+      }).catch(e => {
+
       });
 
       event.preventDefault();
@@ -82,16 +84,16 @@ export default class LoginForm extends Component {
 
       Promise.all([loginValid.catch((error) => {
         this._errorHandler(error);
-        reject();
+        reject('login');
       }),
-      passwordValid.catch((error) => {
-        this._errorHandler(error);
-        reject();
-      })]).then(() => {
+        passwordValid.catch((error) => {
+          this._errorHandler(error);
+          reject('password');
+        })]).then(() => {
         resolve();
       }).catch((error) => {
         this._errorHandler(error);
-        reject();
+        reject('general');
       });
     });
   }

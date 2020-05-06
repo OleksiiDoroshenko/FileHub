@@ -54,10 +54,15 @@ export default class MockServer {
         if (this.isUserRegistered(userData)) {
           return {
             status: 200,
-            body: {token: `${userData.login}-token`},
+            body: {token: `${userData.login}-token`, rootId: '0'},
           };
         } else {
-          return 401;
+          return {
+            status: 401,
+            body: {
+              error: new AuthorizationError('Invalid login or password.'),
+            },
+          };
         }
       }));
 

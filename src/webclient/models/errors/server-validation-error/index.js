@@ -4,8 +4,9 @@
 export default class ServerValidationError extends Error {
   /**
    * Returns instance of {@link ServerValidationErrors}
-   * @param {string} field - form input filed where data is invalid.
-   * @param {string} message - server validation error message.
+   * @param {Object} error - error that appeared in the server.
+   * @param {string} error.field - form input filed where data is invalid.
+   * @param {string} error.message - server validation error message.
    */
   constructor(error) {
     super();

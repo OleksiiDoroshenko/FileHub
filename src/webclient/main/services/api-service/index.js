@@ -33,9 +33,8 @@ export default class ApiService {
         const result = response.json();
         await result.then((body) => {
           this.token = body.token;
-          this.rootId = body.rootId;
         });
-        return this.rootId;
+        return this.token;
       }
       throw await this.getError(response);
     });

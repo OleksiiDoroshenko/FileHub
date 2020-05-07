@@ -103,10 +103,24 @@ export default class MockServer {
         return {
           status: 422,
           body: {
-            error: new ServerValidationError('No folder found.'),
+            errors: [new ServerValidationError('No folder found.')],
           },
         };
-      }), 5000);
+      }), 2000);
+
+    fetchMock
+      .get('/folder/root', ((url, request) => {
+        const token = request.body.token;
+        if (token === 'Admin-token') {
+          return {id: '0'};
+        }
+        return {
+          status: 422,
+          body: {
+            errors: [new ServerValidationError({field: '', message: 'No user found.'})],
+          },
+        };
+      }));
   }
 
   /**

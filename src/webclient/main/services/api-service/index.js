@@ -19,7 +19,7 @@ export default class ApiService {
 
   /**
    * Sends request yo the server for user log in.
-   * @param {UserData} userData -instance of {@link UserData}.
+   * @param {UserData} userData - instance of {@link UserData}.
    * @return {Promise<Response>} if user with this login and password is already registered then
    * method resolve contains welcoming alert.
    * If user is not registered than method reject returns {@link AuthorizationError}.
@@ -35,6 +35,29 @@ export default class ApiService {
           this.token = body.token;
         });
         return this.token;
+      }
+      throw await this.getError(response);
+    });
+  }
+
+  /**
+   * Sends request to the server for user root folder id.
+   * @param {string} token - user token.
+   * @return {Promise<Response>} if everything is ok returns user root folder id.
+   */
+  getRoot(token) {
+    return fetch('/folder/root', {
+      method: 'GET',
+      body: {
+        token,
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        const result = response.json();
+        let id;
+        return await result.then((body) => {
+          return body.id;
+        });
       }
       throw await this.getError(response);
     });

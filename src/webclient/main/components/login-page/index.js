@@ -41,8 +41,12 @@ export default class LoginPage extends Component {
     const form = new LoginForm(formRoot, {});
     form.onSubmit((userData) => {
       this._service.logIn(userData)
-        .then(rootId => {
-          window.location.hash = `#/file-explorer/folder/${rootId}`;
+        .then(token => {
+          this._service.getRoot(token).then((id) => {
+            window.location.hash = `#/file-explorer/folder/${id}`;
+          }).catch((error) => {
+            alert(error.message);
+          });
         }).catch((error) => {
         alert(error.message);
       });

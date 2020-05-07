@@ -129,4 +129,18 @@ export default module('API service test', function(hook) {
     });
     assert.ok(fetchMock.called('/login'), 'Should send login request.');
   });
+
+  test('Get root method should send proper request with correct data.', async (assert) => {
+    assert.expect(3);
+    const token = 'test-token';
+    fetchMock.get('/folder/root', (((url, request) => {
+      assert.strictEqual(token, request.body.token, 'Should send correct token.');
+      return {id: '0'};
+    })));
+    await service.getRoot(token).then(id => {
+      assert.strictEqual('0', id, 'Should accept correct token.');
+    });
+    assert.ok(fetchMock.called('/folder/root'), 'Should send folder/root request.');
+  });
+
 });

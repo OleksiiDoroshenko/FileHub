@@ -26,121 +26,115 @@ export default module('API service test', function(hook) {
     assert.ok(fetchMock.called('/register'), 'Should send registration request.');
   });
 
-  test('Register method should handle 401 error.', async (assert) => {
-    assert.expect(2);
-    fetchMock.post('/register', (((url) => {
-      return {
-        status: 401,
-        body: {
-          error: new AuthorizationError(''),
-        },
-      };
-    })));
-    await assert.rejects(service.register({}), new AuthorizationError(''),
-      'Should handle 401 error.');
-    assert.ok(fetchMock.called('/register'), 'Should send registration request.');
-  });
-
   test('Register method should handle 422 error.', async (assert) => {
-    assert.expect(2);
-    fetchMock.post('/register', (((url) => {
-      return {
-        status: 422,
-        body: {
-          errors: [new VerificationError('', '')],
-        },
-      };
-    })));
-    await assert.rejects(service.register({}), new ServerValidationErrors(''),
-      'Should handle 422 error.');
-    assert.ok(fetchMock.called('/register'), 'Should send registration request.');
+    _testVerificationServerError('post', assert, '/register', service, 'register');
   });
 
   test('Register method should handle 500 error.', async (assert) => {
-    assert.expect(2);
-    fetchMock.post('/register', (((url) => {
-      return {
-        status: 500,
-        body: {
-          error: new Error(''),
-        },
-      };
-    })));
-    assert.rejects(service.register({}), new Error('')
-      , 'Should handle 500 error.');
-    assert.ok(fetchMock.called('/register'), 'Should send register request.');
+    _testInternalServerError('post', assert, '/register', service, 'register');
   });
 
   test('Login method should handle 401 error.', async (assert) => {
-    assert.expect(2);
-    fetchMock.post('/login', (((url, opts) => {
-      return {
-        status: 401,
-        body: {
-          error: new AuthorizationError(''),
-        },
-      };
-    })));
-    assert.rejects(service.logIn({}), new AuthorizationError('')
-      , 'Should handle 401 error.');
-    assert.ok(fetchMock.called('/login'), 'Should send login request.');
+    _testAuthorizationServerError('post', assert, '/login', service, 'logIn');
   });
 
   test('Login method should handle 422 error.', async (assert) => {
-    assert.expect(2);
-    fetchMock.post('/login', (((url) => {
-      return {
-        status: 422,
-        body: {
-          errors: [new VerificationError('', '')],
-        },
-      };
-    })));
-    assert.rejects(service.logIn({}), new ServerValidationErrors()
-      , 'Should handle 422 error.');
-    assert.ok(fetchMock.called('/login'), 'Should send login request.');
+    _testVerificationServerError('post', assert, '/login', service, 'logIn');
   });
 
   test('Login method should handle 500 error.', async (assert) => {
-    assert.expect(2);
-    fetchMock.post('/login', (((url) => {
-      return {
-        status: 500,
-        body: {
-          error: new Error(''),
-        },
-      };
-    })));
-    assert.rejects(service.logIn({}), new Error('')
-      , 'Should handle 500 error.');
-    assert.ok(fetchMock.called('/login'), 'Should send login request.');
+    _testInternalServerError('post', assert, '/login', service, 'logIn');
   });
 
   test('Login method should send proper request with correct data.', async (assert) => {
-    assert.expect(4);
+    assert.expect(5);
     const userData = new UserData('Alex', 'Mdaskjdsdasa1543');
     fetchMock.post('/login', (((url, request) => {
       assert.strictEqual(userData.login, request.body.login, 'Should send correct login.');
       assert.strictEqual(userData.password, request.body.password, 'Should send correct password.');
       return {token: 'test'};
     })));
-    await service.logIn(userData).then(token => {
-      assert.strictEqual('test', token, 'Should accept correct token.');
+    await service.logIn(userData).then(() => {
+      assert.strictEqual('test', localStorage.getItem('token'), 'Should accept correct token.');
     });
     assert.ok(fetchMock.called('/login'), 'Should send login request.');
+    assert.ok(fetchMock.calls('/login').length === 1, 'Should send only one request');
   });
 
   test('Get root method should send proper request with correct data.', async (assert) => {
-    assert.expect(3);
+    assert.expect(4);
     const token = 'test-token';
+    localStorage.setItem('token', token);
     fetchMock.get('/folder/root', (((url, request) => {
-      assert.strictEqual(token, request.body.token, 'Should send correct token.');
-      return {id: '0'};
+      assert.strictEqual(token, request.headers.token, 'Should send correct token.');
+      return {
+        body: {
+          folder: {id: '0', parentId: '', name: 'Root', itemsAmount: '4', type: 'folder'},
+        },
+      };
     })));
-    await service.getRoot(token).then(id => {
-      assert.strictEqual('0', id, 'Should accept correct token.');
+    await service.getRoot().then(response => {
+      assert.strictEqual('0', response.folder.id, 'Should accept correct token.');
     });
     assert.ok(fetchMock.called('/folder/root'), 'Should send folder/root request.');
+    assert.ok(fetchMock.calls('/folder/root').length === 1, 'Should send only one request');
   });
 
+  test('Get root method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('get', assert, '/folder/root', service, 'getRoot');
+  });
+
+  test('Get root method should handle 500 error', async (assert) => {
+    _testInternalServerError('get', assert, '/folder/root', service, 'getRoot');
+  });
+
+  function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
+    assert.expect(3);
+    fetchMock[fetchMethod](matcher, (((url) => {
+      return {
+        status: 500,
+        body: {
+          error: new Error(''),
+        },
+      };
+    })));
+    assert.rejects(service[method]({}), new Error('')
+      , 'Should handle 500 error.');
+    assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls(matcher).length === 1, 'Should send only one request');
+  }
+
+  function _testVerificationServerError(fetchMethod, assert, matcher, service, method) {
+    assert.expect(3);
+    fetchMock[fetchMethod](matcher, (((url) => {
+      return {
+        status: 422,
+        body: {
+          errors: [new VerificationError('', '')],
+        },
+      };
+    })));
+    assert.rejects(service[method]({}), new ServerValidationErrors()
+      , 'Should handle 422 error.');
+    assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls(matcher).length === 1, 'Should send only one request');
+  }
+
+  function _testAuthorizationServerError(fetchMethod, assert, matcher, service, method) {
+    assert.expect(3);
+    fetchMock[fetchMethod](matcher, (((url) => {
+      return {
+        status: 401,
+        body: {
+          error: new AuthorizationError(''),
+        },
+      };
+    })));
+    assert.rejects(service[method]({}), new AuthorizationError('')
+      , 'Should handle 401 error.');
+    assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls(matcher).length === 1, 'Should send only one request');
+  }
 });
+
+

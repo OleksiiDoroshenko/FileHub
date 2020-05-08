@@ -31,6 +31,6 @@ export default class Application extends Component {
       '/file-explorer/folder/:id': ({id}) => new FileExplorerPage(root, {id}, stateManager),
       'default': '/login',
       'error': () => new ErrorPage(root, {}),
-    });
+    }, service);
   }
 }

@@ -110,14 +110,19 @@ export default class MockServer {
 
     fetchMock
       .get('/folder/root', ((url, request) => {
-        const token = request.body.token;
+        const token = request.headers.token;
         if (token === 'Admin-token') {
-          return {id: '0'};
+          return {
+            status: 200,
+            body: {
+              folder: {id: '0', parentId: '', name: 'Root', itemsAmount: '4', type: 'folder'},
+            },
+          };
         }
         return {
-          status: 422,
+          status: 401,
           body: {
-            errors: [new ServerValidationError({field: '', message: 'No user found.'})],
+            error: new AuthorizationError('No user found.'),
           },
         };
       }));

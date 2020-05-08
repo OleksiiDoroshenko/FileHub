@@ -31,10 +31,9 @@ export default class ApiService {
     }).then(async (response) => {
       if (response.ok) {
         const result = response.json();
-        await result.then((body) => {
-          this.token = body.token;
+        return await result.then((body) => {
+          localStorage.setItem('token', body.token);
         });
-        return this.token;
       }
       throw await this.getError(response);
     });
@@ -42,22 +41,17 @@ export default class ApiService {
 
   /**
    * Sends request to the server for user root folder id.
-   * @param {string} token - user token.
    * @return {Promise<Response>} if everything is ok returns user root folder id.
    */
-  getRoot(token) {
+  getRoot() {
     return fetch('/folder/root', {
       method: 'GET',
-      body: {
-        token,
+      headers: {
+        token: localStorage.getItem('token'),
       },
     }).then(async (response) => {
       if (response.ok) {
-        const result = response.json();
-        let id;
-        return await result.then((body) => {
-          return body.id;
-        });
+        return response.json();
       }
       throw await this.getError(response);
     });
@@ -125,7 +119,7 @@ export default class ApiService {
     return fetch(`/folder/${folderId}/content`, {
       method: 'GET',
       headers: {
-        token: this.token,
+        token: localStorage.getItem('token'),
       },
     }).then(async (response) => {
       if (response.ok) {

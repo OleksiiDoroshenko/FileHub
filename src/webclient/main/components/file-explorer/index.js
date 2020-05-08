@@ -3,6 +3,7 @@ import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
+import LogOutAction from '../../services/state-manager/actions/log-out';
 
 /**
  * Renders file explorer page.
@@ -34,7 +35,7 @@ export default class FileExplorerPage extends StateAwareComponent {
                       <i class="glyphicon glyphicon-user"></i> ${this.username}
                   </li>
                   <li class="logout" data-toggle="tooltip" data-placement="top" title="Log out">
-                      <a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
+                      <a href="#" data-render="log-out">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
               </ul>
               <a href="file-explorer-index.html" data-toggle="tooltip" data-placement="top" title="Root page">
                   <h1 class="file-explorer">File Explorer</h1></a>
@@ -82,6 +83,10 @@ export default class FileExplorerPage extends StateAwareComponent {
       icon: 'glyphicon-upload',
     });
 
+    const logOut = this.container.querySelector('[data-render="log-out"]');
+    logOut.addEventListener('click', () => {
+      this.stateManager.dispatch(new LogOutAction());
+    });
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
     this.fileContainer = new FileList(fileContainerRoot, {items: []});
   }
@@ -102,4 +107,5 @@ export default class FileExplorerPage extends StateAwareComponent {
       this.fileContainer.showError(state.error);
     });
   }
+
 }

@@ -128,4 +128,19 @@ export default class ApiService {
       throw await this.getError(response);
     });
   }
+
+  logOut() {
+    return fetch('/logOut', {
+      method: 'POST', headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return;
+      }
+      throw await this.getError(response);
+    }).finally(() => {
+      localStorage.removeItem('token');
+    });
+  }
 }

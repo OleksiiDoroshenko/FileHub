@@ -2,6 +2,10 @@ import ApiService from '../main/services/api-service';
 import StateManager from '../main/services/state-manager';
 import Mutator from '../main/services/state-manager/mutators/mutator.js';
 import Action from '../main/services/state-manager/actions/action.js';
+import IdMutator from '../main/services/state-manager/mutators/id-mutator';
+import ItemsMutator from '../main/services/state-manager/mutators/items-mutator';
+import ItemsLoadingMutator from '../main/services/state-manager/mutators/items-loading-mutator';
+import ItemsLoadingErrorMutator from '../main/services/state-manager/mutators/items-loading-error-mutator';
 
 const {module, test} = QUnit;
 
@@ -34,4 +38,36 @@ export default module('State manager test: ', function(hook) {
     };
     stateManager.mutate(mutator);
   });
+
+  module('Mutator test: ', function(hook) {
+    test('Id mutator should change state\'s id', async (assert) => {
+      const id = 'test';
+      const mutator = new IdMutator(id);
+      _testMutator(assert, mutator, 'id', id);
+    });
+
+    test('Items mutator should change state\'s items', async (assert) => {
+      const items = ['test'];
+      const mutator = new ItemsMutator(items);
+      _testMutator(assert, mutator, 'items', items);
+    });
+
+    test('Items loading mutator should change state\'s loading state', async (assert) => {
+      const mutator = new ItemsLoadingMutator(true);
+      _testMutator(assert, mutator, 'isLoading', true);
+    });
+
+    test('Items loading error mutator should change state\'s id', async (assert) => {
+      const error = new Error('test');
+      const mutator = new ItemsLoadingErrorMutator(error);
+      _testMutator(assert, mutator, 'error', error);
+    });
+
+    function _testMutator(assert, mutator, field, value) {
+      assert.notStrictEqual(stateManager.state[field], value, `should not be equal future ${field}`);
+      stateManager.mutate(mutator);
+      assert.strictEqual(stateManager.state[field], value, `'should change state\'s ${field} field'`);
+    }
+  });
+
 });

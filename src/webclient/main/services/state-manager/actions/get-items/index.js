@@ -1,7 +1,7 @@
 import Action from '../action.js';
-import ItemsMutator from '../../mutators/get-item-mutator';
-import ItemLoadingMutator from '../../mutators/item-loading-mutator';
-import ItemLoadingErrorMutator from '../../mutators/item-loading-error-mutator';
+import ItemsMutator from '../../mutators/items-mutator';
+import ItemLoadingMutator from '../../mutators/items-loading-mutator';
+import ItemsLoadingErrorMutator from '../../mutators/items-loading-error-mutator';
 
 export default class GetItemsAction extends Action {
   constructor(id) {
@@ -18,7 +18,7 @@ export default class GetItemsAction extends Action {
       .then((response) => {
         stateManager.mutate(new ItemsMutator(response.items));
       }).catch((e) => {
-      stateManager.mutate(new ItemLoadingErrorMutator(e));
+      stateManager.mutate(new ItemsLoadingErrorMutator(e));
     }).finally(() => {
       stateManager.mutate(new ItemLoadingMutator(false));
     });

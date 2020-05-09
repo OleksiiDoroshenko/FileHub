@@ -7,13 +7,13 @@ export default class Router {
    * @param {HTMLElement} container - root container for page rendering.
    * @param {Window} window - window element.
    * @param {Object} pageMapping - map of possible links and pages for rendering.
-   * @param {ApiService} service - instance of {@link ApiService}.
+   * @param {StateManager} stateManager - instance of {@link StateManager}.
    */
-  constructor(container, window, pageMapping, service) {
+  constructor(container, window, pageMapping, stateManager) {
     this.container = container;
     this.pageMapping = pageMapping;
     this.window = window;
-    this.service = service;
+    this.stateManager = stateManager;
     this._init();
     this._hashChangeHandler();
   }
@@ -24,6 +24,9 @@ export default class Router {
   _init() {
     this.window.addEventListener('hashchange', () => {
       this._hashChangeHandler();
+    });
+    this.stateManager.onStateChanged('id', (state) => {
+      this._idChangeHandler(state.id);
     });
   }
 
@@ -95,12 +98,8 @@ export default class Router {
    */
   _createPage(url, urlTemplate) {
     const dynamicParams = this._getDynamicPart(url, urlTemplate);
-    if (dynamicParams.id === 'root') {
-      this._changeRootId(url);
-    } else {
-      const page = this.pageMapping[urlTemplate];
-      page(dynamicParams);
-    }
+    const page = this.pageMapping[urlTemplate];
+    page(dynamicParams);
   }
 
   /**
@@ -118,26 +117,35 @@ export default class Router {
   }
 
   /**
-   * Changes id in url when user logs in first time.
-   * @param {string} url - url.
-   * @return {Promise<void>}
+   * Sets new hash with changed id to the window;
+   * @param {string} id - new folder id;
    * @private
    */
-  async _changeRootId(url) {
-    let rootId;
-    await this.service.getRoot().then(response => {
-      rootId = response.folder.id;
-    }).catch(error => {
-      alert(error.message);
-    });
-    let newHash = '';
-    url.split('/').slice(1).forEach(part => {
-      if (part === 'root') {
-        part = rootId;
+  _idChangeHandler(id) {
+    const hash = this.window.location.hash.slice(1);
+    const staticPart = `/${hash.split('/')[1]}`;
+    const urlTemplate = this._getUrlTemplate(staticPart);
+    const index = urlTemplate.split('/').findIndex(item => item === ':id');
+    this.window.location.hash = this._changeUrlId(hash, index, id);
+  }
+
+  /**
+   * Creates new url with changes id.
+   * @param {string} hash - this window hash.
+   * @param {number} idIndex - id position in the hath.
+   * @param {string} id - new folder id;
+   * @returns {string} new url hash.
+   * @private
+   */
+  _changeUrlId(hash, idIndex, id) {
+    let newUrl = '';
+    hash.split('/').forEach((item, index) => {
+      if (index !== idIndex) {
+        newUrl += `/${item}`;
+      } else {
+        newUrl += `/${id}`;
       }
-      newHash += `/${part}`;
     });
-    console.log(newHash);
-    this.window.location.hash = newHash;
+    return newUrl.slice(1);
   }
 }

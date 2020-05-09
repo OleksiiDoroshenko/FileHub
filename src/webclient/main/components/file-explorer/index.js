@@ -3,6 +3,7 @@ import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
+import GetRootIdAction from '../../services/state-manager/actions/get-root-folder-id';
 
 /**
  * Renders file explorer page.
@@ -16,7 +17,11 @@ export default class FileExplorerPage extends StateAwareComponent {
    */
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
-    this.stateManager.dispatch(new GetItemsAction(this.id));
+    if (this.id === 'root') {
+      this.stateManager.dispatch(new GetRootIdAction());
+    } else {
+      this.stateManager.dispatch(new GetItemsAction(this.id));
+    }
     new TitleService().changeTitle('File Explorer');
   }
 

@@ -3,7 +3,6 @@ import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
-import GetRootIdAction from '../../services/state-manager/actions/get-root-folder-id';
 
 /**
  * Renders file explorer page.
@@ -18,7 +17,7 @@ export default class FileExplorerPage extends StateAwareComponent {
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
     if (this.id === 'root') {
-      this.stateManager.dispatch(new GetRootIdAction());
+      this._getRootFolder();
     } else {
       this.stateManager.dispatch(new GetItemsAction(this.id));
     }
@@ -106,5 +105,26 @@ export default class FileExplorerPage extends StateAwareComponent {
     this.stateManager.onStateChanged('error', (state) => {
       this.fileContainer.showError(state.error);
     });
+  }
+
+  async _getRootFolder() {
+    let rootId;
+    await this.stateManager.apiService.getRoot().then(response => {
+      rootId = response.folder.id;
+    });
+    this._changeHashId(rootId);
+  }
+
+  _changeHashId(newId) {
+    const hash = window.location.hash.slice(1);
+    const newHash = hash.split('/').reduce((acc, item) => {
+      if (item === this.id) {
+        acc += `/${newId}`;
+      } else {
+        acc += `/${item}`;
+      }
+      return acc;
+    }, '');
+    window.location.hash = newHash.slice(1);
   }
 }

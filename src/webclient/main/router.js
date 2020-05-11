@@ -7,13 +7,11 @@ export default class Router {
    * @param {HTMLElement} container - root container for page rendering.
    * @param {Window} window - window element.
    * @param {Object} pageMapping - map of possible links and pages for rendering.
-   * @param {StateManager} stateManager - instance of {@link StateManager}.
    */
-  constructor(container, window, pageMapping, stateManager) {
+  constructor(container, window, pageMapping) {
     this.container = container;
     this.pageMapping = pageMapping;
     this.window = window;
-    this.stateManager = stateManager;
     this._init();
     this._hashChangeHandler();
   }
@@ -24,9 +22,6 @@ export default class Router {
   _init() {
     this.window.addEventListener('hashchange', () => {
       this._hashChangeHandler();
-    });
-    this.stateManager.onStateChanged('id', (state) => {
-      this._idChangeHandler(state.id);
     });
   }
 
@@ -116,36 +111,4 @@ export default class Router {
     });
   }
 
-  /**
-   * Sets new hash with changed id to the window;
-   * @param {string} id - new folder id;
-   * @private
-   */
-  _idChangeHandler(id) {
-    const hash = this.window.location.hash.slice(1);
-    const staticPart = `/${hash.split('/')[1]}`;
-    const urlTemplate = this._getUrlTemplate(staticPart);
-    const index = urlTemplate.split('/').findIndex(item => item === ':id');
-    this.window.location.hash = this._changeUrlId(hash, index, id);
-  }
-
-  /**
-   * Creates new url with changes id.
-   * @param {string} hash - this window hash.
-   * @param {number} idIndex - id position in the hath.
-   * @param {string} id - new folder id;
-   * @returns {string} new url hash.
-   * @private
-   */
-  _changeUrlId(hash, idIndex, id) {
-    let newUrl = '';
-    hash.split('/').forEach((item, index) => {
-      if (index !== idIndex) {
-        newUrl += `/${item}`;
-      } else {
-        newUrl += `/${id}`;
-      }
-    });
-    return newUrl.slice(1);
-  }
 }

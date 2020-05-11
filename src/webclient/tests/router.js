@@ -31,21 +31,21 @@ export default module('Router test', function(hook) {
 
   test('should generate correct page from valid hash', (assert) => {
     window.location.hash = '#/login';
-    router = new Router(fixture, window, pageMapping, stateManager);
+    router = new Router(fixture, window, pageMapping);
     const page = fixture.querySelector('[data-render="login-page"]');
     assert.ok(page, 'Should show correct page from valid hash.');
   });
 
   test('should generate error page from invalid hash', (assert) => {
     window.location.hash = '#/dadawdwads';
-    router = new Router(fixture, window, pageMapping, stateManager);
+    router = new Router(fixture, window, pageMapping);
     const page = fixture.querySelector('[data-render="error-page"]');
     assert.ok(page, 'Should show correct page from valid hash.');
   });
 
   test('should generate default page from empty hash', (assert) => {
     window.location.hash = '#/';
-    router = new Router(fixture, window, pageMapping, stateManager);
+    router = new Router(fixture, window, pageMapping);
     const page = fixture.querySelector('[data-render="login-page"]');
     assert.ok(page, 'Should show correct page from valid hash.');
   });

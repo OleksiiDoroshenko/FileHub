@@ -2,7 +2,6 @@ import ApiService from '../main/services/api-service';
 import StateManager from '../main/services/state-manager';
 import Mutator from '../main/services/state-manager/mutators/mutator.js';
 import Action from '../main/services/state-manager/actions/action.js';
-import IdMutator from '../main/services/state-manager/mutators/id-mutator';
 import ItemsMutator from '../main/services/state-manager/mutators/items-mutator';
 import ItemsLoadingMutator from '../main/services/state-manager/mutators/items-loading-mutator';
 import ItemsLoadingErrorMutator from '../main/services/state-manager/mutators/items-loading-error-mutator';
@@ -40,11 +39,6 @@ export default module('State manager test: ', function(hook) {
   });
 
   module('Mutator test: ', function(hook) {
-    test('Id mutator should change state\'s id', async (assert) => {
-      const id = 'test';
-      const mutator = new IdMutator(id);
-      _testMutator(assert, mutator, 'id', id);
-    });
 
     test('Items mutator should change state\'s items', async (assert) => {
       const items = ['test'];

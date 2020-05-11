@@ -25,7 +25,7 @@ export default module('API service test', function(hook) {
     })));
     await service.register(userData);
     assert.ok(fetchMock.called(matcher), 'Should send registration request.');
-    assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request.');
   });
 
@@ -62,7 +62,7 @@ export default module('API service test', function(hook) {
       assert.strictEqual('test', localStorage.getItem('token'), 'Should accept correct token.');
     });
     assert.ok(fetchMock.called(matcher), 'Should send login request.');
-    assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
@@ -83,7 +83,7 @@ export default module('API service test', function(hook) {
       assert.strictEqual('0', response.folder.id, 'Should accept correct token.');
     });
     assert.ok(fetchMock.called(matcher), 'Should send folder/root request.');
-    assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
@@ -108,7 +108,7 @@ export default module('API service test', function(hook) {
     assert.rejects(service[method]({}), new Error('')
       , 'Should handle 500 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
-    assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   }
 
@@ -142,7 +142,7 @@ export default module('API service test', function(hook) {
     assert.rejects(service[method]({}), new AuthorizationError('')
       , 'Should handle 401 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
-    assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   }
 });

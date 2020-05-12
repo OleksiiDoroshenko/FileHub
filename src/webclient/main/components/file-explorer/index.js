@@ -3,6 +3,7 @@ import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
+import GetRootIdAction from '../../services/state-manager/actions/get-root-id';
 
 /**
  * Renders file explorer page.
@@ -107,14 +108,22 @@ export default class FileExplorerPage extends StateAwareComponent {
     });
   }
 
+  /**
+   * Gets users folder id and calls method to update hash.
+   * @returns {Promise<void>}
+   * @private
+   */
   async _getRootFolder() {
-    let rootId;
-    await this.stateManager.apiService.getRoot().then(response => {
-      rootId = response.folder.id;
-    });
-    this._changeHashId(rootId);
+    this.stateManager.dispatch(new GetRootIdAction((id) => {
+      this._changeHashId(id);
+    }));
   }
 
+  /**
+   * Changes id in current url hash according to parameters id.
+   * @param {string} newId - new id to change.
+   * @private
+   */
   _changeHashId(newId) {
     const hash = window.location.hash.slice(1);
     const newHash = hash.split('/').reduce((acc, item) => {

@@ -5,6 +5,7 @@ import Action from '../main/services/state-manager/actions/action.js';
 import ItemsMutator from '../main/services/state-manager/mutators/items-mutator';
 import ItemsLoadingMutator from '../main/services/state-manager/mutators/items-loading-mutator';
 import ItemsLoadingErrorMutator from '../main/services/state-manager/mutators/items-loading-error-mutator';
+import GetRootIdAction from '../main/services/state-manager/actions/get-root-id';
 
 const {module, test} = QUnit;
 
@@ -39,7 +40,6 @@ export default module('State manager test: ', function(hook) {
   });
 
   module('Mutator test: ', function(hook) {
-
     test('Items mutator should change state\'s items', async (assert) => {
       const items = ['test'];
       const mutator = new ItemsMutator(items);
@@ -60,8 +60,7 @@ export default module('State manager test: ', function(hook) {
     function _testMutator(assert, mutator, field, value) {
       assert.notStrictEqual(stateManager.state[field], value, `should not be equal future ${field}`);
       stateManager.mutate(mutator);
-      assert.strictEqual(stateManager.state[field], value, `'should change state\'s ${field} field'`);
+      assert.strictEqual(stateManager.state[field], value, `'should change state's ${field} field'`);
     }
   });
-
 });

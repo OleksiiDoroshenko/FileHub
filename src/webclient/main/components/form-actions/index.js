@@ -6,7 +6,6 @@ import Button from '../button';
  * that can navigate user to another page.
  */
 export default class FormActions extends Component {
-
   /**
    * Returns instance of {@link FormActions} class.
    * @param {HTMLElement} container - container for element rendering.

@@ -59,8 +59,8 @@ export default class FileList extends Component {
       this.itemsRoot.innerHTML = '';
       if (Array.isArray(this._items)) {
         this._items.forEach((item) => {
-            this._createItem(this.itemsRoot, item);
-          },
+          this._createItem(this.itemsRoot, item);
+        },
         );
       }
     }

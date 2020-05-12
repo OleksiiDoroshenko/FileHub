@@ -9,7 +9,6 @@ const {module, test} = QUnit;
 const service = new ApiService(false);
 
 export default module('API service test', function(hook) {
-
   hook.beforeEach(() => {
     fetchMock.reset();
   });
@@ -79,7 +78,7 @@ export default module('API service test', function(hook) {
         },
       };
     })));
-    await service.getRoot().then(response => {
+    await service.getRoot().then((response) => {
       assert.strictEqual('0', response.folder.id, 'Should accept correct token.');
     });
     assert.ok(fetchMock.called(matcher), 'Should send folder/root request.');
@@ -106,7 +105,7 @@ export default module('API service test', function(hook) {
       };
     })));
     assert.rejects(service[method]({}), new Error('')
-      , 'Should handle 500 error.');
+        , 'Should handle 500 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
@@ -123,7 +122,7 @@ export default module('API service test', function(hook) {
       };
     })));
     assert.rejects(service[method]({}), new ServerValidationErrors()
-      , 'Should handle 422 error.');
+        , 'Should handle 422 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
@@ -140,7 +139,7 @@ export default module('API service test', function(hook) {
       };
     })));
     assert.rejects(service[method]({}), new AuthorizationError('')
-      , 'Should handle 401 error.');
+        , 'Should handle 401 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');

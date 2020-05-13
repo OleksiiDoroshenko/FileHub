@@ -36,6 +36,10 @@ export default module('API service test', function(hook) {
     _testInternalServerError('post', assert, '/register', service, 'register');
   });
 
+  test('Register method should handle 404 error.', async (assert) => {
+    _testNotFoundError('post', assert, '/register', service, 'register');
+  });
+
   test('Login method should handle 401 error.', async (assert) => {
     _testAuthorizationServerError('post', assert, '/login', service, 'logIn');
   });
@@ -46,6 +50,10 @@ export default module('API service test', function(hook) {
 
   test('Login method should handle 500 error.', async (assert) => {
     _testInternalServerError('post', assert, '/login', service, 'logIn');
+  });
+
+  test('Login method should handle 404 error.', async (assert) => {
+    _testNotFoundError('post', assert, '/login', service, 'logIn');
   });
 
   test('Login method should send proper request with correct data.', async (assert) => {
@@ -94,18 +102,17 @@ export default module('API service test', function(hook) {
     _testInternalServerError('get', assert, '/folder/root', service, 'getRoot');
   });
 
+  test('Get root method should handle 404 error', async (assert) => {
+    _testNotFoundError('get', assert, '/folder/root', service, 'getRoot');
+  });
+
   function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
     assert.expect(4);
     fetchMock[fetchMethod](matcher, (((url) => {
-      return {
-        status: 500,
-        body: {
-          error: new Error(''),
-        },
-      };
+      return 500;
     })));
-    assert.rejects(service[method]({}), new Error('')
-        , 'Should handle 500 error.');
+    assert.rejects(service[method]({}), new Error('Internal Server Error')
+      , 'Should handle 500 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
@@ -122,7 +129,22 @@ export default module('API service test', function(hook) {
       };
     })));
     assert.rejects(service[method]({}), new ServerValidationErrors()
-        , 'Should handle 422 error.');
+      , 'Should handle 422 error.');
+    assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  }
+
+  function _testNotFoundError(fetchMethod, assert, matcher, service, method) {
+    assert.expect(4);
+    fetchMock[fetchMethod](matcher, (((url) => {
+      return {
+        status: 404,
+        body: '',
+      };
+    })));
+    assert.rejects(service[method]({}), new Error('')
+      , 'Should handle 404 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
@@ -133,13 +155,11 @@ export default module('API service test', function(hook) {
     fetchMock[fetchMethod](matcher, (((url) => {
       return {
         status: 401,
-        body: {
-          error: new AuthorizationError(''),
-        },
+        body: '',
       };
     })));
     assert.rejects(service[method]({}), new AuthorizationError('')
-        , 'Should handle 401 error.');
+      , 'Should handle 401 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');

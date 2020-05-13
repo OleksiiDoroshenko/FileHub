@@ -20,7 +20,7 @@ export default class MockServer {
    * @type {{User}}
    */
   users = {
-    admin: 'Admin123456',
+    Admin: 'Admin123456',
   };
 
   /**
@@ -50,82 +50,78 @@ export default class MockServer {
     fetchMock.config.overwriteRoutes = true;
 
     fetchMock
-        .post('/login', ((url, request) => {
-          const userData = new UserData(request.body.login, request.body.password);
-          if (this.isUserRegistered(userData)) {
-            return {
-              status: 200,
-              body: {token: `${userData.login}-token`, rootId: '0'},
-            };
-          } else {
-            return {
-              status: 401,
-              body: {
-                error: new AuthorizationError('Invalid login or password.'),
-              },
-            };
-          }
-        }));
-
-    fetchMock
-        .post('/register', ((url, request) => {
-          const userData = new UserData(request.body.login, request.body.password);
-          if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
-            this.users[userData.login.toLowerCase()] = userData.password;
-            return 200;
-          } else {
-            if (this.isLoginRegistered(userData)) {
-              return {
-                status: 401,
-                body: {
-                  error: new AuthorizationError('User with this login already exists.'),
-                },
-              };
-            } else {
-              const errors = [];
-              errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
-              return {
-                status: 422,
-                body: {
-                  errors,
-                },
-              };
-            }
-          }
-        }));
-
-    fetchMock
-        .get('express:/folder/:id/content', ((url) => {
-          const id = url.split('/')[2];
-          if (id === '0') {
-            return {items: this.items};
-          }
+      .post('/login', ((url, request) => {
+        const userData = new UserData(request.body.login, request.body.password);
+        if (this.isUserRegistered(userData)) {
           return {
-            status: 422,
-            body: {
-              errors: [new ServerValidationError('No folder found.')],
-            },
+            status: 200,
+            body: {token: `${userData.login}-token`, rootId: '0'},
           };
-        }), 2000);
-
-    fetchMock
-        .get('/folder/root', ((url, request) => {
-          const token = request.headers.token;
-          if (token === 'Admin-token') {
-            return {
-              status: 200,
-              body: {
-                folder: {id: '0', parentId: '', name: 'Root', itemsAmount: '4', type: 'folder'},
-              },
-            };
-          }
+        } else {
           return {
             status: 401,
             body: {
-              error: new AuthorizationError('No user found.'),
+              error: new AuthorizationError('Invalid login or password.'),
             },
           };
-        }));
+        }
+      }));
+
+    fetchMock
+      .post('/register', ((url, request) => {
+        const userData = new UserData(request.body.login, request.body.password);
+        if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
+          this.users[userData.login] = userData.password;
+          return 200;
+        } else {
+          if (this.isLoginRegistered(userData)) {
+            return {
+              status: 401,
+              body: {
+                error: new AuthorizationError('User with this login already exists.'),
+              },
+            };
+          } else {
+            const errors = [];
+            errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
+            return {
+              status: 422,
+              body: {
+                errors,
+              },
+            };
+          }
+        }
+      }));
+
+    fetchMock
+      .get('express:/folder/:id/content', ((url) => {
+        const id = url.split('/')[2];
+        if (id === '0') {
+          return {items: this.items};
+        }
+        return {
+          status: 404,
+          statusText: 'Folder not found.',
+        };
+      }), 2000);
+
+    fetchMock
+      .get('/folder/root', ((url, request) => {
+        const token = request.headers.token;
+        if (token === 'Admin-token') {
+          return {
+            status: 200,
+            body: {
+              folder: {id: '0', parentId: '', name: 'Root', itemsAmount: '4', type: 'folder'},
+            },
+          };
+        }
+        return {
+          status: 404,
+          statusText: 'Folder not found.',
+        };
+      }));
   }
 
   /**
@@ -134,7 +130,7 @@ export default class MockServer {
    * @return {boolean} if user is registered returns true if it's not returns false.
    */
   isUserRegistered(userData) {
-    const login = userData.login.toLowerCase();
+    const login = userData.login;
     const password = userData.password;
     return this.users.hasOwnProperty(login) && this.users[login] === password;
   }
@@ -145,7 +141,7 @@ export default class MockServer {
    * @return {boolean} if login is already registered returns True if not, false.
    */
   isLoginRegistered(userData) {
-    const login = userData.login.toLowerCase();
+    const login = userData.login;
     return this.users.hasOwnProperty(login);
   }
 }

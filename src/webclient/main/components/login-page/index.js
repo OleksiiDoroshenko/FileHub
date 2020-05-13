@@ -41,11 +41,11 @@ export default class LoginPage extends Component {
     const form = new LoginForm(formRoot, {});
     form.onSubmit((userData) => {
       this._service.logIn(userData)
-          .then(() => {
-            window.location.hash = `#/file-explorer/folder/root`;
-          }).catch((error) => {
-            alert(error.message);
-          });
+        .then(() => {
+          window.location.hash = `#/file-explorer/folder/root`;
+        }).catch((error) => {
+        alert(error.message);
+      });
     });
   }
 }

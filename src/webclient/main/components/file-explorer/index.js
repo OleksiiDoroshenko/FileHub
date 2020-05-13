@@ -114,9 +114,8 @@ export default class FileExplorerPage extends StateAwareComponent {
    * @private
    */
   async _getRootFolder() {
-    this.stateManager.dispatch(new GetRootIdAction((id) => {
-      this._changeHashId(id);
-    }));
+    const rootId = await this.stateManager.dispatch(new GetRootIdAction());
+    this._changeHashId(rootId);
   }
 
   /**

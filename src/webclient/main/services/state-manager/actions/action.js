@@ -4,6 +4,6 @@ export default class Action {
    * @param {StateManager} stateManager - instance of {@link StateManager}.
    * @param {ApiService} apiService - instance of {@link ApiService}.
    */
-  apply(stateManager, apiService) {
+  async apply(stateManager, apiService) {
   }
 }

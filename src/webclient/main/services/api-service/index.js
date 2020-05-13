@@ -82,9 +82,9 @@ export default class ApiService {
    * @return {Promise<AuthorizationError|Error|ServerValidationErrors>}
    */
   async getError(response) {
-    const result = response.json();
     switch (response.status) {
       case 401: {
+        const result = response.json();
         let message = '';
         await result.then((response) => {
           message = response.error.message;
@@ -92,6 +92,7 @@ export default class ApiService {
         return new AuthorizationError(message);
       }
       case 422: {
+        const result = response.json();
         const serverErrors = [];
         await result.then((errors) => {
           errors.errors.forEach((error) => {
@@ -101,11 +102,7 @@ export default class ApiService {
         return new ServerValidationErrors(serverErrors);
       }
       case 500: {
-        let message;
-        await result.then((response) => {
-          message = response.error.message;
-        });
-        return new Error(message);
+        return new Error(response.statusText);
       }
     }
   }

@@ -60,9 +60,7 @@ export default class MockServer {
         } else {
           return {
             status: 401,
-            body: {
-              error: new AuthorizationError('Invalid login or password.'),
-            },
+            body: 'Invalid login or password.',
           };
         }
       }));
@@ -77,9 +75,7 @@ export default class MockServer {
           if (this.isLoginRegistered(userData)) {
             return {
               status: 401,
-              body: {
-                error: new AuthorizationError('User with this login already exists.'),
-              },
+              body: 'User with this login already exists.',
             };
           } else {
             const errors = [];
@@ -102,7 +98,7 @@ export default class MockServer {
         }
         return {
           status: 404,
-          statusText: 'Folder not found.',
+          body: 'Folder not found.',
         };
       }), 2000);
 
@@ -119,7 +115,7 @@ export default class MockServer {
         }
         return {
           status: 404,
-          statusText: 'Folder not found.',
+          body: 'Folder not found.',
         };
       }));
   }

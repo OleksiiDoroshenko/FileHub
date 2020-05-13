@@ -84,10 +84,9 @@ export default class ApiService {
   async getError(response) {
     switch (response.status) {
       case 401: {
-        const result = response.json();
-        let message = '';
-        await result.then((response) => {
-          message = response.error.message;
+        let message = response.statusText;
+        await response.text().then(text => {
+          message = text;
         });
         return new AuthorizationError(message);
       }
@@ -103,6 +102,13 @@ export default class ApiService {
       }
       case 500: {
         return new Error(response.statusText);
+      }
+      default: {
+        let message = response.statusText;
+        await response.text().then(text => {
+          message = text;
+        });
+        return new Error(message);
       }
     }
   }

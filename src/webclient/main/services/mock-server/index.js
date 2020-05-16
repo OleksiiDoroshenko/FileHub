@@ -93,6 +93,7 @@ export default class MockServer {
     fetchMock
       .get('express:/folder/:id/content', ((url) => {
         const id = url.split('/')[2];
+        return 401;
         if (id === '0') {
           return {items: this.items};
         }

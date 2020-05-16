@@ -4,6 +4,7 @@ import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
 import GetRootIdAction from '../../services/state-manager/actions/get-root-id';
+import AuthorizationError from '../../../models/errors/authorization-error';
 
 /**
  * Renders file explorer page.
@@ -104,7 +105,12 @@ export default class FileExplorerPage extends StateAwareComponent {
       }
     });
     this.stateManager.onStateChanged('error', (state) => {
-      this.fileContainer.showError(state.error);
+      const error = state.error;
+      if (error instanceof AuthorizationError) {
+        window.location.hash = '#/login';
+      } else {
+        this.fileContainer.showError(state.error);
+      }
     });
   }
 

@@ -2,15 +2,9 @@ import ApiService from '../main/services/api-service';
 import StateManager from '../main/services/state-manager';
 import Mutator from '../main/services/state-manager/mutators/mutator.js';
 import Action from '../main/services/state-manager/actions/action.js';
-import ItemsMutator from '../main/services/state-manager/mutators/items-mutator';
 import ItemsLoadingMutator from '../main/services/state-manager/mutators/items-loading-mutator';
 import ItemsLoadingErrorMutator from '../main/services/state-manager/mutators/items-loading-error-mutator';
-import GetRootIdAction from '../main/services/state-manager/actions/get-root-id';
-import ItemLoadingMutator from '../main/services/state-manager/mutators/item-loading-mutator';
-import ItemLoadingErrorMutator from '../main/services/state-manager/mutators/item-loading-error-mutator';
-import ItemsMutator from '../main/services/state-manager/mutators/get-item-mutator';
-import GetItemsAction from '../main/services/state-manager/actions/get-items';
-import DeleteItemAction from '../main/services/state-manager/actions/delete-item';
+import ItemsMutator from '../main/services/state-manager/mutators/items-mutator';
 import UploadFileAction from '../main/services/state-manager/actions/upload-file';
 
 const {module, test} = QUnit;
@@ -70,19 +64,10 @@ export default module('State manager test: ', function(hook) {
     }
   });
 
-  test('Should dispatch delete item action', async (assert) => {
-    const deleteItemAction = new DeleteItemAction({id: '0', parentId: '0', type: 'folder'});
-    stateManager.onStateChanged('items', (state) => {
-      const afterDeleteItemsLength = state.items.length;
-      assert.strictEqual(afterDeleteItemsLength, 3, 'Should delete item from items list.');
-    });
-    stateManager.dispatch(deleteItemAction);
-  });
 
   test('Should dispatch upload file action', async (assert) => {
-    stateManager = new StateManager({}, service);
     const uploadFileAction = new UploadFileAction('0',
-        new File([], 'Test'));
+      new File([], 'Test'));
     stateManager.onStateChanged('items', (state) => {
       const newItem = state.items[state.items.length - 1];
       assert.strictEqual('Test', newItem.config.name, 'Should upload file to list.');

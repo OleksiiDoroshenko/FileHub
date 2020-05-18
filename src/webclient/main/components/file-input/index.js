@@ -1,31 +1,20 @@
-import Component from '../component.js';
+import Button from '../button';
 
 /**
  * Implements html button for file upload rendering into another html element(container).
  */
-export default class FileInputButton extends Component {
-  /**
-   * @typedef {Object} ButtonConfig.
-   * @param {string} text - html button inner text value.
-   */
+export default class FileInputButton extends Button {
 
   /**
    * Class constructor.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {ButtonConfig} componentConfig - button configuration.
+   * @param {Object} componentConfig - initial configuration.
+   * @param {string} componentConfig.text - button inner text;
+   * @param {string} componentConfig.icon - inner button icon.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);
     this.addEventListener();
-  }
-
-  /**
-   * @inheritdoc.
-   */
-  _markup() {
-    return `
-            <button class="btn btn-primary">${this.text}</button>
-        `;
   }
 
   /**

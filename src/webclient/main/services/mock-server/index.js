@@ -118,45 +118,17 @@ export default class MockServer {
       }));
 
     fetchMock
-      .delete('express:/delete-folder/:id', ((url) => {
-        const id = url.split('/')[2];
-        this.items = Object.entries(this.items).reduce((acc, [index, item]) => {
-          if (item.config.id !== id) {
-            acc.push(item);
-          }
-          return acc;
-        }, []);
-        return 200;
-      }));
-
-    fetchMock
-      .delete('express:/delete-item/:id', ((url) => {
-        const id = url.split('/')[2];
-        this.items = Object.entries(this.items).reduce((acc, [index, item]) => {
-          if (item.config.id !== id) {
-            acc.push(item);
-          }
-          return acc;
-        }, []);
-        return 200;
-      }));
-
-    fetchMock
-      .post('express:/upload-item/:id', (((url, request) => {
+      .post('express:/folder/:id/file', (((url, request) => {
         const file = request.body.file;
-        const newFile = {type: 'file'};
-        const config = {};
+        const newFile = {};
 
-        config.id = this._getNextId();
-        config.parentId = url.split('/')[2];
-        config.name = file.name;
-        config.mimeType = this._getMimeType(file.name);
-        config.size = this._getFileSize(file.size);
-        newFile.config = config;
-
-
+        newFile.id = this._getNextId();
+        newFile.parentId = url.split('/')[2];
+        newFile.name = file.name;
+        newFile.mimeType = this._getMimeType(file.name);
+        newFile.size = this._getFileSize(file.size);
+        newFile.type = 'file';
         this.items.push(newFile);
-
         return 200;
       })));
   }
@@ -210,7 +182,7 @@ export default class MockServer {
    * @private
    */
   _getNextId() {
-    return +this.items[this.items.length - 1].config.id + 1;
+    return +this.items[this.items.length - 1].id + 1;
   }
 
   /**

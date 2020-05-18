@@ -1,7 +1,7 @@
 import Action from '../action.js';
-import ItemLoadingMutator from '../../mutators/item-loading-mutator';
-import ItemsMutator from '../../mutators/get-item-mutator';
-import ItemLoadingErrorMutator from '../../mutators/item-loading-error-mutator';
+import ItemLoadingMutator from '../../mutators/items-loading-mutator';
+import ItemsMutator from '../../mutators/items-mutator';
+import ItemLoadingErrorMutator from '../../mutators/items-loading-error-mutator';
 
 /**
  * Sends request for uploading file to {@link StateManager} state
@@ -22,15 +22,18 @@ export default class UploadFileAction extends Action {
   /**
    * @inheritdoc
    */
-  apply(stateManager, appService) {
+  async apply(stateManager, apiService) {
     stateManager.mutate(new ItemLoadingMutator(true));
-    appService.uploadFile(this.parentId, this.file).then(() => {
-      appService.getItems(this.parentId).then((files) => {
-        stateManager.mutate(new ItemsMutator(files));
-      }).catch((error) => {
-        stateManager.mutate(new ItemLoadingErrorMutator(error));
-      });
+    apiService.uploadFile(this.parentId, this.file)
+      .then(() => {
+        apiService.getItems(this.parentId)
+          .then((response) => {
+            stateManager.mutate(new ItemsMutator(response.items));
+          }).catch((e) => {
+          stateManager.mutate(new ItemLoadingErrorMutator(e));
+        });
+      }).finally(() => {
+      stateManager.mutate(new ItemLoadingMutator(false));
     });
-    stateManager.mutate(new ItemLoadingMutator(false));
   }
 }

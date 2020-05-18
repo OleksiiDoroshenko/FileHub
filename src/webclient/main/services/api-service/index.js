@@ -116,7 +116,7 @@ export default class ApiService {
   /**
    * Sends request to the server for getting folder content.
    * @param {string} folderId - folder id.
-   * @return {Promise<[Object]>}
+   * @return {Promise<Response>}
    */
   getItems(folderId) {
     return fetch(`/folder/${folderId}/content`, {
@@ -129,6 +129,21 @@ export default class ApiService {
         return response.json();
       }
       throw await this.getError(response);
+    });
+  }
+
+  /**
+   * Sends request to server for uploading new file.
+   * @param {string} parentId - id of parent folder where file will be loaded.
+   * @param {File} file - file to be loaded.
+   * @returns {Promise<>}
+   */
+  uploadFile(parentId, file) {
+    return fetch(`/folder/${parentId}/file`, {
+      method: 'POST',
+      body: {
+        file: file,
+      },
     });
   }
 }

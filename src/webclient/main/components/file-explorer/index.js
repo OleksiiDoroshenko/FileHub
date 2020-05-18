@@ -2,10 +2,11 @@ import FileList from '../file-list';
 import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
-import DeleteItemAction from '../../services/state-manager/actions/delete-item';
 import TitleService from '../../services/change-title';
 import GetRootIdAction from '../../services/state-manager/actions/get-root-id';
 import AuthorizationError from '../../../models/errors/authorization-error';
+import UploadFileAction from '../../services/state-manager/actions/upload-file';
+import FileInputButton from '../file-input';
 
 /**
  * Renders file explorer page.
@@ -61,7 +62,7 @@ export default class FileExplorerPage extends StateAwareComponent {
                   </div>
               </header>
               <div class="file-container" data-toggle="tooltip" data-render="file-list"
-               data-placement="top" title="File storage">
+               data-placement="top" title="File storage" data-render="file-list">
               </div>
           </div>
           <footer class="footer">
@@ -84,25 +85,16 @@ export default class FileExplorerPage extends StateAwareComponent {
       text: 'Create directory',
       icon: 'glyphicon-plus',
     });
-    const uploadFileBtn = new Button(btnMenuRoot, {
+    const uploadFileBtn = new FileInputButton(btnMenuRoot, {
       text: 'Upload File',
       icon: 'glyphicon-upload',
     });
-
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
     this.fileContainer = new FileList(fileContainerRoot, {items: []});
 
     uploadFileBtn.uploadFileHandler = (file) => {
       this.stateManager.dispatch(new UploadFileAction(this.id, file));
     };
-
-    const fileContainerRoot = this.container.querySelector('.file-container');
-    this.fileContainer = new FileContainer(fileContainerRoot, {items: []});
-
-    this.fileContainer.onItemDelete((item) => {
-      console.log('delete = ' + item.id);
-      this.stateManager.dispatch(new DeleteItemAction(item));
-    });
   }
 
   /**

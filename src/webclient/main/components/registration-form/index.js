@@ -64,9 +64,10 @@ export default class RegistrationForm extends Component {
       const password = this.passwordInput.value;
       const confirmPassword = this.confirmPasswordInput.value;
 
-      if (this._validateForm(login, password, confirmPassword)) {
+      this._validateForm(login, password, confirmPassword).then(() => {
         this._executeHandlers(new UserData(login, password));
-      }
+      }).catch((error) => {
+      });
       event.preventDefault();
       event.stopPropagation();
     });
@@ -78,49 +79,57 @@ export default class RegistrationForm extends Component {
    * @param {string} login - users username.
    * @param {string} password - users password.
    * @param {string} confirmPassword - users repeated password.
-   * @return {boolean} returns true if login-form is valid / false if it is not;
+   * @return {Promise<boolean>} returns true if login-form is valid / false if it is not;
    * @private
    */
   _validateForm(login, password, confirmPassword) {
-    const validator = new Validator();
-    let loginValid = false;
-    let passwordValid = false;
-    let confirmPasswordValid = false;
+    return new Promise((resolve, reject) => {
+      const validator = new Validator();
+      const loginValid = validator.validateLogin(login);
+      const passwordValid = validator.validatePassword(password);
+      const confirmPasswordValid = validator.comparePasswords(confirmPassword, password);
 
-    this.usernameInput.hideWarning();
-    this.passwordInput.hideWarning();
-    this.confirmPasswordInput.hideWarning();
+      this.usernameInput.hideWarning();
+      this.passwordInput.hideWarning();
+      this.confirmPasswordInput.hideWarning();
 
-    validator.validateLogin(login).then(() => {
-      loginValid = true;
-    }).catch((error) => {
-      this.usernameInput.showWarning(error.message);
+      Promise.all([loginValid.catch((error) => {
+        this._errorHandler(error);
+        reject('login');
+      }),
+      passwordValid.catch((error) => {
+        this._errorHandler(error);
+        reject('password');
+      }),
+      confirmPasswordValid.catch((error) => {
+        this._errorHandler(error);
+        reject('confirm');
+      })])
+          .then(() => {
+            resolve('general');
+          }).catch((error) => {
+            this._errorHandler(error);
+            reject();
+          });
     });
-    validator.validatePassword(password).then(() => {
-      passwordValid = true;
-    }).catch((error) => {
-      this.passwordInput.showWarning(error.message);
-    });
-    validator.comparePasswords(confirmPassword, password).then(() => {
-      confirmPasswordValid = true;
-    }).catch((error) => {
-      this.confirmPasswordInput.showWarning(error.message);
-    });
-
-    return loginValid && passwordValid && confirmPasswordValid;
   }
 
+
   /**
-   * Handles authentication errors.
+   * Handles app-service errors.
    * <p> renders warning messages below invalid inputs.
-   * @param {VerificationError} error - instance of {@link VerificationError} .
+   * @param {[VerificationError]} errors - instance of {@link VerificationError} .
    */
-  handleError(error) {
-    if (error.field === 'password') {
-      this.passwordInput.showWarning(error.message);
-    } else if (error.field === 'login') {
-      this.usernameInput.showWarning(error.message);
-    }
+  handleError(errors) {
+    errors.forEach((error) => {
+      if (error.field === 'password') {
+        this.passwordInput.showWarning(error.message);
+      } else if (error.field === 'login') {
+        this.usernameInput.showWarning(error.message);
+      } else if (error.field === 'confirmPassword') {
+        this.confirmPasswordInput.showWarning(error.message);
+      }
+    });
   }
 
   /**
@@ -140,5 +149,27 @@ export default class RegistrationForm extends Component {
     this.submitHandlers.forEach((handler) => {
       handler(userData);
     });
+  }
+
+  /**
+   * Shows error message below input with invalid date.
+   * @param {VerificationError} error - instance of {@link VerificationError}.
+   * @private
+   */
+  _errorHandler(error) {
+    switch (error.field) {
+      case 'login': {
+        this.usernameInput.showWarning(error.message);
+        break;
+      }
+      case 'password': {
+        this.passwordInput.showWarning(error.message);
+        break;
+      }
+      case 'confirmPassword': {
+        this.confirmPasswordInput.showWarning(error.message);
+        break;
+      }
+    }
   }
 }

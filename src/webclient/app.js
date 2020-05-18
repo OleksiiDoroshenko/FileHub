@@ -5,7 +5,6 @@ import LoginPage from './components/login-page';
  * Implements entry point for rendering every application page.
  */
 export default class Application extends Component {
-
   /**
    * @inheritdoc.
    */

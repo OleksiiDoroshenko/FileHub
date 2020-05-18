@@ -53,9 +53,12 @@ export default class LoginForm extends Component {
       const login = this.usernameInput.value;
       const password = this.passwordInput.value;
 
-      if (this._validateForm(login, password)) {
+      this._validateForm(login, password).then(() => {
         this._executeHandlers(new UserData(login, password));
-      }
+      }).catch((e) => {
+
+      });
+
       event.preventDefault();
       event.stopPropagation();
     });
@@ -66,28 +69,33 @@ export default class LoginForm extends Component {
    * <p> If some of the inputs are invalid renders warning message with explanations what is not ok.
    * @param {string} login - users username.
    * @param {string} password - users password.
-   * @return {boolean} returns true if login-form is valid / false if it is not;
+   * @return {Promise<boolean>} returns true if login-form is valid / false if it is not;
    * @private
    */
   _validateForm(login, password) {
-    const validator = new Validator();
-    let loginValid = false;
-    let passwordValid = false;
     this.usernameInput.hideWarning();
     this.passwordInput.hideWarning();
+    return new Promise((resolve, reject) => {
+      const validator = new Validator();
 
-    validator.validateLogin(login).then(() => {
-      loginValid = true;
-    }).catch((error) => {
-      this.usernameInput.showWarning(error.message);
-    });
-    validator.validatePassword(password).then(() => {
-      passwordValid = true;
-    }).catch((error) => {
-      this.passwordInput.showWarning(error.message);
-    });
+      const loginValid = validator.validateLogin(login);
 
-    return loginValid && passwordValid;
+      const passwordValid = validator.validatePassword(password);
+
+      Promise.all([loginValid.catch((error) => {
+        this._errorHandler(error);
+        reject('login');
+      }),
+      passwordValid.catch((error) => {
+        this._errorHandler(error);
+        reject('password');
+      })]).then(() => {
+        resolve();
+      }).catch((error) => {
+        this._errorHandler(error);
+        reject('general');
+      });
+    });
   }
 
   /**
@@ -107,5 +115,23 @@ export default class LoginForm extends Component {
     this.submitHandlers.forEach((handler) => {
       handler(userData);
     });
+  }
+
+  /**
+   * Shows error message below input with invalid date.
+   * @param {VerificationError} error - instance of {@link VerificationError}.
+   * @private
+   */
+  _errorHandler(error) {
+    switch (error.field) {
+      case 'login': {
+        this.usernameInput.showWarning(error.message);
+        break;
+      }
+      case 'password': {
+        this.passwordInput.showWarning(error.message);
+        break;
+      }
+    }
   }
 }

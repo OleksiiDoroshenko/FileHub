@@ -1,6 +1,7 @@
 import Component from '../component.js';
 import RegistrationForm from '../registration-form';
 import TitleService from '../../services/change-title';
+import AuthorizationError from '../../../models/errors/authorization-error';
 
 /**
  * Implements html page that allows user to register.
@@ -9,13 +10,13 @@ export default class RegistrationPage extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - root container for element rendering.
-   * @param {AuthenticationService} service - instance of {@link AuthenticationService}.
+   * @param {AppService} service - instance of {@link AppService}.
    * @param {Object} componentConfig - empty object.
    */
   constructor(container, service, componentConfig) {
     super(container, componentConfig);
     this._service = service;
-    new TitleService().changeTitle('Login');
+    new TitleService().changeTitle('Registration');
   }
 
   /**
@@ -38,6 +39,19 @@ export default class RegistrationPage extends Component {
    */
   _initInnerComponents() {
     const formRoot = this.container.querySelector('[data-render="registration-page"]');
-    new RegistrationForm(formRoot, {});
+    const form = new RegistrationForm(formRoot, {});
+
+    form.onSubmit((userData) => {
+      this._service.register(userData)
+          .then((response) => {
+            window.location.hash = '#/login';
+          }).catch((error) => {
+            if (error instanceof AuthorizationError) {
+              alert(error.message);
+            } else {
+              form.handleError(error);
+            }
+          });
+    });
   }
 }

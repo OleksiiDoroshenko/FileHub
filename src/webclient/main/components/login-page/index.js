@@ -9,7 +9,7 @@ export default class LoginPage extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - root container for element rendering.
-   * @param {AuthenticationService} service - instance of {@link AuthenticationService}.
+   * @param {ApiService} service - instance of {@link ApiService}.
    * @param {Object} componentConfig - empty object.
    */
   constructor(container, service, componentConfig) {
@@ -40,9 +40,10 @@ export default class LoginPage extends Component {
     const formRoot = this.container.querySelector('[data-render="login-page"]');
     const form = new LoginForm(formRoot, {});
     form.onSubmit((userData) => {
-      this._service.logIn(userData).then(() => {
-        window.location.hash = '/#file-explorer';
-      }).catch((error) => {
+      this._service.logIn(userData)
+        .then(() => {
+          window.location.hash = `#/file-explorer/folder/root`;
+        }).catch((error) => {
         alert(error.message);
       });
     });

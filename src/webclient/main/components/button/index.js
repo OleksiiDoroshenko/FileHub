@@ -5,6 +5,17 @@ import Component from '../component.js';
  */
 export default class Button extends Component {
   /**
+   * Returns instance of {@link Button};
+   * @param {HTMLElement} container - container to render.
+   * @param {Object} componentConfig - initial configuration.
+   * @param {string} componentConfig.text - button inner text;
+   * @param {string} componentConfig.icon - inner button icon.
+   */
+  constructor(container, componentConfig) {
+    super(container, componentConfig);
+  }
+
+  /**
    * @inheritdoc.
    */
   _markup() {
@@ -25,5 +36,4 @@ export default class Button extends Component {
   set icon(icon) {
     this.text = `<i class="glyphicon ${icon}"></i> ${this.text}`;
   }
-
 }

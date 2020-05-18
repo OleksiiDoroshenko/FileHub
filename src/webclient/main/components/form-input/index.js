@@ -6,18 +6,14 @@ import Component from '../component.js';
  */
 export default class FormInput extends Component {
   /**
-   * @typedef {[string]} FormRowConfig.
-   * @param {string} id - html input 'id' attribute value.
-   * @param {string} labelText - html label text.
-   * @param {string} inputType - html input 'type' attribute value.
-   * @param {string} placeHolder - html input 'placeHolder' attribute value.
-   * @param {string} warning - html 'p' tag inner text .
-   */
-
-  /**
    * Class constructor.
    * @param {HTMLElement} container - container for element rendering.
-   * @param {FormRowConfig} componentConfig - initial configuration of row login-form.
+   * @param {Object} componentConfig - initial configuration of row login-form.
+   * @param {string} componentConfig.id - html input 'id' attribute value.
+   * @param {string} componentConfig.labelText - html label text.
+   * @param {string} componentConfig.inputType - html input 'type' attribute value.
+   * @param {string} componentConfig.placeHolder - html input 'placeHolder' attribute value.
+   * @param {string} componentConfig.warning - html 'p' tag inner text .
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);

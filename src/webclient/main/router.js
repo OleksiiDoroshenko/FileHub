@@ -13,7 +13,7 @@ export default class Router {
     this.pageMapping = pageMapping;
     this.window = window;
     this._init();
-    this._hashchangeHandler();
+    this._hashChangeHandler();
   }
 
   /**
@@ -21,11 +21,11 @@ export default class Router {
    */
   _init() {
     this.window.addEventListener('hashchange', () => {
-      this._hashchangeHandler();
+      this._hashChangeHandler();
     });
   }
 
-  _hashchangeHandler() {
+  _hashChangeHandler() {
     const hash = this.window.location.hash.slice(1);
     this._renderPage(hash);
   }
@@ -37,8 +37,10 @@ export default class Router {
    */
   _renderPage(hash) {
     this.container.innerHTML = '';
-    if (this.pageMapping[hash]) {
-      this.pageMapping[hash]();
+    const staticPart = `/${hash.split('/')[1]}`;
+    if (staticPart.length > 1 && this._getUrlTemplate(staticPart)) {
+      const urlTemplate = this._getUrlTemplate(staticPart);
+      this._createPage(hash, urlTemplate);
     } else {
       this._renderDefaultOrErrorPage(hash);
     }
@@ -53,9 +55,59 @@ export default class Router {
     this.container.innerHTML = '';
     if (hash === '/' || hash === '') {
       this.window.location.hash = `#${this.pageMapping['default']}`;
-      this._hashchangeHandler();
+      this._hashChangeHandler();
     } else {
       this.pageMapping['error']();
     }
+  }
+
+  /**
+   * Returns object with all dynamic parameters that hash contains.
+   * @param {string} url - url.
+   * @param {string} urlTemplate - url template that contains that describes rules for url parsing.
+   * @return {{Object}} - contains dynamic url parameters.
+   * @private
+   */
+  _getDynamicPart(url, urlTemplate) {
+    const dynamicParts = urlTemplate.split('/');
+    const keyIndexMap = dynamicParts.reduce((acc, value, index) => {
+      if (value.startsWith(':')) {
+        const key = value.slice(1);
+        acc[key] = index;
+      }
+      return acc;
+    }, {});
+
+    const urlParts = url.split('/');
+    return Object.entries(keyIndexMap).reduce((acc, [key, index]) => {
+      acc[key] = urlParts[index];
+      return acc;
+    }, {});
+  }
+
+  /**
+   * Creates page from pageMapping field with all necessary parameters.
+   * @param {string} url - url.
+   * @param {string} urlTemplate - url template that contains that describes rules for url parsing.
+   * @private
+   */
+  _createPage(url, urlTemplate) {
+    const dynamicParams = this._getDynamicPart(url, urlTemplate);
+    const page = this.pageMapping[urlTemplate];
+    page(dynamicParams);
+  }
+
+  /**
+   * Returns url template from pageMapping field.
+   * @param {string} staticPart - url part that contains unchangeable part.
+   * @return {string} url template.
+   * @private
+   */
+  _getUrlTemplate(staticPart) {
+    return Object.keys(this.pageMapping).find((urlTemplate) => {
+      if (urlTemplate.startsWith(staticPart)) {
+        return true;
+      }
+    });
   }
 }

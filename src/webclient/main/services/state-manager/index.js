@@ -6,11 +6,11 @@ export default class StateManager extends EventTarget {
    * Returns instance of {@link StateManager} class.
    * <p> Adds set event handler for state properties.
    * @param {object} initialState - initial state of {@link FileExplorerPage} content.
-   * @param {AppService} appService - instance of {@link AppService}.
+   * @param {ApiService} apiService - instance of {@link ApiService}.
    */
-  constructor(initialState, appService) {
+  constructor(initialState, apiService) {
     super();
-    this.appService = appService;
+    this.apiService = apiService;
     const setHandler = {
       set: (obj, prop, value) => {
         obj[prop] = value;
@@ -33,11 +33,11 @@ export default class StateManager extends EventTarget {
   }
 
   /**
-   * Sends this {@link StateManager} and this.{@link AppService}.
+   * Sends this {@link StateManager} and this.{@link ApiService}.
    * @param {Action} action - class that extends {@link Action}.
    */
-  dispatch(action) {
-    action.apply(this, this.appService);
+  async dispatch(action) {
+    return await action.apply(this, this.apiService);
   }
 
   /**

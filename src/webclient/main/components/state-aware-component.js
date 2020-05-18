@@ -21,4 +21,8 @@ export default class StateAwareComponent extends Component {
    */
   initState() {
   }
+
+  onStateChanged(filed, handler) {
+    this.stateManager.onStateChanged(filed, handler);
+  }
 }

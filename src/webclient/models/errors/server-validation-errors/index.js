@@ -3,13 +3,14 @@
  */
 export default class ServerValidationErrors extends Error {
   /**
-   * @type {VerificationError[]} server validation errors array.
+   * List of server errors.
+   * @type {[Error]}
    */
   errors = [];
 
   /**
-   *  Returns class instance.
-   * @param {[VerificationError]} errors - server validation errors array.
+   * Returns instance of {@link ServerValidationErrors}
+   * @param {[Error]} errors - list of errors that have arisen on the server.
    */
   constructor(errors) {
     super();

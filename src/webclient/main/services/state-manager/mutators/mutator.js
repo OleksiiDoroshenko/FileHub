@@ -1,5 +1,5 @@
 /**
- * Class for inheritance of method that can change state in the {@link StateManager}.
+ * Allows {@link StateManager} state fields changing.
  */
 export default class Mutator {
   /**

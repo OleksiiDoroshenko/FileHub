@@ -1,11 +1,11 @@
 import Mutator from '../mutator.js';
 
 /**
- * Class that can change 'error' filed in the {@link StateManager} state.
+ * Allows {@link StateManager} state isLoadingError field changing.
  */
-export default class ItemLoadingErrorMutator extends Mutator {
+export default class ItemsLoadingErrorMutator extends Mutator {
   /**
-   * Returns instance of {@link ItemLoadingErrorMutator}.
+   * Returns instance of {@link ItemsLoadingErrorMutator}.
    * @param {Error} error - error that appeared in the server response.
    */
   constructor(error) {

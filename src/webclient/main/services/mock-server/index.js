@@ -1,5 +1,4 @@
 import UserData from '../../../models/user-data';
-import AuthorizationError from '../../../models/errors/authorization-error';
 import VerificationError from '../../../models/errors/verification-error';
 import fetchMock from '../../../../../node_modules/fetch-mock/esm/client.js';
 
@@ -19,25 +18,25 @@ export default class MockServer {
    * @type {{User}}
    */
   users = {
-    admin: 'Admin123456',
+    Admin: 'Admin123456',
   };
 
+  /**
+   * List of user items.
+   * @type {[ListItem]}
+   */
   items = [
     {
-      type: 'folder',
-      config: {id: '0', parentId: '0', name: 'Documents', itemsAmount: '2'},
+      id: '1', parentId: '0', name: 'Documents', itemsAmount: '2', type: 'folder',
     },
     {
-      type: 'folder',
-      config: {id: '1', parentId: '0', name: 'Images', itemsAmount: '2'},
+      id: '2', parentId: '0', name: 'Images', itemsAmount: '2', type: 'folder',
     },
     {
-      type: 'folder',
-      config: {id: '2', parentId: '0', name: 'Videos', itemsAmount: '1'},
+      id: '3', parentId: '0', name: 'Videos', itemsAmount: '1', type: 'folder',
     },
     {
-      type: 'file',
-      config: {id: '3', parentId: '0', name: 'test.txt', mimeType: 'text', size: '20KB'},
+      id: '4', parentId: '0', name: 'test.txt', mimeType: 'text', size: '20KB', type: 'file',
     },
   ];
 
@@ -46,9 +45,6 @@ export default class MockServer {
    * <p> Instance has mocked HTTP requests.
    */
   constructor() {
-    console.log('Current users');
-    this.printUsers();
-
     fetchMock.config.overwriteRoutes = true;
 
     fetchMock
@@ -57,27 +53,27 @@ export default class MockServer {
         if (this.isUserRegistered(userData)) {
           return {
             status: 200,
-            body: {token: `${userData.login}-token`},
+            body: {token: `${userData.login}-token`, rootId: '0'},
           };
         } else {
-          return 401;
+          return {
+            status: 401,
+            body: 'Invalid login or password.',
+          };
         }
       }));
 
     fetchMock
-      .post('/registration', ((url, request) => {
+      .post('/register', ((url, request) => {
         const userData = new UserData(request.body.login, request.body.password);
         if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
-          console.log(`New user ${userData.login} has been registered`);
-          this.users[userData.login.toLowerCase()] = userData.password;
+          this.users[userData.login] = userData.password;
           return 200;
         } else {
           if (this.isLoginRegistered(userData)) {
             return {
               status: 401,
-              body: {
-                error: new AuthorizationError('User with this login already exists.'),
-              },
+              body: 'User with this login already exists.',
             };
           } else {
             const errors = [];
@@ -93,13 +89,32 @@ export default class MockServer {
       }));
 
     fetchMock
-      .get('express:/get-items/:id', ((url, request) => {
+      .get('express:/folder/:id/content', ((url) => {
         const id = url.split('/')[2];
-        let items = [];
         if (id === '0') {
-          items = this.items;
+          return {items: this.items};
         }
-        return {items: items};
+        return {
+          status: 404,
+          body: 'Folder not found.',
+        };
+      }), 2000);
+
+    fetchMock
+      .get('/folder/root', ((url, request) => {
+        const token = request.headers.token;
+        if (token === 'Admin-token') {
+          return {
+            status: 200,
+            body: {
+              folder: {id: '0', parentId: '', name: 'Root', itemsAmount: '4', type: 'folder'},
+            },
+          };
+        }
+        return {
+          status: 404,
+          body: 'Folder not found.',
+        };
       }));
 
     fetchMock
@@ -147,21 +162,12 @@ export default class MockServer {
   }
 
   /**
-   * Prints all registered users.
-   */
-  printUsers() {
-    for (const p in this.users) {
-      console.log(p);
-    }
-  }
-
-  /**
    * Checks if user with this login and password is registered.
    * @param {UserData} userData - instance of {@link UserData}.
    * @return {boolean} if user is registered returns true if it's not returns false.
    */
   isUserRegistered(userData) {
-    const login = userData.login.toLowerCase();
+    const login = userData.login;
     const password = userData.password;
     return this.users.hasOwnProperty(login) && this.users[login] === password;
   }
@@ -172,8 +178,7 @@ export default class MockServer {
    * @return {boolean} if login is already registered returns True if not, false.
    */
   isLoginRegistered(userData) {
-    const login = userData.login.toLowerCase();
-    console.log(`login ${login} is ${this.users.hasOwnProperty(login)}`);
+    const login = userData.login;
     return this.users.hasOwnProperty(login);
   }
 

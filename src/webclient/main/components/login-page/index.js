@@ -9,7 +9,7 @@ export default class LoginPage extends Component {
   /**
    * Class constructor.
    * @param {HTMLElement} container - root container for element rendering.
-   * @param {AppService} service - instance of {@link AppService}.
+   * @param {ApiService} service - instance of {@link ApiService}.
    * @param {Object} componentConfig - empty object.
    */
   constructor(container, service, componentConfig) {
@@ -23,7 +23,7 @@ export default class LoginPage extends Component {
    */
   _markup() {
     return `
-            <section class="container base-form login-form">
+            <section class="container base-form login-form" data-render="login-page">
                  <header class="header">
                     <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
                     <i class="glyphicon glyphicon-user user-icon"></i>
@@ -37,15 +37,15 @@ export default class LoginPage extends Component {
    * @inheritdoc.
    * */
   _initInnerComponents() {
-    const formRoot = this.container.querySelector('.login-form');
+    const formRoot = this.container.querySelector('[data-render="login-page"]');
     const form = new LoginForm(formRoot, {});
     form.onSubmit((userData) => {
-      this._service.login(userData)
-          .then((token) => {
-            window.location.hash = '#/file-explorer';
-          }).catch((error) => {
-            alert(error.message);
-          });
+      this._service.logIn(userData)
+        .then(() => {
+          window.location.hash = `#/file-explorer/folder/root`;
+        }).catch((error) => {
+        alert(error.message);
+      });
     });
   }
 }

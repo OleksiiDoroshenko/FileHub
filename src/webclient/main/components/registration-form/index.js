@@ -56,21 +56,17 @@ export default class RegistrationForm extends Component {
       linkText: 'Already have an account?',
       linkHref: '#/login',
       btnText: 'Register',
-      btnType: 'Submit',
     });
 
 
     this.actions.addEventListener('click', (event) => {
-      this.usernameInput.hideWarning();
-      this.passwordInput.hideWarning();
-      this.confirmPasswordInput.hideWarning();
-
       const login = this.usernameInput.value;
       const password = this.passwordInput.value;
       const confirmPassword = this.confirmPasswordInput.value;
 
       this._validateForm(login, password, confirmPassword).then(() => {
         this._executeHandlers(new UserData(login, password));
+      }).catch((error) => {
       });
       event.preventDefault();
       event.stopPropagation();
@@ -93,28 +89,33 @@ export default class RegistrationForm extends Component {
       const passwordValid = validator.validatePassword(password);
       const confirmPasswordValid = validator.comparePasswords(confirmPassword, password);
 
+      this.usernameInput.hideWarning();
+      this.passwordInput.hideWarning();
+      this.confirmPasswordInput.hideWarning();
+
       Promise.all([loginValid.catch((error) => {
         this._errorHandler(error);
-        reject();
+        reject('login');
       }),
-        passwordValid.catch((error) => {
-          this._errorHandler(error);
-          reject();
-        }),
-        confirmPasswordValid.catch((error) => {
-          this._errorHandler(error);
-          reject();
-        })]).then(() => {
-        resolve();
-      }).catch((error) => {
+      passwordValid.catch((error) => {
         this._errorHandler(error);
-        reject();
-      });
+        reject('password');
+      }),
+      confirmPasswordValid.catch((error) => {
+        this._errorHandler(error);
+        reject('confirm');
+      })])
+          .then(() => {
+            resolve('general');
+          }).catch((error) => {
+            this._errorHandler(error);
+            reject();
+          });
     });
   }
 
   /**
-   * Handles app-secrvice errors.
+   * Handles api-service errors.
    * <p> renders warning messages below invalid inputs.
    * @param {[VerificationError]} errors - instance of {@link VerificationError} .
    */
@@ -124,6 +125,8 @@ export default class RegistrationForm extends Component {
         this.passwordInput.showWarning(error.message);
       } else if (error.field === 'login') {
         this.usernameInput.showWarning(error.message);
+      } else if (error.field === 'confirmPassword') {
+        this.confirmPasswordInput.showWarning(error.message);
       }
     });
   }

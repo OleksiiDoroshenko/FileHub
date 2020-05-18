@@ -16,7 +16,7 @@ function deleteElement(el) {
 
 function addDirectory() {
 
-    let table = document.getElementById("file-container");
+    let table = document.getElementsByClassName("table")[0];
     let row = table.insertRow(0);
 
     let cell = row.insertCell(0);
@@ -26,16 +26,14 @@ function addDirectory() {
 
     cell.innerHTML = "<i class=\"glyphicon glyphicon-triangle-right\"></i> " +
         "<i class=\"glyphicon glyphicon-folder-close\"></i>";
-    cell1.innerHTML = "<a href=\"#\">New Directory</a>";
+    cell1.innerHTML = "<span class='cell-name-text'><a href=\"#\">New Directory</a></span>";
     cell2.innerHTML = "0 items";
     cell3.innerHTML = "<i onclick=\"uploadFile()\" class=\"glyphicon glyphicon-upload\"></i>" +
         "                        <i onclick='deleteElement(this)' class=\"glyphicon glyphicon-remove-circle\"></i>";
 
-    cell.classList.add("item-icon");
-    cell.classList.add("folder-icon");
-    cell1.classList.add("name");
-    cell1.classList.add("folder");
-    cell2.classList.add("items");
-    cell3.classList.add("clickable");
+    cell.classList.add("cell-icon");
+    cell1.classList.add("cell-name");
+    cell2.classList.add("cell-size");
+    cell3.classList.add("cell-actions");
     return false;
 }

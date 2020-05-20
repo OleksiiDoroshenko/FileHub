@@ -26,7 +26,7 @@ export default class Button extends Component {
    * @inheritdoc.
    */
   addEventListener(event, handler) {
-    this.container.querySelector('.btn').addEventListener(event, handler);
+    this.container.lastChild.addEventListener(event, handler);
   }
 
   /**

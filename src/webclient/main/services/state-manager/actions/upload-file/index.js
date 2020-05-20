@@ -2,6 +2,7 @@ import Action from '../action.js';
 import ItemLoadingMutator from '../../mutators/items-loading-mutator';
 import ItemsMutator from '../../mutators/items-mutator';
 import ItemLoadingErrorMutator from '../../mutators/items-loading-error-mutator';
+import AuthorizationError from '../../../../../models/errors/authorization-error';
 
 /**
  * Sends request for uploading file to {@link StateManager} state
@@ -29,10 +30,16 @@ export default class UploadFileAction extends Action {
         apiService.getItems(this.parentId)
           .then((response) => {
             stateManager.mutate(new ItemsMutator(response.items));
-          }).catch((e) => {
-          stateManager.mutate(new ItemLoadingErrorMutator(e));
+          }).catch((error) => {
+          stateManager.mutate(new ItemLoadingErrorMutator(error));
         });
-      }).finally(() => {
+      }).catch((error) => {
+      if (error instanceof AuthorizationError) {
+        window.location.hash = '#/login';
+      } else {
+        alert(error.message);
+      }
+    }).finally(() => {
       stateManager.mutate(new ItemLoadingMutator(false));
     });
   }

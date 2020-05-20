@@ -144,6 +144,11 @@ export default class ApiService {
       body: {
         file: file,
       },
+    }).then(async (response) => {
+      if (response.ok) {
+        return 200;
+      }
+      throw await this.getError(response);
     });
   }
 }

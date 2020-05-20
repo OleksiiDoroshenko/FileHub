@@ -59,8 +59,8 @@ export default class FileList extends Component {
       this.itemsRoot.innerHTML = '';
       if (Array.isArray(this._items)) {
         this._items.forEach((item) => {
-          this._createItem(this.itemsRoot, item);
-        },
+            this._createItem(this.itemsRoot, item);
+          },
         );
       }
     }
@@ -76,7 +76,9 @@ export default class FileList extends Component {
     switch (model.type) {
       case
       'folder': {
-        return new FolderItem(container, {model});
+        const folderItem = new FolderItem(container, {model});
+        folderItem.addUploadFileHandler(this._onUploadClickHandler);
+        return folderItem;
       }
       case
       'file': {
@@ -97,5 +99,9 @@ export default class FileList extends Component {
    */
   showError(error) {
     this.itemsRoot.innerHTML = 'Sorry something went wrong, please try later';
+  }
+
+  set onUploadClick(handler) {
+    this._onUploadClickHandler = handler;
   }
 }

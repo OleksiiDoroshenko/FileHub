@@ -6,7 +6,7 @@ import TitleService from '../../services/change-title';
 import GetRootIdAction from '../../services/state-manager/actions/get-root-id';
 import AuthorizationError from '../../../models/errors/authorization-error';
 import UploadFileAction from '../../services/state-manager/actions/upload-file';
-import FileInputButton from '../file-input';
+import UploadFileService from '../upload-file-service.js';
 
 /**
  * Renders file explorer page.
@@ -58,7 +58,6 @@ export default class FileExplorerPage extends StateAwareComponent {
                       </ul>
                   </div>
                   <div class="btn-menu" data-render="btn-menu">
-                      <input type="file" id="upload-file">
                   </div>
               </header>
               <div class="file-container" data-toggle="tooltip" data-render="file-list"
@@ -85,16 +84,22 @@ export default class FileExplorerPage extends StateAwareComponent {
       text: 'Create directory',
       icon: 'glyphicon-plus',
     });
-    const uploadFileBtn = new FileInputButton(btnMenuRoot, {
+    const uploadFileBtn = new Button(btnMenuRoot, {
       text: 'Upload File',
       icon: 'glyphicon-upload',
     });
-    const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
-    this.fileContainer = new FileList(fileContainerRoot, {items: []});
 
-    uploadFileBtn.uploadFileHandler = (file) => {
-      this.stateManager.dispatch(new UploadFileAction(this.id, file));
+    const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
+    this.fileList = new FileList(fileContainerRoot, {items: []});
+
+    const uploadHandler = (id, file) => {
+      console.log(id);
+      this.stateManager.dispatch(new UploadFileAction(id, file));
     };
+
+    this.fileList.onUploadClick = uploadHandler;
+    const uploadFileService = new UploadFileService(uploadHandler);
+    uploadFileService.addUploadFunctionality(this.id, uploadFileBtn);
   }
 
   /**
@@ -102,11 +107,11 @@ export default class FileExplorerPage extends StateAwareComponent {
    */
   initState() {
     this.stateManager.onStateChanged('items', (state) => {
-      this.fileContainer.items = state.items;
+      this.fileList.items = state.items;
     });
     this.stateManager.onStateChanged('isLoading', (state) => {
       if (state.isLoading) {
-        this.fileContainer.showLoadingMessage();
+        this.fileList.showLoadingMessage();
       }
     });
     this.stateManager.onStateChanged('error', (state) => {
@@ -114,7 +119,7 @@ export default class FileExplorerPage extends StateAwareComponent {
       if (error instanceof AuthorizationError) {
         window.location.hash = '#/login';
       } else {
-        this.fileContainer.showError(state.error);
+        this.fileList.showError(state.error);
       }
     });
   }

@@ -6,6 +6,8 @@ import FileItem from './file-item';
  * Class for files table rendering.
  */
 export default class FileList extends Component {
+  _uploadingItems = [];
+
   /**
    * Returns instance of {@link FileList}.
    * @param {HTMLElement} container - container for element rendering.
@@ -40,6 +42,11 @@ export default class FileList extends Component {
    */
   set items(items) {
     this._items = items;
+    this._renderItems();
+  }
+
+  set uploadingItems(items) {
+    this._uploadingItems = items;
     this._renderItems();
   }
 
@@ -78,6 +85,9 @@ export default class FileList extends Component {
       'folder': {
         const folderItem = new FolderItem(container, {model});
         folderItem.addUploadFileHandler(this._onUploadClickHandler);
+        if (this._uploadingItems.includes(model.id)) {
+          folderItem.isUploading = true;
+        }
         return folderItem;
       }
       case

@@ -204,5 +204,73 @@ a:hover {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
+}
+
+.file-uploading .glyphicon-upload {
+    display: none;
+}
+
+.file-uploading .uploading-indicator {
+    display: inline-block;
+}
+
+.uploading-indicator {
+    display: none;
+    position: relative;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    transform-origin: 10px 10px;
+}
+
+.uploading-indicator div {
+    left: -3px;
+    top: 5px;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #0fff09;
+    animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.uploading-indicator div:after,
+.uploading-indicator div:before {
+    content: " ";
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: #0fff09;
+}
+
+.uploading-indicator div:before {
+    left: -4px;
+    border-radius: 50% 0 0 50%;
+}
+
+.uploading-indicator div:after {
+    top: -4px;
+    border-radius: 50% 50% 0 0;
+}
+
+@keyframes lds-heart {
+    0% {
+        transform: scale(0.95);
+    }
+    5% {
+        transform: scale(1.1);
+    }
+    39% {
+        transform: scale(0.85);
+    }
+    45% {
+        transform: scale(1);
+    }
+    60% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(0.9);
+    }
 }

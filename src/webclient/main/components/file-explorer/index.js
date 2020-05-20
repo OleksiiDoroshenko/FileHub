@@ -82,11 +82,14 @@ export default class FileExplorerPage extends StateAwareComponent {
     const btnMenuRoot = this.container.querySelector('[data-render="btn-menu"]');
     const createDirBtn = new Button(btnMenuRoot, {
       text: 'Create directory',
-      icon: 'glyphicon-plus',
+      icon: 'glyphicon-plus-btn',
+      dataParam: 'create-dir',
     });
     const uploadFileBtn = new Button(btnMenuRoot, {
       text: 'Upload File',
       icon: 'glyphicon-upload',
+      dataParam: 'upload-file-btn',
+      innerContent: '<div class="uploading-indicator"><div></div></div>',
     });
 
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
@@ -124,6 +127,16 @@ export default class FileExplorerPage extends StateAwareComponent {
       } else {
         this.fileList.showError(state.error);
       }
+    });
+    this.stateManager.onStateChanged('uploadingItems', (state) => {
+      const uploadFileBtn = this.rootElement.querySelector('[data-render="upload-file-btn"]');
+      const uploadingFileClass = 'file-uploading';
+      if (state.uploadingItems.includes(this.id)) {
+        uploadFileBtn.classList.add(uploadingFileClass);
+      } else {
+        uploadFileBtn.classList.remove(uploadingFileClass);
+      }
+      this.fileList.uploadingItems = state.uploadingItems;
     });
   }
 

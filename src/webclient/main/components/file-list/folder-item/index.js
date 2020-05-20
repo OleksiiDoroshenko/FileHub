@@ -18,12 +18,17 @@ export default class FolderItem extends ListItem {
                 <span><a href="#">${this.model.name}</a></span></td>
             <td class="items">${this.model.itemsAmount} items</td>
             <td class="clickable">
+                <div class="uploading-indicator"><div></div></div>
                 <i class="glyphicon glyphicon-upload" data-render="upload"></i>
                 <i class="glyphicon glyphicon-remove-circle"></i>
             </td>
     `;
   }
 
+  /**
+   * Calls method that returns file from user's device and calls handler with proper parameters.
+   * @param {function} handler - function to be called.
+   */
   addUploadFileHandler(handler) {
     const icon = this.rootElement.querySelector('[data-render="upload"]');
     icon.addEventListener('click', () => {
@@ -31,5 +36,11 @@ export default class FolderItem extends ListItem {
         handler(this.model.id, file);
       });
     });
+  }
+
+  set isUploading(value) {
+    if (value) {
+      this.rootElement.classList.add('file-uploading');
+    }
   }
 }

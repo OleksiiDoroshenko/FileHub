@@ -10,6 +10,8 @@ export default class Button extends Component {
    * @param {Object} componentConfig - initial configuration.
    * @param {string} componentConfig.text - button inner text;
    * @param {string} componentConfig.icon - inner button icon.
+   * @param {string} componentConfig.dataParam - data render param for getting element from code.
+   * @param {string} componentConfig.innerContent - additional inner content.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);
@@ -19,7 +21,7 @@ export default class Button extends Component {
    * @inheritdoc.
    */
   _markup() {
-    return `<button class="btn btn-primary">${this.text}</button>`;
+    return `<button data-render=${this.dataParam} class="btn btn-primary">${this.text}</button>`;
   }
 
   /**
@@ -35,5 +37,9 @@ export default class Button extends Component {
    */
   set icon(icon) {
     this.text = `<i class="glyphicon ${icon}"></i> ${this.text}`;
+  }
+
+  set innerContent(html) {
+    this.text = html + this.text;
   }
 }

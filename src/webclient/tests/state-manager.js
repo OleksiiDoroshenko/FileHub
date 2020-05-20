@@ -64,14 +64,4 @@ export default module('State manager test: ', function(hook) {
     }
   });
 
-
-  test('Should dispatch upload file action', async (assert) => {
-    const uploadFileAction = new UploadFileAction('0',
-      new File([], 'Test'));
-    stateManager.onStateChanged('items', (state) => {
-      const newItem = state.items[state.items.length - 1];
-      assert.strictEqual('Test', newItem.config.name, 'Should upload file to list.');
-    });
-    await stateManager.dispatch(uploadFileAction);
-  });
 });

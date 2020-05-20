@@ -27,5 +27,6 @@ export default class ListItem extends Component {
   _render() {
     const row = this.container.insertRow(-1);
     row.innerHTML = this._markup();
+    this.rootElement = row;
   }
 }

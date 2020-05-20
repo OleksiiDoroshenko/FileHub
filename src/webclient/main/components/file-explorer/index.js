@@ -6,7 +6,7 @@ import TitleService from '../../services/change-title';
 import GetRootIdAction from '../../services/state-manager/actions/get-root-id';
 import AuthorizationError from '../../../models/errors/authorization-error';
 import UploadFileAction from '../../services/state-manager/actions/upload-file';
-import UploadFileService from '../upload-file-service.js';
+import FileBrowserService from '../../services/file-browser-service';
 
 /**
  * Renders file explorer page.
@@ -93,13 +93,16 @@ export default class FileExplorerPage extends StateAwareComponent {
     this.fileList = new FileList(fileContainerRoot, {items: []});
 
     const uploadHandler = (id, file) => {
-      console.log(id);
       this.stateManager.dispatch(new UploadFileAction(id, file));
     };
 
     this.fileList.onUploadClick = uploadHandler;
-    const uploadFileService = new UploadFileService(uploadHandler);
-    uploadFileService.addUploadFunctionality(this.id, uploadFileBtn);
+
+    uploadFileBtn.addEventListener('click', () => {
+      new FileBrowserService().selectFile().then(file => {
+        uploadHandler(this.id, file);
+      });
+    });
   }
 
   /**

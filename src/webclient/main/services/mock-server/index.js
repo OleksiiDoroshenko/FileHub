@@ -182,7 +182,7 @@ export default class MockServer {
    * @private
    */
   _getNextId() {
-    return +this.items[this.items.length - 1].id + 1;
+    return parseInt(this.items[this.items.length - 1].id, 10) + 1;
   }
 
   /**

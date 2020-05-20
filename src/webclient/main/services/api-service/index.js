@@ -17,6 +17,7 @@ export default class ApiService {
     }
   }
 
+
   /**
    * Sends request yo the server for user log in.
    * @param {UserData} userData - instance of {@link UserData}.

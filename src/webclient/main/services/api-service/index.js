@@ -142,6 +142,9 @@ export default class ApiService {
   uploadFile(parentId, file) {
     return fetch(`/folder/${parentId}/file`, {
       method: 'POST',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
       body: {
         file: file,
       },

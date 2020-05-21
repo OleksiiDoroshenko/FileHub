@@ -82,12 +82,12 @@ export default class FileExplorerPage extends StateAwareComponent {
     const btnMenuRoot = this.container.querySelector('[data-render="btn-menu"]');
     const createDirBtn = new Button(btnMenuRoot, {
       text: 'Create directory',
-      icon: 'glyphicon-plus-btn',
-      dataParam: 'create-dir',
+      iconClass: 'glyphicon-plus',
+      dataParam: 'create-dir-btn',
     });
-    const uploadFileBtn = new Button(btnMenuRoot, {
+    this._uploadFileBtn = new Button(btnMenuRoot, {
       text: 'Upload File',
-      icon: 'glyphicon-upload',
+      iconClass: 'glyphicon-upload',
       dataParam: 'upload-file-btn',
       innerContent: '<div class="uploading-indicator"><div></div></div>',
     });
@@ -99,9 +99,9 @@ export default class FileExplorerPage extends StateAwareComponent {
       this.stateManager.dispatch(new UploadFileAction(id, file, updateFiles));
     };
 
-    this.fileList.onUploadClick = uploadHandler;
+    this.fileList.onUploadClick(uploadHandler);
 
-    uploadFileBtn.addEventListener('click', () => {
+    this._uploadFileBtn.addEventListener('click', () => {
       new FileBrowserService().selectFile().then(file => {
         uploadHandler(this.id, file, true);
       });
@@ -129,13 +129,8 @@ export default class FileExplorerPage extends StateAwareComponent {
       }
     });
     this.stateManager.onStateChanged('uploadingItems', (state) => {
-      const uploadFileBtn = this.rootElement.querySelector('[data-render="upload-file-btn"]');
-      const uploadingFileClass = 'file-uploading';
-      if (state.uploadingItems.includes(this.id)) {
-        uploadFileBtn.classList.add(uploadingFileClass);
-      } else {
-        uploadFileBtn.classList.remove(uploadingFileClass);
-      }
+      this._uploadFileBtn.isLoadingClass = 'file-uploading';
+      this._uploadFileBtn.isLoading = state.uploadingItems.includes(this.id);
       this.fileList.uploadingItems = state.uploadingItems;
     });
   }

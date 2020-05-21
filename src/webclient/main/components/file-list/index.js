@@ -111,7 +111,7 @@ export default class FileList extends Component {
     this.itemsRoot.innerHTML = 'Sorry something went wrong, please try later';
   }
 
-  set onUploadClick(handler) {
+  onUploadClick(handler) {
     this._onUploadClickHandler = handler;
   }
 }

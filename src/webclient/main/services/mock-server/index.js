@@ -121,7 +121,6 @@ export default class MockServer {
       .post('express:/folder/:id/file', (((url, request) => {
         const file = request.body.file;
         const newFile = {};
-
         newFile.id = this._getNextId();
         newFile.parentId = url.split('/')[2];
         newFile.name = file.name;

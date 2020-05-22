@@ -13,13 +13,11 @@ export default class UploadFileAction extends Action {
    * Returns instance of {@link UploadFileAction}.
    * @param {string} parentId - folder id where file will be loaded.
    * @param {File} file - file to be loaded.
-   * @param {boolean} updateFiles - flag that indicate for updating current folder files.
    */
-  constructor(parentId, file, updateFiles) {
+  constructor(parentId, file) {
     super();
     this.parentId = parentId;
     this.file = file;
-    this.updateFiles = updateFiles;
   }
 
   /**
@@ -29,7 +27,7 @@ export default class UploadFileAction extends Action {
     stateManager.mutate(new AddItemToUploadingListMutator(this.parentId));
     apiService.uploadFile(this.parentId, this.file)
       .then(() => {
-        if (this.updateFiles) {
+        if (stateManager.state.folderId === this.parentId) {
           stateManager.dispatch(new GetItemsAction(this.parentId));
         }
       }).catch(error => {

@@ -95,15 +95,15 @@ export default class FileExplorerPage extends StateAwareComponent {
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
     this.fileList = new FileList(fileContainerRoot, {items: []});
 
-    const uploadHandler = (id, file, updateFiles) => {
-      this.stateManager.dispatch(new UploadFileAction(id, file, updateFiles));
+    const uploadHandler = (id, file) => {
+      this.stateManager.dispatch(new UploadFileAction(id, file));
     };
 
     this.fileList.onUploadClick(uploadHandler);
 
     this._uploadFileBtn.addEventListener('click', () => {
       new FileBrowserService().selectFile().then(file => {
-        uploadHandler(this.id, file, true);
+        uploadHandler(this.id, file);
       });
     });
   }

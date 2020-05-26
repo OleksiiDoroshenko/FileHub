@@ -3,6 +3,7 @@ import AuthorizationError from '../../../models/errors/authorization-error';
 
 import MockServer from '../mock-server';
 import ServerValidationErrors from '../../../models/errors/server-validation-errors';
+import NotFoundError from '../../../models/errors/not-found-error';
 
 /**
  * Implements login and registration methods logic.
@@ -100,6 +101,13 @@ export default class ApiService {
           });
         });
         return new ServerValidationErrors(serverErrors);
+      }
+      case 404: {
+        let message = response.statusText;
+        await response.text().then(text => {
+          message = text;
+        });
+        return new NotFoundError(message);
       }
       case 500: {
         return new Error(response.statusText);

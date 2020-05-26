@@ -34,6 +34,6 @@ export default class FileItem extends ListItem {
       video: 'glyphicon-film',
       audio: 'glyphicon-music',
     };
-    return icons[mimeType];
+    return icons[mimeType] ? icons[mimeType] : 'glyphicon-file';
   }
 }

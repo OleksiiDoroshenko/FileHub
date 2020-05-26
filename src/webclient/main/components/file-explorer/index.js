@@ -7,6 +7,7 @@ import GetRootIdAction from '../../services/state-manager/actions/get-root-id';
 import AuthorizationError from '../../../models/errors/authorization-error';
 import UploadFileAction from '../../services/state-manager/actions/upload-file';
 import FileBrowserService from '../../services/file-browser-service';
+import NotFoundError from '../../../models/errors/not-found-error';
 
 /**
  * Renders file explorer page.
@@ -124,6 +125,13 @@ export default class FileExplorerPage extends StateAwareComponent {
       const error = state.error;
       if (error instanceof AuthorizationError) {
         window.location.hash = '#/login';
+      }
+      if (error instanceof NotFoundError) {
+        let message = 'Folder not found.';
+        if (error.message) {
+          message = error.message;
+        }
+        alert(message);
       } else {
         this.fileList.showError(state.error);
       }

@@ -108,7 +108,7 @@ export default class FileList extends Component {
    * Renders error message into the table.
    */
   showError(error) {
-    this.itemsRoot.innerHTML = 'Sorry something went wrong, please try later';
+    this.container.innerHTML = 'Sorry something went wrong, please try later';
   }
 
   onUploadClick(handler) {

@@ -90,7 +90,7 @@ export default class FileExplorerPage extends StateAwareComponent {
       text: 'Upload File',
       iconClass: 'glyphicon-upload',
       dataParam: 'upload-file-btn',
-      innerContent: '<div class="uploading-indicator"><div></div></div>',
+      loadingClass: 'uploading-indicator',
     });
 
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');

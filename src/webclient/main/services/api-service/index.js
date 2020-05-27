@@ -3,6 +3,7 @@ import AuthorizationError from '../../../models/errors/authorization-error';
 
 import MockServer from '../mock-server';
 import ServerValidationErrors from '../../../models/errors/server-validation-errors';
+import NotFoundError from '../../../models/errors/not-found-error';
 
 /**
  * Implements login and registration methods logic.
@@ -82,16 +83,16 @@ export default class ApiService {
    * @return {Promise<AuthorizationError|Error|ServerValidationErrors>}
    */
   async getError(response) {
-    const result = response.json();
     switch (response.status) {
       case 401: {
-        let message = '';
-        await result.then((response) => {
-          message = response.error.message;
+        let message = response.statusText;
+        await response.text().then(text => {
+          message = text;
         });
         return new AuthorizationError(message);
       }
       case 422: {
+        const result = response.json();
         const serverErrors = [];
         await result.then((errors) => {
           errors.errors.forEach((error) => {
@@ -100,10 +101,20 @@ export default class ApiService {
         });
         return new ServerValidationErrors(serverErrors);
       }
+      case 404: {
+        let message = response.statusText;
+        await response.text().then(text => {
+          message = text;
+        });
+        return new NotFoundError(message);
+      }
       case 500: {
-        let message;
-        await result.then((response) => {
-          message = response.error.message;
+        return new Error(response.statusText);
+      }
+      default: {
+        let message = response.statusText;
+        await response.text().then(text => {
+          message = text;
         });
         return new Error(message);
       }
@@ -113,7 +124,7 @@ export default class ApiService {
   /**
    * Sends request to the server for getting folder content.
    * @param {string} folderId - folder id.
-   * @return {Promise<[Object]>}
+   * @return {Promise<Response>}
    */
   getItems(folderId) {
     return fetch(`/folder/${folderId}/content`, {
@@ -129,8 +140,31 @@ export default class ApiService {
     });
   }
 
+  /**
+   * Sends request to server for uploading new file.
+   * @param {string} parentId - id of parent folder where file will be loaded.
+   * @param {File} file - file to be loaded.
+   * @returns {Promise<>}
+   */
+  uploadFile(parentId, file) {
+    return fetch(`/folder/${parentId}/file`, {
+      method: 'POST',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+      body: {
+        file: file,
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return 200;
+      }
+      throw await this.getError(response);
+    });
+  }
+
   logOut() {
-    return fetch('/logOut', {
+    return fetch('/logout', {
       method: 'POST', headers: {
         token: localStorage.getItem('token'),
       },

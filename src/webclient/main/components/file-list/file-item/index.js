@@ -14,15 +14,17 @@ export default class FileItem extends ListItem {
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
                 <span>${this.model.name}</span></td>
             <td class="items">${this.model.size}</td>
-            <td class="clickable"><i class="glyphicon glyphicon-download"></i>
-                <i class="glyphicon glyphicon-remove-circle"></i></td>
+            <td class="clickable">
+                <i class="glyphicon glyphicon-download"></i>
+                <i class="glyphicon glyphicon-remove-circle"></i>
+            </td>
     `;
   }
 
   /**
    * Sets correct file icon depends on its mime type.
    * @param {string} mimeType - files mimeType.
-   * @returns {string} bootstrap icon class.
+   * @return {string} bootstrap icon class.
    * @private
    */
   _getFileIcon(mimeType) {
@@ -32,6 +34,6 @@ export default class FileItem extends ListItem {
       video: 'glyphicon-film',
       audio: 'glyphicon-music',
     };
-    return icons[mimeType];
+    return icons[mimeType] ? icons[mimeType] : 'glyphicon-file';
   }
 }

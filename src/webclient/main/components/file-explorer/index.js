@@ -3,6 +3,11 @@ import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
+import GetRootIdAction from '../../services/state-manager/actions/get-root-id';
+import AuthorizationError from '../../../models/errors/authorization-error';
+import UploadFileAction from '../../services/state-manager/actions/upload-file';
+import FileBrowserService from '../../services/file-browser-service';
+import NotFoundError from '../../../models/errors/not-found-error';
 import LogOutAction from '../../services/state-manager/actions/log-out';
 
 /**
@@ -17,7 +22,11 @@ export default class FileExplorerPage extends StateAwareComponent {
    */
   constructor(container, config, stateManager) {
     super(container, config, stateManager);
-    this.stateManager.dispatch(new GetItemsAction(this.id));
+    if (this.id === 'root') {
+      this._getRootFolder();
+    } else {
+      this.stateManager.dispatch(new GetItemsAction(this.id));
+    }
     new TitleService().changeTitle('File Explorer');
   }
 
@@ -51,11 +60,10 @@ export default class FileExplorerPage extends StateAwareComponent {
                       </ul>
                   </div>
                   <div class="btn-menu" data-render="btn-menu">
-                      <input type="file" id="upload-file">
                   </div>
               </header>
               <div class="file-container" data-toggle="tooltip" data-render="file-list"
-               data-placement="top" title="File storage">
+               data-placement="top" title="File storage" data-render="file-list">
               </div>
           </div>
           <footer class="footer">
@@ -76,11 +84,13 @@ export default class FileExplorerPage extends StateAwareComponent {
     const btnMenuRoot = this.container.querySelector('[data-render="btn-menu"]');
     const createDirBtn = new Button(btnMenuRoot, {
       text: 'Create directory',
-      icon: 'glyphicon-plus',
+      iconClass: 'glyphicon-plus',
+      dataParam: 'create-dir-btn',
     });
-    const uploadFileBtn = new Button(btnMenuRoot, {
+    this._uploadFileBtn = new Button(btnMenuRoot, {
       text: 'Upload File',
-      icon: 'glyphicon-upload',
+      iconClass: 'glyphicon-upload',
+      dataParam: 'upload-file-btn',
     });
 
     const logOut = this.container.querySelector('[data-render="log-out"]');
@@ -88,7 +98,19 @@ export default class FileExplorerPage extends StateAwareComponent {
       this.stateManager.dispatch(new LogOutAction());
     });
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
-    this.fileContainer = new FileList(fileContainerRoot, {items: []});
+    this.fileList = new FileList(fileContainerRoot, {items: []});
+
+    const uploadHandler = (id, file) => {
+      this.stateManager.dispatch(new UploadFileAction(id, file));
+    };
+
+    this.fileList.onUploadClick(uploadHandler);
+
+    this._uploadFileBtn.addEventListener('click', () => {
+      new FileBrowserService().selectFile().then(file => {
+        uploadHandler(this.id, file);
+      });
+    });
   }
 
   /**
@@ -96,16 +118,60 @@ export default class FileExplorerPage extends StateAwareComponent {
    */
   initState() {
     this.stateManager.onStateChanged('items', (state) => {
-      this.fileContainer.items = state.items;
+      this.fileList.items = state.items;
     });
     this.stateManager.onStateChanged('isLoading', (state) => {
       if (state.isLoading) {
-        this.fileContainer.showLoadingMessage();
+        this.fileList.showLoadingMessage();
       }
     });
     this.stateManager.onStateChanged('error', (state) => {
-      this.fileContainer.showError(state.error);
+      const error = state.error;
+      if (error instanceof AuthorizationError) {
+        window.location.hash = '#/login';
+      }
+      if (error instanceof NotFoundError) {
+        let message = 'Folder not found.';
+        if (error.message) {
+          message = error.message;
+        }
+        alert(message);
+      } else {
+        alert('Sorry something went wrong, please try later');
+      }
+    });
+    this.stateManager.onStateChanged('uploadingItems', (state) => {
+      this._uploadFileBtn.isLoadingClass = 'file-uploading';
+      this._uploadFileBtn.isLoading = state.uploadingItems.includes(this.id);
+      this.fileList.uploadingItems = state.uploadingItems;
     });
   }
 
+  /**
+   * Gets users folder id and calls method to update hash.
+   * @returns {Promise<void>}
+   * @private
+   */
+  async _getRootFolder() {
+    const rootId = await this.stateManager.dispatch(new GetRootIdAction());
+    this._changeHashId(rootId);
+  }
+
+  /**
+   * Changes id in current url hash according to parameters id.
+   * @param {string} newId - new id to change.
+   * @private
+   */
+  _changeHashId(newId) {
+    const hash = window.location.hash.slice(1);
+    const newHash = hash.split('/').reduce((acc, item) => {
+      if (item === this.id) {
+        acc += `/${newId}`;
+      } else {
+        acc += `/${item}`;
+      }
+      return acc;
+    }, '');
+    window.location.hash = newHash.slice(1);
+  }
 }

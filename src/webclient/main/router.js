@@ -7,13 +7,11 @@ export default class Router {
    * @param {HTMLElement} container - root container for page rendering.
    * @param {Window} window - window element.
    * @param {Object} pageMapping - map of possible links and pages for rendering.
-   * @param {ApiService} service - instance of {@link ApiService}.
    */
-  constructor(container, window, pageMapping, service) {
+  constructor(container, window, pageMapping) {
     this.container = container;
     this.pageMapping = pageMapping;
     this.window = window;
-    this.service = service;
     this._init();
     this._hashChangeHandler();
   }
@@ -95,12 +93,8 @@ export default class Router {
    */
   _createPage(url, urlTemplate) {
     const dynamicParams = this._getDynamicPart(url, urlTemplate);
-    if (dynamicParams.id === 'root') {
-      this._changeRootId(url);
-    } else {
-      const page = this.pageMapping[urlTemplate];
-      page(dynamicParams);
-    }
+    const page = this.pageMapping[urlTemplate];
+    page(dynamicParams);
   }
 
   /**
@@ -115,29 +109,5 @@ export default class Router {
         return true;
       }
     });
-  }
-
-  /**
-   * Changes id in url when user logs in first time.
-   * @param {string} url - url.
-   * @return {Promise<void>}
-   * @private
-   */
-  async _changeRootId(url) {
-    let rootId;
-    await this.service.getRoot().then(response => {
-      rootId = response.folder.id;
-    }).catch(error => {
-      alert(error.message);
-    });
-    let newHash = '';
-    url.split('/').slice(1).forEach(part => {
-      if (part === 'root') {
-        part = rootId;
-      }
-      newHash += `/${part}`;
-    });
-    console.log(newHash);
-    this.window.location.hash = newHash;
   }
 }

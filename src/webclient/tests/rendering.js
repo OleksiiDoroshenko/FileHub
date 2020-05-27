@@ -87,6 +87,5 @@ export default module('Components rendering test: ', function(hook) {
       const result = fixture.querySelector('[data-render="table"] a').innerText;
       assert.strictEqual(result, name, 'Should render files that were sent by constructor.');
     });
-
   });
 });

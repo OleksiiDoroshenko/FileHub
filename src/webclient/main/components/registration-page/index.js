@@ -43,15 +43,15 @@ export default class RegistrationPage extends Component {
 
     form.onSubmit((userData) => {
       this._service.register(userData)
-        .then((response) => {
-          window.location.hash = '#/login';
-        }).catch((error) => {
-        if (error instanceof AuthorizationError) {
-          alert(error.message);
-        } else {
-          form.handleError(error);
-        }
-      });
+          .then((response) => {
+            window.location.hash = '#/login';
+          }).catch((error) => {
+            if (error instanceof AuthorizationError) {
+              alert(error.message);
+            } else {
+              form.handleError(error);
+            }
+          });
     });
   }
 }

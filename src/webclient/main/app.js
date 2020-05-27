@@ -24,13 +24,13 @@ export default class Application extends Component {
   _initInnerComponents() {
     const root = this.container.querySelector('.app');
     const service = new ApiService(true);
-    const stateManager = new StateManager({items: []}, service);
+    const stateManager = new StateManager({items: [], uploadingItems: []}, service);
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),
       '/file-explorer/folder/:id': ({id}) => new FileExplorerPage(root, {id}, stateManager),
       'default': '/login',
       'error': () => new ErrorPage(root, {}),
-    }, service);
+    });
   }
 }

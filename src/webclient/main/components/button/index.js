@@ -22,8 +22,8 @@ export default class Button extends Component {
    */
   _markup() {
     return `<button data-render=${this.dataParam} class="btn btn-primary">
-            <div class=${this.loadingClass} data-render="loading-state"><div></div></div>
-            <i class="glyphicon ${this._iconClass}"></i> ${this.text}
+                <div data-render="loading-state"><div></div></div>
+                <i class="glyphicon ${this._iconClass}"></i> ${this.text}
             </button>`;
   }
 
@@ -47,7 +47,6 @@ export default class Button extends Component {
    * @param value
    */
   set isLoading(value) {
-    debugger;
     if (value) {
       this.rootElement.classList.add(this._isLoadingClass);
     } else {

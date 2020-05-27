@@ -190,7 +190,6 @@ a:hover {
 }
 
 .footer {
-
     padding-top: 10px;
     padding-bottom: 10px;
     border-top: 1px solid #999999;
@@ -204,19 +203,17 @@ a:hover {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    /*margin-left: 10px;*/
 }
 
 .file-uploading .glyphicon-upload {
     display: none;
 }
 
-.file-uploading .uploading-indicator {
+.file-uploading [data-render="loading-state"] {
     display: inline-block;
 }
 
-.uploading-indicator {
-    display: none;
+.file-uploading [data-render="loading-state"] {
     position: relative;
     width: 10px;
     height: 10px;
@@ -224,7 +221,7 @@ a:hover {
     transform-origin: 10px 10px;
 }
 
-.uploading-indicator div {
+.file-uploading [data-render="loading-state"] div {
     left: -3px;
     top: 5px;
     position: absolute;
@@ -234,8 +231,8 @@ a:hover {
     animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-.uploading-indicator div:after,
-.uploading-indicator div:before {
+.file-uploading [data-render="loading-state"] div:after,
+.file-uploading [data-render="loading-state"] div:before {
     content: " ";
     position: absolute;
     display: block;
@@ -244,12 +241,12 @@ a:hover {
     background: #0fff09;
 }
 
-.uploading-indicator div:before {
+.file-uploading [data-render="loading-state"] div:before {
     left: -4px;
     border-radius: 50% 0 0 50%;
 }
 
-.uploading-indicator div:after {
+.file-uploading [data-render="loading-state"] div:after {
     top: -4px;
     border-radius: 50% 50% 0 0;
 }

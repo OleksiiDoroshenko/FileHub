@@ -90,7 +90,6 @@ export default class FileExplorerPage extends StateAwareComponent {
       text: 'Upload File',
       iconClass: 'glyphicon-upload',
       dataParam: 'upload-file-btn',
-      loadingClass: 'uploading-indicator',
     });
 
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
@@ -133,7 +132,7 @@ export default class FileExplorerPage extends StateAwareComponent {
         }
         alert(message);
       } else {
-        this.fileList.showError(state.error);
+        alert('Sorry something went wrong, please try later');
       }
     });
     this.stateManager.onStateChanged('uploadingItems', (state) => {

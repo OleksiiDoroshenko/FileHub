@@ -18,7 +18,7 @@ export default class FolderItem extends ListItem {
                 <span><a href="#">${this.model.name}</a></span></td>
             <td class="items">${this.model.itemsAmount} items</td>
             <td class="clickable">
-                <div class="uploading-indicator"><div></div></div>
+                <div data-render="loading-state"><div></div></div>
                 <i class="glyphicon glyphicon-upload" data-render="upload"></i>
                 <i class="glyphicon glyphicon-remove-circle"></i>
             </td>

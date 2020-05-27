@@ -163,6 +163,11 @@ export default class ApiService {
     });
   }
 
+  /**
+   * Sends request to server for logging out current user.
+   * Regardless of the answer removes current token from local storage.
+   * @returns {Promise<Response>}
+   */
   logOut() {
     return fetch('/logout', {
       method: 'POST', headers: {

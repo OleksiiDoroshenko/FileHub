@@ -93,7 +93,7 @@ export default class FileExplorerPage extends StateAwareComponent {
       dataParam: 'upload-file-btn',
     });
 
-    const logOut = this.container.querySelector('[data-render="log-out"]');
+    const logOut = this.rootElement.querySelector('[data-render="log-out"]');
     logOut.addEventListener('click', () => {
       this.stateManager.dispatch(new LogOutAction());
     });

@@ -130,6 +130,15 @@ export default class MockServer {
         this.items.push(newFile);
         return 200;
       })));
+
+    fetchMock
+      .post('/logout', ((url, request) => {
+        if (request.headers.token) {
+          return 200;
+        } else {
+          return 401;
+        }
+      }));
   }
 
   /**

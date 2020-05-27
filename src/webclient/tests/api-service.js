@@ -4,11 +4,14 @@ import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 import AuthorizationError from '../models/errors/authorization-error';
 import ServerValidationErrors from '../models/errors/server-validation-errors';
 import VerificationError from '../models/errors/verification-error';
+import NotFoundError from '../models/errors/not-found-error';
 
 const {module, test} = QUnit;
 const service = new ApiService(false);
 
 export default module('API service test', function(hook) {
+  const token = 'test';
+  localStorage.setItem(token, token);
   hook.beforeEach(() => {
     fetchMock.reset();
   });
@@ -75,8 +78,6 @@ export default module('API service test', function(hook) {
 
   test('Get root method should send proper request with correct data.', async (assert) => {
     assert.expect(5);
-    const token = 'test-token';
-    localStorage.setItem('token', token);
     const matcher = '/folder/root';
     fetchMock.get(matcher, (((url, request) => {
       assert.strictEqual(token, request.headers.token, 'Should send correct token.');
@@ -104,6 +105,72 @@ export default module('API service test', function(hook) {
 
   test('Get root method should handle 404 error', async (assert) => {
     _testNotFoundError('get', assert, '/folder/root', service, 'getRoot');
+  });
+
+  test('Upload file method should send proper request with correct data.', async (assert) => {
+    assert.expect(5);
+    const matcher = 'express:/folder/:id/file';
+    fetchMock.post(matcher, (((url, request) => {
+      const file = request.body.file;
+      assert.strictEqual(file.name, fileName, 'Should send proper file.');
+      return 200;
+    })));
+    const fileName = 'test';
+    await service.uploadFile('0', new File([], fileName))
+      .then((response) => {
+        assert.strictEqual(response, 200, 'Should return 200 if everything is ok.');
+      });
+    assert.ok(fetchMock.called(matcher), 'Should send upload file request.');
+    assert.ok(fetchMock.calls().length === 1, `Should send upload file request.`);
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Upload file method should handle 404 error', async (assert) => {
+    _testNotFoundError('post', assert, 'express:/folder/:id/file', service, 'uploadFile');
+  });
+
+  test('Upload file method should handle 500 error', async (assert) => {
+    _testInternalServerError('post', assert,
+      'express:/folder/:id/file', service, 'uploadFile');
+  });
+
+  test('Upload file method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('post', assert,
+      'express:/folder/:id/file', service, 'uploadFile');
+  });
+
+  test('Get items method should send proper request with correct data.', async (assert) => {
+    assert.expect(5);
+    const matcher = 'express:/folder/:id/content';
+    const parentId = '0';
+    const items = [{id: '1', parentId: parentId, name: 'Documents', itemsAmount: '2', type: 'folder'}];
+    fetchMock.get(matcher, (((url) => {
+      const id = url.split('/')[2];
+      assert.strictEqual(id, parentId, 'Should send proper id.');
+      return items;
+    })));
+    await service.getItems(parentId)
+      .then((response) => {
+        assert.deepEqual(response, items, 'Should return proper files..');
+      });
+    assert.ok(fetchMock.called(matcher), 'Should send get items request.');
+    assert.ok(fetchMock.calls().length === 1, `Should send get items request.`);
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Get items method should handle 404 error', async (assert) => {
+    _testNotFoundError('get', assert,
+      'express:/folder/:id/content', service, 'getItems');
+  });
+
+  test('Get items method should handle 500 error', async (assert) => {
+    _testInternalServerError('get', assert,
+      'express:/folder/:id/content', service, 'getItems');
+  });
+
+  test('Get items method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('get', assert,
+      'express:/folder/:id/content', service, 'getItems');
   });
 
   function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
@@ -143,7 +210,7 @@ export default module('API service test', function(hook) {
         body: '',
       };
     })));
-    assert.rejects(service[method]({}), new Error('')
+    assert.rejects(service[method]({}), new NotFoundError('')
       , 'Should handle 404 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls(matcher).length === 1, `Should send ${matcher} request.`);

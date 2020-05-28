@@ -2,15 +2,18 @@ import ApiService from '../main/services/api-service';
 import StateManager from '../main/services/state-manager';
 import Mutator from '../main/services/state-manager/mutators/mutator.js';
 import Action from '../main/services/state-manager/actions/action.js';
-import ItemsMutator from '../main/services/state-manager/mutators/items-mutator';
 import ItemsLoadingMutator from '../main/services/state-manager/mutators/items-loading-mutator';
 import ItemsLoadingErrorMutator from '../main/services/state-manager/mutators/items-loading-error-mutator';
-import GetRootIdAction from '../main/services/state-manager/actions/get-root-id';
+import ItemsMutator from '../main/services/state-manager/mutators/items-mutator';
+import FolderIdMutator from '../main/services/state-manager/mutators/folder-id-mutator';
+import AddItemToUploadingListMutator from '../main/services/state-manager/mutators/add-item-to-uploading-list-mutator';
+import RemoveItemToUploadingListMutator
+  from '../main/services/state-manager/mutators/remove-item-from-uploading-list-mutator';
 
 const {module, test} = QUnit;
 
 export default module('State manager test: ', function(hook) {
-  const stateManager = new StateManager({}, new ApiService(false));
+  let stateManager = new StateManager({}, new ApiService(false));
 
   test('should mutate its state', (assert) => {
     const mutator = new Mutator();
@@ -57,10 +60,39 @@ export default module('State manager test: ', function(hook) {
       _testMutator(assert, mutator, 'error', error);
     });
 
+    test('Folder id mutator should change state\'s folder id', async (assert) => {
+      const folderId = '0';
+      const mutator = new FolderIdMutator(folderId);
+      _testMutator(assert, mutator, 'folderId', folderId);
+    });
+
+    test('Add to uploading list mutator should change state\'s uploading list', async (assert) => {
+      stateManager = new StateManager({uploadingItems: []}, new ApiService(false));
+      const itemId = '1';
+      const resultList = [itemId];
+      const mutator = new AddItemToUploadingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'uploadingItems', resultList);
+    });
+
+    test('Remove from uploading list mutator should change state\'s uploading list', async (assert) => {
+      stateManager = new StateManager({uploadingItems: ['1']}, new ApiService(false));
+      const itemId = '1';
+      const resultList = [undefined];
+      const mutator = new RemoveItemToUploadingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'uploadingItems', resultList);
+    });
+
     function _testMutator(assert, mutator, field, value) {
       assert.notStrictEqual(stateManager.state[field], value, `should not be equal future ${field}`);
       stateManager.mutate(mutator);
       assert.strictEqual(stateManager.state[field], value, `'should change state's ${field} field'`);
     }
+
+    function _testMutatorWithDeepEqual(assert, mutator, field, value) {
+      assert.notStrictEqual(stateManager.state[field], value, `should not be equal future ${field}`);
+      stateManager.mutate(mutator);
+      assert.deepEqual(stateManager.state[field], value, `'should change state's ${field} field'`);
+    }
   });
+
 });

@@ -209,11 +209,8 @@ a:hover {
     display: none;
 }
 
-.file-uploading [data-render="loading-state"] {
+.file-uploading .loading-state {
     display: inline-block;
-}
-
-.file-uploading [data-render="loading-state"] {
     position: relative;
     width: 10px;
     height: 10px;
@@ -221,7 +218,7 @@ a:hover {
     transform-origin: 10px 10px;
 }
 
-.file-uploading [data-render="loading-state"] div {
+.file-uploading .loading-state div {
     left: -3px;
     top: 5px;
     position: absolute;
@@ -231,8 +228,8 @@ a:hover {
     animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-.file-uploading [data-render="loading-state"] div:after,
-.file-uploading [data-render="loading-state"] div:before {
+.file-uploading .loading-state div:after,
+.file-uploading .loading-state div:before {
     content: " ";
     position: absolute;
     display: block;
@@ -241,12 +238,12 @@ a:hover {
     background: #0fff09;
 }
 
-.file-uploading [data-render="loading-state"] div:before {
+.file-uploading .loading-state div:before {
     left: -4px;
     border-radius: 50% 0 0 50%;
 }
 
-.file-uploading [data-render="loading-state"] div:after {
+.file-uploading .loading-state div:after {
     top: -4px;
     border-radius: 50% 50% 0 0;
 }

@@ -22,7 +22,7 @@ export default class Button extends Component {
    */
   _markup() {
     return `<button data-render=${this.dataParam} class="btn btn-primary">
-                <div data-render="loading-state"><div></div></div>
+                <div class="loading-state" data-render="loading-state"><div></div></div>
                 <i class="glyphicon ${this._iconClass}"></i> ${this.text}
             </button>`;
   }

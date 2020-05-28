@@ -9,6 +9,7 @@ import UploadFileAction from '../../services/state-manager/actions/upload-file';
 import FileBrowserService from '../../services/file-browser-service';
 import NotFoundError from '../../../models/errors/not-found-error';
 import LogOutAction from '../../services/state-manager/actions/log-out';
+import GetUserAction from '../../services/state-manager/actions/get-user';
 
 /**
  * Renders file explorer page.
@@ -27,6 +28,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     } else {
       this.stateManager.dispatch(new GetItemsAction(this.id));
     }
+    this._getUser();
     new TitleService().changeTitle('File Explorer');
   }
 
@@ -40,8 +42,10 @@ export default class FileExplorerPage extends StateAwareComponent {
              <header class="header">
               <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
               <ul class="list-inline logout-menu">
-                  <li class="username" data-toggle="tooltip" data-placement="top" title="Current user">
-                      <i class="glyphicon glyphicon-user"></i> ${this.username}
+                  <li class="username" data-toggle="tooltip"
+                   data-placement="top" title="Current user">
+                      <i class="glyphicon glyphicon-user"></i>
+                      <span data-render="username"></span>
                   </li>
                   <li class="logout" data-toggle="tooltip" data-placement="top" title="Log out">
                       <a href="#/login" data-render="log-out">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
@@ -145,6 +149,14 @@ export default class FileExplorerPage extends StateAwareComponent {
       this._uploadFileBtn.isLoading = state.uploadingItems.includes(this.id);
       this.fileList.uploadingItems = state.uploadingItems;
     });
+    this.stateManager.onStateChanged('userLoadingError', (state) => {
+      const error = state.error;
+      if (error instanceof AuthorizationError) {
+        window.location.hash = '#/login';
+      } else {
+        alert(`User can not be loaded.\n ${error.message}`);
+      }
+    });
   }
 
   /**
@@ -173,5 +185,15 @@ export default class FileExplorerPage extends StateAwareComponent {
       return acc;
     }, '');
     window.location.hash = newHash.slice(1);
+  }
+
+  async _getUser() {
+    const user = await this.stateManager.dispatch(new GetUserAction());
+    this.username = user.name;
+  }
+
+  set username(name) {
+    const username = this.rootElement.querySelector('[data-render="username"]');
+    username.innerText = name;
   }
 }

@@ -182,4 +182,17 @@ export default class ApiService {
       localStorage.removeItem('token');
     });
   }
+
+  getUser() {
+    return fetch('/user', {
+      method: 'GET', headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw await this.getError(response);
+    });
+  }
 }

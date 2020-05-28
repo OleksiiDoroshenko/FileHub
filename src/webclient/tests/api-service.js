@@ -181,9 +181,11 @@ export default module('API service test', function(hook) {
     fetchMock.post(matcher, (((url) => {
       return 500;
     })));
-    await service.logOut().catch((error) => {
+    try {
+      await service.logOut();
+    } catch (error) {
       assert.strictEqual(error.message, 'Internal Server Error', 'Should handle 500 error.');
-    });
+    }
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
@@ -199,9 +201,11 @@ export default module('API service test', function(hook) {
     fetchMock.post(matcher, (((url) => {
       return 401;
     })));
-    await service.logOut().catch((error) => {
+    try {
+      await service.logOut();
+    } catch (error) {
       assert.ok(error instanceof AuthorizationError, 'Should handle 401 error.');
-    });
+    }
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
     assert.ok(fetchMock.done(matcher), 'Should send only one request');

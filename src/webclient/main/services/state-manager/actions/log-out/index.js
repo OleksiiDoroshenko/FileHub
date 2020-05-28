@@ -1,10 +1,14 @@
 import Action from '../action.js';
 
+/**
+ * Sends request for logging out to {@link ApiService} state.
+ */
 export default class LogOutAction extends Action {
 
-  apply(stateManager, apiService) {
-    apiService.logOut().then(() => {
-      window.location.hash = '#/login';
-    });
+  /**
+   * @inheritdoc.
+   * */
+  async apply(stateManager, apiService) {
+    apiService.logOut();
   }
 }

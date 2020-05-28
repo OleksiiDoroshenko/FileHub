@@ -187,6 +187,10 @@ export default class FileExplorerPage extends StateAwareComponent {
     window.location.hash = newHash.slice(1);
   }
 
+  /**
+   * Dispatches action foe getting user info.
+   * @private
+   */
   async _getUser() {
     await this.stateManager.dispatch(new GetUserAction())
       .then(user => {
@@ -196,6 +200,10 @@ export default class FileExplorerPage extends StateAwareComponent {
       }));
   }
 
+  /**
+   * Sets user name in the markup.
+   * @param {string} name - user name.
+   */
   set username(name) {
     const username = this.rootElement.querySelector('[data-render="username"]');
     username.innerText = name;

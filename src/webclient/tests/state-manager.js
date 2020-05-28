@@ -9,6 +9,8 @@ import FolderIdMutator from '../main/services/state-manager/mutators/folder-id-m
 import AddItemToUploadingListMutator from '../main/services/state-manager/mutators/add-item-to-uploading-list-mutator';
 import RemoveItemToUploadingListMutator
   from '../main/services/state-manager/mutators/remove-item-from-uploading-list-mutator';
+import UserLoadingMutator from '../main/services/state-manager/mutators/user-loading-mutator';
+import UserLoadingError from '../main/services/state-manager/mutators/user-loading-error-mutator';
 
 const {module, test} = QUnit;
 
@@ -80,6 +82,17 @@ export default module('State manager test: ', function(hook) {
       const resultList = [undefined];
       const mutator = new RemoveItemToUploadingListMutator(itemId);
       _testMutatorWithDeepEqual(assert, mutator, 'uploadingItems', resultList);
+    });
+
+    test('User loading mutator should change state\'s isUserLoading state', async (assert) => {
+      const mutator = new UserLoadingMutator(true);
+      _testMutator(assert, mutator, 'isUserLoading', true);
+    });
+
+    test('User loading error mutator should change state\'s userLoadingError field.', async (assert) => {
+      const error = new Error('test');
+      const mutator = new UserLoadingError(error);
+      _testMutator(assert, mutator, 'userLoadingError', error);
     });
 
     function _testMutator(assert, mutator, field, value) {

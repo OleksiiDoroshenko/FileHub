@@ -8,6 +8,7 @@ import AuthorizationError from '../../../models/errors/authorization-error';
 import UploadFileAction from '../../services/state-manager/actions/upload-file';
 import FileBrowserService from '../../services/file-browser-service';
 import NotFoundError from '../../../models/errors/not-found-error';
+import LogOutAction from '../../services/state-manager/actions/log-out';
 
 /**
  * Renders file explorer page.
@@ -43,7 +44,7 @@ export default class FileExplorerPage extends StateAwareComponent {
                       <i class="glyphicon glyphicon-user"></i> ${this.username}
                   </li>
                   <li class="logout" data-toggle="tooltip" data-placement="top" title="Log out">
-                      <a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
+                      <a href="#/login" data-render="log-out">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
               </ul>
               <a href="file-explorer-index.html" data-toggle="tooltip" data-placement="top" title="Root page">
                   <h1 class="file-explorer">File Explorer</h1></a>
@@ -92,6 +93,10 @@ export default class FileExplorerPage extends StateAwareComponent {
       dataParam: 'upload-file-btn',
     });
 
+    const logOut = this.rootElement.querySelector('[data-render="log-out"]');
+    logOut.addEventListener('click', () => {
+      this.stateManager.dispatch(new LogOutAction());
+    });
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
     this.fileList = new FileList(fileContainerRoot, {items: []});
 

@@ -18,7 +18,6 @@ export default class ApiService {
     }
   }
 
-
   /**
    * Sends request yo the server for user log in.
    * @param {UserData} userData - instance of {@link UserData}.
@@ -161,6 +160,26 @@ export default class ApiService {
         return 200;
       }
       throw await this.getError(response);
+    });
+  }
+
+  /**
+   * Sends request to server for logging out current user.
+   * Regardless of the answer removes current token from local storage.
+   * @returns {Promise<Response>}
+   */
+  logOut() {
+    return fetch('/logout', {
+      method: 'POST', headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return;
+      }
+      throw await this.getError(response);
+    }).finally(() => {
+      localStorage.removeItem('token');
     });
   }
 }

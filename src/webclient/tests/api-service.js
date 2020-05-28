@@ -173,7 +173,65 @@ export default module('API service test', function(hook) {
       'express:/folder/:id/content', service, 'getItems');
   });
 
-  function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
+  test('Log out method should handle 500 error', async (assert) => {
+    assert.expect(5);
+    localStorage.clear();
+    localStorage.setItem('token', 'testToken');
+    const matcher = '/logout';
+    fetchMock.post(matcher, (((url) => {
+      return 500;
+    })));
+    try {
+      await service.logOut();
+    } catch (error) {
+      assert.strictEqual(error.message, 'Internal Server Error', 'Should handle 500 error.');
+    }
+    assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+    assert.notOk(localStorage.getItem('token'),
+      'After log out method is triggered, local storage should not contain token.');
+  });
+
+  test('Log out method should handle 401 error', async (assert) => {
+    assert.expect(5);
+    localStorage.clear();
+    localStorage.setItem('token', 'testToken');
+    const matcher = '/logout';
+    fetchMock.post(matcher, (((url) => {
+      return 401;
+    })));
+    try {
+      await service.logOut();
+    } catch (error) {
+      assert.ok(error instanceof AuthorizationError, 'Should handle 401 error.');
+    }
+    assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+    assert.notOk(localStorage.getItem('token'),
+      'After log out method is triggered, local storage should not contain token.');
+  });
+
+  test('Log out method should send proper request with correct data.', async (assert) => {
+    assert.expect(5);
+    localStorage.clear();
+    const token = 'testToken';
+    localStorage.setItem('token', token);
+    const matcher = '/logout';
+    fetchMock.post(matcher, (((url, request) => {
+      assert.strictEqual(token, request.headers.token, 'Should send correct token.');
+      return 200;
+    })));
+    await service.logOut();
+    assert.notOk(localStorage.getItem('token'),
+      'After log out method is triggered in the local storage should not exist token.');
+    assert.ok(fetchMock.called(matcher), 'Should send folder/root request.');
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  async function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
     assert.expect(4);
     fetchMock[fetchMethod](matcher, (((url) => {
       return 500;

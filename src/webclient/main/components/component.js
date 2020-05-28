@@ -19,7 +19,8 @@ export default class Component {
   _render() {
     const div = document.createElement('div');
     div.innerHTML = this._markup().trim();
-    this.container.appendChild(div.firstChild);
+    this.rootElement = div.firstElementChild;
+    this.container.appendChild(this.rootElement);
   }
 
   /**

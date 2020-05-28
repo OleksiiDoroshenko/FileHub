@@ -3,6 +3,7 @@ import AuthorizationError from '../../../models/errors/authorization-error';
 
 import MockServer from '../mock-server';
 import ServerValidationErrors from '../../../models/errors/server-validation-errors';
+import NotFoundError from '../../../models/errors/not-found-error';
 
 /**
  * Implements login and registration methods logic.
@@ -16,6 +17,7 @@ export default class ApiService {
       new MockServer();
     }
   }
+
 
   /**
    * Sends request yo the server for user log in.
@@ -100,6 +102,13 @@ export default class ApiService {
         });
         return new ServerValidationErrors(serverErrors);
       }
+      case 404: {
+        let message = response.statusText;
+        await response.text().then(text => {
+          message = text;
+        });
+        return new NotFoundError(message);
+      }
       case 500: {
         return new Error(response.statusText);
       }
@@ -116,7 +125,7 @@ export default class ApiService {
   /**
    * Sends request to the server for getting folder content.
    * @param {string} folderId - folder id.
-   * @return {Promise<[Object]>}
+   * @return {Promise<Response>}
    */
   getItems(folderId) {
     return fetch(`/folder/${folderId}/content`, {
@@ -127,6 +136,29 @@ export default class ApiService {
     }).then(async (response) => {
       if (response.ok) {
         return response.json();
+      }
+      throw await this.getError(response);
+    });
+  }
+
+  /**
+   * Sends request to server for uploading new file.
+   * @param {string} parentId - id of parent folder where file will be loaded.
+   * @param {File} file - file to be loaded.
+   * @returns {Promise<>}
+   */
+  uploadFile(parentId, file) {
+    return fetch(`/folder/${parentId}/file`, {
+      method: 'POST',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+      body: {
+        file: file,
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return 200;
       }
       throw await this.getError(response);
     });

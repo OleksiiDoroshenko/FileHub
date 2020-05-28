@@ -36,7 +36,7 @@ export default class MockServer {
       id: '3', parentId: '0', name: 'Videos', itemsAmount: '1', type: 'folder',
     },
     {
-      id: '4', parentId: '0', name: 'test.txt', mimeType: 'text', size: '20KB', type: 'file',
+      id: '4', parentId: '0', name: 'test.txt', mimeType: 'text', size: '20 KB', type: 'file',
     },
   ];
 
@@ -116,6 +116,20 @@ export default class MockServer {
           body: 'Folder not found.',
         };
       }));
+
+    fetchMock
+      .post('express:/folder/:id/file', (((url, request) => {
+        const file = request.body.file;
+        const newFile = {};
+        newFile.id = this._getNextId();
+        newFile.parentId = url.split('/')[2];
+        newFile.name = file.name;
+        newFile.mimeType = this._getMimeType(file.name);
+        newFile.size = this._getFileSize(file.size);
+        newFile.type = 'file';
+        this.items.push(newFile);
+        return 200;
+      })));
   }
 
   /**
@@ -137,5 +151,50 @@ export default class MockServer {
   isLoginRegistered(userData) {
     const login = userData.login;
     return this.users.hasOwnProperty(login);
+  }
+
+  /**
+   * Returns files mime type from its name.
+   * @param {string} fileName - file name with its type.
+   * @return {string} mime type.
+   * @private
+   */
+  _getMimeType(fileName) {
+    const type = fileName.split('.')[1];
+    const types = {
+      text: ['txt', 'doc', 'docx'],
+      video: ['mpeg', 'mp4'],
+      audio: ['mp3', 'aac'],
+      image: ['gif', 'jpeg', 'png', 'jpg'],
+    };
+    return Object.entries(types).reduce((acc, [key, value]) => {
+      if (value.includes(type)) {
+        acc = key;
+      }
+      return acc;
+    }, '');
+  }
+
+  /**
+   * Returns available id for list item.
+   * @return {number} - item id.
+   * @private
+   */
+  _getNextId() {
+    return parseInt(this.items[this.items.length - 1].id, 10) + 1;
+  }
+
+  /**
+   * Converts file size to general view.
+   * @param {number} size - file seze.
+   * @return {string} converted string.
+   * @private
+   */
+  _getFileSize(size) {
+    if (size === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(size) / Math.log(k));
+    return parseFloat((size / Math.pow(k, i)).toFixed(0)) + ' ' + sizes[i];
   }
 }

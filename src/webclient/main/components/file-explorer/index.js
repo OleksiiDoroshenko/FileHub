@@ -150,11 +150,11 @@ export default class FileExplorerPage extends StateAwareComponent {
       this.fileList.uploadingItems = state.uploadingItems;
     });
     this.stateManager.onStateChanged('userLoadingError', (state) => {
-      const error = state.error;
+      const error = state.userLoadingError;
       if (error instanceof AuthorizationError) {
         window.location.hash = '#/login';
       } else {
-        alert(`User can not be loaded.\n ${error.message}`);
+        alert(`User can not be loaded.\n${error.message}`);
       }
     });
   }
@@ -188,8 +188,12 @@ export default class FileExplorerPage extends StateAwareComponent {
   }
 
   async _getUser() {
-    const user = await this.stateManager.dispatch(new GetUserAction());
-    this.username = user.name;
+    await this.stateManager.dispatch(new GetUserAction())
+      .then(user => {
+        this.username = user.name;
+      }).catch((error => {
+        alert(error.message);
+      }));
   }
 
   set username(name) {

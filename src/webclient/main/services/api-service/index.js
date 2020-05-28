@@ -87,7 +87,7 @@ export default class ApiService {
       case 401: {
         let message = response.statusText;
         await response.text().then(text => {
-          message = text;
+          message = text.length > 0 ? text : message;
         });
         return new AuthorizationError(message);
       }

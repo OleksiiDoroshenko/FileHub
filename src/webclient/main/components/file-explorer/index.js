@@ -42,7 +42,7 @@ export default class FileExplorerPage extends StateAwareComponent {
              <header class="header">
               <img class="logo" alt="logo" src="./static/images/teamdev.png" width="150">
               <ul class="list-inline logout-menu">
-                  <li class="username" data-toggle="tooltip"
+                  <li class="username" data-render="username-box" data-toggle="tooltip"
                    data-placement="top" title="Current user">
                       <i class="glyphicon glyphicon-user"></i>
                       <span data-render="username"></span>
@@ -159,6 +159,10 @@ export default class FileExplorerPage extends StateAwareComponent {
     });
     this.stateManager.onStateChanged('user', (state) => {
       this.username = state.user.name;
+    });
+    this.stateManager.onStateChanged('isUserLoading', (state) => {
+      const usernameBox = this.rootElement.querySelector('[data-render="username-box"]');
+      usernameBox.classList.toggle('blink', state.isUserLoading);
     });
   }
 

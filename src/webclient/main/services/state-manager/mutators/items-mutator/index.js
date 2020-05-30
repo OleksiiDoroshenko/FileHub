@@ -1,12 +1,12 @@
 import Mutator from '../mutator.js';
 
 /**
- * Class that can change 'items' filed in the {@link StateManager} state.
+ * Allows {@link StateManager} state items field changing.
  */
 export default class ItemsMutator extends Mutator {
   /**
    * Returns instance of {@link ItemsMutator}.
-   * @param {[object]} items - {@link FileExplorerPage} content items.
+   * @param {[Object]} items - {@link FileExplorerPage} content items.
    */
   constructor(items) {
     super();

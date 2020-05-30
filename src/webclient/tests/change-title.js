@@ -8,5 +8,4 @@ export default module('Change title test', function(hook) {
     new TitleService().changeTitle(title);
     assert.strictEqual(document.title, `${title} - FileHub`, 'Should correctly change document title.');
   });
-
 });

@@ -1,7 +1,7 @@
 import Mutator from '../mutator.js';
 
 /**
- * Class that can change 'isLoading' filed in the {@link StateManager} state.
+ * Allows {@link StateManager} state isLoading field changing.
  */
 export default class ItemLoadingMutator extends Mutator {
   /**

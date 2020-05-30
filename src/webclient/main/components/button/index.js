@@ -5,15 +5,13 @@ import Component from '../component.js';
  */
 export default class Button extends Component {
   /**
-   * @typedef {Object} ButtonConfig.
-   * @param {string} type - html button attribute 'type' value.
-   * @param {string} text - html button inner text value.
-   */
-
-  /**
-   * Class constructor.
-   * @param {HTMLElement} container - container for element rendering.
-   * @param {{text: string, type: string}} componentConfig - button configuration.
+   * Returns instance of {@link Button};
+   * @param {HTMLElement} container - container to render.
+   * @param {Object} componentConfig - initial configuration.
+   * @param {string} componentConfig.text - button inner text;
+   * @param {string} componentConfig.icon - inner button icon.
+   * @param {string} componentConfig.dataParam - data render param for getting element from code.
+   * @param {string} componentConfig.loadingClass - class for loading state.
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);
@@ -23,15 +21,44 @@ export default class Button extends Component {
    * @inheritdoc.
    */
   _markup() {
-    return `
-            <button class="btn btn-primary" ${this.type}>${this.text}</button>
-        `;
+    return `<button data-render=${this.dataParam} class="btn btn-primary">
+                <div class="loading-state" data-render="loading-state"><div></div></div>
+                <i class="glyphicon ${this._iconClass}"></i> ${this.text}
+            </button>`;
   }
 
   /**
    * @inheritdoc.
    */
   addEventListener(event, handler) {
-    this.container.querySelector('.btn').addEventListener(event, handler);
+    this.rootElement.addEventListener(event, handler);
+  }
+
+  /**
+   * Inserts bootstrap icon class into btn text.
+   * @param {string} iconClass - bootstrap icon class.
+   */
+  set iconClass(iconClass) {
+    this._iconClass = iconClass;
+  }
+
+  /**
+   * Adds or removes loading class according to the passed value.
+   * @param value
+   */
+  set isLoading(value) {
+    if (value) {
+      this.rootElement.classList.add(this._isLoadingClass);
+    } else {
+      this.rootElement.classList.remove(this._isLoadingClass);
+    }
+  }
+
+  /**
+   * Sets class to loading html element.
+   * @param {string} cssClass - css class.
+   */
+  set isLoadingClass(cssClass) {
+    this._isLoadingClass = cssClass;
   }
 }

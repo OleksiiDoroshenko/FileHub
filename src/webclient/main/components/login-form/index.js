@@ -47,18 +47,16 @@ export default class LoginForm extends Component {
       linkText: 'Don\'t have an account yet?',
       linkHref: '#/registration',
       btnText: 'Log in',
-      btnType: 'Submit',
     });
 
     this.actions.addEventListener('click', (event) => {
-      this.usernameInput.hideWarning();
-      this.passwordInput.hideWarning();
-
       const login = this.usernameInput.value;
       const password = this.passwordInput.value;
 
       this._validateForm(login, password).then(() => {
         this._executeHandlers(new UserData(login, password));
+      }).catch((e) => {
+
       });
 
       event.preventDefault();
@@ -75,6 +73,8 @@ export default class LoginForm extends Component {
    * @private
    */
   _validateForm(login, password) {
+    this.usernameInput.hideWarning();
+    this.passwordInput.hideWarning();
     return new Promise((resolve, reject) => {
       const validator = new Validator();
 
@@ -84,16 +84,16 @@ export default class LoginForm extends Component {
 
       Promise.all([loginValid.catch((error) => {
         this._errorHandler(error);
-        reject(new Error());
+        reject('login');
       }),
-        passwordValid.catch((error) => {
-          this._errorHandler(error);
-          reject(new Error());
-        })]).then(() => {
-        resolve(new Error());
+      passwordValid.catch((error) => {
+        this._errorHandler(error);
+        reject('password');
+      })]).then(() => {
+        resolve();
       }).catch((error) => {
         this._errorHandler(error);
-        reject(new Error());
+        reject('general');
       });
     });
   }

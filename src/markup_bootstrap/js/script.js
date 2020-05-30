@@ -16,7 +16,7 @@ function deleteElement(el) {
 
 function addDirectory() {
 
-    let table = document.getElementById("file-container");
+    let table = document.getElementById("file-list");
     let row = table.insertRow(0);
 
     let cell = row.insertCell(0);

@@ -1,7 +1,8 @@
 import Action from '../action.js';
-import ItemsMutator from '../../mutators/get-item-mutator';
-import ItemLoadingMutator from '../../mutators/item-loading-mutator';
-import ItemLoadingErrorMutator from '../../mutators/item-loading-error-mutator';
+import ItemsMutator from '../../mutators/items-mutator';
+import ItemLoadingMutator from '../../mutators/items-loading-mutator';
+import ItemsLoadingErrorMutator from '../../mutators/items-loading-error-mutator';
+import FolderIdMutator from '../../mutators/folder-id-mutator';
 
 /**
  * Gets up-to-date user files from {@link AppService} and writes it into {@link StateManager} state
@@ -20,15 +21,16 @@ export default class GetItemsAction extends Action {
   /**
    * @inheritdoc
    */
-  apply(stateManager, appService) {
+  async apply(stateManager, apiService) {
     stateManager.mutate(new ItemLoadingMutator(true));
-    appService.getItems(this.id)
-      .then((items) => {
-        console.log('Server response ' + items.length);
-        stateManager.mutate(new ItemsMutator(items));
+    apiService.getItems(this.id)
+      .then((response) => {
+        stateManager.mutate(new FolderIdMutator(this.id));
+        stateManager.mutate(new ItemsMutator(response.items));
       }).catch((e) => {
-      stateManager.mutate(new ItemLoadingErrorMutator(e));
+      stateManager.mutate(new ItemsLoadingErrorMutator(e));
+    }).finally(() => {
+      stateManager.mutate(new ItemLoadingMutator(false));
     });
-    stateManager.mutate(new ItemLoadingMutator(false));
   }
 }

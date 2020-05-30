@@ -1,5 +1,4 @@
 body {
-
     font: 14px/22px Arial, Helvetic, sans-serif;
     color: #000;
     background: #eee;
@@ -14,7 +13,7 @@ a:hover {
     text-decoration: underline;
 }
 
-.base-form {
+.base-box {
     position: relative;
     margin: 100px auto 0;
     padding: 3px 27px;
@@ -26,7 +25,7 @@ a:hover {
     box-shadow: 0 0 30px grey;
 }
 
-.login-form {
+.login-box {
     width: 550px;
 }
 
@@ -34,6 +33,7 @@ a:hover {
     position: absolute;
     top: -70px;
     left: 0;
+    width: 175px;
 }
 
 .header h1 {
@@ -46,13 +46,13 @@ a:hover {
 }
 
 .form-control {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     height: 40px;
 }
 
 .text-danger {
-    color: rgb(255, 0, 0);
-    margin-bottom: 15px;
+    color: #ff0000;
+    margin-bottom: 10px;
 }
 
 .form-horizontal .control-label {
@@ -63,11 +63,6 @@ a:hover {
     float: right;
 }
 
-.btn {
-    font-size: 20px;
-    padding: 10px;
-}
-
 .nav-link {
     padding-top: 10px;
 }
@@ -76,25 +71,33 @@ a:hover {
     float: right;
 }
 
-.header .user-icon {
+.user-icon {
     float: right;
     font-size: 26px;
     margin-top: 5px;
 }
 
 /*File-explorer*/
-.logout-menu {
+
+
+.content .btn-menu {
+    position: static;
+    float: right;
+    margin-right: 15px;
+}
+
+.user-menu {
     position: absolute;
     right: 20px;
     top: -40px;
 }
 
-.logout-menu li {
+.user-menu li {
     border-left: 1px solid #000;
     padding-left: 4px;
 }
 
-.logout-menu li:first-child {
+.user-menu li:first-child {
     border: 0;
 }
 
@@ -103,17 +106,11 @@ a:hover {
     margin-top: 10px;
 }
 
-.container #upload-file {
+.container .upload-file {
     display: none;
 }
 
-.content .btn-menu {
-    position: static;
-    float: right;
-    margin-right: 15px;
-}
-
-.content .btn-menu .btn {
+.content .btn-menu .btn-animate {
     font-size: 16px;
 }
 
@@ -123,23 +120,32 @@ a:hover {
 }
 
 .path-manager:after {
-
     display: block;
     clear: both;
     content: "";
 }
 
 .input {
-    border: 2px solid rgb(204, 204, 204);
+    border: 2px solid #ccc;
     border-radius: 7px;
     padding: 0 9px;
 }
 
 .input:focus {
-    border-color: rgb(55, 123, 181);
+    border-color: #377bb5;
 }
 
-.file-container .item-icon {
+.file-container {
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table .cell-icon {
     width: 65px;
     font-size: 20px;
     margin-right: 15px;
@@ -149,61 +155,53 @@ a:hover {
     text-align: right;
 }
 
-.items {
-    width: 100px;
+.cell-size {
+    width: 120px;
 }
 
-.clickable {
+.cell-actions {
     width: 60px;
 }
 
-.clickable i {
+.cell-actions i {
     opacity: 0;
 }
 
-.file-container .glyphicon-upload {
-    color: rgb(110, 189, 75);
+.table .glyphicon-upload {
+    color: #6ebd4b;
 }
 
-.file-container .glyphicon-download {
-    color: rgb(102, 175, 233);
+.table .glyphicon-download {
+    color: #66afe9;
 }
 
-.file-container .glyphicon-remove-circle {
-    color: rgb(207, 32, 48);
+.table .glyphicon-remove-circle {
+    color: #cf2030;
 }
 
-.table {
-    width: 100%;
-    table-layout: fixed;
+.table tr:hover {
+    transition: 0.5s;
+    background: #f4f4f4;
 }
 
-.file-container {
-    height: 500px;
-    overflow-y: scroll;
-}
-
-.content .file-container tr:hover,
-.content .file-container tr:hover .clickable i {
+.table tr:hover .cell-actions i {
     opacity: 1;
     transition: 0.5s;
-    background: rgb(244, 244, 244);
+    background: #f4f4f4;
 }
 
-.footer {
-
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-top: 1px solid #999999;
-    text-align: center;
-    white-space: nowrap;
-}
-
-
-.name span {
+.cell-name .cell-name-text {
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     margin-left: 10px;
+    margin-top: 5px;
+}
+
+.footer {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid #999;
+    text-align: center;
 }

@@ -2,68 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <title>FileHub</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>FileHub - Registration</title>
+    <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-
-
 </head>
 <body>
-<section class="form-application login-form">
-
+<section class="application-box login-box">
+    <img class="logo" alt="TeamDev" src="images/teamdev.png">
     <header class="header">
-        <img class="logo" alt="logo" src="images/teamdev.png" width="150">
-
         <h1>Registration</h1>
         <i class="glyphicon glyphicon-user user-icon"></i>
     </header>
-    <!----------------------------------CONTENT--------------------------------------------->
+    <!--    Form content        -->
     <form class="content">
-        <!----------------------------------Email block--------------------------------------------->
+        <!--    Email row     -->
         <div class="row">
-
             <label class="row-label" for="email-holder">Username</label>
             <div class="row-fields">
-
                 <input type="text" name="email" placeholder="Email" id="email-holder"
-                       class="email-holder input"/>
+                       class="input"/>
                 <p class="warning">Username can't be empty</p>
             </div>
         </div>
-        <!----------------------------------Password block--------------------------------------------->
+        <!--    Password row    -->
         <div class="row">
-
             <label class="row-label" for="password-holder">Password</label>
-
             <div class="row-fields">
                 <input type="password" name="password" placeholder="Password"
-                       id="password-holder" class="password-holder input"/>
-                <p class="warning">Password can't be empty and should contain
-                    letters and numbers
+                       id="password-holder" class="input"/>
+                <p class="warning">
+                    Password can't be empty and should contain letters and numbers
                 </p>
             </div>
         </div>
-        <!----------------------------------Confirm Password block--------------------------------------------->
+        <!--    Confirm Password row    -->
         <div class="row">
-
             <label class="row-label" for="confirm-password-holder">Confirm Password</label>
-
             <div class="row-fields">
                 <input type="password" name="confirm-password" placeholder="Confirm password"
-                       id="confirm-password-holder" class="confirm-password-holder input"/>
+                       id="confirm-password-holder" class="input"/>
                 <p class="warning">Passwords do not match</p>
             </div>
         </div>
-        <div class="navigation">
-            <!----------------------------------Navigation block--------------------------------------------->
-            <button type="submit" class="btn"><span>Register</span></button>
-
-            <a class="form-link" href="authentication.html">Already have an account?</a>
+        <div class="row">
+            <!--    Actions row     -->
+            <div class="row-fields">
+                <button type="submit" title="Register" class="btn">Register</button>
+                <a class="form-link" title="Authorize" href="authentication.html">Already have an account?</a>
+            </div>
         </div>
-
     </form>
 </section>
 </body>

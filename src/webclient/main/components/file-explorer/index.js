@@ -28,7 +28,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     } else {
       this.stateManager.dispatch(new GetItemsAction(this.id));
     }
-    this._getUser();
+    this.stateManager.dispatch(new GetUserAction());
     new TitleService().changeTitle('File Explorer');
   }
 
@@ -157,6 +157,9 @@ export default class FileExplorerPage extends StateAwareComponent {
         alert(`User can not be loaded.\n${error.message}`);
       }
     });
+    this.stateManager.onStateChanged('user', (state) => {
+      this.username = state.user.name;
+    });
   }
 
   /**
@@ -185,19 +188,6 @@ export default class FileExplorerPage extends StateAwareComponent {
       return acc;
     }, '');
     window.location.hash = newHash.slice(1);
-  }
-
-  /**
-   * Dispatches action foe getting user info.
-   * @private
-   */
-  async _getUser() {
-    await this.stateManager.dispatch(new GetUserAction())
-      .then(user => {
-        this.username = user.name;
-      }).catch((error => {
-        alert(error.message);
-      }));
   }
 
   /**

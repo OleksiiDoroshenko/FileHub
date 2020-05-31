@@ -18,9 +18,11 @@ export default class FolderItem extends ListItem {
                 <span><a href="#">${this.model.name}</a></span></td>
             <td class="items">${this.model.itemsAmount} items</td>
             <td class="clickable">
-                <div class="loading-state" data-render="loading-state"><div></div></div>
+            <div data-render="clickable">
                 <i class="glyphicon glyphicon-upload" data-render="upload"></i>
-                <i class="glyphicon glyphicon-remove-circle"></i>
+                <div class="loading-state" data-render="loading-state"><div></div></div>
+                <i class="glyphicon glyphicon-remove-circle" data-render="delete"></i>
+            </div>
             </td>
     `;
   }
@@ -39,8 +41,18 @@ export default class FolderItem extends ListItem {
   }
 
   set isUploading(value) {
-    if (value) {
-      this.rootElement.classList.add('file-uploading');
-    }
+    this.rootElement.classList.toggle('file-uploading', value);
+  }
+
+  addDeleteFolderHandler(handler) {
+    const icon = this.rootElement.querySelector('[data-render="delete"]');
+    icon.addEventListener('click', () => {
+      handler(this.model);
+    });
+  }
+
+  set isDeleting(value) {
+    this.rootElement.classList.toggle('file-deleting', value);
   }
 }
+

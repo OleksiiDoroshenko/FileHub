@@ -7,6 +7,7 @@ import FileItem from './file-item';
  */
 export default class FileList extends Component {
   _uploadingItems = [];
+  _deletingItems = [];
 
   /**
    * Returns instance of {@link FileList}.
@@ -50,6 +51,11 @@ export default class FileList extends Component {
     this._renderItems();
   }
 
+  set deletingItems(items) {
+    this._deletingItems = items;
+    this._renderItems();
+  }
+
   /**
    * Returns user items.
    * @return {ListItem}
@@ -85,15 +91,26 @@ export default class FileList extends Component {
       'folder': {
         const folderItem = new FolderItem(container, {model});
         folderItem.addUploadFileHandler(this._onUploadClickHandler);
-        if (this._uploadingItems.includes(model.id)) {
-          folderItem.isUploading = true;
-        }
+        folderItem.addDeleteFolderHandler(this._onFolderDeleteHandler);
+        this._markItem(model, folderItem);
         return folderItem;
       }
       case
       'file': {
-        return new FileItem(container, {model});
+        const fileItem = new FileItem(container, {model});
+        fileItem.addDeleteFileHandler(this._onFileDeleteHandler);
+        this._markItem(model, fileItem);
+        return fileItem;
       }
+    }
+  }
+
+  _markItem(model, item) {
+    if (this._uploadingItems.includes(model.id)) {
+      item.isUploading = true;
+    }
+    if (this._deletingItems.includes(model.id)) {
+      item.isDeleting = true;
     }
   }
 
@@ -106,5 +123,13 @@ export default class FileList extends Component {
 
   onUploadClick(handler) {
     this._onUploadClickHandler = handler;
+  }
+
+  onFolderDelete(handler) {
+    this._onFolderDeleteHandler = handler;
+  }
+
+  onFileDelete(handler) {
+    this._onFileDeleteHandler = handler;
   }
 }

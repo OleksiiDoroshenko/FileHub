@@ -14,11 +14,12 @@ export default class FileItem extends ListItem {
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
                 <span>${this.model.name}</span></td>
             <td class="items">${this.model.size}</td>
-            <td class="clickable">
+            <td class="clickable" data-render="clickable">
                 <i class="glyphicon glyphicon-download"></i>
-                <i class="glyphicon glyphicon-remove-circle"></i>
+                <div class="loading-state" data-render="loading-state"><div></div></div>
+                <i class="glyphicon glyphicon-remove-circle" data-render="delete"></i>
             </td>
-    `;
+            `;
   }
 
   /**
@@ -35,5 +36,16 @@ export default class FileItem extends ListItem {
       audio: 'glyphicon-music',
     };
     return icons[mimeType] ? icons[mimeType] : 'glyphicon-file';
+  }
+
+  addDeleteFileHandler(handler) {
+    const icon = this.rootElement.querySelector('[data-render="delete"]');
+    icon.addEventListener('click', () => {
+      handler(this.model);
+    });
+  }
+
+  set isDeleting(value) {
+    this.rootElement.classList.toggle('file-deleting', value);
   }
 }

@@ -3,13 +3,13 @@ import Button from '../button';
 import StateAwareComponent from '../state-aware-component.js';
 import GetItemsAction from '../../services/state-manager/actions/get-items';
 import TitleService from '../../services/change-title';
-import DeleteItemAction from '../../services/state-manager/actions/delete-item';
 import GetRootIdAction from '../../services/state-manager/actions/get-root-id';
 import AuthorizationError from '../../../models/errors/authorization-error';
 import UploadFileAction from '../../services/state-manager/actions/upload-file';
 import FileBrowserService from '../../services/file-browser-service';
 import NotFoundError from '../../../models/errors/not-found-error';
 import LogOutAction from '../../services/state-manager/actions/log-out';
+import DeleteItemAction from '../../services/state-manager/actions/delete-item';
 
 /**
  * Renders file explorer page.
@@ -112,6 +112,13 @@ export default class FileExplorerPage extends StateAwareComponent {
         uploadHandler(this.id, file);
       });
     });
+
+    const deleteFolderHandler = (model) => {
+      this.stateManager.dispatch(new DeleteItemAction(model));
+    };
+
+    this.fileList.onFolderDelete(deleteFolderHandler);
+    this.fileList.onFileDelete(deleteFolderHandler);
   }
 
   /**
@@ -128,24 +135,37 @@ export default class FileExplorerPage extends StateAwareComponent {
     });
     this.stateManager.onStateChanged('error', (state) => {
       const error = state.error;
-      if (error instanceof AuthorizationError) {
-        window.location.hash = '#/login';
-      }
-      if (error instanceof NotFoundError) {
-        let message = 'Folder not found.';
-        if (error.message) {
-          message = error.message;
-        }
-        alert(message);
-      } else {
-        alert('Sorry something went wrong, please try later');
-      }
+      this._standardErrorHandler(error);
     });
     this.stateManager.onStateChanged('uploadingItems', (state) => {
       this._uploadFileBtn.isLoadingClass = 'file-uploading';
       this._uploadFileBtn.isLoading = state.uploadingItems.includes(this.id);
       this.fileList.uploadingItems = state.uploadingItems;
     });
+
+    this.stateManager.onStateChanged('deletingItems', (state) => {
+      this.fileList.deletingItems = state.deletingItems;
+    });
+
+    this.stateManager.onStateChanged('deletingError', (state) => {
+      const error = state.deletingError;
+      this._standardErrorHandler(error);
+    });
+  }
+
+  _standardErrorHandler(error) {
+    if (error instanceof AuthorizationError) {
+      window.location.hash = '#/login';
+    }
+    if (error instanceof NotFoundError) {
+      let message = 'Folder not found.';
+      if (error.message) {
+        message = error.message;
+      }
+      alert(message);
+    } else {
+      alert('Sorry something went wrong, please try later');
+    }
   }
 
   /**

@@ -129,7 +129,7 @@ export default class MockServer {
         newFile.type = 'file';
         this.items.push(newFile);
         return 200;
-      })));
+      })), {delay: 5000});
 
     fetchMock
       .post('/logout', ((url, request) => {
@@ -139,6 +139,35 @@ export default class MockServer {
           return 401;
         }
       }));
+
+    fetchMock
+      .delete('express:/folder/:id', ((url, request) => {
+        if (request.headers.token) {
+          try {
+            const id = url.split('/')[2];
+            this._deleteItem(id);
+            return 200;
+          } catch (e) {
+            return 404;
+          }
+        } else {
+          return 401;
+        }
+      }), {delay: 5000});
+    fetchMock
+      .delete('express:/file/:id', ((url, request) => {
+        if (request.headers.token) {
+          try {
+            const id = url.split('/')[2];
+            this._deleteItem(id);
+            return 200;
+          } catch (e) {
+            return 404;
+          }
+        } else {
+          return 401;
+        }
+      }), {delay: 5000});
   }
 
   /**
@@ -205,5 +234,21 @@ export default class MockServer {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(size) / Math.log(k));
     return parseFloat((size / Math.pow(k, i)).toFixed(0)) + ' ' + sizes[i];
+  }
+
+  _deleteItem(id) {
+    const newItemList = [];
+    let flag = false;
+    this.items.forEach(item => {
+      if (item.id !== id) {
+        newItemList.push(item);
+      } else {
+        flag = true;
+      }
+    });
+    if (!flag) {
+      throw new Error('Items doesn\'t contains id');
+    }
+    this.items = newItemList;
   }
 }

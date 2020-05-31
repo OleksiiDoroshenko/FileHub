@@ -47,11 +47,7 @@ export default class Button extends Component {
    * @param value
    */
   set isLoading(value) {
-    if (value) {
-      this.rootElement.classList.add(this._isLoadingClass);
-    } else {
-      this.rootElement.classList.remove(this._isLoadingClass);
-    }
+    this.rootElement.classList.toggle(this._isLoadingClass, value);
   }
 
   /**

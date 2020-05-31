@@ -215,11 +215,11 @@ export default class MockServer {
 
   /**
    * Returns available id for list item.
-   * @return {number} - item id.
+   * @return {string} - item id.
    * @private
    */
   _getNextId() {
-    return parseInt(this.items[this.items.length - 1].id, 10) + 1;
+    return (parseInt(this.items[this.items.length - 1].id, 10) + 1) + '';
   }
 
   /**
@@ -236,6 +236,11 @@ export default class MockServer {
     return parseFloat((size / Math.pow(k, i)).toFixed(0)) + ' ' + sizes[i];
   }
 
+  /**
+   * Deletes item from items.
+   * @param {string} id - item id.
+   * @private
+   */
   _deleteItem(id) {
     const newItemList = [];
     let flag = false;

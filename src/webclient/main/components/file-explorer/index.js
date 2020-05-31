@@ -153,6 +153,11 @@ export default class FileExplorerPage extends StateAwareComponent {
     });
   }
 
+  /**
+   * Handles error by common flow.
+   * @param {Error} error - error.
+   * @private
+   */
   _standardErrorHandler(error) {
     if (error instanceof AuthorizationError) {
       window.location.hash = '#/login';

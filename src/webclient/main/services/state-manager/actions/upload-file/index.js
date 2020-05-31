@@ -16,6 +16,7 @@ export default class UploadFileAction extends Action {
    */
   constructor(parentId, file) {
     super();
+    console.log(parentId);
     this.parentId = parentId;
     this.file = file;
   }
@@ -24,10 +25,11 @@ export default class UploadFileAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
+    const isRoot = stateManager.state.folderId === this.parentId;
     stateManager.mutate(new AddItemToUploadingListMutator(this.parentId));
     apiService.uploadFile(this.parentId, this.file)
       .then(() => {
-        if (stateManager.state.folderId === this.parentId) {
+        if (isRoot) {
           stateManager.dispatch(new GetItemsAction(this.parentId));
         }
       }).catch(error => {

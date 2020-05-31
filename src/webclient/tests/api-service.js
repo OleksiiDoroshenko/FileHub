@@ -231,6 +231,39 @@ export default module('API service test', function(hook) {
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
+  test('Deleting method should send proper request with correct data.', async (assert) => {
+    assert.expect(5);
+    const matcher = 'express:/folder/:id';
+    const itemId = '0';
+    fetchMock.delete(matcher, (((url) => {
+      const id = url.split('/')[2];
+      assert.strictEqual(id, itemId, 'Should send proper id.');
+      return 200;
+    })));
+    await service.deleteFolder(itemId)
+      .then((response) => {
+        assert.deepEqual(response, 200, 'Should return proper code.');
+      });
+    assert.ok(fetchMock.called(matcher), 'Should send delete folder request.');
+    assert.ok(fetchMock.calls().length === 1, `Should send delete folder request.`);
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Deleting folder method should handle 404 error', async (assert) => {
+    _testNotFoundError('delete', assert,
+      'express:/folder/:id', service, 'deleteFolder');
+  });
+
+  test('Deleting folder method should handle 500 error', async (assert) => {
+    _testInternalServerError('delete', assert,
+      'express:/folder/:id', service, 'deleteFolder');
+  });
+
+  test('Deleting folder method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('delete', assert,
+      'express:/folder/:id', service, 'deleteFolder');
+  });
+
   async function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
     assert.expect(4);
     fetchMock[fetchMethod](matcher, (((url) => {

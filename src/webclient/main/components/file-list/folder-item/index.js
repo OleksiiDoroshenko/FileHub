@@ -40,10 +40,18 @@ export default class FolderItem extends ListItem {
     });
   }
 
+  /**
+   * Changes root element class list if item is uploading.
+   * @param {boolean} value - process state.
+   */
   set isUploading(value) {
     this.rootElement.classList.toggle('file-uploading', value);
   }
 
+  /**
+   * Adds listener for deleting icon.
+   * @param handler
+   */
   addDeleteFolderHandler(handler) {
     const icon = this.rootElement.querySelector('[data-render="delete"]');
     icon.addEventListener('click', () => {
@@ -51,6 +59,10 @@ export default class FolderItem extends ListItem {
     });
   }
 
+  /**
+   * Changes root element class list if item is deleting.
+   * @param {boolean} value - process state.
+   */
   set isDeleting(value) {
     this.rootElement.classList.toggle('file-deleting', value);
   }

@@ -9,6 +9,10 @@ import FolderIdMutator from '../main/services/state-manager/mutators/folder-id-m
 import AddItemToUploadingListMutator from '../main/services/state-manager/mutators/add-item-to-uploading-list-mutator';
 import RemoveItemToUploadingListMutator
   from '../main/services/state-manager/mutators/remove-item-from-uploading-list-mutator';
+import RemoveItemFromDeletingListMutator
+  from '../main/services/state-manager/mutators/remove-item-from-deleting-list-mutator';
+import AddItemToDeletingListMutator from '../main/services/state-manager/mutators/add-item-to-deleting-list-mutator';
+import ItemsDeletingErrorMutator from '../main/services/state-manager/mutators/items-deleting-error-mutator';
 
 const {module, test} = QUnit;
 
@@ -80,6 +84,29 @@ export default module('State manager test: ', function(hook) {
       const resultList = [undefined];
       const mutator = new RemoveItemToUploadingListMutator(itemId);
       _testMutatorWithDeepEqual(assert, mutator, 'uploadingItems', resultList);
+    });
+
+
+    test('Add to deleting list mutator should change state\'s deleting list', async (assert) => {
+      stateManager = new StateManager({deletingItems: []}, new ApiService(false));
+      const itemId = '1';
+      const resultList = [itemId];
+      const mutator = new AddItemToDeletingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'deletingItems', resultList);
+    });
+
+    test('Remove from deleting list mutator should change state\'s deleting list', async (assert) => {
+      stateManager = new StateManager({deletingItems: ['1']}, new ApiService(false));
+      const itemId = '1';
+      const resultList = [undefined];
+      const mutator = new RemoveItemFromDeletingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'deletingItems', resultList);
+    });
+
+    test('Items deleting error mutator should change state\'s deletingError field', async (assert) => {
+      const error = new Error('test');
+      const mutator = new ItemsDeletingErrorMutator(error);
+      _testMutator(assert, mutator, 'deletingError', error);
     });
 
     function _testMutator(assert, mutator, field, value) {

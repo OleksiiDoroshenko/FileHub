@@ -38,6 +38,10 @@ export default class FileItem extends ListItem {
     return icons[mimeType] ? icons[mimeType] : 'glyphicon-file';
   }
 
+  /**
+   * Adds listener for deleting icon.
+   * @param handler
+   */
   addDeleteFileHandler(handler) {
     const icon = this.rootElement.querySelector('[data-render="delete"]');
     icon.addEventListener('click', () => {
@@ -45,6 +49,10 @@ export default class FileItem extends ListItem {
     });
   }
 
+  /**
+   * Changes root element class list if item is deleting.
+   * @param {boolean} value - process state.
+   */
   set isDeleting(value) {
     this.rootElement.classList.toggle('file-deleting', value);
   }

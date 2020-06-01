@@ -154,6 +154,27 @@ export default class MockServer {
           return 401;
         }
       }));
+
+    fetchMock
+      .get('express:/file/:id', ((url, request) => {
+        const token = request.headers.token;
+        const id = url.split('/')[2];
+        if (token) {
+          const file = this.items.forEach(item => {
+            if (item.id === id) {
+              return item;
+            }
+          });
+          return {
+            status: 200,
+            body: {
+              file,
+            },
+          };
+        } else {
+          return 401;
+        }
+      }));
   }
 
   /**

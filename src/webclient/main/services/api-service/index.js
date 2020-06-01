@@ -183,6 +183,19 @@ export default class ApiService {
     });
   }
 
+  getFile(id) {
+    return fetch(`/file/${id}`, {
+      method: 'GET', headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw await this.getError(response);
+    });
+  }
+
   getUser() {
     return fetch('/user', {
       method: 'GET', headers: {

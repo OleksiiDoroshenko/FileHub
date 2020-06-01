@@ -1,4 +1,4 @@
-import Mutator from '../../mutator.js';
+import Mutator from '../mutator.js';
 
 /**
  * Allows {@link StateManager} state user field changing.

@@ -100,24 +100,14 @@ export default class FileList extends Component {
         break;
       }
     }
-    item.addDeleteHandler(this._onDeleteHandler);
-    this._markItem(model, item);
-    return item;
-  }
-
-  /**
-   * Marks item if it os contained in special list.
-   * @param {Object} model - list item model.
-   * @param {Object} item - pure item.
-   * @private
-   */
-  _markItem(model, item) {
     if (this._uploadingItems.includes(model.id)) {
-      item.isUploading = true;
+      item.isPrecessing(true, 'file-uploading');
     }
     if (this._deletingItems.includes(model.id)) {
-      item.isDeleting = true;
+      item.isPrecessing(true, 'file-deleting');
     }
+    item.addDeleteHandler(this._onDeleteHandler);
+    return item;
   }
 
   /**

@@ -1,7 +1,7 @@
 import Action from '../action.js';
 import UserLoadingMutator from '../../mutators/user-loading-mutator';
 import UserLoadingError from '../../mutators/user-loading-error-mutator';
-import UserDataMutator from '../../mutators/add-item-to-uploading-list-mutator/user-data-mutator';
+import UserDataMutator from '../../mutators/user-data-mutator';
 
 /**
  * Provides functionality for getting users info;

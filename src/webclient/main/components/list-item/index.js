@@ -1,4 +1,4 @@
-import Component from '../../main/components/component.js';
+import Component from '../component.js';
 
 /**
  * Main list item class.
@@ -28,5 +28,24 @@ export default class ListItem extends Component {
     const row = this.container.insertRow(-1);
     row.innerHTML = this._markup();
     this.rootElement = row;
+  }
+
+  /**
+   * Changes root element class list if item is uploading.
+   * @param {boolean} value - process state.
+   * @param {string} toggleClass - class for toggling.
+   */
+  isPrecessing(value, toggleClass) {
+    this.rootElement.classList.toggle(toggleClass, value);
+  }
+
+  /**
+   * Adds listener for deleting icon.
+   * @param handler
+   */
+  addDeleteHandler(handler) {
+    this._deleteIcon.addEventListener('click', () => {
+      handler(this.model);
+    });
   }
 }

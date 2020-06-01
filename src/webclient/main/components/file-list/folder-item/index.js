@@ -1,4 +1,4 @@
-import ListItem from '../../../../models/list-item';
+import ListItem from '../../list-item';
 import FileBrowserService from '../../../services/file-browser-service';
 
 /**
@@ -13,9 +13,11 @@ export default class FolderItem extends ListItem {
   _markup() {
     return `
             <td class="item-icon folder-icon"><i class="glyphicon glyphicon-triangle-right"></i>
-                <i class="glyphicon glyphicon-folder-close"></i></td>
+                <i class="glyphicon glyphicon-folder-close"></i>
+            </td>
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
-                <span><a href="#">${this.model.name}</a></span></td>
+                <span><a href="#">${this.model.name}</a></span>
+            </td>
             <td class="items">${this.model.itemsAmount} items</td>
             <td class="clickable">
             <div data-render="clickable">
@@ -26,6 +28,11 @@ export default class FolderItem extends ListItem {
             </td>
     `;
   }
+
+  _initInnerComponents() {
+    this._deleteIcon = this.rootElement.querySelector('[data-render="delete"]');
+  }
+
 
   /**
    * Calls method that returns file from user's device and calls handler with proper parameters.
@@ -40,31 +47,5 @@ export default class FolderItem extends ListItem {
     });
   }
 
-  /**
-   * Changes root element class list if item is uploading.
-   * @param {boolean} value - process state.
-   */
-  set isUploading(value) {
-    this.rootElement.classList.toggle('file-uploading', value);
-  }
-
-  /**
-   * Adds listener for deleting icon.
-   * @param handler
-   */
-  addDeleteHandler(handler) {
-    const icon = this.rootElement.querySelector('[data-render="delete"]');
-    icon.addEventListener('click', () => {
-      handler(this.model);
-    });
-  }
-
-  /**
-   * Changes root element class list if item is deleting.
-   * @param {boolean} value - process state.
-   */
-  set isDeleting(value) {
-    this.rootElement.classList.toggle('file-deleting', value);
-  }
 }
 

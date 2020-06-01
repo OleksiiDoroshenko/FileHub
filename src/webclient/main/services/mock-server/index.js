@@ -129,7 +129,7 @@ export default class MockServer {
         newFile.type = 'file';
         this.items.push(newFile);
         return 200;
-      })), {delay: 5000});
+      })), {delay: 1000});
 
     fetchMock
       .post('/logout', ((url, request) => {
@@ -153,7 +153,7 @@ export default class MockServer {
         } else {
           return 401;
         }
-      }), {delay: 5000});
+      }), {delay: 1000});
     fetchMock
       .delete('express:/file/:id', ((url, request) => {
         if (request.headers.token) {
@@ -167,7 +167,7 @@ export default class MockServer {
         } else {
           return 401;
         }
-      }), {delay: 5000});
+      }), {delay: 1000});
   }
 
   /**

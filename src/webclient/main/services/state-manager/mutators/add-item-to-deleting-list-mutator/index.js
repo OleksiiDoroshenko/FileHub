@@ -17,8 +17,10 @@ export default class AddItemToDeletingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    const list = state.deletingItems;
-    list.push(this.itemId);
+    const list = state.deletingItems || [];
+    if (!list.includes(this.itemId)) {
+      list.push(this.itemId);
+    }
     state.deletingItems = list;
   }
 }

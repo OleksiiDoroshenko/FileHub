@@ -292,7 +292,7 @@ export default module('API service test', function(hook) {
         body: '',
       };
     })));
-    assert.rejects(service[method]({}), new AuthorizationError('')
+    assert.rejects(service[method]({}), new AuthorizationError('Unauthorized')
       , 'Should handle 401 error.');
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   }

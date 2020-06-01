@@ -141,6 +141,21 @@ export default class MockServer {
       }));
 
     fetchMock
+      .get('/user', ((url, request) => {
+        const token = request.headers.token;
+        if (token) {
+          return {
+            status: 200,
+            body: {
+              user: {name: 'Admin', id: '0'},
+            },
+          };
+        } else {
+          return 401;
+        }
+      }));
+
+    fetchMock
       .delete('express:/folder/:id', ((url, request) => {
         if (request.headers.token) {
           try {

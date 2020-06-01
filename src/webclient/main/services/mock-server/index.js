@@ -139,6 +139,21 @@ export default class MockServer {
           return 401;
         }
       }));
+
+    fetchMock
+      .get('/user', ((url, request) => {
+        const token = request.headers.token;
+        if (token) {
+          return {
+            status: 200,
+            body: {
+              user: {name: 'Admin', id: '0'},
+            },
+          };
+        } else {
+          return 401;
+        }
+      }));
   }
 
   /**
@@ -206,4 +221,5 @@ export default class MockServer {
     const i = Math.floor(Math.log(size) / Math.log(k));
     return parseFloat((size / Math.pow(k, i)).toFixed(0)) + ' ' + sizes[i];
   }
+
 }

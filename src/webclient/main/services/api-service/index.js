@@ -87,7 +87,7 @@ export default class ApiService {
       case 401: {
         let message = response.statusText;
         await response.text().then(text => {
-          message = text;
+          message = text.length > 0 ? text : message;
         });
         return new AuthorizationError(message);
       }
@@ -180,6 +180,19 @@ export default class ApiService {
       throw await this.getError(response);
     }).finally(() => {
       localStorage.removeItem('token');
+    });
+  }
+
+  getUser() {
+    return fetch('/user', {
+      method: 'GET', headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw await this.getError(response);
     });
   }
 }

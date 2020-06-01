@@ -231,6 +231,39 @@ export default module('API service test', function(hook) {
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
+  test('Get user method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('get', assert,
+      '/user', service, 'getUser');
+  });
+
+  test('Get user method should handle 500 error', async (assert) => {
+    _testInternalServerError('get', assert,
+      '/user', service, 'getUser');
+  });
+
+  test('Get user method send proper request with correct data.', async (assert) => {
+    assert.expect(5);
+    localStorage.clear();
+    const token = 'testToken';
+    localStorage.setItem('token', token);
+    const matcher = '/user';
+    const username = 'Test';
+    fetchMock.get(matcher, (((url, request) => {
+      assert.strictEqual(token, request.headers.token, 'Should send correct token.');
+      return {
+        status: 200,
+        body: {},
+        user: {name: username},
+      };
+    })));
+    const response = await service.getUser();
+    const user = response.user;
+    assert.strictEqual(user.name, username, 'Should return correct username.');
+    assert.ok(fetchMock.called(matcher), 'Should send folder/root request.');
+    assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
   async function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
     assert.expect(4);
     fetchMock[fetchMethod](matcher, (((url) => {

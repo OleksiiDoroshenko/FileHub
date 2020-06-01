@@ -1,7 +1,5 @@
 import VerificationError from '../../../models/errors/verification-error';
 import AuthorizationError from '../../../models/errors/authorization-error';
-
-import MockServer from '../mock-server';
 import ServerValidationErrors from '../../../models/errors/server-validation-errors';
 import NotFoundError from '../../../models/errors/not-found-error';
 
@@ -9,14 +7,6 @@ import NotFoundError from '../../../models/errors/not-found-error';
  * Implements login and registration methods logic.
  */
 export default class ApiService {
-  /**
-   * Creates object that intercepts requests for the server.
-   */
-  constructor(devMod) {
-    if (devMod) {
-      new MockServer();
-    }
-  }
 
   /**
    * Sends request yo the server for user log in.

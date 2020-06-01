@@ -52,7 +52,7 @@ export default class FolderItem extends ListItem {
    * Adds listener for deleting icon.
    * @param handler
    */
-  addDeleteFolderHandler(handler) {
+  addDeleteHandler(handler) {
     const icon = this.rootElement.querySelector('[data-render="delete"]');
     icon.addEventListener('click', () => {
       handler(this.model);

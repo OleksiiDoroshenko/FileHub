@@ -25,10 +25,13 @@ export default class DeleteItemAction extends Action {
    */
   async apply(stateManager, apiService) {
     const id = this.itemModel.id;
+    const parentId = this.itemModel.parentId;
     stateManager.mutate(new AddItemToDeletingListMutator(id));
     const method = this.itemModel.type === 'folder' ? 'deleteFolder' : 'deleteFile';
     apiService[method](id).then(() => {
-      stateManager.dispatch(new GetItemsAction(this.itemModel.parentId));
+      if (stateManager.state.folderId === parentId) {
+        stateManager.dispatch(new GetItemsAction(parentId));
+      }
     }).catch(error => {
       stateManager.mutate(new ItemsDeletingErrorMutator(error));
     }).finally(() => {

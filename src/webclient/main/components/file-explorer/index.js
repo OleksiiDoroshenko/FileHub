@@ -117,8 +117,7 @@ export default class FileExplorerPage extends StateAwareComponent {
       this.stateManager.dispatch(new DeleteItemAction(model));
     };
 
-    this.fileList.onFolderDelete(deleteFolderHandler);
-    this.fileList.onFileDelete(deleteFolderHandler);
+    this.fileList.onDelete(deleteFolderHandler);
   }
 
   /**

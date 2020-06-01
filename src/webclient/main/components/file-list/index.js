@@ -86,25 +86,31 @@ export default class FileList extends Component {
    * @return {FileItem|FolderItem}
    */
   _createItem(container, model) {
+    let item;
     switch (model.type) {
       case
       'folder': {
-        const folderItem = new FolderItem(container, {model});
-        folderItem.addUploadFileHandler(this._onUploadClickHandler);
-        folderItem.addDeleteFolderHandler(this._onFolderDeleteHandler);
-        this._markItem(model, folderItem);
-        return folderItem;
+        item = new FolderItem(container, {model});
+        item.addUploadFileHandler(this._onUploadClickHandler);
+        break;
       }
       case
       'file': {
-        const fileItem = new FileItem(container, {model});
-        fileItem.addDeleteFileHandler(this._onFileDeleteHandler);
-        this._markItem(model, fileItem);
-        return fileItem;
+        item = new FileItem(container, {model});
+        break;
       }
     }
+    item.addDeleteHandler(this._onDeleteHandler);
+    this._markItem(model, item);
+    return item;
   }
 
+  /**
+   * Marks item if it os contained in special list.
+   * @param {Object} model - list item model.
+   * @param {Object} item - pure item.
+   * @private
+   */
   _markItem(model, item) {
     if (this._uploadingItems.includes(model.id)) {
       item.isUploading = true;
@@ -121,15 +127,20 @@ export default class FileList extends Component {
     this.itemsRoot.innerHTML = 'Loading...';
   }
 
+  /**
+   * Sets upload file handler.
+   * @param {function} handler - handler;
+   */
   onUploadClick(handler) {
     this._onUploadClickHandler = handler;
   }
 
-  onFolderDelete(handler) {
-    this._onFolderDeleteHandler = handler;
+  /**
+   * Sets delete item handler.
+   * @param {function} handler - handler;
+   */
+  onDelete(handler) {
+    this._onDeleteHandler = handler;
   }
 
-  onFileDelete(handler) {
-    this._onFileDeleteHandler = handler;
-  }
 }

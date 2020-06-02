@@ -15,7 +15,7 @@ import UserLoadingError from '../main/services/state-manager/mutators/user-loadi
 const {module, test} = QUnit;
 
 export default module('State manager test: ', function(hook) {
-  let stateManager = new StateManager({}, new ApiService(false));
+  let stateManager = new StateManager({}, new ApiService());
 
   test('should mutate its state', (assert) => {
     const mutator = new Mutator();
@@ -69,7 +69,7 @@ export default module('State manager test: ', function(hook) {
     });
 
     test('Add to uploading list mutator should change state\'s uploading list', async (assert) => {
-      stateManager = new StateManager({uploadingItems: []}, new ApiService(false));
+      stateManager = new StateManager({uploadingItems: []}, new ApiService());
       const itemId = '1';
       const resultList = [itemId];
       const mutator = new AddItemToUploadingListMutator(itemId);
@@ -77,7 +77,7 @@ export default module('State manager test: ', function(hook) {
     });
 
     test('Remove from uploading list mutator should change state\'s uploading list', async (assert) => {
-      stateManager = new StateManager({uploadingItems: ['1']}, new ApiService(false));
+      stateManager = new StateManager({uploadingItems: ['1']}, new ApiService());
       const itemId = '1';
       const resultList = [undefined];
       const mutator = new RemoveItemToUploadingListMutator(itemId);

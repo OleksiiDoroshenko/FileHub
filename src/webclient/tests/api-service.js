@@ -7,7 +7,7 @@ import VerificationError from '../models/errors/verification-error';
 import NotFoundError from '../models/errors/not-found-error';
 
 const {module, test} = QUnit;
-const service = new ApiService(false);
+const service = new ApiService();
 
 export default module('API service test', function(hook) {
   const token = 'test';

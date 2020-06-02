@@ -6,7 +6,8 @@ import FileItem from './file-item';
  * Class for files table rendering.
  */
 export default class FileList extends Component {
-  _uploadingItems = [];
+  _uploadingItems = new Set();
+  _deletingItems = new Set();
 
   /**
    * Returns instance of {@link FileList}.
@@ -50,6 +51,11 @@ export default class FileList extends Component {
     this._renderItems();
   }
 
+  set deletingItems(items) {
+    this._deletingItems = items;
+    this._renderItems();
+  }
+
   /**
    * Returns user items.
    * @return {ListItem}
@@ -80,21 +86,28 @@ export default class FileList extends Component {
    * @return {FileItem|FolderItem}
    */
   _createItem(container, model) {
+    let item;
     switch (model.type) {
       case
       'folder': {
-        const folderItem = new FolderItem(container, {model});
-        folderItem.addUploadFileHandler(this._onUploadClickHandler);
-        if (this._uploadingItems.includes(model.id)) {
-          folderItem.isUploading = true;
-        }
-        return folderItem;
+        item = new FolderItem(container, {model});
+        item.addUploadFileHandler(this._onUploadClickHandler);
+        break;
       }
       case
       'file': {
-        return new FileItem(container, {model});
+        item = new FileItem(container, {model});
+        break;
       }
     }
+    if (this._uploadingItems.has(model.id)) {
+      item.isProcessing(true, 'file-uploading');
+    }
+    if (this._deletingItems.has(model.id)) {
+      item.isProcessing(true, 'file-deleting');
+    }
+    item.addDeleteHandler(this._onDeleteHandler);
+    return item;
   }
 
   /**
@@ -104,7 +117,20 @@ export default class FileList extends Component {
     this.itemsRoot.innerHTML = 'Loading...';
   }
 
+  /**
+   * Sets upload file handler.
+   * @param {function} handler - handler;
+   */
   onUploadClick(handler) {
     this._onUploadClickHandler = handler;
   }
+
+  /**
+   * Sets delete item handler.
+   * @param {function} handler - handler;
+   */
+  onDelete(handler) {
+    this._onDeleteHandler = handler;
+  }
+
 }

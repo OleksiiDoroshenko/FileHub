@@ -1,11 +1,11 @@
 import Mutator from '../mutator.js';
 
 /**
- * Allows {@link StateManager} state isLoadingError field changing.
+ * Allows {@link StateManager} state deletingList field changing.
  */
-export default class AddItemToUploadingListMutator extends Mutator {
+export default class AddItemToDeletingListMutator extends Mutator {
   /**
-   * Returns instance of {@link ItemsLoadingErrorMutator}.
+   * Returns instance of {@link AddItemToDeletingListMutator}.
    * @param {string} itemId - item id where another item is uploading.
    */
   constructor(itemId) {
@@ -17,8 +17,8 @@ export default class AddItemToUploadingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    const set = new Set(state.uploadingItems);
+    const set = new Set(state.deletingItems);
     set.add(this.itemId);
-    state.uploadingItems = set;
+    state.deletingItems = set;
   }
 }

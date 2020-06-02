@@ -209,6 +209,10 @@ a:hover {
     display: none;
 }
 
+.loading-state {
+    display: none;
+}
+
 .file-uploading .loading-state {
     display: inline-block;
     position: relative;
@@ -247,6 +251,50 @@ a:hover {
     top: -4px;
     border-radius: 50% 50% 0 0;
 }
+
+.file-deleting .glyphicon-remove-circle {
+    display: none;
+}
+
+.file-deleting .loading-state {
+    display: inline-block;
+    position: relative;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    transform-origin: 10px 10px;
+}
+
+.file-deleting .loading-state div {
+    left: -3px;
+    top: 5px;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ff1505;
+    animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.file-deleting .loading-state div:after,
+.file-deleting .loading-state div:before {
+    content: " ";
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: #ff1505;
+}
+
+.file-deleting .loading-state div:before {
+    left: -4px;
+    border-radius: 50% 0 0 50%;
+}
+
+.file-deleting .loading-state div:after {
+    top: -4px;
+    border-radius: 50% 50% 0 0;
+}
+
 
 @keyframes lds-heart {
     0% {
@@ -287,4 +335,8 @@ a:hover {
 @-webkit-keyframes blinker {
     from { opacity: 1.0; }
     to { opacity: 0.0; }
+}
+
+.file-deleting, .file-uploading {
+    pointer-events: none;
 }

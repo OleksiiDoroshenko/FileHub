@@ -6,6 +6,7 @@ import ErrorPage from './components/error-page';
 import ApiService from './services/api-service';
 import FileExplorerPage from './components/file-explorer';
 import StateManager from './services/state-manager';
+import MockServer from './services/mock-server';
 
 /**
  * Implements entry point for rendering every application page.
@@ -23,8 +24,13 @@ export default class Application extends Component {
    */
   _initInnerComponents() {
     const root = this.container.querySelector('.app');
-    const service = new ApiService(true);
-    const stateManager = new StateManager({items: [], uploadingItems: [], downloadingItems: []}, service);
+    if (window.devMode) {
+      new MockServer();
+    }
+    const service = new ApiService();
+    const stateManager = new StateManager(
+      {items: new Set(), uploadingItems: new Set(), deletingItems: new Set()},
+      service);
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),

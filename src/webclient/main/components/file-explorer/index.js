@@ -138,7 +138,10 @@ export default class FileExplorerPage extends StateAwareComponent {
     });
     this.stateManager.onStateChanged('error', (state) => {
       const error = state.error;
-      this._standardErrorHandler(error);
+      if (error) {
+        this._standardErrorHandler(error);
+        state.error = null;
+      }
     });
     this.stateManager.onStateChanged('uploadingItems', (state) => {
       this._uploadFileBtn.isLoadingClass = 'file-uploading';
@@ -152,7 +155,10 @@ export default class FileExplorerPage extends StateAwareComponent {
 
     this.stateManager.onStateChanged('deletingError', (state) => {
       const error = state.deletingError;
-      this._standardErrorHandler(error);
+      if (error) {
+        this._standardErrorHandler(error);
+        state.deletingError = null;
+      }
     });
 
     this.stateManager.onStateChanged('uploadingItems', (state) => {
@@ -163,6 +169,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     this.stateManager.onStateChanged('userLoadingError', (state) => {
       const error = state.userLoadingError;
       if (error instanceof AuthorizationError) {
+        alert('Your session has expired. Please log in.');
         window.location.hash = '#/login';
       } else {
         alert(`User can not be loaded.\n${error.message}`);
@@ -184,9 +191,9 @@ export default class FileExplorerPage extends StateAwareComponent {
    */
   _standardErrorHandler(error) {
     if (error instanceof AuthorizationError) {
+      alert('Your session has expired. Please log in.');
       window.location.hash = '#/login';
-    }
-    if (error instanceof NotFoundError) {
+    } else if (error instanceof NotFoundError) {
       let message = 'Folder not found.';
       if (error.message) {
         message = error.message;

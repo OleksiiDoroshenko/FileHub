@@ -7,7 +7,7 @@ import VerificationError from '../models/errors/verification-error';
 import NotFoundError from '../models/errors/not-found-error';
 
 const {module, test} = QUnit;
-const service = new ApiService(false);
+const service = new ApiService();
 
 export default module('API service test', function(hook) {
   const token = 'test';
@@ -316,7 +316,7 @@ export default module('API service test', function(hook) {
         body: '',
       };
     })));
-    assert.rejects(service[method]({}), new AuthorizationError('')
+    assert.rejects(service[method]({}), new AuthorizationError('Unauthorized')
       , 'Should handle 401 error.');
     assert.ok(fetchMock.called(matcher), `Should send ${matcher} request.`);
     assert.ok(fetchMock.calls().length === 1, `Should send ${matcher} request.`);

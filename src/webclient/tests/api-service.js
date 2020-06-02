@@ -246,6 +246,38 @@ export default module('API service test', function(hook) {
       'express:/folder/:id', service, 'deleteFolder');
   });
 
+  test('Downloading file method should send proper request with correct data.', async (assert) => {
+    assert.expect(3);
+    const matcher = 'express:/file/:id';
+    const itemId = '0';
+    const file = new Blob(['smth'], {type: `text/txt`});
+    fetchMock.once(matcher, (((url) => {
+      const id = url.split('/')[2];
+      assert.strictEqual(id, itemId, 'Should send proper id.');
+      return file;
+    })));
+    await service.getFile(itemId)
+      .then((response) => {
+        assert.deepEqual(response.parts, file.parts, 'Should return proper file.');
+      });
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Downloading file method should handle 404 error', async (assert) => {
+    _testNotFoundError('get', assert,
+      'express:/file/:id', service, 'getFile');
+  });
+
+  test('Downloading file method should handle 500 error', async (assert) => {
+    _testInternalServerError('get', assert,
+      'express:/file/:id', service, 'getFile');
+  });
+
+  test('Downloading file method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('get', assert,
+      'express:/file/:id', service, 'getFile');
+  });
+
   async function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
     assert.expect(2);
     fetchMock.once(matcher, (((url) => {

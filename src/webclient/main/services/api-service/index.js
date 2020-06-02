@@ -201,6 +201,11 @@ export default class ApiService {
     });
   }
 
+  /**
+   * Sends request to the server for getting file's blob.
+   * @param {string} id - file id.
+   * @returns {Promise<Response>}
+   */
   getFile(id) {
     return fetch(`/file/${id}`, {
       method: 'GET', headers: {
@@ -208,7 +213,7 @@ export default class ApiService {
       },
     }).then(async (response) => {
       if (response.ok) {
-        return response.json();
+        return response.blob();
       }
       throw await this.getError(response);
     });

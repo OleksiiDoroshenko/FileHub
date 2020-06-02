@@ -295,6 +295,50 @@ a:hover {
     border-radius: 50% 50% 0 0;
 }
 
+.file-downloading .glyphicon-download {
+    display: none;
+}
+
+
+.file-downloading .loading-state {
+    display: inline-block;
+    position: relative;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    transform-origin: 10px 10px;
+}
+
+.file-downloading .loading-state div {
+    left: -3px;
+    top: 5px;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #2e4eff;
+    animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.file-downloading .loading-state div:after,
+.file-downloading .loading-state div:before {
+    content: " ";
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: #2e4eff;
+}
+
+.file-downloading .loading-state div:before {
+    left: -4px;
+    border-radius: 50% 0 0 50%;
+}
+
+.file-downloading .loading-state div:after {
+    top: -4px;
+    border-radius: 50% 50% 0 0;
+}
+
 
 @keyframes lds-heart {
     0% {
@@ -316,27 +360,36 @@ a:hover {
         transform: scale(0.9);
     }
 }
+
 .blink {
     animation-name: blinker;
     animation-iteration-count: infinite;
-    animation-timing-function: cubic-bezier(1.0,1.0,1,1.0);
+    animation-timing-function: cubic-bezier(1.0, 1.0, 1, 1.0);
     animation-duration: 1.3s;
     -webkit-animation-name: blinker;
     -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: cubic-bezier(1.0,1.0,1,1.0);
+    -webkit-animation-timing-function: cubic-bezier(1.0, 1.0, 1, 1.0);
     -webkit-animation-duration: 1s;
 }
 
 @keyframes blinker {
-    from { opacity: 1.0; }
-    to { opacity: 0.0; }
+    from {
+        opacity: 1.0;
+    }
+    to {
+        opacity: 0.0;
+    }
 }
 
 @-webkit-keyframes blinker {
-    from { opacity: 1.0; }
-    to { opacity: 0.0; }
+    from {
+        opacity: 1.0;
+    }
+    to {
+        opacity: 0.0;
+    }
 }
 
-.file-deleting, .file-uploading {
+.file-deleting, .file-uploading, .file-downloading {
     pointer-events: none;
 }

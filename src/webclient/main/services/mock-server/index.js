@@ -185,25 +185,25 @@ export default class MockServer {
       }), {delay: 1000});
 
     fetchMock
-      .get('express:/file/:id', ((url, request) => {
+      .get('express:/file/:id', (url, request) => {
         const token = request.headers.token;
         const id = url.split('/')[2];
         if (token) {
-          const file = this.items.forEach(item => {
+          let fileInfo;
+          this.items.forEach(item => {
             if (item.id === id) {
-              return item;
+              fileInfo = item;
             }
           });
           return {
             status: 200,
-            body: {
-              file,
-            },
+            body: new Blob(['smth'], {type: `${fileInfo.mimeType}/${fileInfo.type}`})
+            ,
           };
         } else {
           return 401;
         }
-      }));
+      }, {delay: 2000});
   }
 
   /**

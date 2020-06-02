@@ -1,7 +1,7 @@
 import Mutator from '../mutator.js';
 
 /**
- * Allows {@link StateManager} state downloadList field changing.
+ * Allows {@link StateManager} state downloadItems field changing.
  */
 export default class AddItemToDownloadingListMutator extends Mutator {
   /**
@@ -17,11 +17,8 @@ export default class AddItemToDownloadingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    const list = [];
-    list.push(state.downloadList);
-    if (!list.includes(this.itemId)) {
-      list.push(this.itemId);
-    }
-    state.downloadList = list;
+    const set = new Set(state.downloadingItems);
+    set.add(this.itemId);
+    state.downloadingItems = set;
   }
 }

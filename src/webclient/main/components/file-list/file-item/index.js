@@ -19,7 +19,7 @@ export default class FileItem extends ListItem {
             <td class="items">${this.model.size}</td>
             <td class="clickable">
                 <div data-render="clickable">
-                    <i class="glyphicon glyphicon-download"></i>
+                    <i class="glyphicon glyphicon-download" data-render="download"></i>
                     <div class="loading-state" data-render="loading-state"><div></div></div>
                     <i class="glyphicon glyphicon-remove-circle" data-render="delete"></i>
                 </div>   
@@ -46,6 +46,17 @@ export default class FileItem extends ListItem {
       audio: 'glyphicon-music',
     };
     return icons[mimeType] ? icons[mimeType] : 'glyphicon-file';
+  }
+
+  /**
+   * Adds listener for downloading icon.
+   * @param handler
+   */
+  addDownloadHandler(handler) {
+    const icon = this.rootElement.querySelector('[data-render="download"]');
+    icon.addEventListener('click', () => {
+      handler(this.model);
+    });
   }
 
 }

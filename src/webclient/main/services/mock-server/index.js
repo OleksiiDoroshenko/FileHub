@@ -273,6 +273,12 @@ export default class MockServer {
     this.items = newItemList;
   }
 
+  /**
+   * Returns files with specified parent id.
+   * @param {string} id - parent id.
+   * @returns {[Object]} - items list.
+   * @private
+   */
   _getItems(id) {
     return this.items.reduce((acc, item) => {
       if (item.parentId === id) {

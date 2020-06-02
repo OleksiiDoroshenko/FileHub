@@ -6,8 +6,8 @@ import FileItem from './file-item';
  * Class for files table rendering.
  */
 export default class FileList extends Component {
-  _uploadingItems = [];
-  _deletingItems = [];
+  _uploadingItems = new Set();
+  _deletingItems = new Set();
 
   /**
    * Returns instance of {@link FileList}.
@@ -100,11 +100,11 @@ export default class FileList extends Component {
         break;
       }
     }
-    if (this._uploadingItems.includes(model.id)) {
-      item.isPrecessing(true, 'file-uploading');
+    if (this._uploadingItems.has(model.id)) {
+      item.isProcessing(true, 'file-uploading');
     }
-    if (this._deletingItems.includes(model.id)) {
-      item.isPrecessing(true, 'file-deleting');
+    if (this._deletingItems.has(model.id)) {
+      item.isProcessing(true, 'file-deleting');
     }
     item.addDeleteHandler(this._onDeleteHandler);
     return item;

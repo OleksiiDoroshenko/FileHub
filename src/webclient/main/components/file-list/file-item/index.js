@@ -1,4 +1,4 @@
-import ListItem from '../../list-item';
+import ListItem from '../list-item';
 
 /**
  * Table file item.

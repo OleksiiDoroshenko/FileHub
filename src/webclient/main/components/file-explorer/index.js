@@ -142,7 +142,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     });
     this.stateManager.onStateChanged('uploadingItems', (state) => {
       this._uploadFileBtn.isLoadingClass = 'file-uploading';
-      this._uploadFileBtn.isLoading = state.uploadingItems.includes(this.id);
+      this._uploadFileBtn.isLoading = state.uploadingItems.has(this.id);
       this.fileList.uploadingItems = state.uploadingItems;
     });
 
@@ -157,7 +157,7 @@ export default class FileExplorerPage extends StateAwareComponent {
 
     this.stateManager.onStateChanged('uploadingItems', (state) => {
       this._uploadFileBtn.isLoadingClass = 'file-uploading';
-      this._uploadFileBtn.isLoading = state.uploadingItems.includes(this.id);
+      this._uploadFileBtn.isLoading = state.uploadingItems.has(this.id);
       this.fileList.uploadingItems = state.uploadingItems;
     });
     this.stateManager.onStateChanged('userLoadingError', (state) => {

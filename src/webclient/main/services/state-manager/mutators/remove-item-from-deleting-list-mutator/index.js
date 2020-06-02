@@ -17,12 +17,8 @@ export default class RemoveItemFromDeletingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    let list = [];
-    list.push(state.deletingItems);
-    if (list.includes(this.itemId)) {
-      const index = list.findIndex(id => id === this.itemId);
-      delete list[index];
-    }
-    state.deletingItems = list;
+    let set = new Set(state.deletingItems);
+    set.has(this.itemId) ? set.delete(this.itemId) : '';
+    state.deletingItems = set;
   }
 }

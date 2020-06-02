@@ -17,11 +17,8 @@ export default class AddItemToUploadingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    const list = [];
-    list.push(state.uploadingItems);
-    if (!list.includes(this.itemId)) {
-      list.push(this.itemId);
-    }
-    state.uploadingItems = list;
+    const set = new Set(state.uploadingItems);
+    set.add(this.itemId);
+    state.uploadingItems = set;
   }
 }

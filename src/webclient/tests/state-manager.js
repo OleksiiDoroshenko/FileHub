@@ -73,17 +73,17 @@ export default module('State manager test: ', function(hook) {
     });
 
     test('Add to uploading list mutator should change state\'s uploading list', async (assert) => {
-      stateManager = new StateManager({uploadingItems: []}, new ApiService(false));
+      stateManager = new StateManager({uploadingItems: new Set()}, new ApiService(false));
       const itemId = '1';
-      const resultList = [itemId];
+      const resultList = new Set(itemId);
       const mutator = new AddItemToUploadingListMutator(itemId);
       _testMutatorWithDeepEqual(assert, mutator, 'uploadingItems', resultList);
     });
 
     test('Remove from uploading list mutator should change state\'s uploading list', async (assert) => {
-      stateManager = new StateManager({uploadingItems: ['1']}, new ApiService(false));
       const itemId = '1';
-      const resultList = [undefined];
+      stateManager = new StateManager({uploadingItems: new Set(itemId)}, new ApiService(false));
+      const resultList = new Set();
       const mutator = new RemoveItemToUploadingListMutator(itemId);
       _testMutatorWithDeepEqual(assert, mutator, 'uploadingItems', resultList);
     });
@@ -101,17 +101,17 @@ export default module('State manager test: ', function(hook) {
 
 
     test('Add to deleting list mutator should change state\'s deleting list', async (assert) => {
-      stateManager = new StateManager({deletingItems: []}, new ApiService(false));
+      stateManager = new StateManager({deletingItems: new Set()}, new ApiService(false));
       const itemId = '1';
-      const resultList = [itemId];
+      const resultList = new Set(itemId);
       const mutator = new AddItemToDeletingListMutator(itemId);
       _testMutatorWithDeepEqual(assert, mutator, 'deletingItems', resultList);
     });
 
     test('Remove from deleting list mutator should change state\'s deleting list', async (assert) => {
-      stateManager = new StateManager({deletingItems: ['1']}, new ApiService(false));
       const itemId = '1';
-      const resultList = [undefined];
+      stateManager = new StateManager({deletingItems: new Set(itemId)}, new ApiService(false));
+      const resultList = new Set();
       const mutator = new RemoveItemFromDeletingListMutator(itemId);
       _testMutatorWithDeepEqual(assert, mutator, 'deletingItems', resultList);
     });

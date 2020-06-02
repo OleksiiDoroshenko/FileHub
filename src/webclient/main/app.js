@@ -24,7 +24,9 @@ export default class Application extends Component {
   _initInnerComponents() {
     const root = this.container.querySelector('.app');
     const service = new ApiService(true);
-    const stateManager = new StateManager({items: [], uploadingItems: [], deletingItems: []}, service);
+    const stateManager = new StateManager(
+      {items: new Set(), uploadingItems: new Set(), deletingItems: new Set()},
+      service);
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),

@@ -1,4 +1,4 @@
-import Component from '../component.js';
+import Component from '../../component.js';
 
 /**
  * Main list item class.
@@ -35,7 +35,7 @@ export default class ListItem extends Component {
    * @param {boolean} value - process state.
    * @param {string} toggleClass - class for toggling.
    */
-  isPrecessing(value, toggleClass) {
+  isProcessing(value, toggleClass) {
     this.rootElement.classList.toggle(toggleClass, value);
   }
 

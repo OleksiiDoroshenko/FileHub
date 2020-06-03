@@ -215,7 +215,7 @@ export default module('API service test', function(hook) {
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
-  test('Deleting method should send proper request with correct data.', async (assert) => {
+  test('Deleting folder method should send proper request with correct data.', async (assert) => {
     assert.expect(3);
     const matcher = 'express:/folder/:id';
     const itemId = '0';
@@ -244,6 +244,37 @@ export default module('API service test', function(hook) {
   test('Deleting folder method should handle 401 error', async (assert) => {
     _testAuthorizationServerError('delete', assert,
       'express:/folder/:id', service, 'deleteFolder');
+  });
+
+  test('Deleting file method should send proper request with correct data.', async (assert) => {
+    assert.expect(3);
+    const matcher = 'express:/file/:id';
+    const itemId = '0';
+    fetchMock.once(matcher, (((url) => {
+      const id = url.split('/')[2];
+      assert.strictEqual(id, itemId, 'Should send proper id.');
+      return 200;
+    })));
+    await service.deleteFile(itemId)
+      .then((response) => {
+        assert.deepEqual(response, 200, 'Should return proper code.');
+      });
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Deleting file method should handle 404 error', async (assert) => {
+    _testNotFoundError('delete', assert,
+      'express:/file/:id', service, 'deleteFile');
+  });
+
+  test('Deleting file method should handle 500 error', async (assert) => {
+    _testInternalServerError('delete', assert,
+      'express:/file/:id', service, 'deleteFile');
+  });
+
+  test('Deleting file method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('delete', assert,
+      'express:/file/:id', service, 'deleteFile');
   });
 
   test('Downloading file method should send proper request with correct data.', async (assert) => {

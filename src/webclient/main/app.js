@@ -28,7 +28,9 @@ export default class Application extends Component {
       new MockServer();
     }
     const service = new ApiService();
-    const stateManager = new StateManager({items: [], uploadingItems: []}, service);
+    const stateManager = new StateManager(
+      {items: [], uploadingItemIds: new Set(), deletingItemIds: new Set()},
+      service);
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),

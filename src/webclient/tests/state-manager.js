@@ -11,6 +11,11 @@ import RemoveItemToUploadingListMutator
   from '../main/services/state-manager/mutators/remove-item-from-uploading-list-mutator';
 import UserLoadingMutator from '../main/services/state-manager/mutators/user-loading-mutator';
 import UserLoadingError from '../main/services/state-manager/mutators/user-loading-error-mutator';
+import RemoveItemFromDeletingListMutator
+  from '../main/services/state-manager/mutators/remove-item-from-deleting-list-mutator';
+import AddItemToDeletingListMutator from '../main/services/state-manager/mutators/add-item-to-deleting-list-mutator';
+import ItemsDeletingErrorMutator from '../main/services/state-manager/mutators/items-deleting-error-mutator';
+import ItemUploadingErrorMutator from '../main/services/state-manager/mutators/item-uploading-error-mutator';
 
 const {module, test} = QUnit;
 
@@ -69,19 +74,19 @@ export default module('State manager test: ', function(hook) {
     });
 
     test('Add to uploading list mutator should change state\'s uploading list', async (assert) => {
-      stateManager = new StateManager({uploadingItems: []}, new ApiService());
+      stateManager = new StateManager({uploadingItemIds: new Set()}, new ApiService());
       const itemId = '1';
-      const resultList = [itemId];
+      const resultList = new Set(itemId);
       const mutator = new AddItemToUploadingListMutator(itemId);
-      _testMutatorWithDeepEqual(assert, mutator, 'uploadingItems', resultList);
+      _testMutatorWithDeepEqual(assert, mutator, 'uploadingItemIds', resultList);
     });
 
     test('Remove from uploading list mutator should change state\'s uploading list', async (assert) => {
-      stateManager = new StateManager({uploadingItems: ['1']}, new ApiService());
       const itemId = '1';
-      const resultList = [undefined];
+      stateManager = new StateManager({uploadingItemIds: new Set(itemId)}, new ApiService());
+      const resultList = new Set();
       const mutator = new RemoveItemToUploadingListMutator(itemId);
-      _testMutatorWithDeepEqual(assert, mutator, 'uploadingItems', resultList);
+      _testMutatorWithDeepEqual(assert, mutator, 'uploadingItemIds', resultList);
     });
 
     test('User loading mutator should change state\'s isUserLoading state', async (assert) => {
@@ -93,6 +98,35 @@ export default module('State manager test: ', function(hook) {
       const error = new Error('test');
       const mutator = new UserLoadingError(error);
       _testMutator(assert, mutator, 'userLoadingError', error);
+    });
+
+
+    test('Add to deleting list mutator should change state\'s deleting list', async (assert) => {
+      stateManager = new StateManager({deletingItemIds: new Set()}, new ApiService(false));
+      const itemId = '1';
+      const resultList = new Set(itemId);
+      const mutator = new AddItemToDeletingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'deletingItemIds', resultList);
+    });
+
+    test('Remove from deleting list mutator should change state\'s deleting list', async (assert) => {
+      const itemId = '1';
+      stateManager = new StateManager({deletingItemIds: new Set(itemId)}, new ApiService(false));
+      const resultList = new Set();
+      const mutator = new RemoveItemFromDeletingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'deletingItemIds', resultList);
+    });
+
+    test('Items deleting error mutator should change state\'s deletingError field', async (assert) => {
+      const error = new Error('test');
+      const mutator = new ItemsDeletingErrorMutator(error);
+      _testMutator(assert, mutator, 'deletingError', error);
+    });
+
+    test('Item uploading error mutator should change state\'s uploadingError field', async (assert) => {
+      const error = new Error('test');
+      const mutator = new ItemUploadingErrorMutator(error);
+      _testMutator(assert, mutator, 'uploadingError', error);
     });
 
     function _testMutator(assert, mutator, field, value) {

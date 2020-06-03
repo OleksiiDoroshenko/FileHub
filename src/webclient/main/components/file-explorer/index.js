@@ -9,7 +9,9 @@ import UploadFileAction from '../../services/state-manager/actions/upload-file';
 import FileBrowserService from '../../services/file-browser-service';
 import NotFoundError from '../../../models/errors/not-found-error';
 import LogOutAction from '../../services/state-manager/actions/log-out';
+import DeleteItemAction from '../../services/state-manager/actions/delete-item';
 import GetUserAction from '../../services/state-manager/actions/get-user';
+import ClearErrorAction from '../../services/state-manager/actions/clear-error';
 
 /**
  * Renders file explorer page.
@@ -115,6 +117,12 @@ export default class FileExplorerPage extends StateAwareComponent {
         uploadHandler(this.id, file);
       });
     });
+
+    const deleteFolderHandler = (model) => {
+      this.stateManager.dispatch(new DeleteItemAction(model));
+    };
+
+    this.fileList.onDelete(deleteFolderHandler);
   }
 
   /**
@@ -131,27 +139,41 @@ export default class FileExplorerPage extends StateAwareComponent {
     });
     this.stateManager.onStateChanged('error', (state) => {
       const error = state.error;
-      if (error instanceof AuthorizationError) {
-        window.location.hash = '#/login';
-      }
-      if (error instanceof NotFoundError) {
-        let message = 'Folder not found.';
-        if (error.message) {
-          message = error.message;
-        }
-        alert(message);
-      } else {
-        alert('Sorry something went wrong, please try later');
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('error'));
       }
     });
-    this.stateManager.onStateChanged('uploadingItems', (state) => {
+    this.stateManager.onStateChanged('uploadingItemIds', (state) => {
       this._uploadFileBtn.isLoadingClass = 'file-uploading';
-      this._uploadFileBtn.isLoading = state.uploadingItems.includes(this.id);
-      this.fileList.uploadingItems = state.uploadingItems;
+      this._uploadFileBtn.isLoading = state.uploadingItemIds.has(this.id);
+      this.fileList.uploadingItems = state.uploadingItemIds;
     });
+
+    this.stateManager.onStateChanged('uploadingError', (state) => {
+      const error = state.uploadingError;
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('uploadingError'));
+      }
+    });
+
+    this.stateManager.onStateChanged('deletingItemIds', (state) => {
+      this.fileList.deletingItems = state.deletingItemIds;
+    });
+
+    this.stateManager.onStateChanged('deletingError', (state) => {
+      const error = state.deletingError;
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('deletingError'));
+      }
+    });
+
     this.stateManager.onStateChanged('userLoadingError', (state) => {
       const error = state.userLoadingError;
       if (error instanceof AuthorizationError) {
+        alert('Your session has expired. Please log in.');
         window.location.hash = '#/login';
       } else {
         alert(`User can not be loaded.\n${error.message}`);
@@ -164,6 +186,26 @@ export default class FileExplorerPage extends StateAwareComponent {
       const usernameBox = this.rootElement.querySelector('[data-render="username-box"]');
       usernameBox.classList.toggle('blink', state.isUserLoading);
     });
+  }
+
+  /**
+   * Handles error by common flow.
+   * @param {Error} error - error.
+   * @private
+   */
+  _standardErrorHandler(error) {
+    if (error instanceof AuthorizationError) {
+      alert('Your session has expired. Please log in.');
+      window.location.hash = '#/login';
+    } else if (error instanceof NotFoundError) {
+      let message = 'Folder not found.';
+      if (error.message) {
+        message = error.message;
+      }
+      alert(message);
+    } else {
+      alert('Sorry something went wrong, please try later');
+    }
   }
 
   /**

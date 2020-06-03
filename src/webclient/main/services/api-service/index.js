@@ -153,6 +153,34 @@ export default class ApiService {
     });
   }
 
+  deleteFile(id) {
+    return fetch(`/file/${id}`, {
+      method: 'DELETE',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return 200;
+      }
+      throw await this.getError(response);
+    });
+  }
+
+  deleteFolder(id) {
+    return fetch(`/folder/${id}`, {
+      method: 'DELETE',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return 200;
+      }
+      throw await this.getError(response);
+    });
+  }
+
   /**
    * Sends request to server for logging out current user.
    * Regardless of the answer removes current token from local storage.

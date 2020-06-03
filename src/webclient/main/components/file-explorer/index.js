@@ -11,6 +11,7 @@ import NotFoundError from '../../../models/errors/not-found-error';
 import LogOutAction from '../../services/state-manager/actions/log-out';
 import DeleteItemAction from '../../services/state-manager/actions/delete-item';
 import GetUserAction from '../../services/state-manager/actions/get-user';
+import ClearErrorAction from '../../services/state-manager/actions/clear-error';
 import DownloadFileAction from '../../services/state-manager/actions/download-file';
 import DownloadFileService from '../../services/download-file-service';
 
@@ -145,24 +146,32 @@ export default class FileExplorerPage extends StateAwareComponent {
       const error = state.error;
       if (error) {
         this._standardErrorHandler(error);
-        state.error = null;
+        this.stateManager.dispatch(new ClearErrorAction('error'));
       }
     });
-    this.stateManager.onStateChanged('uploadingItems', (state) => {
+    this.stateManager.onStateChanged('uploadingItemIds', (state) => {
       this._uploadFileBtn.isLoadingClass = 'file-uploading';
-      this._uploadFileBtn.isLoading = state.uploadingItems.has(this.id);
-      this.fileList.uploadingItems = state.uploadingItems;
+      this._uploadFileBtn.isLoading = state.uploadingItemIds.has(this.id);
+      this.fileList.uploadingItems = state.uploadingItemIds;
     });
 
-    this.stateManager.onStateChanged('deletingItems', (state) => {
-      this.fileList.deletingItems = state.deletingItems;
+    this.stateManager.onStateChanged('uploadingError', (state) => {
+      const error = state.uploadingError;
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('uploadingError'));
+      }
+    });
+
+    this.stateManager.onStateChanged('deletingItemIds', (state) => {
+      this.fileList.deletingItems = state.deletingItemIds;
     });
 
     this.stateManager.onStateChanged('deletingError', (state) => {
       const error = state.deletingError;
       if (error) {
         this._standardErrorHandler(error);
-        state.deletingError = null;
+        this.stateManager.dispatch(new ClearErrorAction('deletingError'));
       }
     });
 

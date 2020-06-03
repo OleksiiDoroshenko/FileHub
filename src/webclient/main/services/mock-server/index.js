@@ -89,10 +89,11 @@ export default class MockServer {
       }));
 
     fetchMock
-      .get('express:/folder/:id/content', ((url) => {
+      .get('express:/folder/:id/content', ((url, request) => {
         const id = url.split('/')[2];
-        if (id === '0') {
-          return {items: this.items};
+        const token = request.headers.token;
+        if (token) {
+          return {items: this._getItems(id)};
         }
         return {
           status: 404,
@@ -291,5 +292,20 @@ export default class MockServer {
       throw new Error('Items doesn\'t contains id');
     }
     this.items = newItemList;
+  }
+
+  /**
+   * Returns files with specified parent id.
+   * @param {string} id - parent id.
+   * @returns {[Object]} - items list.
+   * @private
+   */
+  _getItems(id) {
+    return this.items.reduce((acc, item) => {
+      if (item.parentId === id) {
+        acc.push(item);
+      }
+      return acc;
+    }, []);
   }
 }

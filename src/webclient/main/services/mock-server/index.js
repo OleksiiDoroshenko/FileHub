@@ -172,6 +172,7 @@ export default class MockServer {
       }), {delay: 1000});
     fetchMock
       .delete('express:/file/:id', ((url, request) => {
+        return 401
         if (request.headers.token) {
           try {
             const id = url.split('/')[2];

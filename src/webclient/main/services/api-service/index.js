@@ -8,6 +8,8 @@ import NotFoundError from '../../../models/errors/not-found-error';
  */
 export default class ApiService {
 
+  TOKEN_NAME = 'token';
+
   /**
    * Sends request yo the server for user log in.
    * @param {UserData} userData - instance of {@link UserData}.
@@ -23,7 +25,7 @@ export default class ApiService {
       if (response.ok) {
         const result = response.json();
         return await result.then((body) => {
-          localStorage.setItem('token', body.token);
+          localStorage.setItem(this.TOKEN_NAME, body.token);
         });
       }
       throw await this.getError(response);
@@ -38,7 +40,7 @@ export default class ApiService {
     return fetch('/folder/root', {
       method: 'GET',
       headers: {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem(this.TOKEN_NAME),
       },
     }).then(async (response) => {
       if (response.ok) {
@@ -79,6 +81,7 @@ export default class ApiService {
         await response.text().then(text => {
           message = text.length > 0 ? text : message;
         });
+        localStorage.removeItem(this.TOKEN_NAME);
         return new AuthorizationError(message);
       }
       case 422: {
@@ -120,7 +123,7 @@ export default class ApiService {
     return fetch(`/folder/${folderId}/content`, {
       method: 'GET',
       headers: {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem(this.TOKEN_NAME),
       },
     }).then(async (response) => {
       if (response.ok) {
@@ -140,7 +143,7 @@ export default class ApiService {
     return fetch(`/folder/${parentId}/file`, {
       method: 'POST',
       headers: {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem(this.TOKEN_NAME),
       },
       body: {
         file: file,
@@ -157,7 +160,7 @@ export default class ApiService {
     return fetch(`/file/${id}`, {
       method: 'DELETE',
       headers: {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem(this.TOKEN_NAME),
       },
     }).then(async (response) => {
       if (response.ok) {
@@ -171,7 +174,7 @@ export default class ApiService {
     return fetch(`/folder/${id}`, {
       method: 'DELETE',
       headers: {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem(this.TOKEN_NAME),
       },
     }).then(async (response) => {
       if (response.ok) {
@@ -189,7 +192,7 @@ export default class ApiService {
   logOut() {
     return fetch('/logout', {
       method: 'POST', headers: {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem(this.TOKEN_NAME),
       },
     }).then(async (response) => {
       if (response.ok) {
@@ -197,14 +200,14 @@ export default class ApiService {
       }
       throw await this.getError(response);
     }).finally(() => {
-      localStorage.removeItem('token');
+      localStorage.removeItem(this.TOKEN_NAME);
     });
   }
 
   getUser() {
     return fetch('/user', {
       method: 'GET', headers: {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem(this.TOKEN_NAME),
       },
     }).then(async (response) => {
       if (response.ok) {

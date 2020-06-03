@@ -29,7 +29,7 @@ export default class Application extends Component {
     }
     const service = new ApiService();
     const stateManager = new StateManager(
-      {items: new Set(), uploadingItems: new Set(), deletingItems: new Set()},
+      {items: [], uploadingItemIds: new Set(), deletingItemIds: new Set()},
       service);
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),

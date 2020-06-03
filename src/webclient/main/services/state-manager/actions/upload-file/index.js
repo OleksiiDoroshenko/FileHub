@@ -1,8 +1,8 @@
 import Action from '../action.js';
 import GetItemsAction from '../get-items';
-import ItemsLoadingErrorMutator from '../../mutators/items-loading-error-mutator';
 import AddItemToUploadingListMutator from '../../mutators/add-item-to-uploading-list-mutator';
 import RemoveItemToUploadingListMutator from '../../mutators/remove-item-from-uploading-list-mutator';
+import ItemUploadingErrorMutator from '../../mutators/item-uploading-error-mutator';
 
 /**
  * Sends request for uploading file to {@link StateManager} state
@@ -31,7 +31,7 @@ export default class UploadFileAction extends Action {
           stateManager.dispatch(new GetItemsAction(this.parentId));
         }
       }).catch(error => {
-      stateManager.mutate(new ItemsLoadingErrorMutator(error));
+      stateManager.mutate(new ItemUploadingErrorMutator(error));
     }).finally(() => {
       stateManager.mutate(new RemoveItemToUploadingListMutator(this.parentId));
     });

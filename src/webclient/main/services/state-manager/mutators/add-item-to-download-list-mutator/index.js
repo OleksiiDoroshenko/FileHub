@@ -17,8 +17,8 @@ export default class AddItemToDownloadingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    const set = new Set(state.downloadingItems);
+    const set = new Set(state.downloadingItemIds);
     set.add(this.itemId);
-    state.downloadingItems = set;
+    state.downloadingItemIds = set;
   }
 }

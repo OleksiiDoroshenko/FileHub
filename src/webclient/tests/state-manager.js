@@ -133,11 +133,11 @@ export default module('State manager test: ', function(hook) {
     });
 
     test('Add to downloading list mutator should change state\'s downloading list', async (assert) => {
-      stateManager = new StateManager({downloadingItems: new Set()}, new ApiService());
+      stateManager = new StateManager({downloadingItemIds: new Set()}, new ApiService());
       const itemId = '1';
       const resultList = new Set(itemId);
       const mutator = new AddItemToDownloadingListMutator(itemId);
-      _testMutatorWithDeepEqual(assert, mutator, 'downloadingItems', resultList);
+      _testMutatorWithDeepEqual(assert, mutator, 'downloadingItemIds', resultList);
     });
 
     test('Remove from downloading list mutator should change state\'s downloading list', async (assert) => {
@@ -145,7 +145,7 @@ export default module('State manager test: ', function(hook) {
       stateManager = new StateManager({downloadingItems: new Set(itemId)}, new ApiService());
       const resultList = new Set();
       const mutator = new RemoveItemFromDownloadingListMutator(itemId);
-      _testMutatorWithDeepEqual(assert, mutator, 'downloadingItems', resultList);
+      _testMutatorWithDeepEqual(assert, mutator, 'downloadingItemIds', resultList);
     });
 
     test('Items downloading error mutator should change state\'s deletingError field', async (assert) => {

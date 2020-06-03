@@ -17,10 +17,10 @@ export default class RemoveItemFromDownloadingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    let set = new Set(state.downloadingItems);
+    let set = new Set(state.downloadingItemIds);
     if (set.has(this.itemId)) {
       set.delete(this.itemId);
     }
-    state.downloadingItems = set;
+    state.downloadingItemIds = set;
   }
 }

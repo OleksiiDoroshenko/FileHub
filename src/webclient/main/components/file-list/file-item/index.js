@@ -49,7 +49,7 @@ export default class FileItem extends ListItem {
   }
 
   /**
-   * Adds listener for downloading icon.
+   * Adds listener for clicking downloading icon.
    * @param handler
    */
   addDownloadHandler(handler) {

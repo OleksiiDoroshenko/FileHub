@@ -170,6 +170,7 @@ export default class MockServer {
           return 401;
         }
       }), {delay: 1000});
+
     fetchMock
       .delete('express:/file/:id', ((url, request) => {
         if (request.headers.token) {

@@ -26,7 +26,7 @@ export default class ApiService {
           localStorage.setItem('token', body.token);
         });
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'User');
     });
   }
 
@@ -44,7 +44,7 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'Folder');
     });
   }
 
@@ -70,9 +70,10 @@ export default class ApiService {
   /**
    * Returns specific error instance from response code.
    * @param {Response} response - server response.
+   * @param {string} requestedItem - requested item from server.
    * @return {Promise<AuthorizationError|Error|ServerValidationErrors>}
    */
-  async getError(response) {
+  async getError(response, requestedItem) {
     switch (response.status) {
       case 401: {
         let message = response.statusText;
@@ -96,7 +97,7 @@ export default class ApiService {
         await response.text().then(text => {
           message = text;
         });
-        return new NotFoundError(message);
+        return new NotFoundError(message, requestedItem);
       }
       case 500: {
         return new Error(response.statusText);
@@ -126,7 +127,7 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'Folder');
     });
   }
 
@@ -149,7 +150,7 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'Folder');
     });
   }
 
@@ -163,7 +164,7 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'File');
     });
   }
 
@@ -177,7 +178,7 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'Folder');
     });
   }
 
@@ -195,7 +196,7 @@ export default class ApiService {
       if (response.ok) {
         return;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'User');
     }).finally(() => {
       localStorage.removeItem('token');
     });
@@ -215,7 +216,7 @@ export default class ApiService {
       if (response.ok) {
         return response.blob();
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'File');
     });
   }
 
@@ -228,7 +229,7 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'User');
     });
   }
 }

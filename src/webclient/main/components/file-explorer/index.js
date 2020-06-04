@@ -196,14 +196,15 @@ export default class FileExplorerPage extends StateAwareComponent {
       const usernameBox = this.rootElement.querySelector('[data-render="username-box"]');
       usernameBox.classList.toggle('blink', state.isUserLoading);
     });
+
     this.stateManager.onStateChanged('downloadingItems', (state) => {
       this.fileList.downloadingItems = state.downloadingItems;
     });
     this.stateManager.onStateChanged('downloadingError', (state) => {
       const error = state.downloadingError;
       if (error) {
-        this._standardErrorHandler(error, 'File');
-        state.downloadingError = null;
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('downloadingError'));
       }
     });
   }
@@ -211,15 +212,14 @@ export default class FileExplorerPage extends StateAwareComponent {
   /**
    * Handles error by common flow.
    * @param {Error} error - error.
-   * @param {string} notFoundItem - item that can't be found.
    * @private
    */
-  _standardErrorHandler(error, notFoundItem = 'Folder') {
+  _standardErrorHandler(error) {
     if (error instanceof AuthorizationError) {
       alert('Your session has expired. Please log in.');
       window.location.hash = '#/login';
     } else if (error instanceof NotFoundError) {
-      let message = `${notFoundItem} not found.`;
+      let message = `${error.requestedItem} not found.`;
       if (error.message) {
         message = error.message;
       }

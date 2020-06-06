@@ -175,10 +175,10 @@ export default class FileExplorerPage extends StateAwareComponent {
       }
     });
 
-    this.stateManager.onStateChanged('uploadingItems', (state) => {
+    this.stateManager.onStateChanged('uploadingItemIds', (state) => {
       this._uploadFileBtn.isLoadingClass = 'file-uploading';
-      this._uploadFileBtn.isLoading = state.uploadingItems.has(this.id);
-      this.fileList.uploadingItems = state.uploadingItems;
+      this._uploadFileBtn.isLoading = state.uploadingItemIds.has(this.id);
+      this.fileList.uploadingItems = state.uploadingItemIds;
     });
     this.stateManager.onStateChanged('userLoadingError', (state) => {
       const error = state.userLoadingError;
@@ -197,8 +197,8 @@ export default class FileExplorerPage extends StateAwareComponent {
       usernameBox.classList.toggle('blink', state.isUserLoading);
     });
 
-    this.stateManager.onStateChanged('downloadingItems', (state) => {
-      this.fileList.downloadingItems = state.downloadingItems;
+    this.stateManager.onStateChanged('downloadingItemIds', (state) => {
+      this.fileList.downloadingItems = state.downloadingItemIds;
     });
     this.stateManager.onStateChanged('downloadingError', (state) => {
       const error = state.downloadingError;

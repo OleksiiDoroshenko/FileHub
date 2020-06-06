@@ -64,7 +64,7 @@ export default class FileList extends Component {
 
   /**
    * Returns user items.
-   * @return {ListItem}
+   * @return {ListItem[]}
    */
   get items() {
     return this._items;

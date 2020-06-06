@@ -10,7 +10,7 @@ import ItemsDownloadingErrorMutator from '../../mutators/items-downloading-error
 export default class DownloadFileAction extends Action {
   /**
    * Returns instance of {@link DownloadFileAction}.
-   * @param {string} model - model of file to be downloaded.
+   * @param {Object} model - model of file to be downloaded.
    * @param {DownloadFileService} downloadFileService - instance of {@link DownloadFileService}.
    */
   constructor(model, downloadFileService) {
@@ -25,13 +25,13 @@ export default class DownloadFileAction extends Action {
   async apply(stateManager, apiService) {
     const id = this.model.id;
     stateManager.mutate(new AddItemToDownloadingListMutator(id));
-    apiService.getFile(id)
+    return apiService.getFile(id)
       .then((file) => {
         this.downloadFileService.download(file, this.model.name);
       }).catch(error => {
-      stateManager.mutate(new ItemsDownloadingErrorMutator(error));
-    }).finally(() => {
-      stateManager.mutate(new RemoveItemFromDownloadingListMutator(id));
-    });
+        stateManager.mutate(new ItemsDownloadingErrorMutator(error));
+      }).finally(() => {
+        stateManager.mutate(new RemoveItemFromDownloadingListMutator(id));
+      });
   }
 }

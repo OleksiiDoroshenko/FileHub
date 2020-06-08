@@ -92,6 +92,7 @@ export default class FileList extends Component {
       'folder': {
         item = new FolderItem(container, {model});
         item.addUploadFileHandler(this._onUploadClickHandler);
+        item.onNameClick(this._onFolderNameClickHandler);
         break;
       }
       case
@@ -133,4 +134,7 @@ export default class FileList extends Component {
     this._onDeleteHandler = handler;
   }
 
+  onFolderNameClick(handler) {
+    this._onFolderNameClickHandler = handler;
+  }
 }

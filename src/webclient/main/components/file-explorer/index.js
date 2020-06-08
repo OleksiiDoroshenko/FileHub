@@ -12,6 +12,7 @@ import LogOutAction from '../../services/state-manager/actions/log-out';
 import DeleteItemAction from '../../services/state-manager/actions/delete-item';
 import GetUserAction from '../../services/state-manager/actions/get-user';
 import ClearErrorAction from '../../services/state-manager/actions/clear-error';
+import GetFolderAction from '../../services/state-manager/actions/get-folder';
 
 /**
  * Renders file explorer page.
@@ -28,6 +29,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     if (this.id === 'root') {
       this._getRootFolder();
     } else {
+      this.stateManager.dispatch(new GetFolderAction(this.id));
       this.stateManager.dispatch(new GetItemsAction(this.id));
     }
     this.stateManager.dispatch(new GetUserAction());
@@ -52,17 +54,19 @@ export default class FileExplorerPage extends StateAwareComponent {
                   <li class="logout" data-toggle="tooltip" data-placement="top" title="Log out">
                       <a href="#/login" data-render="log-out">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
               </ul>
-              <a href="file-explorer-index.html" data-toggle="tooltip" data-placement="top" title="Root page">
+              <a href="#/file-explorer/folder/root" data-toggle="tooltip" data-placement="top" title="Root page">
                   <h1 class="file-explorer">File Explorer</h1></a>
           </header>
           <div class="content">
               <header class="path-manager">
                   <div class="form-group">
                       <ul class="list-inline col-sm-4 current-position-menu">
-                          <li><a href="#" data-toggle="tooltip" data-placement="top" title="Root page">
-                              <i class="glyphicon glyphicon-folder-open"></i></a></li>
+                          <li data-render="step-back">
+                            <i class="glyphicon glyphicon-folder-open"></i>
+                          </li>
                           <li>/</li>
-                          <li data-toggle="tooltip" data-placement="top" title="Current path">Root</li>
+                          <li data-toggle="tooltip" data-placement="top" 
+                          title="Current path" data-render="dir-name">Loading...</li>
                       </ul>
                   </div>
                   <div class="btn-menu" data-render="btn-menu">
@@ -123,6 +127,11 @@ export default class FileExplorerPage extends StateAwareComponent {
     };
 
     this.fileList.onDelete(deleteFolderHandler);
+    this.fileList.onFolderNameClick((model, event) => {
+      if (event.detail === 2) {
+        this._changeHashId(model.id);
+      }
+    });
   }
 
   /**
@@ -186,6 +195,17 @@ export default class FileExplorerPage extends StateAwareComponent {
       const usernameBox = this.rootElement.querySelector('[data-render="username-box"]');
       usernameBox.classList.toggle('blink', state.isUserLoading);
     });
+
+    this.stateManager.onStateChanged('folder', (state) => {
+      this._changeDirectoryPath(state.folder);
+    });
+    this.stateManager.onStateChanged('folderLoadingError', (state) => {
+      const error = state.folderLoadingError;
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('folderLoadingError'));
+      }
+    });
   }
 
   /**
@@ -243,5 +263,17 @@ export default class FileExplorerPage extends StateAwareComponent {
   set username(name) {
     const username = this.rootElement.querySelector('[data-render="username"]');
     username.innerText = name;
+  }
+
+  _changeDirectoryPath(folder) {
+    const dirName = this.rootElement.querySelector('[data-render="dir-name"]');
+    dirName.innerHTML = folder.name;
+    if (folder.parentId){
+      const stepBack = this.rootElement.querySelector('[data-render="step-back"]');
+      stepBack.innerHTML = `<a href="#/file-explorer/folder/${folder.parentId}" data-render="step-back" 
+                                data-toggle="tooltip" data-placement="top" title="Step back">
+                                <i class="glyphicon glyphicon-folder-open"></i>
+                            </a>`;
+    }
   }
 }

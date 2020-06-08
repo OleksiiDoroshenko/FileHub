@@ -27,6 +27,9 @@ export default class MockServer {
    */
   items = [
     {
+      id: '0', name: 'Root', type: 'folder',
+    },
+    {
       id: '1', parentId: '0', name: 'Documents', itemsAmount: '2', type: 'folder',
     },
     {
@@ -170,6 +173,7 @@ export default class MockServer {
           return 401;
         }
       }), {delay: 1000});
+
     fetchMock
       .delete('express:/file/:id', ((url, request) => {
         if (request.headers.token) {
@@ -180,6 +184,24 @@ export default class MockServer {
           } catch (e) {
             return 404;
           }
+        } else {
+          return 401;
+        }
+      }), {delay: 1000});
+
+    fetchMock
+      .get('express:/folder/:id', ((url, request) => {
+        if (request.headers.token) {
+          const id = url.split('/')[2];
+          const index = this.items.findIndex(item => {
+            return item.id === id;
+          });
+          return {
+            status: 200,
+            body: {
+              folder: this.items[index],
+            },
+          };
         } else {
           return 401;
         }

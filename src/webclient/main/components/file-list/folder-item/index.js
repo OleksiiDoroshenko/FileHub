@@ -16,7 +16,7 @@ export default class FolderItem extends ListItem {
                 <i class="glyphicon glyphicon-folder-close"></i>
             </td>
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
-                <span><a href="#">${this.model.name}</a></span>
+                <span><a data-render="name">${this.model.name}</a></span>
             </td>
             <td class="items">${this.model.itemsAmount} items</td>
             <td class="clickable">
@@ -47,5 +47,11 @@ export default class FolderItem extends ListItem {
     });
   }
 
+  onNameClick(handler) {
+    const name = this.rootElement.querySelector('[data-render="name"]');
+    name.addEventListener('click', (event) => {
+      handler(this.model, event);
+    });
+  }
 }
 

@@ -246,6 +246,43 @@ export default module('API service test', function(hook) {
       'express:/folder/:id', service, 'deleteFolder');
   });
 
+  test('Get folder method should send proper request with correct data.', async (assert) => {
+    assert.expect(3);
+    const matcher = 'express:/folder/:id';
+    const itemId = '0';
+    const folder = {name: 'test', id: itemId, parentId: '1', type:'folder'};
+    fetchMock.once(matcher, (((url) => {
+      const id = url.split('/')[2];
+      assert.strictEqual(id, itemId, 'Should send proper id.');
+      return {
+        status: 200,
+        body: {
+          folder,
+        },
+      };
+    })));
+    await service.getFolder(itemId)
+      .then((response) => {
+        assert.deepEqual(response.folder, folder, 'Should return proper code.');
+      });
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Get folder method should handle 404 error', async (assert) => {
+    _testNotFoundError('get', assert,
+      'express:/folder/:id', service, 'getFolder');
+  });
+
+  test('Get folder method should handle 500 error', async (assert) => {
+    _testInternalServerError('get', assert,
+      'express:/folder/:id', service, 'getFolder');
+  });
+
+  test('Get folder method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('get', assert,
+      'express:/folder/:id', service, 'getFolder');
+  });
+
   async function _testInternalServerError(fetchMethod, assert, matcher, service, method) {
     assert.expect(2);
     fetchMock.once(matcher, (((url) => {

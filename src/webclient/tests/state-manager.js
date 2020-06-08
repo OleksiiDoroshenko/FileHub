@@ -16,6 +16,9 @@ import RemoveItemFromDeletingListMutator
 import AddItemToDeletingListMutator from '../main/services/state-manager/mutators/add-item-to-deleting-list-mutator';
 import ItemsDeletingErrorMutator from '../main/services/state-manager/mutators/items-deleting-error-mutator';
 import ItemUploadingErrorMutator from '../main/services/state-manager/mutators/item-uploading-error-mutator';
+import FolderLoadingMutator from '../main/services/state-manager/mutators/folder-loading-mutator';
+import FolderLoadingErrorMutator from '../main/services/state-manager/mutators/folder-loading-error-mutator';
+import FolderMutator from '../main/services/state-manager/mutators/folder-mutator';
 
 const {module, test} = QUnit;
 
@@ -127,6 +130,23 @@ export default module('State manager test: ', function(hook) {
       const error = new Error('test');
       const mutator = new ItemUploadingErrorMutator(error);
       _testMutator(assert, mutator, 'uploadingError', error);
+    });
+
+    test('Folder loading mutator should change state\'s isFolderLoading state', async (assert) => {
+      const mutator = new FolderLoadingMutator(true);
+      _testMutator(assert, mutator, 'isFolderLoading', true);
+    });
+
+    test('Folder loading error mutator should change state\'s folderLoadingError field.', async (assert) => {
+      const error = new Error('test');
+      const mutator = new FolderLoadingErrorMutator(error);
+      _testMutator(assert, mutator, 'folderLoadingError', error);
+    });
+
+    test('Folder mutator should change state\'s folder field.', async (assert) => {
+      const folder = {name: 'test', id: '0', parentId: '1', type: 'folder'};
+      const mutator = new FolderMutator(folder);
+      _testMutatorWithDeepEqual(assert, mutator, 'folder', folder);
     });
 
     function _testMutator(assert, mutator, field, value) {

@@ -6,9 +6,9 @@ import io.javaclasses.filehub.web.State;
 
 public class AutheticationService implements Service {
 
-    private final State state;
+    private final AuthenticationState state;
 
-    public AutheticationService(State initState) {
+    public AutheticationService(AuthenticationState initState) {
         this.state = initState;
     }
 

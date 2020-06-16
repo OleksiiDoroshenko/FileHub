@@ -1,2 +1,3 @@
 rootProject.name = 'FileHub'
+include 'server'
 

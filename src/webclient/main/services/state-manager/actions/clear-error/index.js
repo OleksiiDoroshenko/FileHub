@@ -5,7 +5,6 @@ import ClearErrorMutator from '../../mutators/clear-error-mutator';
  * Creates specific mutator that clears error field.
  */
 export default class ClearErrorAction extends Action {
-
   /**
    * Returns instance of {@link ClearErrorAction} class.
    * @param {string} errorField - error field that should be cleared

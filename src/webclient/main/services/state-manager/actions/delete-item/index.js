@@ -32,7 +32,7 @@ export default class DeleteItemAction extends Action {
       if (stateManager.state.folderId === parentId) {
         stateManager.dispatch(new GetItemsAction(parentId));
       }
-    }).catch(error => {
+    }).catch((error) => {
       stateManager.mutate(new ItemsDeletingErrorMutator(error));
     }).finally(() => {
       stateManager.mutate(new RemoveItemFromDeletingListMutator(id));

@@ -7,7 +7,6 @@ import NotFoundError from '../../../models/errors/not-found-error';
  * Implements login and registration methods logic.
  */
 export default class ApiService {
-
   /**
    * Sends request yo the server for user log in.
    * @param {UserData} userData - instance of {@link UserData}.
@@ -26,7 +25,7 @@ export default class ApiService {
           localStorage.setItem('token', body.token);
         });
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'User');
     });
   }
 
@@ -44,7 +43,7 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'Folder');
     });
   }
 
@@ -70,13 +69,14 @@ export default class ApiService {
   /**
    * Returns specific error instance from response code.
    * @param {Response} response - server response.
+   * @param {string} requestedItem - requested item from server.
    * @return {Promise<AuthorizationError|Error|ServerValidationErrors>}
    */
-  async getError(response) {
+  async getError(response, requestedItem) {
     switch (response.status) {
       case 401: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text.length > 0 ? text : message;
         });
         return new AuthorizationError(message);
@@ -93,17 +93,17 @@ export default class ApiService {
       }
       case 404: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text;
         });
-        return new NotFoundError(message);
+        return new NotFoundError(message, requestedItem);
       }
       case 500: {
         return new Error(response.statusText);
       }
       default: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text;
         });
         return new Error(message);
@@ -126,7 +126,7 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'Folder');
     });
   }
 
@@ -149,7 +149,7 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'Folder');
     });
   }
 
@@ -163,7 +163,7 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'File');
     });
   }
 
@@ -177,14 +177,14 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'Folder');
     });
   }
 
   /**
    * Sends request to server for logging out current user.
    * Regardless of the answer removes current token from local storage.
-   * @returns {Promise<Response>}
+   * @return {Promise<Response>}
    */
   logOut() {
     return fetch('/logout', {
@@ -195,9 +195,27 @@ export default class ApiService {
       if (response.ok) {
         return;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'User');
     }).finally(() => {
       localStorage.removeItem('token');
+    });
+  }
+
+  /**
+   * Sends request to the server for getting file's blob.
+   * @param {string} id - file id.
+   * @return {Promise<Response>}
+   */
+  getFile(id) {
+    return fetch(`/file/${id}`, {
+      method: 'GET', headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return response.blob();
+      }
+      throw await this.getError(response, 'File');
     });
   }
 
@@ -210,7 +228,7 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response);
+      throw await this.getError(response, 'User');
     });
   }
 }

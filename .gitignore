@@ -3,7 +3,7 @@
 *.iml
 *.ipr
 *.iws
-node_modules/
+server/src/main/resources/node_modules/
 
 # Gradle
 .gradle

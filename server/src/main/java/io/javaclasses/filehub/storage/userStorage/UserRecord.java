@@ -30,16 +30,8 @@ public class UserRecord implements Record<UserId> {
         return login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getPasswordHash() {
         return passwordHash;
-    }
-
-    public void setPassword(String password) {
-        this.passwordHash = String.valueOf(password.hashCode());
     }
 
 }

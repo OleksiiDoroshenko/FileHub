@@ -28,9 +28,9 @@ class RegistrationTest {
         UserId id = process.handle(register);
         UserRecord record = storage.get(id);
 
-        assertEquals(record.getLogin(), login, "registration method should return user with proper login");
+        assertEquals(record.login(), login, "registration method should return user with proper login");
 
-        assertEquals(record.getPasswordHash(), String.valueOf(password.hashCode()),
+        assertEquals(record.passwordHash(), String.valueOf(password.hashCode()),
                 "registration method should return user with proper password hash");
 
     }

@@ -10,8 +10,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Register {
 
-    private final UserCredentials userCredentials;
     private static final Logger logger = LoggerFactory.getLogger(Register.class);
+    private final UserCredentials userCredentials;
 
     /**
      * Returns instance of {@link Register}.
@@ -26,16 +26,8 @@ public class Register {
                 ", password: " + userCredentials.password() + ".");
     }
 
-    public UserCredentials userCredentials() {
+    UserCredentials userCredentials() {
         return userCredentials;
-    }
-
-    public String login() {
-        return userCredentials.login();
-    }
-
-    public String password() {
-        return userCredentials.password();
     }
 
     @Override

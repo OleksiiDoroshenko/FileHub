@@ -5,27 +5,31 @@ import io.javaclasses.filehub.storage.RecordId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Contains user id.
+ * Contains user value.
  */
 public class UserId implements RecordId {
-    private final String id;
+
+    private final String value;
 
     /**
      * Returns instance of {@link UserId} class.
      *
-     * @param id - user id.
+     * @param value - user id.
      */
-    public UserId(String id) {
-        checkNotNull(id);
-        this.id = id;
+    public UserId(String value) {
+        checkNotNull(value);
+        this.value = value;
     }
 
+    /**
+     * @return user id.
+     */
     public String id() {
-        return id;
+        return value;
     }
 
     @Override
     public String toString() {
-        return "id: " + id;
+        return "value: " + value;
     }
 }

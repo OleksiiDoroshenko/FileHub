@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
  * Value object that contains user login and password.
  */
 public class UserCredentials {
+
     private static final Logger logger = LoggerFactory.getLogger(UserCredentials.class);
 
     private final String login;

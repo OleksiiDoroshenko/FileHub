@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.api.registrationProcess;
 
-import io.javaclasses.filehub.web.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,38 +8,34 @@ import org.slf4j.LoggerFactory;
  */
 public class Register {
 
-    private String login;
-    private String password;
+    private final UserCredentials userCredentials;
     private static final Logger logger = LoggerFactory.getLogger(Register.class);
 
     /**
      * Returns instance of {@link Register}.
      *
-     * @param login    - user's login.
-     * @param password - user's password.
+     * @param userCredentials - user's credentials that contains login and password.
      */
-    public Register(String login, String password) {
+    public Register(UserCredentials userCredentials) {
         logger.debug("Trying to create Register command.");
-        new Validator().validateLogin(login);
-        new Validator().validatePassword(password);
-        this.login = login;
-        this.password = password;
-        logger.debug("Register command was created. Login: " + login + ", password: " + password + ".");
+        this.userCredentials = userCredentials;
+        logger.debug("Register command was created. Login: " + userCredentials.login() +
+                ", password: " + userCredentials.password() + ".");
     }
 
-    public String getLogin() {
-        return login;
+    public String login() {
+        return userCredentials.login();
     }
 
-    public String getPassword() {
-        return password;
+    public String password() {
+        return userCredentials.password();
     }
 
     @Override
     public String toString() {
         return "Register{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
+                "login='" + userCredentials.login() + '\'' +
+                ", password='" + userCredentials.password() + '\'' +
                 '}';
     }
 }

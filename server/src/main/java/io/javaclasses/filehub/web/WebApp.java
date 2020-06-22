@@ -3,6 +3,7 @@ package io.javaclasses.filehub.web;
 import io.javaclasses.filehub.api.registrationProcess.Register;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
+import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import static spark.Spark.*;
 public class WebApp {
 
     private static UserStorage userStorage;
-    private static RegisterCommandDeserializer serializer;
+    private static UserCredentialsDeserializer serializer;
     private static final Logger logger = LoggerFactory.getLogger(WebApp.class);
     private static final int PORT = 8080;
 
@@ -25,7 +26,7 @@ public class WebApp {
         port(PORT);
         logger.info("Start web server with " + PORT + ".");
         userStorage = new UserStorage();
-        serializer = new RegisterCommandDeserializer();
+        serializer = new UserCredentialsDeserializer();
 
         staticFiles.location("/webclient");
 
@@ -33,8 +34,9 @@ public class WebApp {
             logger.debug("POST /register method was called with " + req.body() + ".");
             try {
                 logger.debug("trying to register user" + req.body() + " .");
-                Register json = serializer.deserialize(req.body());
-                UserId userId = new Registration(userStorage).handle(json);
+                UserCredentials userCredentials = serializer.deserialize(req.body());
+                Register register = new Register(userCredentials);
+                UserId userId = new Registration(userStorage).handle(register);
                 logger.debug("User registration completed successfully. User's " + userId + ".");
                 return 200;
             } catch (InvalidUserDataException | UserAlreadyExistsException e) {

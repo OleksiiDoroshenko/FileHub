@@ -1,13 +1,39 @@
-package io.javaclasses.filehub.web;
+package io.javaclasses.filehub.api.registrationProcess;
 
+import io.javaclasses.filehub.web.InvalidUserDataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provides functionality for user login and password validation.
+ * Value object that contains user login and password.
  */
-public class Validator {
-    private static final Logger logger = LoggerFactory.getLogger(Validator.class);
+public class UserCredentials {
+    private static final Logger logger = LoggerFactory.getLogger(UserCredentials.class);
+
+    private final String login;
+    private final String password;
+
+    /**
+     * Returns instance of {@link UserCredentials} class.
+     *
+     * @param login
+     * @param password
+     */
+    public UserCredentials(String login, String password) {
+        validateLogin(login);
+        validatePassword(password);
+        this.login = login;
+        this.password = password;
+    }
+
+    public String login() {
+        return login;
+    }
+
+    public String password() {
+        return password;
+    }
+
 
     /**
      * Validates user password.
@@ -17,7 +43,7 @@ public class Validator {
      * @param password - user password.
      * @return - true if password is valid or throws {@link InvalidUserDataException} if it is invalid.
      */
-    public boolean validatePassword(String password) {
+    private boolean validatePassword(String password) {
 
         logger.debug("Trying to validate password: " + password + "");
         if (password == null) {
@@ -45,7 +71,7 @@ public class Validator {
      * @param login - user password.
      * @return - true if login is valid or throws {@link InvalidUserDataException} if it is invalid.
      */
-    public boolean validateLogin(String login) {
+    private boolean validateLogin(String login) {
 
         logger.debug("Trying to validate login: " + login + "");
         if (login == null) {
@@ -64,4 +90,3 @@ public class Validator {
         return true;
     }
 }
-

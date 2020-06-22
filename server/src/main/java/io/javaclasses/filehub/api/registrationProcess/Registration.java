@@ -32,7 +32,7 @@ public class Registration implements Process<Register, UserId> {
     @Override
     public UserId handle(Register register) {
         logger.debug("Trying to register new user.");
-        UserRecord userRecord = new UserRecord(register.getLogin(), register.getPassword());
+        UserRecord userRecord = new UserRecord(register.login(), register.password());
         if (storage.contains(userRecord)) {
 
             logger.error("User with the same login already exists. Login: " + userRecord.getLogin() + ".");

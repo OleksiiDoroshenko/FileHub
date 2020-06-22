@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage.userStorage;
 
 import io.javaclasses.filehub.api.registrationProcess.Registration;
+import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
 import io.javaclasses.filehub.storage.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +13,9 @@ import java.util.*;
  */
 public class UserStorage implements Storage<UserRecord, UserId> {
 
-    private final Map<UserId, UserRecord> storage;
-    private int lastId;
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
+    private final Map<UserId, UserRecord> storage;
+
 
     /**
      * Returns instance of {@link UserStorage} class.
@@ -49,7 +50,7 @@ public class UserStorage implements Storage<UserRecord, UserId> {
      * @return - all {@link UserRecord} from storage.
      */
     @Override
-    public List<UserRecord> getAll() {
+    public List<UserRecord> all() {
         return new ArrayList<>(storage.values());
     }
 
@@ -61,31 +62,31 @@ public class UserStorage implements Storage<UserRecord, UserId> {
      */
     @Override
     public UserId add(UserRecord userRecord) {
-        UserId id = generateId();
-        storage.put(id, userRecord);
-        logger.info("User " + userRecord.getLogin() + " was added to the storage.");
-        return id;
+        storage.put(userRecord.id(), userRecord);
+        logger.info("User " + userRecord.login() + " was added to the storage.");
+        return userRecord.id();
     }
 
     /**
-     * Checks if user storage contains record that was passed by params.
+     * Checks if user storage contains record id that was passed by params.
      *
-     * @param userRecord - user record whose presence should be checked.
-     * @return true if storage contains such user record login / false if it is not.
+     * @param userId - user record id whose presence should be checked.
+     * @return true if storage contains such user record id login / false if it is not.
      */
     @Override
-    public boolean contains(UserRecord userRecord) {
-
-        return storage.values().stream().anyMatch(record ->
-                record.getLogin().equals(userRecord.getLogin())
-        );
+    public boolean contains(UserId userId) {
+        return storage.keySet().stream().anyMatch(key ->
+                key.equals(userId.id()));
     }
 
     /**
-     * @return
+     * Checks if storage contains user with such login that was passed by params.
+     *
+     * @param userCredentials - user credentials.
+     * @return true if storage contains such user record / false if it is not.
      */
-    private UserId generateId() {
-        lastId++;
-        return new UserId(lastId + "");
+    public boolean containsUser(UserCredentials userCredentials) {
+        return storage.values().stream().anyMatch(record ->
+                record.login().equals(userCredentials.login()));
     }
 }

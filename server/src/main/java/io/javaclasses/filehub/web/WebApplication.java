@@ -14,16 +14,23 @@ import static spark.Spark.*;
 /**
  * Contains main method for starting the server.
  */
-public class WebApp {
+public class WebApplication {
 
     private static UserStorage userStorage;
     private static UserCredentialsDeserializer serializer;
-    private static final Logger logger = LoggerFactory.getLogger(WebApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebApplication.class);
     private static final int PORT = 8080;
 
     public static void main(String[] args) {
 
         cofigureServer();
+
+        registerRoute();
+
+
+    }
+
+    private static void registerRoute() {
 
         post("/register", (req, res) -> {
             logger.debug("POST /register method was called with " + req.body() + ".");
@@ -42,8 +49,6 @@ public class WebApp {
                 return res;
             }
         });
-
-
     }
 
     private static void cofigureServer() {

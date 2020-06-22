@@ -19,6 +19,7 @@ public class UserCredentialsDeserializer {
      * @return {@link UserCredentials} class.
      */
     public UserCredentials deserialize(String json) {
+
         logger.debug("Trying to deserialize " + json + ".");
         Gson gson = new Gson();
         UserCredentials userCredentials = gson.fromJson(json, UserCredentials.class);

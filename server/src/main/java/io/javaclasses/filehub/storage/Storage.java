@@ -26,7 +26,7 @@ public interface Storage<Record, RecordId> {
     /**
      * @return - all records from storage.
      */
-    List<Record> getAll();
+    List<Record> all();
 
     /**
      * Adds record into the storage.
@@ -37,10 +37,11 @@ public interface Storage<Record, RecordId> {
     RecordId add(Record record);
 
     /**
-     * Checks if storage contains record..
+     * Checks if storage contains record id.
      *
-     * @param record - record to be checked.
-     * @return - true if storage contains record / false id it is not.
+     * @param recordId - key to be checked.
+     * @return - true if storage contains record id/ false id it is not.
      */
-    boolean contains(Record record);
+    boolean contains(RecordId recordId);
+
 }

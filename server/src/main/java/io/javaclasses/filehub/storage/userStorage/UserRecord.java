@@ -6,14 +6,18 @@ import io.javaclasses.filehub.storage.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
+
 /**
  * Contains user login and hash value of the password.
  */
 public class UserRecord implements Record<UserId> {
 
-    private String login;
-    private String passwordHash;
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
+    private final String login;
+    private final String passwordHash;
+    private final UserId id;
+
 
     /**
      * Returns instance of {@link UserRecord} class.
@@ -23,15 +27,23 @@ public class UserRecord implements Record<UserId> {
     public UserRecord(UserCredentials userCredentials) {
         this.login = userCredentials.login();
         this.passwordHash = String.valueOf(userCredentials.password().hashCode());
+        this.id = new UserId(UUID.randomUUID().toString());
         logger.debug("New user record was created. User login: " + login + ".");
     }
 
-    public String getLogin() {
+    public String login() {
         return login;
     }
 
-    public String getPasswordHash() {
+    public String passwordHash() {
         return passwordHash;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserId id() {
+        return id;
+    }
 }

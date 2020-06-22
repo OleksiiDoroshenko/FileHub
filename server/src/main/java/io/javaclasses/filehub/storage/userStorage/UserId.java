@@ -2,6 +2,8 @@ package io.javaclasses.filehub.storage.userStorage;
 
 import io.javaclasses.filehub.storage.RecordId;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Contains user id.
  */
@@ -14,6 +16,7 @@ public class UserId implements RecordId {
      * @param id - user id.
      */
     public UserId(String id) {
+        checkNotNull(id);
         this.id = id;
     }
 

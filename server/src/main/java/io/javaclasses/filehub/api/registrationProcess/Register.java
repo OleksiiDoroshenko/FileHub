@@ -3,6 +3,8 @@ package io.javaclasses.filehub.api.registrationProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Contains user's credentials.
  */
@@ -17,10 +19,15 @@ public class Register {
      * @param userCredentials - user's credentials that contains login and password.
      */
     public Register(UserCredentials userCredentials) {
+        checkNotNull(userCredentials);
         logger.debug("Trying to create Register command.");
         this.userCredentials = userCredentials;
         logger.debug("Register command was created. Login: " + userCredentials.login() +
                 ", password: " + userCredentials.password() + ".");
+    }
+
+    public UserCredentials userCredentials() {
+        return userCredentials;
     }
 
     public String login() {

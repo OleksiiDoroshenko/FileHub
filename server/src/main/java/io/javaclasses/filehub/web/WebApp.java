@@ -23,12 +23,7 @@ public class WebApp {
 
     public static void main(String[] args) {
 
-        port(PORT);
-        logger.info("Start web server with " + PORT + ".");
-        userStorage = new UserStorage();
-        serializer = new UserCredentialsDeserializer();
-
-        staticFiles.location("/webclient");
+        cofigureServer();
 
         post("/register", (req, res) -> {
             logger.debug("POST /register method was called with " + req.body() + ".");
@@ -49,5 +44,14 @@ public class WebApp {
         });
 
 
+    }
+
+    private static void cofigureServer() {
+        port(PORT);
+        logger.info("Start web server with " + PORT + ".");
+        userStorage = new UserStorage();
+        serializer = new UserCredentialsDeserializer();
+
+        staticFiles.location("/webclient");
     }
 }

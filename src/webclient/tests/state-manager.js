@@ -177,13 +177,13 @@ export default module('State manager test: ', function(hook) {
       const testBlob = new Blob(['smth'], {type: `text/txt`});
       const testFileName = 'test';
 
-      let apiService = new ApiService();
+      const apiService = new ApiService();
       apiService.getFile = async (id) => {
         assert.strictEqual(id, fileId, 'Api service method should be called with proper id.');
         return testBlob;
       };
 
-      let stateManager = new StateManager({}, apiService);
+      const stateManager = new StateManager({}, apiService);
       stateManager.mutate = (mutator) => {
         if (mutator instanceof AddItemToDownloadingListMutator) {
           assert.strictEqual(mutator.itemId, fileId, 'Mutator should be created with proper params.');
@@ -194,11 +194,11 @@ export default module('State manager test: ', function(hook) {
         }
       };
 
-      let downloadService = new DownloadFileService();
+      const downloadService = new DownloadFileService();
       downloadService.download = (blob, fileName) => {
         assert.strictEqual(blob.parts, testBlob.parts, 'Download file service\'s method should be called with proper blob param.');
         assert.strictEqual(fileName, testFileName,
-          'Download file service\'s method should be called with proper file name param.');
+            'Download file service\'s method should be called with proper file name param.');
       };
 
       const action = new DownloadFileAction({id: fileId, name: testFileName}, downloadService);
@@ -211,13 +211,13 @@ export default module('State manager test: ', function(hook) {
       const fileId = '0';
       const testFileName = 'test';
 
-      let apiService = new ApiService();
+      const apiService = new ApiService();
       apiService.getFile = async (id) => {
         assert.strictEqual(id, fileId, 'Api service method should be called with proper id.');
         return new NotFoundError('', '');
       };
 
-      let stateManager = new StateManager({}, apiService);
+      const stateManager = new StateManager({}, apiService);
       stateManager.mutate = (mutator) => {
         if (mutator instanceof AddItemToDownloadingListMutator) {
           assert.strictEqual(mutator.itemId, fileId, 'Mutator should be created with proper params.');
@@ -230,7 +230,7 @@ export default module('State manager test: ', function(hook) {
         }
       };
 
-      let downloadService = new DownloadFileService();
+      const downloadService = new DownloadFileService();
       const action = new DownloadFileAction({id: fileId, name: testFileName}, downloadService);
       await action.apply(stateManager, apiService);
       assert.verifySteps(['AddItemToDownloadingListMutator', 'ItemsDownloadingErrorMutator',

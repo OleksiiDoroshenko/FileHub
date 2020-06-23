@@ -7,7 +7,6 @@ import NotFoundError from '../../../models/errors/not-found-error';
  * Implements login and registration methods logic.
  */
 export default class ApiService {
-
   /**
    * Sends request yo the server for user log in.
    * @param {UserData} userData - instance of {@link UserData}.
@@ -77,7 +76,7 @@ export default class ApiService {
     switch (response.status) {
       case 401: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text.length > 0 ? text : message;
         });
         return new AuthorizationError(message);
@@ -94,7 +93,7 @@ export default class ApiService {
       }
       case 404: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text;
         });
         return new NotFoundError(message, requestedItem);
@@ -104,7 +103,7 @@ export default class ApiService {
       }
       default: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text;
         });
         return new Error(message);
@@ -185,7 +184,7 @@ export default class ApiService {
   /**
    * Sends request to server for logging out current user.
    * Regardless of the answer removes current token from local storage.
-   * @returns {Promise<Response>}
+   * @return {Promise<Response>}
    */
   logOut() {
     return fetch('/logout', {

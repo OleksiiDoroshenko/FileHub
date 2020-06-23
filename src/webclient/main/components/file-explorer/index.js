@@ -113,7 +113,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     };
     this.fileList.onUploadClick(uploadHandler);
     this._uploadFileBtn.addEventListener('click', () => {
-      new FileBrowserService().selectFile().then(file => {
+      new FileBrowserService().selectFile().then((file) => {
         uploadHandler(this.id, file);
       });
     });
@@ -231,7 +231,7 @@ export default class FileExplorerPage extends StateAwareComponent {
 
   /**
    * Gets users folder id and calls method to update hash.
-   * @returns {Promise<void>}
+   * @return {Promise<void>}
    * @private
    */
   async _getRootFolder() {

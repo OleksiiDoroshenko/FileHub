@@ -58,5 +58,4 @@ export default class FileItem extends ListItem {
       handler(this.model);
     });
   }
-
 }

@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.storage.userStorage;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
 import io.javaclasses.filehub.storage.Record;
@@ -11,6 +12,7 @@ import java.util.UUID;
 /**
  * Contains user login and hash value of the password.
  */
+@Immutable
 public class UserRecord implements Record<UserId> {
 
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);

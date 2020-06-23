@@ -33,7 +33,7 @@ public class RegistrationRoute implements Route {
             UserId userId = new Registration(userStorage).handle(registerUser);
             logger.debug("User registration completed successfully. User's " + userId + ".");
             return 200;
-        } catch (InvalidUserDataException | UserAlreadyExistsException e) {
+        } catch (InvalidUserCredentialsException | UserAlreadyExistsException e) {
 
             logger.error("Error: " + e.getMessage());
             response.status(400);

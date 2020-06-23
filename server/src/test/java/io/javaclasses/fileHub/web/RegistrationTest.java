@@ -1,12 +1,12 @@
 package io.javaclasses.fileHub.web;
 
-import io.javaclasses.filehub.api.registrationProcess.Register;
+import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
-import io.javaclasses.filehub.web.InvalidUserDataException;
+import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,7 @@ class RegistrationTest {
     void registerTest() {
         String login = "Tests";
         String password = "Testsdkashdlkanfl";
-        Register register = new Register(new UserCredentials(login, password));
+        RegisterUser register = new RegisterUser(new UserCredentials(login, password));
         UserId id = process.handle(register);
         UserRecord record = storage.get(id);
 
@@ -39,17 +39,17 @@ class RegistrationTest {
     @Test
     void registerWithInvalidDataTest() {
 
-        assertThrows(InvalidUserDataException.class, () -> {
+        assertThrows(InvalidUserCredentialsException.class, () -> {
             String login = "Tes";
             String password = "Testsdkashdjkjasklhdh";
-            new Register(new UserCredentials(login, password));
+            new RegisterUser(new UserCredentials(login, password));
 
         }, "crating register command with invalid login should throw exception when user login is to short.");
 
-        assertThrows(InvalidUserDataException.class, () -> {
+        assertThrows(InvalidUserCredentialsException.class, () -> {
             String login = "Admin";
             String password = "Tests";
-            new Register(new UserCredentials(login, password));
+            new RegisterUser(new UserCredentials(login, password));
 
         }, "crating register command with invalid password" +
                 " should throw exception when user password is to short.");

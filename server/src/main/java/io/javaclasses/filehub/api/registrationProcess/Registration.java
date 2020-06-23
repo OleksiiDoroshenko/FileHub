@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Provides functionality for registration process in the system.
  */
-public class Registration implements Process<Register, UserId> {
+public class Registration implements Process<RegisterUser, UserId> {
 
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
     private final UserStorage storage;
@@ -31,16 +31,16 @@ public class Registration implements Process<Register, UserId> {
     /**
      * Allows user to register.
      *
-     * @param register - user credentials.
+     * @param registerUser - user credentials.
      * @return registered user.
      */
     @Override
-    public UserId handle(Register register) {
+    public UserId handle(RegisterUser registerUser) {
         logger.debug("Trying to register new user.");
-        UserRecord userRecord = new UserRecord(register.userCredentials());
-        if (storage.containsUser(register.userCredentials())) {
+        UserRecord userRecord = new UserRecord(registerUser.userCredentials());
+        if (storage.containsUser(registerUser.userCredentials())) {
 
-            logger.error("User with the same login already exists. Login: " + register.userCredentials().login() + ".");
+            logger.error("User with the same login already exists. Login: " + registerUser.userCredentials().login() + ".");
             throw new UserAlreadyExistsException("User with the same name already exists.");
         }
         return storage.add(userRecord);

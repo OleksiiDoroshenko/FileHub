@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.api.registrationProcess;
 
-import io.javaclasses.filehub.web.InvalidUserDataException;
+import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,10 +39,10 @@ public class UserCredentials {
     /**
      * Validates user password.
      *
-     * <p>Throws {@link InvalidUserDataException} with specific message id user password is invalid. </p>
+     * <p>Throws {@link InvalidUserCredentialsException} with specific message id user password is invalid. </p>
      *
      * @param password - user password.
-     * @return - true if password is valid or throws {@link InvalidUserDataException} if it is invalid.
+     * @return - true if password is valid or throws {@link InvalidUserCredentialsException} if it is invalid.
      */
     private boolean validatePassword(String password) {
 
@@ -50,14 +50,14 @@ public class UserCredentials {
         if (password == null) {
 
             logger.error("Password is null.");
-            throw new InvalidUserDataException("Password should not be null.");
+            throw new InvalidUserCredentialsException("Password should not be null.");
         } else {
 
             int minPasswordLength = 8;
             if (password.length() < minPasswordLength) {
 
                 logger.error("Password is shorter than minimal length.");
-                throw new InvalidUserDataException("Password should be longer then " + minPasswordLength + " symbols.");
+                throw new InvalidUserCredentialsException("Password should be longer then " + minPasswordLength + " symbols.");
             }
         }
         logger.debug("Validation completed successfully.");
@@ -67,10 +67,10 @@ public class UserCredentials {
     /**
      * Validates user login.
      *
-     * <p>Throws {@link InvalidUserDataException} with specific message id user login is invalid. </p>
+     * <p>Throws {@link InvalidUserCredentialsException} with specific message id user login is invalid. </p>
      *
      * @param login - user password.
-     * @return - true if login is valid or throws {@link InvalidUserDataException} if it is invalid.
+     * @return - true if login is valid or throws {@link InvalidUserCredentialsException} if it is invalid.
      */
     private boolean validateLogin(String login) {
 
@@ -78,13 +78,13 @@ public class UserCredentials {
         if (login == null) {
 
             logger.error("Login is null.");
-            throw new InvalidUserDataException("Login should not be null.");
+            throw new InvalidUserCredentialsException("Login should not be null.");
         } else {
             int minLoginLength = 4;
             if (login.length() < minLoginLength) {
 
                 logger.error("Login is shorter than minimal length.");
-                throw new InvalidUserDataException("Login should be longer then " + minLoginLength + " symbols.");
+                throw new InvalidUserCredentialsException("Login should be longer then " + minLoginLength + " symbols.");
             }
         }
         logger.debug("Validation completed successfully.");

@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.storage.userStorage;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -7,6 +8,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Contains user value.
  */
+@Immutable
 public class UserId implements RecordId {
 
     private final String value;

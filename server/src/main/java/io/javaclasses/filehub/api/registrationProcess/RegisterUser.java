@@ -6,19 +6,19 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Contains user's credentials.
+ * .
  */
-public class Register {
+public class RegisterUser {
 
-    private static final Logger logger = LoggerFactory.getLogger(Register.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegisterUser.class);
     private final UserCredentials userCredentials;
 
     /**
-     * Returns instance of {@link Register}.
+     * Returns instance of {@link RegisterUser}.
      *
      * @param userCredentials - user's credentials that contains login and password.
      */
-    public Register(UserCredentials userCredentials) {
+    public RegisterUser(UserCredentials userCredentials) {
         checkNotNull(userCredentials);
         logger.debug("Trying to create Register command.");
         this.userCredentials = userCredentials;

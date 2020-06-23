@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import static spark.Spark.*;
 
 /**
- * Create application context. Configure server settings and maps request routes.
+ * Represents FileHub web a Create application context. Configure server settings and maps request routes.
  */
 public class WebApplication {
 

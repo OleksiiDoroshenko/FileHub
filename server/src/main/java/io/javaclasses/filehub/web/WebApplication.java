@@ -1,10 +1,5 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.registrationProcess.Register;
-import io.javaclasses.filehub.api.registrationProcess.Registration;
-import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
-import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
-import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,47 +11,23 @@ import static spark.Spark.*;
  */
 public class WebApplication {
 
-    private static UserStorage userStorage;
-    private static UserCredentialsDeserializer serializer;
     private static final Logger logger = LoggerFactory.getLogger(WebApplication.class);
     private static final int PORT = 8080;
+    private static UserStorage userStorage;
 
     public static void main(String[] args) {
-
-        cofigureServer();
-
-        registerRoute();
-
-
+        configureServer();
+        registerRoutes();
     }
 
-    private static void registerRoute() {
-
-        post("/register", (req, res) -> {
-            logger.debug("POST /register method was called with " + req.body() + ".");
-            try {
-                logger.debug("trying to register user" + req.body() + " .");
-                UserCredentials userCredentials = serializer.deserialize(req.body());
-                Register register = new Register(userCredentials);
-                UserId userId = new Registration(userStorage).handle(register);
-                logger.debug("User registration completed successfully. User's " + userId + ".");
-                return 200;
-            } catch (InvalidUserDataException | UserAlreadyExistsException e) {
-
-                logger.error("Error: " + e.getMessage());
-                res.status(400);
-                res.body(e.getMessage());
-                return res;
-            }
-        });
+    private static void registerRoutes() {
+        post("/register", new RegistrationRoute(userStorage));
     }
 
-    private static void cofigureServer() {
+    private static void configureServer() {
         port(PORT);
         logger.info("Start web server with " + PORT + ".");
         userStorage = new UserStorage();
-        serializer = new UserCredentialsDeserializer();
-
         staticFiles.location("/webclient");
     }
 }

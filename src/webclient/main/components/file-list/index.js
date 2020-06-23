@@ -78,8 +78,8 @@ export default class FileList extends Component {
       this.itemsRoot.innerHTML = '';
       if (Array.isArray(this._items)) {
         this._items.forEach((item) => {
-          this._createItem(this.itemsRoot, item);
-        },
+            this._createItem(this.itemsRoot, item);
+          },
         );
       }
     }
@@ -103,17 +103,18 @@ export default class FileList extends Component {
       case
       'file': {
         item = new FileItem(container, {model});
-        item.addDownloadHandler(this._onDownloadHandler);
+        item.addDownloadClickedHandler(this._onDownloadHandler);
         break;
       }
     }
-    if (this._uploadingItems.has(model.id)) {
+    const id = model.id;
+    if (this._uploadingItems.has(id)) {
       item.isProcessing(true, 'file-uploading');
     }
-    if (this._deletingItems.has(model.id)) {
+    if (this._deletingItems.has(id)) {
       item.isProcessing(true, 'file-deleting');
     }
-    if (this._downloadingItems.has(model.id)) {
+    if (this._downloadingItems.has(id)) {
       item.isProcessing(true, 'file-downloading');
     }
     item.addDeleteHandler(this._onDeleteHandler);

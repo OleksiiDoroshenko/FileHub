@@ -4,6 +4,8 @@ import Component from '../component.js';
  * Implements html button rendering into another html element(container).
  */
 export default class Button extends Component {
+  _isLoadingClass = 'file-uploading';
+
   /**
    * Returns instance of {@link Button};
    * @param {HTMLElement} container - container to render.
@@ -50,11 +52,4 @@ export default class Button extends Component {
     this.rootElement.classList.toggle(this._isLoadingClass, value);
   }
 
-  /**
-   * Sets class to loading html element.
-   * @param {string} cssClass - css class.
-   */
-  set isLoadingClass(cssClass) {
-    this._isLoadingClass = cssClass;
-  }
 }

@@ -137,6 +137,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     this.stateManager.onStateChanged('items', (state) => {
       this.fileList.items = state.items;
     });
+
     this.stateManager.onStateChanged('isLoading', (state) => {
       if (state.isLoading) {
         this.fileList.showLoadingMessage();
@@ -176,10 +177,10 @@ export default class FileExplorerPage extends StateAwareComponent {
     });
 
     this.stateManager.onStateChanged('uploadingItemIds', (state) => {
-      this._uploadFileBtn.isLoadingClass = 'file-uploading';
       this._uploadFileBtn.isLoading = state.uploadingItemIds.has(this.id);
       this.fileList.uploadingItems = state.uploadingItemIds;
     });
+
     this.stateManager.onStateChanged('userLoadingError', (state) => {
       const error = state.userLoadingError;
       if (error instanceof AuthorizationError) {

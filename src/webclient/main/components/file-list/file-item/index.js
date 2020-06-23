@@ -50,9 +50,9 @@ export default class FileItem extends ListItem {
 
   /**
    * Adds listener for clicking downloading icon.
-   * @param handler
+   * @param {function} handler - function to be called.
    */
-  addDownloadHandler(handler) {
+  addDownloadClickedHandler(handler) {
     const icon = this.rootElement.querySelector('[data-render="download"]');
     icon.addEventListener('click', () => {
       handler(this.model);

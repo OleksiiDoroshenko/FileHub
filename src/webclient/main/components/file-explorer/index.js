@@ -12,6 +12,8 @@ import LogOutAction from '../../services/state-manager/actions/log-out';
 import DeleteItemAction from '../../services/state-manager/actions/delete-item';
 import GetUserAction from '../../services/state-manager/actions/get-user';
 import ClearErrorAction from '../../services/state-manager/actions/clear-error';
+import DownloadFileAction from '../../services/state-manager/actions/download-file';
+import DownloadFileService from '../../services/download-file-service';
 import GetFolderAction from '../../services/state-manager/actions/get-folder';
 
 /**
@@ -117,7 +119,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     this.fileList.onUploadClick(uploadHandler);
 
     this._uploadFileBtn.addEventListener('click', () => {
-      new FileBrowserService().selectFile().then(file => {
+      new FileBrowserService().selectFile().then((file) => {
         uploadHandler(this.id, file);
       });
     });
@@ -125,8 +127,13 @@ export default class FileExplorerPage extends StateAwareComponent {
     const deleteFolderHandler = (model) => {
       this.stateManager.dispatch(new DeleteItemAction(model));
     };
-
     this.fileList.onDelete(deleteFolderHandler);
+
+    const downloadHandler = (model) => {
+      this.stateManager.dispatch(new DownloadFileAction(model, new DownloadFileService()));
+    };
+
+    this.fileList.onDownload(downloadHandler);
     this.fileList.onFolderNameClick((model, event) => {
       if (event.detail === 2) {
         this._changeHashId(model.id);
@@ -179,6 +186,11 @@ export default class FileExplorerPage extends StateAwareComponent {
       }
     });
 
+    this.stateManager.onStateChanged('uploadingItemIds', (state) => {
+      this._uploadFileBtn.isLoadingClass = 'file-uploading';
+      this._uploadFileBtn.isLoading = state.uploadingItemIds.has(this.id);
+      this.fileList.uploadingItems = state.uploadingItemIds;
+    });
     this.stateManager.onStateChanged('userLoadingError', (state) => {
       const error = state.userLoadingError;
       if (error instanceof AuthorizationError) {
@@ -194,6 +206,17 @@ export default class FileExplorerPage extends StateAwareComponent {
     this.stateManager.onStateChanged('isUserLoading', (state) => {
       const usernameBox = this.rootElement.querySelector('[data-render="username-box"]');
       usernameBox.classList.toggle('blink', state.isUserLoading);
+    });
+
+    this.stateManager.onStateChanged('downloadingItemIds', (state) => {
+      this.fileList.downloadingItems = state.downloadingItemIds;
+    });
+    this.stateManager.onStateChanged('downloadingError', (state) => {
+      const error = state.downloadingError;
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('downloadingError'));
+      }
     });
 
     this.stateManager.onStateChanged('folder', (state) => {
@@ -218,7 +241,7 @@ export default class FileExplorerPage extends StateAwareComponent {
       alert('Your session has expired. Please log in.');
       window.location.hash = '#/login';
     } else if (error instanceof NotFoundError) {
-      let message = 'Folder not found.';
+      let message = `${error.requestedItem} not found.`;
       if (error.message) {
         message = error.message;
       }
@@ -230,7 +253,7 @@ export default class FileExplorerPage extends StateAwareComponent {
 
   /**
    * Gets users folder id and calls method to update hash.
-   * @returns {Promise<void>}
+   * @return {Promise<void>}
    * @private
    */
   async _getRootFolder() {

@@ -15,7 +15,14 @@ import RemoveItemFromDeletingListMutator
   from '../main/services/state-manager/mutators/remove-item-from-deleting-list-mutator';
 import AddItemToDeletingListMutator from '../main/services/state-manager/mutators/add-item-to-deleting-list-mutator';
 import ItemsDeletingErrorMutator from '../main/services/state-manager/mutators/items-deleting-error-mutator';
+import ItemsDownloadingErrorMutator from '../main/services/state-manager/mutators/items-downloading-error-mutator';
+import RemoveItemFromDownloadingListMutator
+  from '../main/services/state-manager/mutators/remove-item-from-downloading-list-mutator';
+import AddItemToDownloadingListMutator from '../main/services/state-manager/mutators/add-item-to-download-list-mutator';
 import ItemUploadingErrorMutator from '../main/services/state-manager/mutators/item-uploading-error-mutator';
+import DownloadFileService from '../main/services/download-file-service';
+import DownloadFileAction from '../main/services/state-manager/actions/download-file';
+import NotFoundError from '../models/errors/not-found-error';
 import FolderLoadingMutator from '../main/services/state-manager/mutators/folder-loading-mutator';
 import FolderLoadingErrorMutator from '../main/services/state-manager/mutators/folder-loading-error-mutator';
 import FolderMutator from '../main/services/state-manager/mutators/folder-mutator';
@@ -105,7 +112,6 @@ export default module('State manager test: ', function(hook) {
       _testMutator(assert, mutator, 'userLoadingError', error);
     });
 
-
     test('Add to deleting list mutator should change state\'s deleting list', async (assert) => {
       stateManager = new StateManager({deletingItemIds: new Set()}, new ApiService(false));
       const itemId = '1';
@@ -132,6 +138,28 @@ export default module('State manager test: ', function(hook) {
       const error = new Error('test');
       const mutator = new ItemUploadingErrorMutator(error);
       _testMutator(assert, mutator, 'uploadingError', error);
+    });
+
+    test('Add to downloading list mutator should change state\'s downloading list', async (assert) => {
+      stateManager = new StateManager({downloadingItemIds: new Set()}, new ApiService());
+      const itemId = '1';
+      const resultList = new Set(itemId);
+      const mutator = new AddItemToDownloadingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'downloadingItemIds', resultList);
+    });
+
+    test('Remove from downloading list mutator should change state\'s downloading list', async (assert) => {
+      const itemId = '1';
+      stateManager = new StateManager({downloadingItems: new Set(itemId)}, new ApiService());
+      const resultList = new Set();
+      const mutator = new RemoveItemFromDownloadingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'downloadingItemIds', resultList);
+    });
+
+    test('Items downloading error mutator should change state\'s deletingError field', async (assert) => {
+      const error = new Error('test');
+      const mutator = new ItemsDownloadingErrorMutator(error);
+      _testMutator(assert, mutator, 'downloadingError', error);
     });
 
     test('Folder loading mutator should change state\'s isFolderLoading state', async (assert) => {

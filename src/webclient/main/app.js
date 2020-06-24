@@ -29,8 +29,8 @@ export default class Application extends Component {
     }
     const service = new ApiService();
     const stateManager = new StateManager(
-      {items: [], uploadingItemIds: new Set(), deletingItemIds: new Set()},
-      service);
+        {items: [], uploadingItemIds: new Set(), deletingItemIds: new Set(), downloadingItemIds: new Set()},
+        service);
     new Router(root, window, {
       '/login': () => new LoginPage(root, service, {}),
       '/registration': () => new RegistrationPage(root, service, {}),

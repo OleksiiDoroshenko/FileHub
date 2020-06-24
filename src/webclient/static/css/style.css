@@ -295,6 +295,50 @@ a:hover {
     border-radius: 50% 50% 0 0;
 }
 
+.file-downloading .glyphicon-download {
+    display: none;
+}
+
+
+.file-downloading .loading-state {
+    display: inline-block;
+    position: relative;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    transform-origin: 10px 10px;
+}
+
+.file-downloading .loading-state div {
+    left: -3px;
+    top: 5px;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #2e4eff;
+    animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.file-downloading .loading-state div:after,
+.file-downloading .loading-state div:before {
+    content: " ";
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: #2e4eff;
+}
+
+.file-downloading .loading-state div:before {
+    left: -4px;
+    border-radius: 50% 0 0 50%;
+}
+
+.file-downloading .loading-state div:after {
+    top: -4px;
+    border-radius: 50% 50% 0 0;
+}
+
 
 @keyframes lds-heart {
     0% {
@@ -346,8 +390,8 @@ a:hover {
     }
 }
 
-.file-deleting .glyphicon,
-.file-uploading .glyphicon {
+.file-deleting .glyphicon, .file-uploading .glyphicon,
+.file-downloading .glyphicon {
     pointer-events: none;
 }
 

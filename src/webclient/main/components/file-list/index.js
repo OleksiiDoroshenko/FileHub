@@ -8,6 +8,7 @@ import FileItem from './file-item';
 export default class FileList extends Component {
   _uploadingItems = new Set();
   _deletingItems = new Set();
+  _downloadingItems = new Set();
 
   /**
    * Returns instance of {@link FileList}.
@@ -56,9 +57,14 @@ export default class FileList extends Component {
     this._renderItems();
   }
 
+  set downloadingItems(items) {
+    this._downloadingItems = items;
+    this._renderItems();
+  }
+
   /**
    * Returns user items.
-   * @return {ListItem}
+   * @return {ListItem[]}
    */
   get items() {
     return this._items;
@@ -72,8 +78,8 @@ export default class FileList extends Component {
       this.itemsRoot.innerHTML = '';
       if (Array.isArray(this._items)) {
         this._items.forEach((item) => {
-            this._createItem(this.itemsRoot, item);
-          },
+          this._createItem(this.itemsRoot, item);
+        },
         );
       }
     }
@@ -98,6 +104,7 @@ export default class FileList extends Component {
       case
       'file': {
         item = new FileItem(container, {model});
+        item.addDownloadHandler(this._onDownloadHandler);
         break;
       }
     }
@@ -106,6 +113,9 @@ export default class FileList extends Component {
     }
     if (this._deletingItems.has(model.id)) {
       item.isProcessing(true, 'file-deleting');
+    }
+    if (this._downloadingItems.has(model.id)) {
+      item.isProcessing(true, 'file-downloading');
     }
     item.addDeleteHandler(this._onDeleteHandler);
     return item;
@@ -134,6 +144,13 @@ export default class FileList extends Component {
     this._onDeleteHandler = handler;
   }
 
+  /**
+   * Sets download file handler.
+   * @param {function} handler - handler;
+   */
+  onDownload(handler) {
+    this._onDownloadHandler = handler;
+  }
   onFolderNameClick(handler) {
     this._onFolderNameClickHandler = handler;
   }

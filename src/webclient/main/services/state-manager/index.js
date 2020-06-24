@@ -2,7 +2,6 @@
  * Responsible for current state of the application data and all manipulations with it.
  */
 export default class StateManager extends EventTarget {
-
   /**
    * Returns instance of {@link StateManager} class.
    * <p> Adds set event handler for state properties.

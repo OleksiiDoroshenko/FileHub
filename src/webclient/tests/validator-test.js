@@ -21,7 +21,7 @@ export default module('Validator test: ', function(hook) {
     const promise = validator.validateLogin(login);
     promise.catch((error) => {
       assert.ok(error.message.startsWith('Login should be longer than'),
-        'Should throw exception when login is too short.');
+          'Should throw exception when login is too short.');
     });
   });
 
@@ -31,7 +31,7 @@ export default module('Validator test: ', function(hook) {
     const promise = validator.validateLogin(login);
     promise.catch((error) => {
       assert.strictEqual(error.message, 'Login should contains only latin letters or numbers.',
-        'Should throw exception when login contains special symbols.');
+          'Should throw exception when login contains special symbols.');
     });
   });
 
@@ -41,7 +41,7 @@ export default module('Validator test: ', function(hook) {
     const promise = validator.validatePassword(password);
     promise.catch((error) => {
       assert.ok(error.message.startsWith('Password should be longer than'),
-        'Should throw exception when password is too short.');
+          'Should throw exception when password is too short.');
     });
   });
 
@@ -51,8 +51,8 @@ export default module('Validator test: ', function(hook) {
     const promise = validator.validatePassword(password);
     promise.catch((error) => {
       assert.strictEqual(error.message,
-        'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
-        'Should throw exception when password does not contains uppercase letter.');
+          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
+          'Should throw exception when password does not contains uppercase letter.');
     });
   });
 
@@ -62,8 +62,8 @@ export default module('Validator test: ', function(hook) {
     const promise = validator.validatePassword(password);
     promise.catch((error) => {
       assert.strictEqual(error.message,
-        'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
-        'Should throw exception when password does not contains digits.');
+          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
+          'Should throw exception when password does not contains digits.');
     });
   });
 
@@ -73,8 +73,8 @@ export default module('Validator test: ', function(hook) {
     const promise = validator.validatePassword(password);
     promise.catch((error) => {
       assert.strictEqual(error.message,
-        'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
-        'Should throw exception when password does not contains lowercase letter.');
+          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.',
+          'Should throw exception when password does not contains lowercase letter.');
     });
   });
 });

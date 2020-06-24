@@ -26,14 +26,14 @@ export default class UploadFileAction extends Action {
   async apply(stateManager, apiService) {
     stateManager.mutate(new AddItemToUploadingListMutator(this.parentId));
     apiService.uploadFile(this.parentId, this.file)
-      .then(() => {
-        if (stateManager.state.folderId === this.parentId) {
-          stateManager.dispatch(new GetItemsAction(this.parentId));
-        }
-      }).catch(error => {
-      stateManager.mutate(new ItemUploadingErrorMutator(error));
-    }).finally(() => {
-      stateManager.mutate(new RemoveItemToUploadingListMutator(this.parentId));
-    });
+        .then(() => {
+          if (stateManager.state.folderId === this.parentId) {
+            stateManager.dispatch(new GetItemsAction(this.parentId));
+          }
+        }).catch((error) => {
+          stateManager.mutate(new ItemUploadingErrorMutator(error));
+        }).finally(() => {
+          stateManager.mutate(new RemoveItemToUploadingListMutator(this.parentId));
+        });
   }
 }

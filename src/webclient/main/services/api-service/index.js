@@ -25,7 +25,7 @@ export default class ApiService {
           localStorage.setItem('token', body.token);
         });
       }
-      throw await this.getError(response, 'User');
+      throw await this.getError(response, {type: 'User', name: userData.login});
     });
   }
 
@@ -43,7 +43,7 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response, 'Folder');
+      throw await this.getError(response, {type: 'Folder', name: 'Root'});
     });
   }
 
@@ -62,17 +62,19 @@ export default class ApiService {
       if (response.ok) {
         return;
       }
-      throw await this.getError(response);
+      throw await this.getError(response, {type: 'User', name: userData.login});
     });
   }
 
   /**
    * Returns specific error instance from response code.
    * @param {Response} response - server response.
-   * @param {string} requestedItem - requested item from server.
+   * @param {Object} model - model of requested item.
+   * @param {string} model.type - model type.
+   * @param {string} model.name - model name.
    * @return {Promise<AuthorizationError|Error|ServerValidationErrors>}
    */
-  async getError(response, requestedItem) {
+  async getError(response, model) {
     switch (response.status) {
       case 401: {
         let message = response.statusText;
@@ -96,7 +98,7 @@ export default class ApiService {
         await response.text().then((text) => {
           message = text;
         });
-        return new NotFoundError(message, requestedItem);
+        return new NotFoundError(message, model);
       }
       case 500: {
         return new Error(response.statusText);
@@ -113,11 +115,14 @@ export default class ApiService {
 
   /**
    * Sends request to the server for getting folder content.
-   * @param {string} folderId - folder id.
+   * @param {Object} model - model of requested item.
+   * @param {string} model.type - model type.
+   * @param {string} model.name - model name.
+   * @param {string} model.folderId - folder id which content should be requested.
    * @return {Promise<Response>}
    */
-  getItems(folderId) {
-    return fetch(`/folder/${folderId}/content`, {
+  getItems(model) {
+    return fetch(`/folder/${model.id}/content`, {
       method: 'GET',
       headers: {
         token: localStorage.getItem('token'),
@@ -126,18 +131,21 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response, 'Folder');
+      throw await this.getError(response, model);
     });
   }
 
   /**
    * Sends request to server for uploading new file.
-   * @param {string} parentId - id of parent folder where file will be loaded.
+   * @param {Object} model - model of requested item.
+   * @param {string} model.type - model type.
+   * @param {string} model.name - model name.
+   * @param {string} model.id - folder id where file will be loaded.
    * @param {File} file - file to be loaded.
    * @returns {Promise<>}
    */
-  uploadFile(parentId, file) {
-    return fetch(`/folder/${parentId}/file`, {
+  uploadFile(model, file) {
+    return fetch(`/folder/${model.id}/file`, {
       method: 'POST',
       headers: {
         token: localStorage.getItem('token'),
@@ -149,12 +157,20 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response, 'Folder');
+      throw await this.getError(response, model);
     });
   }
 
-  deleteFile(id) {
-    return fetch(`/file/${id}`, {
+  /**
+   * Sends request to server for deleting file by its id.
+   * @param {Object} model - model of requested item.
+   * @param {string} model.type - model type.
+   * @param {string} model.name - model name.
+   * @param {string} model.id - file id that should be deleted.
+   * @returns {Promise<Response>} server response or error.
+   */
+  deleteFile(model) {
+    return fetch(`/file/${model.id}`, {
       method: 'DELETE',
       headers: {
         token: localStorage.getItem('token'),
@@ -163,12 +179,20 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response, 'File');
+      throw await this.getError(response, model);
     });
   }
 
-  deleteFolder(id) {
-    return fetch(`/folder/${id}`, {
+  /**
+   * Sends request to server for deleting folder by its id.
+   * @param {Object} model - model of requested item.
+   * @param {string} model.type - model type.
+   * @param {string} model.name - model name.
+   * @param {string} model.id - file id that should be deleted.
+   * @returns {Promise<Response>} server response or error.
+   */
+  deleteFolder(model) {
+    return fetch(`/folder/${model.id}`, {
       method: 'DELETE',
       headers: {
         token: localStorage.getItem('token'),
@@ -177,7 +201,7 @@ export default class ApiService {
       if (response.ok) {
         return 200;
       }
-      throw await this.getError(response, 'Folder');
+      throw await this.getError(response, model);
     });
   }
 
@@ -195,7 +219,7 @@ export default class ApiService {
       if (response.ok) {
         return;
       }
-      throw await this.getError(response, 'User');
+      throw await this.getError(response, {type: 'User'});
     }).finally(() => {
       localStorage.removeItem('token');
     });
@@ -203,11 +227,14 @@ export default class ApiService {
 
   /**
    * Sends request to the server for getting file's blob.
-   * @param {string} id - file id.
+   * @param {Object} model - file model.
+   * @param {string} model.id - model id.name.
+   * @param {string} model.type - model type.
+   * @param {string} model.name - model
    * @returns {Promise<Response>}
    */
-  getFile(id) {
-    return fetch(`/file/${id}`, {
+  getFile(model) {
+    return fetch(`/file/${model.id}`, {
       method: 'GET', headers: {
         token: localStorage.getItem('token'),
       },
@@ -215,10 +242,14 @@ export default class ApiService {
       if (response.ok) {
         return response.blob();
       }
-      throw await this.getError(response, 'File');
+      throw await this.getError(response, model);
     });
   }
 
+  /**
+   * Sends request to the server for getting user by its token.
+   * @returns {Promise<Response>}
+   */
   getUser() {
     return fetch('/user', {
       method: 'GET', headers: {
@@ -228,7 +259,7 @@ export default class ApiService {
       if (response.ok) {
         return response.json();
       }
-      throw await this.getError(response, 'User');
+      throw await this.getError(response, {type: 'User'});
     });
   }
 }

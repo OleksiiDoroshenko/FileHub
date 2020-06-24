@@ -30,7 +30,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     if (this.id === 'root') {
       this._getRootFolder();
     } else {
-      this.stateManager.dispatch(new GetItemsAction(this.id));
+      this.stateManager.dispatch(new GetItemsAction({id: this.id}));
     }
     this.stateManager.dispatch(new GetUserAction());
     new TitleService().changeTitle('File Explorer');
@@ -108,13 +108,15 @@ export default class FileExplorerPage extends StateAwareComponent {
     const fileContainerRoot = this.container.querySelector('[data-render="file-list"]');
     this.fileList = new FileList(fileContainerRoot, {items: []});
 
-    const uploadHandler = (id, file) => {
-      this.stateManager.dispatch(new UploadFileAction(id, file));
+    const uploadHandler = (model, file) => {
+      this.stateManager.dispatch(new UploadFileAction(model, file));
     };
+
     this.fileList.onUploadClick(uploadHandler);
+
     this._uploadFileBtn.addEventListener('click', () => {
       new FileBrowserService().selectFile().then((file) => {
-        uploadHandler(this.id, file);
+        uploadHandler({id: this.id, type: 'folder'}, file);
       });
     });
 
@@ -220,7 +222,8 @@ export default class FileExplorerPage extends StateAwareComponent {
       alert('Your session has expired. Please log in.');
       window.location.hash = '#/login';
     } else if (error instanceof NotFoundError) {
-      let message = `${error.requestedItem} not found.`;
+      const model = error.model;
+      let message = `${model.type} '${model.name ? model.name : ''}' not found.`;
       if (error.message) {
         message = error.message;
       }

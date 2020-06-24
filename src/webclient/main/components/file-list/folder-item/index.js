@@ -41,7 +41,7 @@ export default class FolderItem extends ListItem {
     const icon = this.rootElement.querySelector('[data-render="upload"]');
     icon.addEventListener('click', () => {
       new FileBrowserService().selectFile().then((file) => {
-        handler(this.model.id, file);
+        handler(this.model, file);
       });
     });
   }

@@ -5,17 +5,17 @@ import ItemsLoadingErrorMutator from '../../mutators/items-loading-error-mutator
 import FolderIdMutator from '../../mutators/folder-id-mutator';
 
 /**
- * Gets up-to-date user files from {@link AppService} and writes it into {@link StateManager} state
+ * Gets up-to-date user files from {@link ApiService} and writes it into {@link StateManager} state
  * by using {@link Mutator}.
  */
 export default class GetItemsAction extends Action {
   /**
    * Returns instance of {@link GetItemsAction} class.
-   * @param {string} id - folder id.
+   * @param {Object} model - model of folder which items should be requested.
    */
-  constructor(id) {
+  constructor(model) {
     super();
-    this.id = id;
+    this.model = model;
   }
 
   /**
@@ -23,14 +23,14 @@ export default class GetItemsAction extends Action {
    */
   async apply(stateManager, apiService) {
     stateManager.mutate(new ItemLoadingMutator(true));
-    apiService.getItems(this.id)
-        .then((response) => {
-          stateManager.mutate(new FolderIdMutator(this.id));
-          stateManager.mutate(new ItemsMutator(response.items));
-        }).catch((e) => {
-          stateManager.mutate(new ItemsLoadingErrorMutator(e));
-        }).finally(() => {
-          stateManager.mutate(new ItemLoadingMutator(false));
-        });
+    apiService.getItems(this.model)
+      .then((response) => {
+        stateManager.mutate(new FolderIdMutator(this.model.id));
+        stateManager.mutate(new ItemsMutator(response.items));
+      }).catch((e) => {
+      stateManager.mutate(new ItemsLoadingErrorMutator(e));
+    }).finally(() => {
+      stateManager.mutate(new ItemLoadingMutator(false));
+    });
   }
 }

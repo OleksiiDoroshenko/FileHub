@@ -11,12 +11,12 @@ import ItemUploadingErrorMutator from '../../mutators/item-uploading-error-mutat
 export default class UploadFileAction extends Action {
   /**
    * Returns instance of {@link UploadFileAction}.
-   * @param {string} parentId - folder id where file will be loaded.
+   * @param {Object} model - model of folder where file should be loaded.
    * @param {File} file - file to be loaded.
    */
-  constructor(parentId, file) {
+  constructor(model, file) {
     super();
-    this.parentId = parentId;
+    this.model = model;
     this.file = file;
   }
 
@@ -24,16 +24,17 @@ export default class UploadFileAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
-    stateManager.mutate(new AddItemToUploadingListMutator(this.parentId));
-    apiService.uploadFile(this.parentId, this.file)
-        .then(() => {
-          if (stateManager.state.folderId === this.parentId) {
-            stateManager.dispatch(new GetItemsAction(this.parentId));
-          }
-        }).catch((error) => {
-          stateManager.mutate(new ItemUploadingErrorMutator(error));
-        }).finally(() => {
-          stateManager.mutate(new RemoveItemToUploadingListMutator(this.parentId));
-        });
+    const id = this.model.id;
+    stateManager.mutate(new AddItemToUploadingListMutator(id));
+    apiService.uploadFile(this.model, this.file)
+      .then(() => {
+        if (stateManager.state.folderId === id) {
+          stateManager.dispatch(new GetItemsAction({id: id, type: 'folder'}));
+        }
+      }).catch((error) => {
+      stateManager.mutate(new ItemUploadingErrorMutator(error));
+    }).finally(() => {
+      stateManager.mutate(new RemoveItemToUploadingListMutator(id));
+    });
   }
 }

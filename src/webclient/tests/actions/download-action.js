@@ -19,7 +19,7 @@ export default module('Download action test: ', function(hook) {
     const testFileName = 'test';
 
     const apiService = new ApiService();
-    apiService.getFile = async (id) => {
+    apiService.getFile = async ({id}) => {
       assert.strictEqual(id, fileId, 'Api service method should be called with proper id.');
       return testBlob;
     };
@@ -53,7 +53,7 @@ export default module('Download action test: ', function(hook) {
     const testFileName = 'test';
 
     const apiService = new ApiService();
-    apiService.getFile = async (id) => {
+    apiService.getFile = async ({id}) => {
       assert.strictEqual(id, fileId, 'Api service method should be called with proper id.');
       return new NotFoundError('', '');
     };

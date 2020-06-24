@@ -110,10 +110,10 @@ export default module('API service test', function(hook) {
       return 200;
     })));
     const fileName = 'test';
-    await service.uploadFile('0', new File([], fileName))
-        .then((response) => {
-          assert.strictEqual(response, 200, 'Should return 200 if everything is ok.');
-        });
+    await service.uploadFile({id: '0'}, new File([], fileName))
+      .then((response) => {
+        assert.strictEqual(response, 200, 'Should return 200 if everything is ok.');
+      });
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
@@ -123,12 +123,12 @@ export default module('API service test', function(hook) {
 
   test('Upload file method should handle 500 error', async (assert) => {
     _testInternalServerError('post', assert,
-        'express:/folder/:id/file', service, 'uploadFile');
+      'express:/folder/:id/file', service, 'uploadFile');
   });
 
   test('Upload file method should handle 401 error', async (assert) => {
     _testAuthorizationServerError('post', assert,
-        'express:/folder/:id/file', service, 'uploadFile');
+      'express:/folder/:id/file', service, 'uploadFile');
   });
 
   test('Get items method should send proper request with correct data.', async (assert) => {
@@ -141,26 +141,26 @@ export default module('API service test', function(hook) {
       assert.strictEqual(id, parentId, 'Should send proper id.');
       return items;
     })));
-    await service.getItems(parentId)
-        .then((response) => {
-          assert.deepEqual(response, items, 'Should return proper files..');
-        });
+    await service.getItems({id: parentId})
+      .then((response) => {
+        assert.deepEqual(response, items, 'Should return proper files..');
+      });
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
   test('Get items method should handle 404 error', async (assert) => {
     _testNotFoundError('get', assert,
-        'express:/folder/:id/content', service, 'getItems');
+      'express:/folder/:id/content', service, 'getItems');
   });
 
   test('Get items method should handle 500 error', async (assert) => {
     _testInternalServerError('get', assert,
-        'express:/folder/:id/content', service, 'getItems');
+      'express:/folder/:id/content', service, 'getItems');
   });
 
   test('Get items method should handle 401 error', async (assert) => {
     _testAuthorizationServerError('get', assert,
-        'express:/folder/:id/content', service, 'getItems');
+      'express:/folder/:id/content', service, 'getItems');
   });
 
   test('Log out method should handle 500 error', async (assert) => {
@@ -178,7 +178,7 @@ export default module('API service test', function(hook) {
     }
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
     assert.notOk(localStorage.getItem('token'),
-        'After log out method is triggered, local storage should not contain token.');
+      'After log out method is triggered, local storage should not contain token.');
   });
 
   test('Log out method should handle 401 error', async (assert) => {
@@ -196,7 +196,7 @@ export default module('API service test', function(hook) {
     }
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
     assert.notOk(localStorage.getItem('token'),
-        'After log out method is triggered, local storage should not contain token.');
+      'After log out method is triggered, local storage should not contain token.');
   });
 
   test('Log out method should send proper request with correct data.', async (assert) => {
@@ -211,7 +211,7 @@ export default module('API service test', function(hook) {
     })));
     await service.logOut();
     assert.notOk(localStorage.getItem('token'),
-        'After log out method is triggered in the local storage should not exist token.');
+      'After log out method is triggered in the local storage should not exist token.');
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
@@ -224,26 +224,26 @@ export default module('API service test', function(hook) {
       assert.strictEqual(id, itemId, 'Should send proper id.');
       return 200;
     })));
-    await service.deleteFolder(itemId)
-        .then((response) => {
-          assert.deepEqual(response, 200, 'Should return proper code.');
-        });
+    await service.deleteFolder({id: itemId})
+      .then((response) => {
+        assert.deepEqual(response, 200, 'Should return proper code.');
+      });
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   });
 
   test('Deleting folder method should handle 404 error', async (assert) => {
     _testNotFoundError('delete', assert,
-        'express:/folder/:id', service, 'deleteFolder');
+      'express:/folder/:id', service, 'deleteFolder');
   });
 
   test('Deleting folder method should handle 500 error', async (assert) => {
     _testInternalServerError('delete', assert,
-        'express:/folder/:id', service, 'deleteFolder');
+      'express:/folder/:id', service, 'deleteFolder');
   });
 
   test('Deleting folder method should handle 401 error', async (assert) => {
     _testAuthorizationServerError('delete', assert,
-        'express:/folder/:id', service, 'deleteFolder');
+      'express:/folder/:id', service, 'deleteFolder');
   });
 
   test('Deleting file method should send proper request with correct data.', async (assert) => {
@@ -255,70 +255,7 @@ export default module('API service test', function(hook) {
       assert.strictEqual(id, itemId, 'Should send proper id.');
       return 200;
     })));
-    await service.deleteFile(itemId)
-        .then((response) => {
-          assert.deepEqual(response, 200, 'Should return proper code.');
-        });
-    assert.ok(fetchMock.done(matcher), 'Should send only one request');
-  });
-
-  test('Deleting file method should handle 404 error', async (assert) => {
-    _testNotFoundError('delete', assert,
-        'express:/file/:id', service, 'deleteFile');
-  });
-
-  test('Deleting file method should handle 500 error', async (assert) => {
-    _testInternalServerError('delete', assert,
-        'express:/file/:id', service, 'deleteFile');
-  });
-
-  test('Deleting file method should handle 401 error', async (assert) => {
-    _testAuthorizationServerError('delete', assert,
-        'express:/file/:id', service, 'deleteFile');
-  });
-
-  test('Downloading file method should send proper request with correct data.', async (assert) => {
-    assert.expect(3);
-    const matcher = 'express:/file/:id';
-    const itemId = '0';
-    const file = new Blob(['smth'], {type: `text/txt`});
-    fetchMock.once(matcher, (((url) => {
-      const id = url.split('/')[2];
-      assert.strictEqual(id, itemId, 'Should send proper id.');
-      return file;
-    })));
-    await service.getFile(itemId)
-        .then((response) => {
-          assert.deepEqual(response.parts, file.parts, 'Should return proper file.');
-        });
-    assert.ok(fetchMock.done(matcher), 'Should send only one request');
-  });
-
-  test('Downloading file method should handle 404 error', async (assert) => {
-    _testNotFoundError('get', assert,
-        'express:/file/:id', service, 'getFile');
-  });
-
-  test('Downloading file method should handle 500 error', async (assert) => {
-    _testInternalServerError('get', assert,
-        'express:/file/:id', service, 'getFile');
-  });
-
-  test('Downloading file method should handle 401 error', async (assert) => {
-    _testAuthorizationServerError('get', assert,
-        'express:/file/:id', service, 'getFile');
-  });
-
-  test('Deleting file method should send proper request with correct data.', async (assert) => {
-    assert.expect(3);
-    const matcher = 'express:/file/:id';
-    const itemId = '0';
-    fetchMock.once(matcher, (((url) => {
-      const id = url.split('/')[2];
-      assert.strictEqual(id, itemId, 'Should send proper id.');
-      return 200;
-    })));
-    await service.deleteFile(itemId)
+    await service.deleteFile({id: itemId})
       .then((response) => {
         assert.deepEqual(response, 200, 'Should return proper code.');
       });
@@ -350,7 +287,70 @@ export default module('API service test', function(hook) {
       assert.strictEqual(id, itemId, 'Should send proper id.');
       return file;
     })));
-    await service.getFile(itemId)
+    await service.getFile({id: itemId})
+      .then((response) => {
+        assert.deepEqual(response.parts, file.parts, 'Should return proper file.');
+      });
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Downloading file method should handle 404 error', async (assert) => {
+    _testNotFoundError('get', assert,
+      'express:/file/:id', service, 'getFile');
+  });
+
+  test('Downloading file method should handle 500 error', async (assert) => {
+    _testInternalServerError('get', assert,
+      'express:/file/:id', service, 'getFile');
+  });
+
+  test('Downloading file method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('get', assert,
+      'express:/file/:id', service, 'getFile');
+  });
+
+  test('Deleting file method should send proper request with correct data.', async (assert) => {
+    assert.expect(3);
+    const matcher = 'express:/file/:id';
+    const itemId = '0';
+    fetchMock.once(matcher, (((url) => {
+      const id = url.split('/')[2];
+      assert.strictEqual(id, itemId, 'Should send proper id.');
+      return 200;
+    })));
+    await service.deleteFile({id: itemId})
+      .then((response) => {
+        assert.deepEqual(response, 200, 'Should return proper code.');
+      });
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Deleting file method should handle 404 error', async (assert) => {
+    _testNotFoundError('delete', assert,
+      'express:/file/:id', service, 'deleteFile');
+  });
+
+  test('Deleting file method should handle 500 error', async (assert) => {
+    _testInternalServerError('delete', assert,
+      'express:/file/:id', service, 'deleteFile');
+  });
+
+  test('Deleting file method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('delete', assert,
+      'express:/file/:id', service, 'deleteFile');
+  });
+
+  test('Downloading file method should send proper request with correct data.', async (assert) => {
+    assert.expect(3);
+    const matcher = 'express:/file/:id';
+    const itemId = '0';
+    const file = new Blob(['smth'], {type: `text/txt`});
+    fetchMock.once(matcher, (((url) => {
+      const id = url.split('/')[2];
+      assert.strictEqual(id, itemId, 'Should send proper id.');
+      return file;
+    })));
+    await service.getFile({id: itemId})
       .then((response) => {
         assert.deepEqual(response.parts, file.parts, 'Should return proper file.');
       });
@@ -378,7 +378,7 @@ export default module('API service test', function(hook) {
       return 500;
     })));
     assert.rejects(service[method]({}), new Error('Internal Server Error')
-        , 'Should handle 500 error.');
+      , 'Should handle 500 error.');
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   }
 
@@ -393,7 +393,7 @@ export default module('API service test', function(hook) {
       };
     })));
     assert.rejects(service[method]({}), new ServerValidationErrors()
-        , 'Should handle 422 error.');
+      , 'Should handle 422 error.');
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   }
 
@@ -406,7 +406,7 @@ export default module('API service test', function(hook) {
       };
     })));
     assert.rejects(service[method]({}), new NotFoundError('')
-        , 'Should handle 404 error.');
+      , 'Should handle 404 error.');
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   }
 
@@ -419,7 +419,7 @@ export default module('API service test', function(hook) {
       };
     })));
     assert.rejects(service[method]({}), new AuthorizationError('Unauthorized')
-        , 'Should handle 401 error.');
+      , 'Should handle 401 error.');
     assert.ok(fetchMock.done(matcher), 'Should send only one request');
   }
 });

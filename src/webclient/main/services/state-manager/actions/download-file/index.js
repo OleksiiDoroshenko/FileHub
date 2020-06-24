@@ -25,13 +25,13 @@ export default class DownloadFileAction extends Action {
   async apply(stateManager, apiService) {
     const id = this.model.id;
     stateManager.mutate(new AddItemToDownloadingListMutator(id));
-    return apiService.getFile(id)
-        .then((file) => {
-          this.downloadFileService.download(file, this.model.name);
-        }).catch((error) => {
-          stateManager.mutate(new ItemsDownloadingErrorMutator(error));
-        }).finally(() => {
-          stateManager.mutate(new RemoveItemFromDownloadingListMutator(id));
-        });
+    return apiService.getFile(this.model)
+      .then((file) => {
+        this.downloadFileService.download(file, this.model.name);
+      }).catch((error) => {
+        stateManager.mutate(new ItemsDownloadingErrorMutator(error));
+      }).finally(() => {
+        stateManager.mutate(new RemoveItemFromDownloadingListMutator(id));
+      });
   }
 }

@@ -134,10 +134,9 @@ export default class FileExplorerPage extends StateAwareComponent {
     };
 
     this.fileList.onDownload(downloadHandler);
-    this.fileList.onFolderNameClick((model, event) => {
-      if (event.detail === 2) {
-        this._changeHashId(model.id);
-      }
+
+    this.fileList.onFolderNameDoubleClick((model) => {
+      this._changeHashId(model.id);
     });
   }
 
@@ -291,7 +290,7 @@ export default class FileExplorerPage extends StateAwareComponent {
   _changeDirectoryPath(folder) {
     const dirName = this.rootElement.querySelector('[data-render="dir-name"]');
     dirName.innerHTML = folder.name;
-    if (folder.parentId){
+    if (folder.parentId) {
       const stepBack = this.rootElement.querySelector('[data-render="step-back"]');
       stepBack.innerHTML = `<a href="#/file-explorer/folder/${folder.parentId}" data-render="step-back" 
                                 data-toggle="tooltip" data-placement="top" title="Step back">

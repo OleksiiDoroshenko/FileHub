@@ -51,164 +51,182 @@ export default class MockServer {
     fetchMock.config.overwriteRoutes = true;
 
     fetchMock
-        .post('/login', ((url, request) => {
-          const userData = new UserData(request.body.login, request.body.password);
-          if (this.isUserRegistered(userData)) {
-            return {
-              status: 200,
-              body: {token: `${userData.login}-token`, rootId: '0'},
-            };
-          } else {
+      .post('/login', ((url, request) => {
+        const userData = new UserData(request.body.login, request.body.password);
+        if (this.isUserRegistered(userData)) {
+          return {
+            status: 200,
+            body: {token: `${userData.login}-token`, rootId: '0'},
+          };
+        } else {
+          return {
+            status: 401,
+            body: 'Invalid login or password.',
+          };
+        }
+      }));
+
+    fetchMock
+      .post('/register', ((url, request) => {
+        const userData = new UserData(request.body.login, request.body.password);
+        if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
+          this.users[userData.login] = userData.password;
+          return 200;
+        } else {
+          if (this.isLoginRegistered(userData)) {
             return {
               status: 401,
-              body: 'Invalid login or password.',
+              body: 'User with this login already exists.',
             };
-          }
-        }));
-
-    fetchMock
-        .post('/register', ((url, request) => {
-          const userData = new UserData(request.body.login, request.body.password);
-          if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
-            this.users[userData.login] = userData.password;
-            return 200;
           } else {
-            if (this.isLoginRegistered(userData)) {
-              return {
-                status: 401,
-                body: 'User with this login already exists.',
-              };
-            } else {
-              const errors = [];
-              errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
-              return {
-                status: 422,
-                body: {
-                  errors,
-                },
-              };
-            }
-          }
-        }));
-
-    fetchMock
-        .get('express:/folder/:id/content', ((url, request) => {
-          const id = url.split('/')[2];
-          const token = request.headers.token;
-          if (token) {
-            return {items: this._getItems(id)};
-          }
-          return {
-            status: 404,
-            body: 'Folder not found.',
-          };
-        }), 2000);
-
-    fetchMock
-        .get('/folder/root', ((url, request) => {
-          const token = request.headers.token;
-          if (token === 'Admin-token') {
+            const errors = [];
+            errors.push(new VerificationError('password', 'Password should be longer than 10 characters.'));
             return {
-              status: 200,
+              status: 422,
               body: {
-                folder: {id: '0', parentId: '', name: 'Root', itemsAmount: '4', type: 'folder'},
+                errors,
               },
             };
           }
-          return {
-            status: 404,
-            body: 'Folder not found.',
-          };
-        }));
+        }
+      }));
 
     fetchMock
-        .post('express:/folder/:id/file', (((url, request) => {
-          const file = request.body.file;
-          const newFile = {};
-          newFile.id = this._getNextId();
-          newFile.parentId = url.split('/')[2];
-          newFile.name = file.name;
-          newFile.mimeType = this._getMimeType(file.name);
-          newFile.size = this._getFileSize(file.size);
-          newFile.type = 'file';
-          this.items.push(newFile);
+      .get('express:/folder/:id/content', ((url, request) => {
+        const id = url.split('/')[2];
+        const token = request.headers.token;
+        if (token) {
+          return {items: this._getItems(id)};
+        }
+        return {
+          status: 404,
+          body: 'Folder not found.',
+        };
+      }), 2000);
+
+    fetchMock
+      .get('/folder/root', ((url, request) => {
+        const token = request.headers.token;
+        if (token === 'Admin-token') {
+          return {
+            status: 200,
+            body: {
+              folder: {id: '0', parentId: '', name: 'Root', itemsAmount: '4', type: 'folder'},
+            },
+          };
+        }
+        return {
+          status: 404,
+          body: 'Folder not found.',
+        };
+      }));
+
+    fetchMock
+      .post('express:/folder/:id/file', (((url, request) => {
+        const file = request.body.file;
+        const newFile = {};
+        newFile.id = this._getNextId();
+        newFile.parentId = url.split('/')[2];
+        newFile.name = file.name;
+        newFile.mimeType = this._getMimeType(file.name);
+        newFile.size = this._getFileSize(file.size);
+        newFile.type = 'file';
+        this.items.push(newFile);
+        return 200;
+      })), {delay: 1000});
+
+    fetchMock
+      .post('/logout', ((url, request) => {
+        if (request.headers.token) {
           return 200;
-        })), {delay: 1000});
+        } else {
+          return 401;
+        }
+      }));
 
     fetchMock
-        .post('/logout', ((url, request) => {
-          if (request.headers.token) {
+      .get('/user', ((url, request) => {
+        const token = request.headers.token;
+        if (token) {
+          return {
+            status: 200,
+            body: {
+              user: {name: 'Admin', id: '0'},
+            },
+          };
+        } else {
+          return 401;
+        }
+      }));
+
+    fetchMock
+      .delete('express:/folder/:id', ((url, request) => {
+        if (request.headers.token) {
+          try {
+            const id = url.split('/')[2];
+            this._deleteItem(id);
             return 200;
-          } else {
-            return 401;
+          } catch (e) {
+            return 404;
           }
-        }));
+        } else {
+          return 401;
+        }
+      }), {delay: 1000});
 
     fetchMock
-        .get('/user', ((url, request) => {
-          const token = request.headers.token;
-          if (token) {
-            return {
-              status: 200,
-              body: {
-                user: {name: 'Admin', id: '0'},
-              },
-            };
-          } else {
-            return 401;
+      .delete('express:/file/:id', ((url, request) => {
+        if (request.headers.token) {
+          try {
+            const id = url.split('/')[2];
+            this._deleteItem(id);
+            return 200;
+          } catch (e) {
+            return 404;
           }
-        }));
+        } else {
+          return 401;
+        }
+      }), {delay: 1000});
 
     fetchMock
-        .delete('express:/folder/:id', ((url, request) => {
-          if (request.headers.token) {
-            try {
-              const id = url.split('/')[2];
-              this._deleteItem(id);
-              return 200;
-            } catch (e) {
-              return 404;
+      .get('express:/file/:id', (url, request) => {
+        const token = request.headers.token;
+        const id = url.split('/')[2];
+        if (token) {
+          let fileInfo;
+          this.items.forEach((item) => {
+            if (item.id === id) {
+              fileInfo = item;
             }
-          } else {
-            return 401;
-          }
-        }), {delay: 1000});
+          });
+          return {
+            status: 200,
+            body: new Blob(['smth'], {type: `${fileInfo.mimeType}/${fileInfo.type}`})
+            ,
+          };
+        } else {
+          return 401;
+        }
+      }, {delay: 2000});
 
     fetchMock
-        .delete('express:/file/:id', ((url, request) => {
-          if (request.headers.token) {
-            try {
-              const id = url.split('/')[2];
-              this._deleteItem(id);
-              return 200;
-            } catch (e) {
-              return 404;
-            }
-          } else {
-            return 401;
-          }
-        }), {delay: 1000});
-
-    fetchMock
-        .get('express:/file/:id', (url, request) => {
-          const token = request.headers.token;
+      .get('express:/folder/:id', ((url, request) => {
+        if (request.headers.token) {
           const id = url.split('/')[2];
-          if (token) {
-            let fileInfo;
-            this.items.forEach((item) => {
-              if (item.id === id) {
-                fileInfo = item;
-              }
-            });
-            return {
-              status: 200,
-              body: new Blob(['smth'], {type: `${fileInfo.mimeType}/${fileInfo.type}`})
-              ,
-            };
-          } else {
-            return 401;
-          }
-        }, {delay: 2000});
+          const index = this.items.findIndex(item => {
+            return item.id === id;
+          });
+          return {
+            status: 200,
+            body: {
+              folder: this.items[index],
+            },
+          };
+        } else {
+          return 401;
+        }
+      }), {delay: 1000});
   }
 
   /**

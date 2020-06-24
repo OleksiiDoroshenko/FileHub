@@ -29,6 +29,10 @@ export default class FolderItem extends ListItem {
     `;
   }
 
+  /**
+   * @inheritdoc
+   * @private
+   */
   _initInnerComponents() {
     this._deleteIcon = this.rootElement.querySelector('[data-render="delete"]');
   }
@@ -47,10 +51,10 @@ export default class FolderItem extends ListItem {
     });
   }
 
-  onNameClick(handler) {
+  onNameDoubleClick(handler) {
     const name = this.rootElement.querySelector('[data-render="name"]');
-    name.addEventListener('click', (event) => {
-      handler(this.model, event);
+    name.addEventListener('dblclick', () => {
+      handler(this.model);
     });
   }
 }

@@ -20,14 +20,9 @@ import RemoveItemFromDownloadingListMutator
   from '../main/services/state-manager/mutators/remove-item-from-downloading-list-mutator';
 import AddItemToDownloadingListMutator from '../main/services/state-manager/mutators/add-item-to-download-list-mutator';
 import ItemUploadingErrorMutator from '../main/services/state-manager/mutators/item-uploading-error-mutator';
-import DownloadFileService from '../main/services/download-file-service';
-import DownloadFileAction from '../main/services/state-manager/actions/download-file';
-import NotFoundError from '../models/errors/not-found-error';
 import FolderLoadingMutator from '../main/services/state-manager/mutators/folder-loading-mutator';
 import FolderLoadingErrorMutator from '../main/services/state-manager/mutators/folder-loading-error-mutator';
 import FolderMutator from '../main/services/state-manager/mutators/folder-mutator';
-import GetFolderAction from '../main/services/state-manager/actions/get-folder';
-import NotFoundError from '../models/errors/not-found-error';
 
 const {module, test} = QUnit;
 
@@ -191,58 +186,4 @@ export default module('State manager test: ', function(hook) {
       assert.deepEqual(stateManager.state[field], value, `'should change state's ${field} field'`);
     }
   });
-
-  module('Action test: ', function(hook) {
-    test('Get folder action should call specific steps', async (assert) => {
-      assert.expect(6);
-      const folderId = '0';
-      const folder = {name: 'test', id: '0', parentId: '1', type: 'folder'};
-
-      let apiService = new ApiService();
-      apiService.getFolder = async (id) => {
-        assert.strictEqual(id, folderId, 'Api service method should be called with proper id.');
-        return {folder};
-      };
-
-      let stateManager = new StateManager({}, apiService);
-      stateManager.mutate = (mutator) => {
-        if (mutator instanceof FolderLoadingMutator) {
-          assert.step('FolderLoadingMutator');
-        } else if (mutator instanceof FolderMutator) {
-          assert.deepEqual(mutator.folder, folder, 'Mutator should be created with proper params.');
-          assert.step('FolderMutator');
-        }
-      };
-
-      const action = new GetFolderAction(folderId);
-      await action.apply(stateManager, apiService);
-      assert.verifySteps(['FolderLoadingMutator', 'FolderMutator', 'FolderLoadingMutator']);
-    });
-
-    test('Get folder action test when error was raised.', async (assert) => {
-      assert.expect(5);
-      const folderId = '0';
-
-      let apiService = new ApiService();
-      apiService.getFolder = async (id) => {
-        assert.strictEqual(id, folderId, 'Api service method should be called with proper id.');
-        throw new NotFoundError('');
-      };
-
-      let stateManager = new StateManager({}, apiService);
-      stateManager.mutate = (mutator) => {
-        if (mutator instanceof FolderLoadingMutator) {
-          assert.step('FolderLoadingMutator');
-        } else if (mutator instanceof FolderLoadingErrorMutator) {
-          assert.step('FolderLoadingErrorMutator');
-        }
-      };
-
-      const action = new GetFolderAction(folderId);
-      await action.apply(stateManager, apiService);
-      assert.verifySteps(['FolderLoadingMutator', 'FolderLoadingErrorMutator',
-        'FolderLoadingMutator']);
-    });
-  });
-
 });

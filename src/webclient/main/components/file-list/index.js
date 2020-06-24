@@ -98,7 +98,7 @@ export default class FileList extends Component {
       'folder': {
         item = new FolderItem(container, {model});
         item.addUploadFileHandler(this._onUploadClickHandler);
-        item.onNameClick(this._onFolderNameClickHandler);
+        item.onNameDoubleClick(this._onFolderNameDoubleClickHandler);
         break;
       }
       case
@@ -151,7 +151,7 @@ export default class FileList extends Component {
   onDownload(handler) {
     this._onDownloadHandler = handler;
   }
-  onFolderNameClick(handler) {
-    this._onFolderNameClickHandler = handler;
+  onFolderNameDoubleClick(handler) {
+    this._onFolderNameDoubleClickHandler = handler;
   }
 }

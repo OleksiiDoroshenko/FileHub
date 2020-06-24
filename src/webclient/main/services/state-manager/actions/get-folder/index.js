@@ -26,9 +26,9 @@ export default class GetFolderAction extends Action {
       .then((response) => {
         stateManager.mutate(new FolderMutator(response.folder));
       }).catch((e) => {
-      stateManager.mutate(new FolderLoadingErrorMutator(e));
-    }).finally(() => {
-      stateManager.mutate(new FolderLoadingMutator(false));
-    });
+        stateManager.mutate(new FolderLoadingErrorMutator(e));
+      }).finally(() => {
+        stateManager.mutate(new FolderLoadingMutator(false));
+      });
   }
 }

@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * .
+ * Represent client intention to register new user.
  */
 public class RegisterUser {
 

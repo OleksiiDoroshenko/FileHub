@@ -1,14 +1,16 @@
 package io.javaclasses.filehub.storage;
 
 /**
- * Marks class as a storage {@link Storage} record.
+ * Data structure that will be stored in {@link RecordStorage}.
  *
  * @param <I> - specific implementation of {@link RecordId}.
  */
 public interface Record<I> {
 
     /**
-     * @return - specific record id.
+     * Returns unique record identifier.
+     *
+     * @return specific record id.
      */
     I id();
 }

@@ -5,7 +5,7 @@ import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
-import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("ExecutorTest should: ")
 class RegistrationTest {
-    private final UserStorage storage = new UserStorage();
+    private final UserRecordStorage storage = new UserRecordStorage();
     private final Registration process = new Registration(storage);
 
 

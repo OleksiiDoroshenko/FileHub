@@ -6,14 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provide functionality for deserialization of {@link UserCredentials} class from json.
+ * Deserializer for {@link UserCredentials} class.
  */
 public class UserCredentialsDeserializer {
 
     private final Logger logger = LoggerFactory.getLogger(UserCredentialsDeserializer.class);
 
     /**
-     * Deserialize {@link UserCredentials} command from json.
+     * Deserialize {@link UserCredentials} class from json.
      *
      * @param json - json object.
      * @return {@link UserCredentials} class.

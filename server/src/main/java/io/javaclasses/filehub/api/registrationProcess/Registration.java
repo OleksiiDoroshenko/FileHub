@@ -1,21 +1,21 @@
 package io.javaclasses.filehub.api.registrationProcess;
 
-import io.javaclasses.filehub.api.Process;
+import io.javaclasses.filehub.api.SystemProcess;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
-import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Provides functionality for registration process in the system.
+ * Precess in the application that handles {@link RegisterUser} command.
  */
-public class Registration implements Process<RegisterUser, UserId> {
+public class Registration implements SystemProcess<RegisterUser, UserId> {
 
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
-    private final UserStorage storage;
+    private final UserRecordStorage storage;
 
 
     /**
@@ -23,13 +23,18 @@ public class Registration implements Process<RegisterUser, UserId> {
      *
      * @param userStorage - user storage.
      */
-    public Registration(UserStorage userStorage) {
+    public Registration(UserRecordStorage userStorage) {
         checkNotNull(userStorage);
         this.storage = userStorage;
     }
 
     /**
-     * Allows user to register.
+     * Handles {@link RegisterUser} command.
+     *
+     * <p>
+     * Throws {@link UserAlreadyExistsException}
+     * if user with provided in parameters command login already exists in {@link UserRecordStorage}.
+     * </p>
      *
      * @param registerUser - user credentials.
      * @return registered user.

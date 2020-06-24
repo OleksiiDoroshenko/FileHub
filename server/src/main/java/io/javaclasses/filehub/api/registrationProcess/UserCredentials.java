@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Value object that contains user login and password.
+ * Is used for saving serialized user data from client request.
  */
 public class UserCredentials {
 
@@ -17,8 +18,13 @@ public class UserCredentials {
     /**
      * Returns instance of {@link UserCredentials} class.
      *
-     * @param login
-     * @param password
+     * <p>
+     * Validates passed parameters and throws {@link InvalidUserCredentialsException}
+     * if at least on of them is invalid.
+     * </p>
+     *
+     * @param login    - user login.
+     * @param password - user password.
      */
     public UserCredentials(String login, String password) {
         validateLogin(login);

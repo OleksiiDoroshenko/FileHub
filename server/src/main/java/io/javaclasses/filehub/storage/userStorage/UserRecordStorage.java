@@ -2,25 +2,25 @@ package io.javaclasses.filehub.storage.userStorage;
 
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
-import io.javaclasses.filehub.storage.Storage;
+import io.javaclasses.filehub.storage.RecordStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 /**
- * Contains inner user storage.
+ * Storage for in-memory saving {@link UserRecord} that will be processed in application.
  */
-public class UserStorage implements Storage<UserRecord, UserId> {
+public class UserRecordStorage implements RecordStorage<UserRecord, UserId> {
 
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
     private final Map<UserId, UserRecord> storage;
 
 
     /**
-     * Returns instance of {@link UserStorage} class.
+     * Returns instance of {@link UserRecordStorage} class.
      */
-    public UserStorage() {
+    public UserRecordStorage() {
         storage = Collections.synchronizedMap(new HashMap<>());
         logger.debug("Created new user storage.");
     }
@@ -76,7 +76,7 @@ public class UserStorage implements Storage<UserRecord, UserId> {
     @Override
     public boolean contains(UserId userId) {
         return storage.keySet().stream().anyMatch(key ->
-                key.equals(userId.id()));
+                key.id().equals(userId.id()));
     }
 
     /**

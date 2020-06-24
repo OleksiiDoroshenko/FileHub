@@ -6,7 +6,7 @@ import io.javaclasses.filehub.storage.RecordId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Contains user value.
+ * Value object that represents unique identifier for {@link UserRecord}.
  */
 @Immutable
 public class UserId implements RecordId {
@@ -16,22 +16,20 @@ public class UserId implements RecordId {
     /**
      * Returns instance of {@link UserId} class.
      *
-     * @param value - user id.
+     * @param value - user unique identifier.
      */
     public UserId(String value) {
         checkNotNull(value);
         this.value = value;
     }
 
-    /**
-     * @return user id.
-     */
+    @Override
     public String id() {
         return value;
     }
 
     @Override
     public String toString() {
-        return "value: " + value;
+        return "id: " + value;
     }
 }

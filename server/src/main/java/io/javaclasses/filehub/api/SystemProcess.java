@@ -1,17 +1,18 @@
 package io.javaclasses.filehub.api;
 
 /**
- * Main interface for all process that can be held in the server.
+ * Abstract base process in the application that handles {@link Command} from client.
  *
  * @param <Command>    - specific command type.
  * @param <ReturnType> - specific type to be returned in method.
  */
-public interface Process<Command, ReturnType> {
+public interface SystemProcess<Command, ReturnType> {
+
     /**
-     * Process specific command which type was passed from generic.
+     * Handles {@link Command} that was requested by client.
      *
      * @param command - command to be processed.
-     * @return class that implements {@link ReturnType} interface.
+     * @return result of handling {@link Command}.
      */
     ReturnType handle(Command command);
 }

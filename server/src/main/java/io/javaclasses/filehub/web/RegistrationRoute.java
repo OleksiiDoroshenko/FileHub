@@ -5,20 +5,23 @@ import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
 import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
 import io.javaclasses.filehub.storage.userStorage.UserId;
-import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * A {@link Route} that handles user registration server request.
+ */
 public class RegistrationRoute implements Route {
 
-    private final UserStorage userStorage;
+    private final UserRecordStorage userStorage;
     private final Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
-    private UserCredentialsDeserializer serializer = new UserCredentialsDeserializer();
+    private UserCredentialsDeserializer deserializer = new UserCredentialsDeserializer();
 
-    public RegistrationRoute(UserStorage userStorage) {
+    public RegistrationRoute(UserRecordStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -28,7 +31,7 @@ public class RegistrationRoute implements Route {
         logger.debug("POST /register method was called with " + request.body() + ".");
         try {
             logger.debug("trying to register user" + request.body() + " .");
-            UserCredentials userCredentials = serializer.deserialize(request.body());
+            UserCredentials userCredentials = deserializer.deserialize(request.body());
             RegisterUser registerUser = new RegisterUser(userCredentials);
             UserId userId = new Registration(userStorage).handle(registerUser);
             logger.debug("User registration completed successfully. User's " + userId + ".");

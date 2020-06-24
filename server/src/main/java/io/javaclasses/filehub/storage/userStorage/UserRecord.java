@@ -7,10 +7,15 @@ import io.javaclasses.filehub.storage.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 /**
- * Contains user login and hash value of the password.
+ * Data structure that represents user in the application and will be saved in the {@link UserRecordStorage}.
  */
 @Immutable
 public class UserRecord implements Record<UserId> {
@@ -28,9 +33,22 @@ public class UserRecord implements Record<UserId> {
      */
     public UserRecord(UserCredentials userCredentials) {
         this.login = userCredentials.login();
-        this.passwordHash = String.valueOf(userCredentials.password().hashCode());
+        this.passwordHash = createPasswordHash(userCredentials.password());
         this.id = new UserId(UUID.randomUUID().toString());
         logger.debug("New user record was created. User login: " + login + ".");
+    }
+
+    private String createPasswordHash(String password) {
+        String hash = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes(UTF_8));
+            byte[] digest = md.digest();
+            hash = DatatypeConverter.printHexBinary(digest).toUpperCase();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return hash;
     }
 
     public String login() {

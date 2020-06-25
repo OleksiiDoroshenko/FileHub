@@ -26,7 +26,7 @@ public class RegisterUser {
                 ", password: " + userCredentials.password() + ".");
     }
 
-    UserCredentials userCredentials() {
+    public UserCredentials userCredentials() {
         return userCredentials;
     }
 

@@ -41,6 +41,8 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      */
     @Override
     public UserId handle(RegisterUser registerUser) {
+        checkNotNull(registerUser);
+
         logger.debug("Trying to register new user.");
         UserRecord userRecord = new UserRecord(registerUser.userCredentials());
         if (storage.containsUser(registerUser.userCredentials())) {

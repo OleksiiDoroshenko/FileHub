@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.storage.userStorage;
 
+import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
@@ -32,20 +33,29 @@ public class UserRecord implements Record<UserId> {
      * @param userCredentials - user credentials that contains login and password.
      */
     public UserRecord(UserCredentials userCredentials) {
+
+        Preconditions.checkNotNull(userCredentials);
+
         this.login = userCredentials.login();
         this.passwordHash = createPasswordHash(userCredentials.password());
         this.id = new UserId(UUID.randomUUID().toString());
+
         logger.debug("New user record was created. User login: " + login + ".");
     }
 
     private String createPasswordHash(String password) {
+
         String hash = "";
         try {
+
             MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(password.getBytes(UTF_8));
+            md.update(password.getBytes(UTF_8
+            ));
             byte[] digest = md.digest();
             hash = DatatypeConverter.printHexBinary(digest).toUpperCase();
+
         } catch (NoSuchAlgorithmException e) {
+
             throw new IllegalArgumentException(e.getMessage());
         }
         return hash;

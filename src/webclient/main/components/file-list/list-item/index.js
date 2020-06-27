@@ -4,6 +4,8 @@ import Component from '../../component.js';
  * Main list item class.
  */
 export default class ListItem extends Component {
+  editingClass = 'editing';
+
   /**
    * Returns instance of {@link ListItem}.
    * @param {HTMLElement} container - container for rendering.
@@ -18,6 +20,7 @@ export default class ListItem extends Component {
    */
   constructor(container, componentConfig) {
     super(container, componentConfig);
+    this._itemClicked = 0;
   }
 
   /**
@@ -41,11 +44,12 @@ export default class ListItem extends Component {
 
   /**
    * Adds listener for deleting icon.
-   * @param handler
+   * @param {function} handler - function to be called.
    */
   addDeleteHandler(handler) {
     this._deleteIcon.addEventListener('click', () => {
       handler(this.model);
     });
   }
+
 }

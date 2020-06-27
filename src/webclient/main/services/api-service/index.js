@@ -182,6 +182,28 @@ export default class ApiService {
   }
 
   /**
+   * Sends request for renaming list item.
+   * @param {Object} model - item model.
+   * @return {Promise<Response>} - server response.
+   */
+  renameItem(model) {
+    return fetch(`/item/${model.id}/`, {
+      method: 'UPDATE',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+      body: {
+        name: model.name,
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return 200;
+      }
+      throw await this.getError(response, model.type);
+    });
+  }
+
+  /**
    * Sends request to server for logging out current user.
    * Regardless of the answer removes current token from local storage.
    * @return {Promise<Response>}
@@ -245,5 +267,4 @@ export default class ApiService {
       throw await this.getError(response);
     });
   }
-
 }

@@ -47,6 +47,7 @@ export default class FileList extends Component {
     this._renderItems();
   }
 
+
   set uploadingItems(items) {
     this._uploadingItems = items;
     this._renderItems();
@@ -151,6 +152,7 @@ export default class FileList extends Component {
   onDownload(handler) {
     this._onDownloadHandler = handler;
   }
+
   onFolderNameDoubleClick(handler) {
     this._onFolderNameDoubleClickHandler = handler;
   }

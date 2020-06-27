@@ -5,7 +5,6 @@ import FileBrowserService from '../../../services/file-browser-service';
  * Table folder item.
  */
 export default class FolderItem extends ListItem {
-
   /**
    * @inheritdoc
    * @private
@@ -16,7 +15,10 @@ export default class FolderItem extends ListItem {
                 <i class="glyphicon glyphicon-folder-close"></i>
             </td>
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
-                <span><a data-render="name">${this.model.name}</a></span>
+                <span>
+                <a data-render="name">${this.model.name}</a>
+                <input value=${this.model.name}>
+                </span>
             </td>
             <td class="items">${this.model.itemsAmount} items</td>
             <td class="clickable">
@@ -34,6 +36,7 @@ export default class FolderItem extends ListItem {
    * @private
    */
   _initInnerComponents() {
+    this.rootElement.setAttribute('tabindex', 1);
     this._deleteIcon = this.rootElement.querySelector('[data-render="delete"]');
   }
 

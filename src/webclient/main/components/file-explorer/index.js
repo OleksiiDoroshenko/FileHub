@@ -20,6 +20,7 @@ import GetFolderAction from '../../services/state-manager/actions/get-folder';
  * Renders file explorer page.
  */
 export default class FileExplorerPage extends StateAwareComponent {
+
   /**
    * Returns instance of {@link FileExplorerPage}.
    * @param {HTMLElement} container - container for rendering.
@@ -54,7 +55,8 @@ export default class FileExplorerPage extends StateAwareComponent {
                       <span data-render="username"></span>
                   </li>
                   <li class="logout" data-toggle="tooltip" data-placement="top" title="Log out">
-                      <a href="#/login" data-render="log-out">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
+                      <a href="#/login" data-render="log-out">Log out <i class="glyphicon glyphicon-log-out"></i></a>
+                   </li>
               </ul>
               <a href="#/file-explorer/folder/root" data-toggle="tooltip" data-placement="top" title="Root page">
                   <h1 class="file-explorer">File Explorer</h1></a>
@@ -252,7 +254,6 @@ export default class FileExplorerPage extends StateAwareComponent {
 
   /**
    * Gets users folder id and calls method to update hash.
-   * @return {Promise<void>}
    * @private
    */
   async _getRootFolder() {

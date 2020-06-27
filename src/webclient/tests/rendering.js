@@ -74,7 +74,7 @@ export default module('Components rendering test: ', function(hook) {
     test('File list should render files that were sent by constructor.', (assert) => {
       const name = 'Test';
       const items = [{id: '1', parentId: '0', name: 'Test', itemsAmount: '0', type: 'folder'}];
-      const fileList = new FileList(fixture, {items});
+      new FileList(fixture, {items});
       const result = fixture.querySelector('[data-render="table"] a').innerText;
       assert.strictEqual(result, name, 'Should render files that were sent by constructor.');
     });

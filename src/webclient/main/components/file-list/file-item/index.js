@@ -27,8 +27,12 @@ export default class FileItem extends ListItem {
             `;
   }
 
-
+  /**
+   * @inheritoc
+   * @private
+   */
   _initInnerComponents() {
+    this.rootElement.setAttribute('tabindex', 1);
     this._deleteIcon = this.rootElement.querySelector('[data-render="delete"]');
   }
 
@@ -50,7 +54,7 @@ export default class FileItem extends ListItem {
 
   /**
    * Adds listener for clicking downloading icon.
-   * @param handler
+   * @param {function} handler - function to be called.
    */
   addDownloadHandler(handler) {
     const icon = this.rootElement.querySelector('[data-render="download"]');

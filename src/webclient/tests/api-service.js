@@ -363,17 +363,17 @@ export default module('API service test', function(hook) {
   });
 
   test('Rename method should handle 404 error', async (assert) => {
-    _testNotFoundError('update', assert,
+    _testNotFoundError('put', assert,
         'express:/item/:id', service, 'renameItem');
   });
 
   test('Rename method should handle 500 error', async (assert) => {
-    _testInternalServerError('update', assert,
+    _testInternalServerError('put', assert,
         'express:/item/:id', service, 'renameItem');
   });
 
   test('Rename method should handle 401 error', async (assert) => {
-    _testAuthorizationServerError('update', assert,
+    _testAuthorizationServerError('put', assert,
         'express:/item/:id', service, 'renameItem');
   });
 

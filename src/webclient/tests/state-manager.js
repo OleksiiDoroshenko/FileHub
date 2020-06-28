@@ -23,6 +23,10 @@ import ItemUploadingErrorMutator from '../main/services/state-manager/mutators/i
 import FolderLoadingMutator from '../main/services/state-manager/mutators/folder-loading-mutator';
 import FolderLoadingErrorMutator from '../main/services/state-manager/mutators/folder-loading-error-mutator';
 import FolderMutator from '../main/services/state-manager/mutators/folder-mutator';
+import ItemsRenamingErrorMutator from '../main/services/state-manager/mutators/item-renaming-error-mutator';
+import RemoveItemFromRenamingListMutator
+  from '../main/services/state-manager/mutators/remove-item-from-renaming-list-mutator';
+import AddItemToRenamingListMutator from '../main/services/state-manager/mutators/add-item-to-renaming-list-mutator';
 
 const {module, test} = QUnit;
 
@@ -172,6 +176,28 @@ export default module('State manager test: ', function(hook) {
       const folder = {name: 'test', id: '0', parentId: '1', type: 'folder'};
       const mutator = new FolderMutator(folder);
       _testMutatorWithDeepEqual(assert, mutator, 'folder', folder);
+    });
+
+    test('Add to renaming list mutator should change state\'s renaming list', async (assert) => {
+      stateManager = new StateManager({renamingItemIds: new Set()}, new ApiService());
+      const itemId = '1';
+      const resultList = new Set(itemId);
+      const mutator = new AddItemToRenamingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'renamingItemIds', resultList);
+    });
+
+    test('Remove from renaming list mutator should change state\'s renaming list', async (assert) => {
+      const itemId = '1';
+      stateManager = new StateManager({renamingItemIds: new Set(itemId)}, new ApiService());
+      const resultList = new Set();
+      const mutator = new RemoveItemFromRenamingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'renamingItemIds', resultList);
+    });
+
+    test('Items renaming error mutator should change state\'s renamingError field', async (assert) => {
+      const error = new Error('test');
+      const mutator = new ItemsRenamingErrorMutator(error);
+      _testMutator(assert, mutator, 'renamingError', error);
     });
 
     function _testMutator(assert, mutator, field, value) {

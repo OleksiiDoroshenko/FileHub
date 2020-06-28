@@ -15,6 +15,7 @@ export default class FileItem extends ListItem {
             </td>
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
                 <span>${this.model.name}</span>
+                <input data-render="name-input" value=${this.model.name}>
             </td>
             <td class="items">${this.model.size}</td>
             <td class="clickable">

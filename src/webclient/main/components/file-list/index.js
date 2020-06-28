@@ -9,6 +9,7 @@ export default class FileList extends Component {
   _uploadingItems = new Set();
   _deletingItems = new Set();
   _downloadingItems = new Set();
+  _renamingItems = new Set();
 
   /**
    * Returns instance of {@link FileList}.
@@ -47,19 +48,39 @@ export default class FileList extends Component {
     this._renderItems();
   }
 
-
+  /**
+   * Sets user items, and calls method for their rendering.
+   * @param {[ListItem]} items - user items.
+   */
   set uploadingItems(items) {
     this._uploadingItems = items;
     this._renderItems();
   }
 
+  /**
+   * Sets deleting items, and calls method for their rendering.
+   * @param {[ListItem]} items - user items.
+   */
   set deletingItems(items) {
     this._deletingItems = items;
     this._renderItems();
   }
 
+  /**
+   * Sets downloading items, and calls method for their rendering.
+   * @param {[ListItem]} items - user items.
+   */
   set downloadingItems(items) {
     this._downloadingItems = items;
+    this._renderItems();
+  }
+
+  /**
+   * Sets renaming items, and calls method for their rendering.
+   * @param {[ListItem]} items - items to be renamed.
+   */
+  set renamingItems(items) {
+    this._renamingItems = items;
     this._renderItems();
   }
 
@@ -79,8 +100,8 @@ export default class FileList extends Component {
       this.itemsRoot.innerHTML = '';
       if (Array.isArray(this._items)) {
         this._items.forEach((item) => {
-          this._createItem(this.itemsRoot, item);
-        },
+            this._createItem(this.itemsRoot, item);
+          },
         );
       }
     }
@@ -119,6 +140,8 @@ export default class FileList extends Component {
       item.isProcessing(true, 'file-downloading');
     }
     item.addDeleteHandler(this._onDeleteHandler);
+    item.onClickHandler(this._onItemClickHandler);
+    item.onRename(this._onRenameHandler);
     return item;
   }
 
@@ -153,7 +176,27 @@ export default class FileList extends Component {
     this._onDownloadHandler = handler;
   }
 
+  /**
+   * Sets double click folder name  handler.
+   * @param {function} handler - handler;
+   */
   onFolderNameDoubleClick(handler) {
     this._onFolderNameDoubleClickHandler = handler;
+  }
+
+  /**
+   * Sets item click handler.
+   * @param {function} handler - handler;
+   */
+  onItemClick(handler) {
+    this._onItemClickHandler = handler;
+  }
+
+  /**
+   * Sets rename item handler.
+   * @param {function} handler - handler;
+   */
+  onRename(handler) {
+    this._onRenameHandler = handler;
   }
 }

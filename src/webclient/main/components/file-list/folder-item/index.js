@@ -17,8 +17,8 @@ export default class FolderItem extends ListItem {
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
                 <span>
                 <a data-render="name">${this.model.name}</a>
-                <input value=${this.model.name}>
                 </span>
+                <input data-render="name-input" value=${this.model.name}>
             </td>
             <td class="items">${this.model.itemsAmount} items</td>
             <td class="clickable">
@@ -54,6 +54,10 @@ export default class FolderItem extends ListItem {
     });
   }
 
+  /**
+   * Adds handler for item name double click event.
+   * @param {function} handler - function to be called.
+   */
   onNameDoubleClick(handler) {
     const name = this.rootElement.querySelector('[data-render="name"]');
     name.addEventListener('dblclick', () => {

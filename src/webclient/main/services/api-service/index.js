@@ -188,7 +188,7 @@ export default class ApiService {
    */
   renameItem(model) {
     return fetch(`/item/${model.id}/`, {
-      method: 'UPDATE',
+      method: 'PUT',
       headers: {
         token: localStorage.getItem('token'),
       },

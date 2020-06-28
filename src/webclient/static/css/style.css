@@ -182,7 +182,7 @@ a:hover {
     outline-color: snow;
 }
 
-.table .editing .name a {
+.table .editing .name span {
     display: none;
 }
 

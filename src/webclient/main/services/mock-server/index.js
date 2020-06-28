@@ -229,7 +229,7 @@ export default class MockServer {
         }), {delay: 1000});
 
     fetchMock
-        .update('express:/item/:id', ((url, request) => {
+        .put('express:/item/:id', ((url, request) => {
           if (request.headers.token) {
             const id = url.split('/')[2];
             const newName = request.body.name;

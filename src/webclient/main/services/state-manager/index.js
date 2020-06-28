@@ -5,7 +5,7 @@ export default class StateManager extends EventTarget {
   /**
    * Returns instance of {@link StateManager} class.
    * <p> Adds set event handler for state properties.
-   * @param {object} initialState - initial state of {@link FileExplorerPage} content.
+   * @param {Object} initialState - initial state of {@link FileExplorerPage} content.
    * @param {ApiService} apiService - instance of {@link ApiService}.
    */
   constructor(initialState, apiService) {

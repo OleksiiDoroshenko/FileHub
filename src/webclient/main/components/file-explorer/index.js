@@ -15,6 +15,7 @@ import ClearErrorAction from '../../services/state-manager/actions/clear-error';
 import DownloadFileAction from '../../services/state-manager/actions/download-file';
 import DownloadFileService from '../../services/download-file-service';
 import GetFolderAction from '../../services/state-manager/actions/get-folder';
+import RenameItemAction from '../../services/state-manager/actions/rename-item';
 
 /**
  * Renders file explorer page.
@@ -134,12 +135,31 @@ export default class FileExplorerPage extends StateAwareComponent {
     const downloadHandler = (model) => {
       this.stateManager.dispatch(new DownloadFileAction(model, new DownloadFileService()));
     };
-
     this.fileList.onDownload(downloadHandler);
 
     this.fileList.onFolderNameDoubleClick((model) => {
       this._changeHashId(model.id);
     });
+
+    const onItemClickHandler = (item, event) => {
+      if (event.detail !== 1) {
+        return;
+      }
+      if (item.editing) {
+        return;
+      }
+      if (item.selected) {
+        item.editing = true;
+      } else {
+        item.selected = true;
+      }
+    };
+    this.fileList.onItemClick(onItemClickHandler);
+
+    const onRenameHandler = (model) => {
+      this.stateManager.dispatch(new RenameItemAction(model));
+    };
+    this.fileList.onRename(onRenameHandler);
   }
 
   /**
@@ -229,6 +249,18 @@ export default class FileExplorerPage extends StateAwareComponent {
         this._standardErrorHandler(error);
         this.stateManager.dispatch(new ClearErrorAction('folderLoadingError'));
       }
+    });
+
+    this.stateManager.onStateChanged('renamingError', (state) => {
+      const error = state.renamingError;
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('renamingError'));
+      }
+    });
+    this.stateManager.onStateChanged('renamingItemIds', (state) => {
+      this._uploadFileBtn.isLoadingClass = 'blink';
+      this.fileList.renamingItems = state.renamingItemIds;
     });
   }
 

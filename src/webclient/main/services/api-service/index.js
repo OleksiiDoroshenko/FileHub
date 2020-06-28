@@ -204,6 +204,25 @@ export default class ApiService {
   }
 
   /**
+   * Sends request to the server for creating new folder.
+   * @param {Object} model - item model in which should be created new folder.
+   * @return {Promise<Response>} - server response.
+   */
+  createFolder(model) {
+    return fetch(`/folder/${model.id}/folder`, {
+      method: 'POST',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return 200;
+      }
+      throw await this.getError(response, model.type);
+    });
+  }
+
+  /**
    * Sends request to server for logging out current user.
    * Regardless of the answer removes current token from local storage.
    * @return {Promise<Response>}

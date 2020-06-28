@@ -243,6 +243,18 @@ export default class MockServer {
             return 401;
           }
         }), {delay: 1000});
+
+    fetchMock
+        .post('express:/folder/:id/folder', ((url, request) => {
+          if (request.headers.token) {
+            const id = url.split('/')[2];
+            const folder = this._createNewFolder(id);
+            this.items.push(folder);
+            return 200;
+          } else {
+            return 401;
+          }
+        }), {delay: 1000});
   }
 
   /**
@@ -345,5 +357,15 @@ export default class MockServer {
       }
       return acc;
     }, []);
+  }
+
+  /**
+   * Creates new folder.
+   * @param {string} parentId - parent id of the created folder.
+   * @return {ListItem} - new folder.
+   * @private
+   */
+  _createNewFolder(parentId) {
+    return {name: 'New Folder', type: 'folder', parentId, id: this._getNextId(), itemsAmount: '0'};
   }
 }

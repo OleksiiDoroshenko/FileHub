@@ -1,0 +1,94 @@
+package io.javaclasses.filehub.api.registrationProcess;
+
+import com.google.common.base.Preconditions;
+import io.javaclasses.filehub.web.InvalidUserCredentialsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.google.common.base.Preconditions.*;
+
+/**
+ * Value object that contains user login and password.
+ * Is used for saving serialized user data from client request.
+ */
+public class UserCredentials {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserCredentials.class);
+
+    private final String login;
+    private final String password;
+
+    /**
+     * Returns instance of {@link UserCredentials} class.
+     *
+     * <p>
+     * Validates passed parameters and throws {@link InvalidUserCredentialsException}
+     * if at least on of them is invalid.
+     * </p>
+     *
+     * @param login    - user login.
+     * @param password - user password.
+     */
+    public UserCredentials(String login, String password) {
+        validateLogin(login);
+        validatePassword(password);
+        this.login = login;
+        this.password = password;
+    }
+
+    public String login() {
+        return login;
+    }
+
+    public String password() {
+        return password;
+    }
+
+
+    /**
+     * Validates user password.
+     *
+     * <p>Throws {@link InvalidUserCredentialsException} with specific message id user password is invalid. </p>
+     *
+     * @param password - user password.
+     * @return - true if password is valid or throws {@link InvalidUserCredentialsException} if it is invalid.
+     */
+    private boolean validatePassword(String password) {
+
+        logger.debug("Trying to validate password: " + password + "");
+
+        checkNotNull(password);
+        int minPasswordLength = 8;
+        if (password.length() < minPasswordLength) {
+
+            logger.error("Password is shorter than minimal length.");
+            throw new InvalidUserCredentialsException("Password should be longer then " + minPasswordLength + " symbols.");
+        }
+
+        logger.debug("Validation completed successfully.");
+        return true;
+    }
+
+    /**
+     * Validates user login.
+     *
+     * <p>Throws {@link InvalidUserCredentialsException} with specific message id user login is invalid. </p>
+     *
+     * @param login - user password.
+     * @return - true if login is valid or throws {@link InvalidUserCredentialsException} if it is invalid.
+     */
+    private boolean validateLogin(String login) {
+
+        logger.debug("Trying to validate login: " + login + "");
+
+        checkNotNull(login);
+        int minLoginLength = 4;
+        if (login.length() < minLoginLength) {
+
+            logger.error("Login is shorter than minimal length.");
+            throw new InvalidUserCredentialsException("Login should be longer then " + minLoginLength + " symbols.");
+        }
+        logger.debug("Validation completed successfully.");
+        return true;
+    }
+}

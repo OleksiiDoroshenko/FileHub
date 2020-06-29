@@ -10,6 +10,7 @@ export default class FileList extends Component {
   _deletingItems = new Set();
   _downloadingItems = new Set();
   _renamingItems = new Set();
+  _editingItemId = null;
 
   /**
    * Returns instance of {@link FileList}.
@@ -84,6 +85,11 @@ export default class FileList extends Component {
     this._renderItems();
   }
 
+  set editingItemId(value) {
+    this._editingItemId = value;
+    this._renderItems();
+  }
+
   /**
    * Returns user items.
    * @return {ListItem[]}
@@ -138,6 +144,10 @@ export default class FileList extends Component {
     }
     if (this._downloadingItems.has(model.id)) {
       item.isProcessing(true, 'file-downloading');
+    }
+    if (this._editingItemId === model.id) {
+      item.editing = true;
+      this._editingItemId = null;
     }
     item.addDeleteHandler(this._onDeleteHandler);
     item.onClickHandler(this._onItemClickHandler);

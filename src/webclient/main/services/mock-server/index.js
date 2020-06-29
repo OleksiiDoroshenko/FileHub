@@ -250,7 +250,12 @@ export default class MockServer {
             const id = url.split('/')[2];
             const folder = this._createNewFolder(id);
             this.items.push(folder);
-            return 200;
+            return {
+              status: 200,
+              body: {
+                id: folder.id,
+              },
+            };
           } else {
             return 401;
           }
@@ -366,6 +371,6 @@ export default class MockServer {
    * @private
    */
   _createNewFolder(parentId) {
-    return {name: 'New Folder', type: 'folder', parentId, id: this._getNextId(), itemsAmount: '0'};
+    return {name: 'New folder', type: 'folder', parentId, id: this._getNextId(), itemsAmount: '0'};
   }
 }

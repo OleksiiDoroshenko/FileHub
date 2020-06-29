@@ -16,12 +16,12 @@ import DownloadFileAction from '../../services/state-manager/actions/download-fi
 import DownloadFileService from '../../services/download-file-service';
 import GetFolderAction from '../../services/state-manager/actions/get-folder';
 import RenameItemAction from '../../services/state-manager/actions/rename-item';
+import CreateFolderAction from '../../services/state-manager/actions/create-folder';
 
 /**
  * Renders file explorer page.
  */
 export default class FileExplorerPage extends StateAwareComponent {
-
   /**
    * Returns instance of {@link FileExplorerPage}.
    * @param {HTMLElement} container - container for rendering.
@@ -160,6 +160,15 @@ export default class FileExplorerPage extends StateAwareComponent {
       this.stateManager.dispatch(new RenameItemAction(model));
     };
     this.fileList.onRename(onRenameHandler);
+
+    createDirBtn.addEventListener('click', () => {
+      const model = {id: this.id, type: 'folder'};
+      const createFolderAction = new CreateFolderAction(model);
+      this.stateManager.dispatch(createFolderAction)
+          .then((id) => {
+            this.fileList.editingItemId = id;
+          });
+    });
   }
 
   /**

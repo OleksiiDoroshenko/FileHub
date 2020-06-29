@@ -216,7 +216,7 @@ export default class ApiService {
       },
     }).then(async (response) => {
       if (response.ok) {
-        return 200;
+        return response.json();
       }
       throw await this.getError(response, model.type);
     });

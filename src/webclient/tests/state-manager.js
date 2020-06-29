@@ -27,6 +27,8 @@ import ItemsRenamingErrorMutator from '../main/services/state-manager/mutators/i
 import RemoveItemFromRenamingListMutator
   from '../main/services/state-manager/mutators/remove-item-from-renaming-list-mutator';
 import AddItemToRenamingListMutator from '../main/services/state-manager/mutators/add-item-to-renaming-list-mutator';
+import FolderCreatingMutator from '../main/services/state-manager/mutators/folder-creating-mutator';
+import FolderCreatingErrorMutator from '../main/services/state-manager/mutators/folder-creating-error-mutator';
 
 const {module, test} = QUnit;
 
@@ -198,6 +200,17 @@ export default module('State manager test: ', function(hook) {
       const error = new Error('test');
       const mutator = new ItemsRenamingErrorMutator(error);
       _testMutator(assert, mutator, 'renamingError', error);
+    });
+
+    test('Folder creating mutator should change state\'s isFolderCreating state', async (assert) => {
+      const mutator = new FolderCreatingMutator(true);
+      _testMutator(assert, mutator, 'isFolderCreating', true);
+    });
+
+    test('Folder creating error mutator should change state\'s folderCreatingError field.', async (assert) => {
+      const error = new Error('test');
+      const mutator = new FolderCreatingErrorMutator(error);
+      _testMutator(assert, mutator, 'folderCreatingError', error);
     });
 
     function _testMutator(assert, mutator, field, value) {

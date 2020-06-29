@@ -85,6 +85,10 @@ export default class FileList extends Component {
     this._renderItems();
   }
 
+  /**
+   * Sets item id that should be shifted into editing state.
+   * @param {string} value - item id.
+   */
   set editingItemId(value) {
     this._editingItemId = value;
     this._renderItems();

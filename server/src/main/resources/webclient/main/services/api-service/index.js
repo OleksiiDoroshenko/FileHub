@@ -104,11 +104,7 @@ export default class ApiService {
         return new Error(response.statusText);
       }
       default: {
-        let message = response.statusText;
-        await response.text().then(text => {
-          message = text;
-        });
-        return new Error(message);
+        return new Error(response.statusText);
       }
     }
   }

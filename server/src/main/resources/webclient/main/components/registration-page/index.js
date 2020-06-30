@@ -1,7 +1,7 @@
 import Component from '../component.js';
 import RegistrationForm from '../registration-form/index.js';
 import TitleService from '../../services/change-title/index.js';
-import AuthorizationError from '../../../models/errors/authorization-error/index.js';
+import ServerValidationErrors from '../../../models/errors/server-validation-errors/index.js';
 
 /**
  * Implements html page that allows user to register.
@@ -43,15 +43,15 @@ export default class RegistrationPage extends Component {
 
     form.onSubmit((userData) => {
       this._service.register(userData)
-          .then((response) => {
-            window.location.hash = '#/login';
-          }).catch((error) => {
-            if (error instanceof AuthorizationError) {
-              alert(error.message);
-            } else {
-              form.handleError(error);
-            }
-          });
+        .then((response) => {
+          window.location.hash = '#/login';
+        }).catch((error) => {
+        if (error instanceof ServerValidationErrors) {
+          form.handleError(error);
+        } else {
+          alert(error.message);
+        }
+      });
     });
   }
 }

@@ -1,4 +1,4 @@
-package io.javaclasses.fileHub.api.storage;
+package io.javaclasses.fileHub.storage;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.userStorage.UserId;

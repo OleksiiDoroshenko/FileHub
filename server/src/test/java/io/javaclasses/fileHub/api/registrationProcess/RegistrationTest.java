@@ -1,10 +1,7 @@
 package io.javaclasses.fileHub.api.registrationProcess;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
-import io.javaclasses.filehub.api.registrationProcess.Registration;
-import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
-import io.javaclasses.filehub.api.registrationProcess.UserCredentials;
+import io.javaclasses.filehub.api.registrationProcess.*;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
 import org.junit.Test;
@@ -13,17 +10,16 @@ import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisplayName("Registration test should: ")
+@DisplayName("Registration should: ")
 public class RegistrationTest {
 
-    @DisplayName("register user in the system")
+    @DisplayName("register user in the system.")
     @Test
     public void registerUserTest() {
-        String login = "Test";
-        String password = "Test123456";
+        LoginName login = new LoginName("Test");
+        Password password = new Password("Test123456");
+        RegisterUser register = new RegisterUser(login, password);
 
-        UserCredentials credentials = new UserCredentials(login, password);
-        RegisterUser register = new RegisterUser(credentials);
         UserRecordStorage storage = new UserRecordStorage();
         Registration registration = new Registration(storage);
 
@@ -37,11 +33,10 @@ public class RegistrationTest {
     @DisplayName("throw exception if user with same login already exists in the system.")
     @Test
     public void throwExceptionIfUserAlreadyExistsTest() {
-        String login = "Test";
-        String password = "Test123456";
+        LoginName login = new LoginName("Test");
+        Password password = new Password("Test123456");
+        RegisterUser register = new RegisterUser(login, password);
 
-        UserCredentials credentials = new UserCredentials(login, password);
-        RegisterUser register = new RegisterUser(credentials);
         UserRecordStorage storage = new UserRecordStorage();
         Registration registration = new Registration(storage);
 

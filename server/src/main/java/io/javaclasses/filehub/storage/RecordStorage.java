@@ -1,22 +1,23 @@
 package io.javaclasses.filehub.storage;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Abstract base storage for FileHub application.
- * Provide basic CRUD operations for stored items.
+ * Provide CRUD operations for stored items.
  *
  * @param <R> - specific storage record.
  * @param <I> - specific record id.
  */
-public interface RecordStorage<R, I> {
+public interface RecordStorage<R extends Record<I>, I extends RecordId> {
     /**
      * Returns record by its id.
      *
      * @param id - specific record id.
      * @return record.
      */
-    R get(I id);
+    Optional<R> get(I id);
 
     /**
      * Removes record from storage by it's id.
@@ -24,7 +25,7 @@ public interface RecordStorage<R, I> {
      * @param id - specific record id.
      * @return removed record.
      */
-    R remove(I id);
+    Optional<R> remove(I id);
 
     /**
      * Returns all records from storage.

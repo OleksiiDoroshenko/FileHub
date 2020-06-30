@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory;
 import static spark.Spark.*;
 
 /**
- * Represents FileHub web application context. Configure server settings and maps request routes.
+ * Represents FileHub web application context.
+ * Configure server settings and maps request routes.
  */
 public class WebApplication {
 
@@ -16,18 +17,25 @@ public class WebApplication {
     private static UserRecordStorage userStorage;
 
     public static void main(String[] args) {
-        configureServer();
+        new WebApplication().start();
+    }
+
+    private void start() {
+
+        port(PORT);
+        staticFiles.location("/webclient");
+
+        logger.info("Start web server with " + PORT + ".");
+
+        initStorage();
         registerRoutes();
+    }
+
+    private static void initStorage() {
+        userStorage = new UserRecordStorage();
     }
 
     private static void registerRoutes() {
         post("/register", new RegistrationRoute(userStorage));
-    }
-
-    private static void configureServer() {
-        port(PORT);
-        logger.info("Start web server with " + PORT + ".");
-        userStorage = new UserRecordStorage();
-        staticFiles.location("/webclient");
     }
 }

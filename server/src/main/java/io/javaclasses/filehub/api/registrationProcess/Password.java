@@ -35,7 +35,7 @@ public class Password {
 
         if (value.length() < minPasswordLength) {
 
-            throw new InvalidUserCredentialsException("User password is to short.");
+            throw new InvalidUserCredentialsException("User password is too short.");
         }
 
         return value;

@@ -5,9 +5,9 @@ import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
 import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import sun.rmi.runtime.Log;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("RegisterUser should: ")
 public class RegisterUserTest {
@@ -18,7 +18,7 @@ public class RegisterUserTest {
         LoginName login = new LoginName("Test");
         Password password = new Password("Test123456");
         RegisterUser register = new RegisterUser(login, password);
-        Assertions.assertEquals(login, register.loginName(),
+        assertEquals(login, register.loginName(),
                 "Register user login are not equals to passed one.");
     }
 

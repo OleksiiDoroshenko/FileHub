@@ -34,7 +34,7 @@ public class LoginName {
 
         if (value.length() < minLoginNameLength) {
 
-            throw new InvalidUserCredentialsException("User login is to short.");
+            throw new InvalidUserCredentialsException("User login is too short.");
         }
     }
 

@@ -44,7 +44,8 @@ public class UserRecordStorage implements RecordStorage<UserRecord, UserId> {
      */
     @Override
     public List<UserRecord> all() {
-        return new ArrayList<>(storage.values());
+
+        return Collections.unmodifiableList(new ArrayList<>(storage.values()));
     }
 
     /**

@@ -27,8 +27,7 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      * @param userStorage user storage.
      */
     public Registration(UserRecordStorage userStorage) {
-        checkNotNull(userStorage);
-        this.storage = userStorage;
+        this.storage = checkNotNull(userStorage);
     }
 
     /**
@@ -46,10 +45,16 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
 
         LoginName loginName = registerUser.loginName();
 
-        logger.debug("Trying to register new user. Login: " + loginName + ".");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Trying to register new user. Login: " + loginName + ".");
+        }
+
         if (storage.contains(loginName)) {
 
-            logger.error("User with the same login already exists. Login: " + loginName + ".");
+            if (logger.isErrorEnabled()) {
+                logger.error("User with the same login already exists. Login: " + loginName + ".");
+            }
+
             throw new UserAlreadyExistsException("User with the same name already exists.");
         }
         String passwordHash = PasswordHasher.getHash(registerUser.password());

@@ -33,7 +33,9 @@ public final class UserRecord implements Record<UserId> {
         this.password = checkNotNull(password);
         this.id = checkNotNull(id);
 
-        logger.debug("New user record was created. User login: " + loginName.value() + ".");
+        if (logger.isDebugEnabled()) {
+            logger.debug("New user record was created. User login: " + loginName.value() + ".");
+        }
     }
 
     public LoginName loginName() {

@@ -33,7 +33,11 @@ public class UserRecordStorage implements RecordStorage<UserRecord, UserId> {
      */
     @Override
     public Optional<UserRecord> remove(UserId id) {
-        logger.info("User with " + id + " was removed.");
+
+        if (logger.isInfoEnabled()) {
+            logger.info("User with " + id + " was removed.");
+        }
+
         return Optional.of(storage.remove(id));
     }
 
@@ -69,7 +73,9 @@ public class UserRecordStorage implements RecordStorage<UserRecord, UserId> {
             }
         }
 
-        logger.info("User " + loginName + " was added to the storage.");
+        if (logger.isInfoEnabled()) {
+            logger.info("User " + loginName + " was added to the storage.");
+        }
         return record.id();
     }
 

@@ -25,7 +25,9 @@ public class WebApplication {
         port(PORT);
         staticFiles.location("/webclient");
 
-        logger.info("Start web server with " + PORT + ".");
+        if (logger.isInfoEnabled()) {
+            logger.info("Start web server with " + PORT + ".");
+        }
 
         initStorage();
         registerRoutes();

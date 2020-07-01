@@ -32,12 +32,17 @@ public final class RegisterUser implements Command {
      */
     public RegisterUser(LoginName loginName, Password password) {
 
-        logger.debug("Trying to create Register command.");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Trying to create Register command.");
+        }
 
         this.loginName = checkNotNull(loginName);
         this.password = checkNotNull(password);
-        logger.debug("Register command was created. Login: " + loginName +
-                ", password: " + password + ".");
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Register command was created. Login: " + loginName +
+                    ", password: " + password + ".");
+        }
     }
 
     public LoginName loginName() {

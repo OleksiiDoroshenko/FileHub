@@ -50,15 +50,22 @@ public class RegistrationRoute implements Route {
         checkNotNull(request);
         checkNotNull(response);
 
-        logger.debug("POST /register method was called with " + request.body() + ".");
+        if (logger.isDebugEnabled()) {
+            logger.debug("POST /register method was called with " + request.body() + ".");
+        }
         try {
 
-            logger.debug("trying to register user" + request.body() + " .");
+            if (logger.isDebugEnabled()) {
+                logger.debug("trying to register user" + request.body() + " .");
+            }
 
             RegisterUser registerUser = parser.fromJson(request.body(), RegisterUser.class);
             UserId userId = new Registration(userStorage).handle(registerUser);
 
-            logger.debug("User registration completed successfully. User's " + userId + ".");
+            if (logger.isDebugEnabled()) {
+                logger.debug("User registration completed successfully. User's " + userId + ".");
+            }
+
             response.status(SC_ACCEPTED);
             return "Success";
 
@@ -82,7 +89,9 @@ public class RegistrationRoute implements Route {
      */
     private String createErrorResponse(Response response, Exception exception, int responseStatus) {
 
-        logger.error("Error: " + exception.getMessage());
+        if (logger.isErrorEnabled()) {
+            logger.error("Error: " + exception.getMessage());
+        }
 
         response.type("application/json");
         response.status(responseStatus);

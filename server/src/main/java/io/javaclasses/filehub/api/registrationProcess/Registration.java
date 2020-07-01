@@ -40,19 +40,18 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      */
     @Override
     public UserId handle(RegisterUser registerUser) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Trying to register new user. Login: " + registerUser.loginName().value() + ".");
+        }
 
         checkNotNull(registerUser);
 
         LoginName loginName = registerUser.loginName();
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Trying to register new user. Login: " + loginName + ".");
-        }
-
-        if (storage.contains(loginName)) {
+        if (storage.get(loginName).isPresent()) {
 
             if (logger.isErrorEnabled()) {
-                logger.error("User with the same login already exists. Login: " + loginName + ".");
+                logger.error("User with the same login already exists. Login: " + loginName.value() + ".");
             }
 
             throw new UserAlreadyExistsException("User with the same name already exists.");

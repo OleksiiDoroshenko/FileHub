@@ -10,8 +10,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +27,8 @@ public class UserRecordStorageTest {
 
         UserId id = storage.add(record);
 
-        assertTrue(storage.contains(record.loginName()),
+        Optional<UserRecord> optional = storage.get(record.loginName());
+        assertTrue(optional.isPresent(),
                 "UserStorage can not find saved UserRecord.");
         assertEquals(record, storage.get(id).get(), "storage should return exactly the same record as was added.");
 
@@ -43,9 +43,12 @@ public class UserRecordStorageTest {
 
         UserId id = storage.add(record);
 
-        assertTrue(storage.contains(record.loginName()),
+        Optional<UserRecord> removedRecord = storage.remove(id);
+
+        Optional<UserRecord> optional = storage.get(id);
+        assertTrue(!optional.isPresent(),
                 "UserStorage can not find saved UserRecord.");
-        assertEquals(record, storage.remove(id).get(),
+        assertEquals(record, removedRecord.get(),
                 "storage should return record that was removed.");
 
     }

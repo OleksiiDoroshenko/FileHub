@@ -1,16 +1,16 @@
 package io.javaclasses.filehub.storage;
 
 /**
- * Data structure that will be stored in {@link RecordStorage}.
+ * Data structure that is stored in {@link RecordStorage}.
  *
- * @param <I> - {@link RecordId} implementation.
+ * @param <I> {@link RecordId} implementation.
  */
-public interface Record<I> {
+public interface Record<I extends RecordId> {
 
     /**
      * Returns record identifier.
      *
-     * @return specific record id.
+     * @return specific {@link RecordId}.
      */
     I id();
 }

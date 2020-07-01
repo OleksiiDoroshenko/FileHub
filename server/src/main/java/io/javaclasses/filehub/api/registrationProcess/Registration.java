@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Precess in the application that handles {@link RegisterUser} command.
+ * Process in the application that handles {@link RegisterUser} command.
  */
 @Immutable
 public class Registration implements SystemProcess<RegisterUser, UserId> {
@@ -24,7 +24,7 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
     /**
      * Returns instance of {@link Registration} class.
      *
-     * @param userStorage - user storage.
+     * @param userStorage user storage.
      */
     public Registration(UserRecordStorage userStorage) {
         checkNotNull(userStorage);
@@ -34,13 +34,10 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
     /**
      * Handles {@link RegisterUser} command.
      *
-     * <p>
-     * Throws {@link UserAlreadyExistsException}
-     * if user with provided in parameters command login already exists in {@link UserRecordStorage}.
-     * </p>
-     *
-     * @param registerUser - user credentials.
+     * @param registerUser user credentials.
      * @return registered user.
+     * @throws UserAlreadyExistsException if user with provided in parameters
+     *                                    command already exists in {@link UserRecordStorage}.
      */
     @Override
     public UserId handle(RegisterUser registerUser) {

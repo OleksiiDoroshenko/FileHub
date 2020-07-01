@@ -9,25 +9,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Tiny type for user login name.
  */
 @Immutable
-public class LoginName {
+public final class LoginName {
 
     private final String loginName;
 
     /**
      * Returns instance of {@link LoginName} class.
      *
-     * <p>
-     * Throws {@link InvalidUserCredentialsException} if login name is not valid.
-     * </p>
-     *
-     * @param value - user login name.
+     * @param value user login name.
+     * @throws InvalidUserCredentialsException if login name is not valid.
      */
     public LoginName(String value) {
-        validate(value);
-        this.loginName = value;
+        this.loginName = validate(value);
     }
 
-    private void validate(String value) {
+    /**
+     * Validates user login by specific rules.
+     *
+     * @param value user login.
+     * @return user ligin.
+     * @throws InvalidUserCredentialsException if user login is invalid.
+     */
+    private String validate(String value) {
 
         int minLoginNameLength = 4;
         checkNotNull(value);
@@ -36,6 +39,7 @@ public class LoginName {
 
             throw new InvalidUserCredentialsException("User login is too short.");
         }
+        return value;
     }
 
     public String value() {

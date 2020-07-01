@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("UserRecordStorage should: ")
 public class UserRecordStorageTest {
 
-    @DisplayName("should correctly add, check if present and get record.")
+    @DisplayName("correctly add, check if present and get record.")
     @Test
     public void storageContainsUserTest() {
 
@@ -34,7 +34,7 @@ public class UserRecordStorageTest {
 
     }
 
-    @DisplayName("should correctly remove record.")
+    @DisplayName("correctly remove record.")
     @Test
     public void storageRemoveUserTest() {
 
@@ -50,7 +50,7 @@ public class UserRecordStorageTest {
 
     }
 
-    @DisplayName("should correctly return all added records.")
+    @DisplayName("correctly return all added records.")
     @Test
     public void storageReturnAllUserRecordsTest() {
 
@@ -64,7 +64,7 @@ public class UserRecordStorageTest {
         assertEquals(storage.all().size(), listLength, "UserStorage returns not all added records.");
     }
 
-    @DisplayName("should correctly add record that login already exists in the storage.")
+    @DisplayName("correctly add record that login already exists in the storage.")
     @Test
     public void storageAddAlreadyExistedRecordTest() {
 

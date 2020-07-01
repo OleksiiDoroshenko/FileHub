@@ -2,12 +2,12 @@ package io.javaclasses.filehub.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -20,20 +20,29 @@ import static org.eclipse.jetty.server.Response.*;
 /**
  * The {@link Route} that handles user registration request.
  */
-@Immutable
 public class RegistrationRoute implements Route {
 
     private final UserRecordStorage userStorage;
     private final Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
     private Gson parser;
 
+    /**
+     * Returns instance of {@link RegistrationRoute} class.
+     *
+     * @param userStorage - user storage.
+     */
     public RegistrationRoute(UserRecordStorage userStorage) {
         this.userStorage = checkNotNull(userStorage);
         parser = createJsonParser();
     }
 
     /**
-     * {@inheritDoc}
+     * Forms server response.
+     *
+     * @param request  HTTP request.
+     * @param response HTTP response.
+     * @return server response body.
+     * @throws Exception if something went wrong.
      */
     @Override
     public Object handle(Request request, Response response) throws Exception {
@@ -50,18 +59,28 @@ public class RegistrationRoute implements Route {
             UserId userId = new Registration(userStorage).handle(registerUser);
 
             logger.debug("User registration completed successfully. User's " + userId + ".");
-            return SC_ACCEPTED;
+            response.status(SC_ACCEPTED);
+            return "Success";
 
-        } catch (InvalidUserCredentialsException e) {
 
-            return createErrorResponse(response, e, SC_BAD_REQUEST);
         } catch (UserAlreadyExistsException e) {
 
             return createErrorResponse(response, e, SC_UNAUTHORIZED);
+        } catch (InvalidUserCredentialsException | JsonParseException e) {
+
+            return createErrorResponse(response, e, SC_BAD_REQUEST);
         }
     }
 
-    private Object createErrorResponse(Response response, Exception exception, int responseStatus) {
+    /**
+     * Creates server error response.
+     *
+     * @param response       server response.
+     * @param exception      thrown exception.
+     * @param responseStatus response status.
+     * @return exception message.
+     */
+    private String createErrorResponse(Response response, Exception exception, int responseStatus) {
 
         logger.error("Error: " + exception.getMessage());
 

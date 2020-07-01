@@ -1,18 +1,19 @@
 package io.javaclasses.filehub.storage.userStorage;
 
-import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.storage.Record;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Data structure for saving user in the {@link UserRecordStorage}.
  */
-public class UserRecord implements Record<UserId> {
+@Immutable
+public final class UserRecord implements Record<UserId> {
 
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
     private final LoginName loginName;
@@ -23,9 +24,9 @@ public class UserRecord implements Record<UserId> {
     /**
      * Returns instance of {@link UserRecord} class.
      *
-     * @param id        - user id.
-     * @param loginName - user login.
-     * @param password  - user password.
+     * @param id        user id.
+     * @param loginName user login.
+     * @param password  user password.
      */
     public UserRecord(UserId id, LoginName loginName, String password) {
         this.loginName = checkNotNull(loginName);

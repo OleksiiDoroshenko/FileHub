@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.api;
 
-import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.api.registrationProcess.Password;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
@@ -8,7 +7,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -22,7 +21,7 @@ public final class PasswordHasher {
     /**
      * Creates {@link Password} hash.
      *
-     * @param password - user password.
+     * @param password user password.
      * @return created hash.
      */
     public static String getHash(Password password) {

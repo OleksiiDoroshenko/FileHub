@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @DisplayName("UserRecord should: ")
 public class UserRecordTest {
 
-    @DisplayName("should hash user password")
+    @DisplayName("hash user password")
     @Test
     public void hashingUserPasswordTest() {
 

@@ -6,21 +6,20 @@ import io.javaclasses.filehub.storage.RecordId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Tiny type for {@link UserRecord} identifier.
+ * Identifier for {@link UserRecord}.
  */
 @Immutable
-public class UserId implements RecordId {
+public final class UserId implements RecordId {
 
     private final String value;
 
     /**
      * Returns instance of {@link UserId} class.
      *
-     * @param value - user identifier.
+     * @param value user identifier.
      */
     public UserId(String value) {
-        checkNotNull(value);
-        this.value = value;
+        this.value = checkNotNull(value);
     }
 
     @Override

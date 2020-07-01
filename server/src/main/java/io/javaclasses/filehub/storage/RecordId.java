@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 /**
- * Abstract base identifier for every {@link Record} in the application.
+ * An abstract base identifier for every {@link Record} in the application.
  */
 public interface RecordId {
 

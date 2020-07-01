@@ -18,12 +18,12 @@ public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> 
 
 
     /**
-     * Deserialize {@link RegisterUser} class from json.
+     * Deserializes {@link RegisterUser} instance from json.
      * <p>
      * {@inheritDoc}
      * </p>
      *
-     * @return {@link RegisterUser} class.
+     * @return deserialized class.
      */
     @Override
     public RegisterUser deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.api.registrationProcess;
 
 import io.javaclasses.filehub.api.Command;
+import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
@@ -9,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The {@link Command} for registering new user.
+ * The {@link Command} for new {@link UserRecord} registration.
  */
 @Immutable
-public class RegisterUser implements Command {
+public final class RegisterUser implements Command {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterUser.class);
     private final LoginName loginName;
@@ -23,11 +24,11 @@ public class RegisterUser implements Command {
      *
      * <p>
      * Validates passed parameters and throws {@link InvalidUserCredentialsException}
-     * if at least on of them is invalid.
+     * if at least one of them is invalid.
      * </p>
      *
-     * @param loginName - user login.
-     * @param password  - user password.
+     * @param loginName user login.
+     * @param password  user password.
      */
     public RegisterUser(LoginName loginName, Password password) {
 

@@ -3,12 +3,9 @@ package io.javaclasses.fileHub.api.registrationProcess;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.*;
 import io.javaclasses.filehub.storage.userStorage.UserId;
-import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-
-import java.util.Optional;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -4,8 +4,8 @@ import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
 import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

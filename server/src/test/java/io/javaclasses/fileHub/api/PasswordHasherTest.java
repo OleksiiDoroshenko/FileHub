@@ -3,9 +3,9 @@ package io.javaclasses.fileHub.api;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.registrationProcess.Password;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @DisplayName("PasswordHasher should: ")
 public class PasswordHasherTest {

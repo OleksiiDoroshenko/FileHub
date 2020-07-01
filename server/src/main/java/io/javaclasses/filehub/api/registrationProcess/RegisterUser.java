@@ -40,8 +40,8 @@ public final class RegisterUser implements Command {
         this.password = checkNotNull(password);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Register command was created. Login: " + loginName +
-                    ", password: " + password + ".");
+            logger.debug("Register command was created. Login: " + loginName.value() +
+                    ", password: " + password.value() + ".");
         }
     }
 
@@ -56,8 +56,8 @@ public final class RegisterUser implements Command {
     @Override
     public String toString() {
         return "RegisterUser{" +
-                "loginName=" + loginName +
-                ", password=" + password +
+                "loginName=" + loginName.value() +
+                ", password=" + password.value() +
                 '}';
     }
 }

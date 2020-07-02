@@ -15,7 +15,7 @@ public class TokenStorage extends InMemoryRecordStorage<TokenRecord, TokenId> {
      * @param token token value.
      * @return token record.
      */
-    Optional<TokenRecord> get(TokenValue token) {
+    public Optional<TokenRecord> get(TokenValue token) {
         return all().stream().filter(item ->
                 item.token().value().equals(token.value())).findAny();
     }

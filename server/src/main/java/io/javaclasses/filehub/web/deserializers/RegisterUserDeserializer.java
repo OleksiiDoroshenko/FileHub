@@ -28,20 +28,24 @@ public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> 
     @Override
     public RegisterUser deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
-        JsonObject wrapper = (JsonObject) json;
+        try {
+            JsonObject wrapper = (JsonObject) json;
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Deserialization started. Json: " + json + ".");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Deserialization started. Json: " + json + ".");
+            }
+
+            String loginValue = wrapper.getAsJsonPrimitive("login").getAsString();
+            String passwordValue = wrapper.getAsJsonPrimitive("password").getAsString();
+
+            RegisterUser command = new RegisterUser(new LoginName(loginValue), new Password(passwordValue));
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("Deserialization completed. Object: " + command.toString() + ".");
+            }
+            return command;
+        } catch (Exception e) {
+            throw new JsonParseException("Can not parse request body.");
         }
-
-        String loginValue = wrapper.getAsJsonPrimitive("login").getAsString();
-        String passwordValue = wrapper.getAsJsonPrimitive("password").getAsString();
-
-        RegisterUser command = new RegisterUser(new LoginName(loginValue), new Password(passwordValue));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Deserialization completed. Object: " + command.toString() + ".");
-        }
-        return command;
     }
 }

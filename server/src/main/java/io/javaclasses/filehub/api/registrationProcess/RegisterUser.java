@@ -3,7 +3,7 @@ package io.javaclasses.filehub.api.registrationProcess;
 import io.javaclasses.filehub.api.Command;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
-import jdk.nashorn.internal.ir.annotations.Immutable;
+import com.google.errorprone.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

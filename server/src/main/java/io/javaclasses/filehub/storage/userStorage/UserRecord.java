@@ -1,9 +1,9 @@
 package io.javaclasses.filehub.storage.userStorage;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.storage.Record;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

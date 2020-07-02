@@ -5,7 +5,6 @@ import io.javaclasses.filehub.api.SystemProcess;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Process in the application that handles {@link RegisterUser} command.
  */
-@Immutable
 public class Registration implements SystemProcess<RegisterUser, UserId> {
 
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);

@@ -7,7 +7,7 @@ import io.javaclasses.filehub.api.logInProcess.LogInUser;
 import io.javaclasses.filehub.api.logInProcess.LoggingIn;
 import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
 import io.javaclasses.filehub.storage.tokenStorage.TokenStorage;
-import io.javaclasses.filehub.storage.userStorage.TokenValue;
+import io.javaclasses.filehub.storage.tokenStorage.TokenValue;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import io.javaclasses.filehub.web.deserializers.LogInUserDeserializer;
@@ -18,6 +18,7 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
 import static javax.servlet.http.HttpServletResponse.*;
 
 /**
@@ -42,7 +43,7 @@ public class LogInRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
 
         checkNotNull(request);
         checkNotNull(response);
@@ -71,13 +72,25 @@ public class LogInRoute implements Route {
 
         } catch (UserNotRegisteredException e) {
 
+            if (logger.isErrorEnabled()) {
+                logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
+            }
+
             response.status(SC_CONFLICT);
             return e.getMessage();
         } catch (InvalidUserCredentialsException | JsonParseException e) {
 
+            if (logger.isErrorEnabled()) {
+                logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
+            }
+
             response.status(SC_BAD_REQUEST);
             return e.getMessage();
         } catch (Exception e) {
+
+            if (logger.isErrorEnabled()) {
+                logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
+            }
 
             response.status(SC_INTERNAL_SERVER_ERROR);
             return "Internal server error.";

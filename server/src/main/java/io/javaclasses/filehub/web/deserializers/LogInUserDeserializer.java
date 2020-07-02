@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Type;
 
 /**
- * Deserializer for {@link RegisterUser} class.
+ * Deserializer for {@link LogInUser} class.
  */
 public class LogInUserDeserializer implements JsonDeserializer<LogInUser> {
 
@@ -19,7 +19,7 @@ public class LogInUserDeserializer implements JsonDeserializer<LogInUser> {
 
 
     /**
-     * Deserializes {@link RegisterUser} instance from json.
+     * Deserializes {@link LogInUser} instance from json.
      * <p>
      * {@inheritDoc}
      * </p>

@@ -2,11 +2,13 @@ package io.javaclasses.filehub.web.routes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import io.javaclasses.filehub.web.deserializers.RegisterUserDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,12 +76,16 @@ public class RegistrationRoute implements Route {
 
         } catch (UserAlreadyExistsException e) {
 
-            response.status(SC_UNAUTHORIZED);
+            response.status(SC_CONFLICT);
             return e.getMessage();
-        } catch (Exception e) {
+        } catch (InvalidUserCredentialsException | JsonParseException e) {
 
             response.status(SC_BAD_REQUEST);
             return e.getMessage();
+        } catch (Exception e) {
+
+            response.status(SC_INTERNAL_SERVER_ERROR);
+            return "Internal server error.";
         }
     }
 

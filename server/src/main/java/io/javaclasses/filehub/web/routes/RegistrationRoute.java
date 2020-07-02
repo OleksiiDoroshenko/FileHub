@@ -2,13 +2,11 @@ package io.javaclasses.filehub.web.routes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
-import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import io.javaclasses.filehub.web.deserializers.RegisterUserDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +37,7 @@ public class RegistrationRoute implements Route {
     }
 
     /**
-     * Forms server response.
+     * Handles new user registration request.
      *
      * @param request  HTTP request.
      * @param response HTTP response.
@@ -55,6 +53,8 @@ public class RegistrationRoute implements Route {
         if (logger.isDebugEnabled()) {
             logger.debug("POST /register method was called with " + request.body() + ".");
         }
+
+        response.type("application/json");
         try {
 
             if (logger.isDebugEnabled()) {
@@ -74,29 +74,13 @@ public class RegistrationRoute implements Route {
 
         } catch (UserAlreadyExistsException e) {
 
-            return createErrorResponse(response, e, SC_UNAUTHORIZED);
+            response.status(SC_UNAUTHORIZED);
+            return e.getMessage();
         } catch (Exception e) {
-            return createErrorResponse(response, e, SC_BAD_REQUEST);
+
+            response.status(SC_BAD_REQUEST);
+            return e.getMessage();
         }
-    }
-
-    /**
-     * Creates server error response.
-     *
-     * @param response       server response.
-     * @param exception      thrown exception.
-     * @param responseStatus response status.
-     * @return exception message.
-     */
-    private String createErrorResponse(Response response, Exception exception, int responseStatus) {
-
-        if (logger.isErrorEnabled()) {
-            logger.error("Error: " + exception.getMessage());
-        }
-
-        response.type("application/json");
-        response.status(responseStatus);
-        return exception.getMessage();
     }
 
     /**

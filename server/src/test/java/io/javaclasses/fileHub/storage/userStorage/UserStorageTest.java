@@ -5,7 +5,7 @@ import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
-import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,13 +16,13 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("UserRecordStorage should: ")
-public class UserRecordStorageTest {
+public class UserStorageTest {
 
     @DisplayName("correctly add, check if present and get record.")
     @Test
     public void storageContainsUserTest() {
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         UserRecord record = createValidRecord(storage);
 
         UserId id = storage.add(record);
@@ -38,7 +38,7 @@ public class UserRecordStorageTest {
     @Test
     public void storageRemoveUserTest() {
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         UserRecord record = createValidRecord(storage);
 
         UserId id = storage.add(record);
@@ -57,7 +57,7 @@ public class UserRecordStorageTest {
     @Test
     public void storageReturnAllUserRecordsTest() {
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         int listLength = 5;
 
         for (int i = 0; i < listLength; i++) {
@@ -71,7 +71,7 @@ public class UserRecordStorageTest {
     @Test
     public void storageAddAlreadyExistedRecordTest() {
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         UserRecord record = createValidRecord(storage);
 
         storage.add(record);
@@ -92,11 +92,11 @@ public class UserRecordStorageTest {
 
         NullPointerTester tester = new NullPointerTester();
 
-        tester.testAllPublicConstructors(UserRecordStorage.class);
-        tester.testAllPublicStaticMethods(UserRecordStorage.class);
+        tester.testAllPublicConstructors(UserStorage.class);
+        tester.testAllPublicStaticMethods(UserStorage.class);
     }
 
-    private UserRecord createValidRecord(UserRecordStorage storage) {
+    private UserRecord createValidRecord(UserStorage storage) {
         LoginName login = new LoginName(generateRandomName());
         Password password = new Password("Test123456");
         UserId id = new UserId(storage.generateId());

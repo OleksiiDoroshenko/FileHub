@@ -1,7 +1,7 @@
 package io.javaclasses.fileHub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class RegistrationRouteTest {
     @DisplayName("process valid requests.")
     @Test
     public void validRequestsTest() {
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         RegistrationRoute route = new RegistrationRoute(storage);
 
         String validRequestBody = "{\"login\":\"test\", \"password\":\"test123456\"}";
@@ -57,7 +57,7 @@ public class RegistrationRouteTest {
     @ParameterizedTest
     @MethodSource("invalidRequestBody")
     public void invalidRequestsTest(String body) {
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         RegistrationRoute route = new RegistrationRoute(storage);
 
         Request request = createMockRequest(body);
@@ -79,7 +79,7 @@ public class RegistrationRouteTest {
     public void nullPointerTest() {
 
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(UserRecordStorage.class, new UserRecordStorage());
+        tester.setDefault(UserStorage.class, new UserStorage());
 
         tester.testAllPublicConstructors(RegistrationRoute.class);
         tester.testAllPublicStaticMethods(RegistrationRoute.class);

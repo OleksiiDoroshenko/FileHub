@@ -3,7 +3,7 @@ package io.javaclasses.fileHub.api.registrationProcess;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.*;
 import io.javaclasses.filehub.storage.userStorage.UserId;
-import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ public class RegistrationTest {
         Password password = new Password("Test123456");
         RegisterUser register = new RegisterUser(login, password);
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         Registration registration = new Registration(storage);
 
         UserId id = registration.handle(register);
@@ -37,7 +37,7 @@ public class RegistrationTest {
         Password password = new Password("Test123456");
         RegisterUser register = new RegisterUser(login, password);
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         Registration registration = new Registration(storage);
 
         registration.handle(register);
@@ -53,7 +53,7 @@ public class RegistrationTest {
         NullPointerTester tester = new NullPointerTester();
 
         tester.testAllPublicConstructors(Registration.class);
-        tester.testAllPublicInstanceMethods(new Registration(new UserRecordStorage()));
+        tester.testAllPublicInstanceMethods(new Registration(new UserStorage()));
         tester.testAllPublicStaticMethods(Registration.class);
     }
 }

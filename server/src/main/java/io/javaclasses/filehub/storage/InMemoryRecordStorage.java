@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.storage.userStorage;
+package io.javaclasses.filehub.storage;
 
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.storage.Record;

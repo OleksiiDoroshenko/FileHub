@@ -4,7 +4,7 @@ import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.SystemProcess;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
-import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Registration implements SystemProcess<RegisterUser, UserId> {
 
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
-    private final UserRecordStorage storage;
+    private final UserStorage storage;
 
 
     /**
@@ -26,7 +26,7 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      *
      * @param userStorage user storage.
      */
-    public Registration(UserRecordStorage userStorage) {
+    public Registration(UserStorage userStorage) {
         this.storage = checkNotNull(userStorage);
     }
 
@@ -36,7 +36,7 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      * @param registerUser user credentials.
      * @return registered user.
      * @throws UserAlreadyExistsException if user with provided in parameters
-     *                                    command already exists in {@link UserRecordStorage}.
+     *                                    command already exists in {@link UserStorage}.
      */
     @Override
     public UserId handle(RegisterUser registerUser) {

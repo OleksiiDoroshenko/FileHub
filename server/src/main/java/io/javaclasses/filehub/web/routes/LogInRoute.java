@@ -3,13 +3,14 @@ package io.javaclasses.filehub.web.routes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
-import io.javaclasses.filehub.api.registrationProcess.Registration;
-import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
-import io.javaclasses.filehub.storage.userStorage.UserId;
+import io.javaclasses.filehub.api.logInProcess.LogInUser;
+import io.javaclasses.filehub.api.logInProcess.LoggingIn;
+import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
+import io.javaclasses.filehub.storage.tokenStorage.TokenStorage;
+import io.javaclasses.filehub.storage.userStorage.TokenValue;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
-import io.javaclasses.filehub.web.deserializers.RegisterUserDeserializer;
+import io.javaclasses.filehub.web.deserializers.LogInUserDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -17,35 +18,29 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.eclipse.jetty.server.Response.*;
+import static javax.servlet.http.HttpServletResponse.*;
 
 /**
- * The {@link Route} that handles user registration request.
+ * The {@link Route} that handles user log in request.
  */
-public class RegistrationRoute implements Route {
+public class LogInRoute implements Route {
 
     private final UserStorage userStorage;
+    private final TokenStorage tokenStorage;
     private final Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
     private Gson parser;
 
     /**
-     * Returns instance of {@link RegistrationRoute} class.
+     * Returns instance of {@link LogInRoute} class.
      *
      * @param userStorage - user storage.
      */
-    public RegistrationRoute(UserStorage userStorage) {
+    public LogInRoute(UserStorage userStorage, TokenStorage tokenStorage) {
         this.userStorage = checkNotNull(userStorage);
+        this.tokenStorage = checkNotNull(tokenStorage);
         parser = createJsonParser();
     }
 
-    /**
-     * Handles new user registration request.
-     *
-     * @param request  HTTP request.
-     * @param response HTTP response.
-     * @return server response body.
-     * @throws Exception if something went wrong.
-     */
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
@@ -53,28 +48,28 @@ public class RegistrationRoute implements Route {
         checkNotNull(response);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("POST /register method was called with.");
+            logger.debug("POST /login method was called.");
         }
 
         response.type("application/json");
         try {
 
             if (logger.isDebugEnabled()) {
-                logger.debug("trying to register user" + request.body() + " .");
+                logger.debug("trying to log in user" + request.body() + " .");
             }
 
-            RegisterUser registerUser = parser.fromJson(request.body(), RegisterUser.class);
-            UserId userId = new Registration(userStorage).handle(registerUser);
+            LogInUser logInUser = parser.fromJson(request.body(), LogInUser.class);
+            TokenValue tokenValue = new LoggingIn(userStorage, tokenStorage).handle(logInUser);
 
             if (logger.isDebugEnabled()) {
-                logger.debug("User registration completed successfully. User's " + userId + ".");
+                logger.debug("User logging in completed successfully. User's token" + tokenValue.value() + ".");
             }
 
             response.status(SC_ACCEPTED);
-            return "Success";
 
+            return new Gson().toJson(tokenValue);
 
-        } catch (UserAlreadyExistsException e) {
+        } catch (UserNotRegisteredException e) {
 
             response.status(SC_CONFLICT);
             return e.getMessage();
@@ -90,13 +85,14 @@ public class RegistrationRoute implements Route {
     }
 
     /**
-     * Creates json parser for {@link RegisterUser}.
+     * Creates json parser for {@link LogInUser}.
      *
      * @return created json parser.
      */
     private Gson createJsonParser() {
         return new GsonBuilder()
-                .registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer())
+                .registerTypeAdapter(LogInUser.class, new LogInUserDeserializer())
                 .create();
     }
+
 }

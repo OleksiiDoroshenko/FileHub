@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Data structure for saving user in the {@link UserRecordStorage}.
+ * Data structure for saving user in the {@link UserStorage}.
  */
 @Immutable
 public final class UserRecord implements Record<UserId> {

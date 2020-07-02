@@ -1,17 +1,20 @@
 package io.javaclasses.filehub.api.registrationProcess;
 
+import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.SystemProcess;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Precess in the application that handles {@link RegisterUser} command.
+ * Process in the application that handles {@link RegisterUser} command.
  */
+@Immutable
 public class Registration implements SystemProcess<RegisterUser, UserId> {
 
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
@@ -21,35 +24,42 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
     /**
      * Returns instance of {@link Registration} class.
      *
-     * @param userStorage - user storage.
+     * @param userStorage user storage.
      */
     public Registration(UserRecordStorage userStorage) {
-        checkNotNull(userStorage);
-        this.storage = userStorage;
+        this.storage = checkNotNull(userStorage);
     }
 
     /**
      * Handles {@link RegisterUser} command.
      *
-     * <p>
-     * Throws {@link UserAlreadyExistsException}
-     * if user with provided in parameters command login already exists in {@link UserRecordStorage}.
-     * </p>
-     *
-     * @param registerUser - user credentials.
+     * @param registerUser user credentials.
      * @return registered user.
+     * @throws UserAlreadyExistsException if user with provided in parameters
+     *                                    command already exists in {@link UserRecordStorage}.
      */
     @Override
     public UserId handle(RegisterUser registerUser) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Trying to register new user. Login: " + registerUser.loginName().value() + ".");
+        }
+
         checkNotNull(registerUser);
 
-        logger.debug("Trying to register new user.");
-        UserRecord userRecord = new UserRecord(registerUser.userCredentials());
-        if (storage.containsUser(registerUser.userCredentials())) {
+        LoginName loginName = registerUser.loginName();
 
-            logger.error("User with the same login already exists. Login: " + registerUser.userCredentials().login() + ".");
+        if (storage.get(loginName).isPresent()) {
+
+            if (logger.isErrorEnabled()) {
+                logger.error("User with the same login already exists. Login: " + loginName.value() + ".");
+            }
+
             throw new UserAlreadyExistsException("User with the same name already exists.");
         }
-        return storage.add(userRecord);
+        String passwordHash = PasswordHasher.getHash(registerUser.password());
+        UserId id = new UserId(storage.generateId());
+        UserRecord record = new UserRecord(id, loginName, passwordHash);
+
+        return storage.add(record);
     }
 }

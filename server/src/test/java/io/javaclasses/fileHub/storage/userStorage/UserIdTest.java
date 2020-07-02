@@ -1,9 +1,9 @@
-package io.javaclasses.fileHub.api.storage;
+package io.javaclasses.fileHub.storage.userStorage;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.userStorage.UserId;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @DisplayName("UserId should: ")
 public class UserIdTest {

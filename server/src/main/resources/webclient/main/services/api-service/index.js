@@ -76,7 +76,8 @@ export default class ApiService {
    */
   async getError(response, requestedItem) {
     switch (response.status) {
-      case 401: {
+      case 401:
+      case 409:{
         let message = response.statusText;
         await response.text().then(text => {
           message = text.length > 0 ? text : message;
@@ -104,11 +105,7 @@ export default class ApiService {
         return new Error(response.statusText);
       }
       default: {
-        let message = response.statusText;
-        await response.text().then(text => {
-          message = text;
-        });
-        return new Error(message);
+        return new Error(response.statusText);
       }
     }
   }

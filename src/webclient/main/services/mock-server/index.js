@@ -65,6 +65,10 @@ export default class MockServer {
 
     fetchMock
         .post('/register', ((url, request) => {
+        return  {
+                               status: 401,
+                               body: 'User with this login already exists.',
+                             };
           const userData = new UserData(request.body.login, request.body.password);
           if (!this.isLoginRegistered(userData) && userData.password.length >= 10) {
             this.users[userData.login] = userData.password;

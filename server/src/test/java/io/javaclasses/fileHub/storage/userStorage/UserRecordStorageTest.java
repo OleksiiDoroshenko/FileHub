@@ -1,4 +1,4 @@
-package io.javaclasses.fileHub.storage;
+package io.javaclasses.fileHub.storage.userStorage;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
@@ -76,7 +76,8 @@ public class UserRecordStorageTest {
 
         storage.add(record);
 
-        UserRecord recordCopy = new UserRecord(storage.generateId(), record.loginName(), "password");
+        UserId id = new UserId(storage.generateId());
+        UserRecord recordCopy = new UserRecord(id, record.loginName(), "password");
 
         storage.add(recordCopy);
 
@@ -98,7 +99,8 @@ public class UserRecordStorageTest {
     private UserRecord createValidRecord(UserRecordStorage storage) {
         LoginName login = new LoginName(generateRandomName());
         Password password = new Password("Test123456");
-        return new UserRecord(storage.generateId(), login, password.value());
+        UserId id = new UserId(storage.generateId());
+        return new UserRecord(id, login, password.value());
     }
 
     private String generateRandomName() {

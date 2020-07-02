@@ -20,15 +20,4 @@ public class UserRecordStorage extends InMemoryRecordStorage<UserRecord, UserId>
                 item.loginName().value().equals(loginName.value())).findAny();
     }
 
-    /**
-     * Generates {@link UserId}.
-     *
-     * @return user id.
-     */
-    public synchronized UserId generateId() {
-
-        String id = UUID.randomUUID().toString();
-        return new UserId(id);
-    }
-
 }

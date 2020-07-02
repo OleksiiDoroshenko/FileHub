@@ -12,6 +12,8 @@ import java.util.*;
 /**
  * An abstract in-memory storage.
  *
+ * <p>As the internal storage uses standard synchronized {@link HashMap}.</p>
+ *
  * @param <R> specific {@link Record}.
  * @param <I> specific {@link RecordId}.
  */
@@ -83,6 +85,15 @@ public abstract class InMemoryRecordStorage<R extends Record<I>, I extends Recor
     public boolean contains(I id) {
         return storage.keySet().stream().anyMatch(key ->
                 key.value().equals(id.value()));
+    }
+
+    /**
+     * Generates unique identifier.
+     *
+     * @return identifier.
+     */
+    public synchronized String generateId() {
+        return UUID.randomUUID().toString();
     }
 
 }

@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

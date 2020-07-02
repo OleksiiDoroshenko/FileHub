@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.web;
+package io.javaclasses.filehub.web.deserializers;
 
 import com.google.gson.*;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;

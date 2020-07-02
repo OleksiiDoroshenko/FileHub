@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.web;
+package io.javaclasses.filehub.web.routes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,6 +8,8 @@ import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import io.javaclasses.filehub.web.InvalidUserCredentialsException;
+import io.javaclasses.filehub.web.deserializers.RegisterUserDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -73,8 +75,7 @@ public class RegistrationRoute implements Route {
         } catch (UserAlreadyExistsException e) {
 
             return createErrorResponse(response, e, SC_UNAUTHORIZED);
-        } catch (InvalidUserCredentialsException | JsonParseException e) {
-
+        } catch (Exception e) {
             return createErrorResponse(response, e, SC_BAD_REQUEST);
         }
     }

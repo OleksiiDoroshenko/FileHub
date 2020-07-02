@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.web;
 
 /**
- * An exception that will be thrown when user data is invalid.
+ * An exception that is thrown when user data is invalid.
  */
 public class InvalidUserCredentialsException extends RuntimeException {
 

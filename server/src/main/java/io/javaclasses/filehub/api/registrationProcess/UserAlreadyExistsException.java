@@ -3,7 +3,7 @@ package io.javaclasses.filehub.api.registrationProcess;
 import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
 
 /**
- * An exception that will be thrown when user already exists in the {@link UserRecordStorage}.
+ * An exception that is thrown when the user already exists in the {@link UserRecordStorage}.
  */
 public class UserAlreadyExistsException extends RuntimeException {
     /**

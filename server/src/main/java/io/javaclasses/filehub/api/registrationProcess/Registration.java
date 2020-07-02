@@ -57,7 +57,8 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
             throw new UserAlreadyExistsException("User with the same name already exists.");
         }
         String passwordHash = PasswordHasher.getHash(registerUser.password());
-        UserRecord record = new UserRecord(storage.generateId(), loginName, passwordHash);
+        UserId id = new UserId(storage.generateId());
+        UserRecord record = new UserRecord(id, loginName, passwordHash);
 
         return storage.add(record);
     }

@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.storage.tokenStorage.TokenStorage;
+import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.routes.LogInRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
@@ -18,7 +18,7 @@ public class WebApplication {
     private static final Logger logger = LoggerFactory.getLogger(WebApplication.class);
     private static final int PORT = 8080;
     private static UserStorage userStorage;
-    private static TokenStorage tokenStorage;
+    private static LoggedInUsersStorage loggedInUsersStorage;
 
     public static void main(String[] args) {
         new WebApplication().start();
@@ -39,11 +39,11 @@ public class WebApplication {
 
     private static void initStorage() {
         userStorage = new UserStorage();
-        tokenStorage = new TokenStorage();
+        loggedInUsersStorage = new LoggedInUsersStorage();
     }
 
     private static void registerRoutes() {
         post("/register", new RegistrationRoute(userStorage));
-        post("/login", new LogInRoute(userStorage, tokenStorage));
+        post("/login", new LogInRoute(userStorage, loggedInUsersStorage));
     }
 }

@@ -4,8 +4,7 @@ import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
-import io.javaclasses.filehub.storage.tokenStorage.TokenStorage;
-import io.javaclasses.filehub.storage.tokenStorage.TokenValue;
+import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
@@ -32,8 +31,8 @@ public class LogInRouteTest {
     @Test
     public void validRequestsTest() {
         UserStorage userStorage = new UserStorage();
-        TokenStorage tokenStorage = new TokenStorage();
-        LogInRoute route = new LogInRoute(userStorage, tokenStorage);
+        LoggedInUsersStorage loggedInUsersStorage = new LoggedInUsersStorage();
+        LogInRoute route = new LogInRoute(userStorage, loggedInUsersStorage);
 
         String loginName = "test";
         String password = "test123456";
@@ -74,8 +73,8 @@ public class LogInRouteTest {
     @MethodSource("invalidRequestBody")
     public void invalidRequestsTest(String body) {
         UserStorage userStorage = new UserStorage();
-        TokenStorage tokenStorage = new TokenStorage();
-        LogInRoute route = new LogInRoute(userStorage, tokenStorage);
+        LoggedInUsersStorage loggedInUsersStorage = new LoggedInUsersStorage();
+        LogInRoute route = new LogInRoute(userStorage, loggedInUsersStorage);
 
         Request request = createMockRequest(body);
         Response response = createMockResponse();
@@ -97,7 +96,7 @@ public class LogInRouteTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(UserStorage.class, new UserStorage());
-        tester.setDefault(TokenStorage.class, new TokenStorage());
+        tester.setDefault(LoggedInUsersStorage.class, new LoggedInUsersStorage());
 
         tester.testAllPublicConstructors(LogInRoute.class);
         tester.testAllPublicStaticMethods(LogInRoute.class);

@@ -6,8 +6,8 @@ import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.logInProcess.LogInUser;
 import io.javaclasses.filehub.api.logInProcess.LoggingIn;
 import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
-import io.javaclasses.filehub.storage.tokenStorage.TokenStorage;
-import io.javaclasses.filehub.storage.tokenStorage.TokenValue;
+import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
+import io.javaclasses.filehub.storage.tokenStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import io.javaclasses.filehub.web.deserializers.LogInUserDeserializer;
@@ -27,19 +27,18 @@ import static javax.servlet.http.HttpServletResponse.*;
 public class LogInRoute implements Route {
 
     private final UserStorage userStorage;
-    private final TokenStorage tokenStorage;
+    private final LoggedInUsersStorage loggedInUsersStorage;
     private final Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
-    private Gson parser;
+    private final Gson parser = createJsonParser();
 
     /**
      * Returns instance of {@link LogInRoute} class.
      *
      * @param userStorage - user storage.
      */
-    public LogInRoute(UserStorage userStorage, TokenStorage tokenStorage) {
+    public LogInRoute(UserStorage userStorage, LoggedInUsersStorage loggedInUsersStorage) {
         this.userStorage = checkNotNull(userStorage);
-        this.tokenStorage = checkNotNull(tokenStorage);
-        parser = createJsonParser();
+        this.loggedInUsersStorage = checkNotNull(loggedInUsersStorage);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class LogInRoute implements Route {
             }
 
             LogInUser logInUser = parser.fromJson(request.body(), LogInUser.class);
-            TokenValue tokenValue = new LoggingIn(userStorage, tokenStorage).handle(logInUser);
+            Token tokenValue = new LoggingIn(userStorage, loggedInUsersStorage).handle(logInUser);
 
             if (logger.isDebugEnabled()) {
                 logger.debug("User logging in completed successfully. User's token" + tokenValue.value() + ".");

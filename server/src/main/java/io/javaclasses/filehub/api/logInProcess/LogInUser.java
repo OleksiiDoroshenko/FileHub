@@ -15,7 +15,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Immutable
 public final class LogInUser implements Command {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogInUser.class);
     private final LoginName loginName;
     private final Password password;
 
@@ -36,5 +35,13 @@ public final class LogInUser implements Command {
 
     public Password password() {
         return password;
+    }
+
+    @Override
+    public String toString() {
+        return "LogInUser{" +
+                "loginName=" + loginName.value() +
+                ", password=" + password.value() +
+                '}';
     }
 }

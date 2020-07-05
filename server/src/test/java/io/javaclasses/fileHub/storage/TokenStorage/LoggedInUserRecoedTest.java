@@ -4,11 +4,14 @@ import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.tokenStorage.LoggedIdUserRecord;
 import io.javaclasses.filehub.storage.tokenStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserId;
+import io.javaclasses.filehub.web.ServerTimeZone;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Token should: ")
-public class TokenTest {
+import java.time.LocalDate;
+
+@DisplayName("TokenValue should: ")
+public class LoggedInUserRecoedTest {
 
     @DisplayName("throw exception if parameters are null.")
     @Test
@@ -16,7 +19,11 @@ public class TokenTest {
 
         NullPointerTester tester = new NullPointerTester();
 
-        tester.testAllPublicConstructors(Token.class);
-        tester.testAllPublicStaticMethods(Token.class);
+        tester.setDefault(Token.class, new Token(""));
+        tester.setDefault(UserId.class, new UserId(""));
+        tester.setDefault(LocalDate.class, LocalDate.now(ServerTimeZone.get()));
+
+        tester.testAllPublicConstructors(LoggedIdUserRecord.class);
+        tester.testAllPublicStaticMethods(LoggedIdUserRecord.class);
     }
 }

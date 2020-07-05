@@ -6,19 +6,19 @@ import io.javaclasses.filehub.storage.RecordId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Identifier for {@link TokenRecord}.
+ * Token for {@link LoggedIdUserRecord}.
  */
 @Immutable
-public final class TokenId implements RecordId {
+public final class Token implements RecordId {
 
     private final String value;
 
     /**
-     * Returns instance of {@link TokenId} class.
+     * Returns instance of {@link Token} class.
      *
      * @param value token value.
      */
-    public TokenId(String value) {
+    public Token(String value) {
         this.value = checkNotNull(value);
     }
 

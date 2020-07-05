@@ -5,16 +5,18 @@ import io.javaclasses.filehub.api.SystemProcess;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
-import io.javaclasses.filehub.storage.tokenStorage.TokenId;
-import io.javaclasses.filehub.storage.tokenStorage.TokenRecord;
-import io.javaclasses.filehub.storage.tokenStorage.TokenStorage;
-import io.javaclasses.filehub.storage.tokenStorage.TokenValue;
+import io.javaclasses.filehub.storage.tokenStorage.LoggedIdUserRecord;
+import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
+import io.javaclasses.filehub.storage.tokenStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
+import io.javaclasses.filehub.web.ServerTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -23,22 +25,22 @@ import static java.lang.String.format;
 /**
  * Process in the application that handles {@link LogInUser} command.
  */
-public class LoggingIn implements SystemProcess<LogInUser, TokenValue> {
+public class LoggingIn implements SystemProcess<LogInUser, Token> {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggingIn.class);
-
+    private static final Period EXPIRATION_INTERVAL = Period.ofDays(3);
     private final UserStorage userStorage;
-    private final TokenStorage tokenStorage;
+    private final LoggedInUsersStorage loggedInUsersStorage;
 
     /**
      * Returns instance of {@link LoggingIn} class.
      *
-     * @param userStorage  storage with registered users.
-     * @param tokenStorage storage with tokens for registered users.
+     * @param userStorage          storage with registered users.
+     * @param loggedInUsersStorage storage with tokens for registered users.
      */
-    public LoggingIn(UserStorage userStorage, TokenStorage tokenStorage) {
+    public LoggingIn(UserStorage userStorage, LoggedInUsersStorage loggedInUsersStorage) {
         this.userStorage = checkNotNull(userStorage);
-        this.tokenStorage = checkNotNull(tokenStorage);
+        this.loggedInUsersStorage = checkNotNull(loggedInUsersStorage);
     }
 
     /**
@@ -50,8 +52,9 @@ public class LoggingIn implements SystemProcess<LogInUser, TokenValue> {
      *                                         logIn already exists in {@link UserStorage}.
      * @throws InvalidUserCredentialsException if user credentials are invalid.
      */
+    @SuppressWarnings("LocalDateTemporalAmount")
     @Override
-    public TokenValue handle(LogInUser logIn) {
+    public Token handle(LogInUser logIn) {
         LoginName loginName = logIn.loginName();
         Password password = logIn.password();
 
@@ -81,12 +84,15 @@ public class LoggingIn implements SystemProcess<LogInUser, TokenValue> {
             throw new InvalidUserCredentialsException("Wrong login or password.");
         }
 
-        TokenRecord token = new TokenRecord(new TokenId(tokenStorage.generateId()), user.id());
-        tokenStorage.add(token);
+        LocalDate expirationDate = LocalDate.now(ServerTimeZone.get()).plus(EXPIRATION_INTERVAL);
+        Token token = new Token(loggedInUsersStorage.generateId());
+        LoggedIdUserRecord loggedIdUser = new LoggedIdUserRecord(token, user.id(), expirationDate);
+        loggedInUsersStorage.add(loggedIdUser);
 
         if (logger.isDebugEnabled()) {
-            logger.debug(format("New token was added. Token id: %s, User id: %s.", token.id(), user.id()));
+            logger.debug(format("New loggedIdUser was added. Token id: %s, User id: %s.",
+                    loggedIdUser.id().value(), user.id()));
         }
-        return token.token();
+        return loggedIdUser.id();
     }
 }

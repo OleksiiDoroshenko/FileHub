@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.storage.tokenStorage;
+package io.javaclasses.filehub.storage.loggedInUsersStorage;
 
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
@@ -6,7 +6,7 @@ import io.javaclasses.filehub.storage.RecordId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Token for {@link LoggedIdUserRecord}.
+ * Token for {@link LoggedInUserRecord}.
  */
 @Immutable
 public final class Token implements RecordId {

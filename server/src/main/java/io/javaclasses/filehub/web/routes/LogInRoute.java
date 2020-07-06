@@ -6,8 +6,8 @@ import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.logInProcess.LogInUser;
 import io.javaclasses.filehub.api.logInProcess.LoggingIn;
 import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
-import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
-import io.javaclasses.filehub.storage.tokenStorage.Token;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
 import io.javaclasses.filehub.web.deserializers.LogInUserDeserializer;
@@ -29,9 +29,9 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
  */
 public class LogInRoute implements Route {
 
+    private final static Logger logger = LoggerFactory.getLogger(LogInRoute.class);
     private final UserStorage userStorage;
     private final LoggedInUsersStorage loggedInUsersStorage;
-    private final Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
     private final Gson parser = createJsonParser();
 
     /**
@@ -44,6 +44,14 @@ public class LogInRoute implements Route {
         this.loggedInUsersStorage = checkNotNull(loggedInUsersStorage);
     }
 
+    /**
+     * Handles new user log in request.
+     *
+     * @param request  HTTP request.
+     * @param response HTTP response.
+     * @return server response body.
+     * @throws Exception if something went wrong.
+     */
     @Override
     public Object handle(Request request, Response response) {
 

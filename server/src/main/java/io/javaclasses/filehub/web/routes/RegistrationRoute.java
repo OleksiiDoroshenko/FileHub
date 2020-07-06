@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
+import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
@@ -24,17 +25,20 @@ import static org.eclipse.jetty.server.Response.*;
  */
 public class RegistrationRoute implements Route {
 
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
     private final UserStorage userStorage;
-    private final Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
-    private Gson parser;
+    private final FolderStorage folderStorage;
+    private final Gson parser;
 
     /**
      * Returns instance of {@link RegistrationRoute} class.
      *
-     * @param userStorage - user storage.
+     * @param userStorage   user storage.
+     * @param folderStorage folder storage.
      */
-    public RegistrationRoute(UserStorage userStorage) {
+    public RegistrationRoute(UserStorage userStorage, FolderStorage folderStorage) {
         this.userStorage = checkNotNull(userStorage);
+        this.folderStorage = checkNotNull(folderStorage);
         parser = createJsonParser();
     }
 
@@ -64,7 +68,7 @@ public class RegistrationRoute implements Route {
             }
 
             RegisterUser registerUser = parser.fromJson(request.body(), RegisterUser.class);
-            UserId userId = new Registration(userStorage).handle(registerUser);
+            UserId userId = new Registration(userStorage, folderStorage).handle(registerUser);
 
             if (logger.isDebugEnabled()) {
                 logger.debug("User registration completed successfully. User's " + userId + ".");

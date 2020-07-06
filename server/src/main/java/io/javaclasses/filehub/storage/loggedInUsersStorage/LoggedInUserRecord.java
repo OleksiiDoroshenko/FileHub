@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.storage.tokenStorage;
+package io.javaclasses.filehub.storage.loggedInUsersStorage;
 
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.Record;
@@ -12,20 +12,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Data structure for saving token in the {@link LoggedInUsersStorage}.
  */
 @Immutable
-public final class LoggedIdUserRecord implements Record<Token> {
+public final class LoggedInUserRecord implements Record<Token> {
 
     private final Token token;
     private final UserId userId;
     private final LocalDate expirationDate;
 
     /**
-     * Returns instance of {@link LoggedIdUserRecord} class.
+     * Returns instance of {@link LoggedInUserRecord} class.
      *
      * @param token          token value.
      * @param userId         user token.
      * @param expirationDate time for token expiration.
      */
-    public LoggedIdUserRecord(Token token, UserId userId, LocalDate expirationDate) {
+    public LoggedInUserRecord(Token token, UserId userId, LocalDate expirationDate) {
         this.token = checkNotNull(token);
         this.userId = checkNotNull(userId);
         this.expirationDate = checkNotNull(expirationDate);

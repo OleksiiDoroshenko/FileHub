@@ -23,7 +23,7 @@ export default class ApiService {
       if (response.ok) {
         const result = response.json();
         return await result.then((body) => {
-          localStorage.setItem('token', body.token);
+          localStorage.setItem('token', body.value);
         });
       }
       throw await this.getError(response, 'User');

@@ -1,13 +1,21 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
+import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.web.routes.GetRootFolderRoute;
 import io.javaclasses.filehub.web.routes.LogInRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.Filter;
 
-import static spark.Spark.*;
+import static spark.Spark.before;
+import static spark.Spark.get;
+import static spark.Spark.port;
+import static spark.Spark.post;
+import static spark.Spark.staticFiles;
 
 /**
  * Represents FileHub web application context.
@@ -18,7 +26,9 @@ public class WebApplication {
     private static final Logger logger = LoggerFactory.getLogger(WebApplication.class);
     private static final int PORT = 8080;
     private static UserStorage userStorage;
+    private static FolderStorage folderStorage;
     private static LoggedInUsersStorage loggedInUsersStorage;
+    private static ThreadLocal<LoggedInUserRecord> loggedInUser;
 
     public static void main(String[] args) {
         new WebApplication().start();
@@ -40,10 +50,17 @@ public class WebApplication {
     private static void initStorage() {
         userStorage = new UserStorage();
         loggedInUsersStorage = new LoggedInUsersStorage();
+        loggedInUser = new ThreadLocal<>();
+        folderStorage = new FolderStorage();
     }
 
     private static void registerRoutes() {
-        post("/register", new RegistrationRoute(userStorage));
+        Filter filter = new AuthenticationFilter(loggedInUsersStorage, loggedInUser);
+
+        post("/register", new RegistrationRoute(userStorage, folderStorage));
         post("/login", new LogInRoute(userStorage, loggedInUsersStorage));
+
+        before("/folder/root", filter);
+        get("/folder/root", new GetRootFolderRoute(userStorage, loggedInUser));
     }
 }

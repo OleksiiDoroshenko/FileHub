@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.storage.tokenStorage;
+package io.javaclasses.filehub.storage.loggedInUsersStorage;
 
 import io.javaclasses.filehub.storage.InMemoryRecordStorage;
 import io.javaclasses.filehub.web.ServerTimeZone;
@@ -7,9 +7,9 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 /**
- * Storage for saving {@link LoggedIdUserRecord}.
+ * Storage for saving {@link LoggedInUserRecord}.
  */
-public class LoggedInUsersStorage extends InMemoryRecordStorage<LoggedIdUserRecord, Token> {
+public class LoggedInUsersStorage extends InMemoryRecordStorage<LoggedInUserRecord, Token> {
 
     /**
      * Returns token record by its value.
@@ -20,8 +20,8 @@ public class LoggedInUsersStorage extends InMemoryRecordStorage<LoggedIdUserReco
      * @return token record.
      */
     @Override
-    public Optional<LoggedIdUserRecord> get(Token token) {
-        Optional<LoggedIdUserRecord> record = all().stream().filter(item ->
+    public Optional<LoggedInUserRecord> get(Token token) {
+        Optional<LoggedInUserRecord> record = all().stream().filter(item ->
                 item.id().value().equals(token.value())).findAny();
 
         if (!record.isPresent()) {
@@ -41,7 +41,7 @@ public class LoggedInUsersStorage extends InMemoryRecordStorage<LoggedIdUserReco
      * @param record record to be checked.
      * @return true if it is expired / folder id it is not..
      */
-    private boolean isTokenExpired(LoggedIdUserRecord record) {
+    private boolean isTokenExpired(LoggedInUserRecord record) {
         return record.expirationDate().isBefore(LocalDate.now(ServerTimeZone.get()));
     }
 }

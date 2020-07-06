@@ -4,9 +4,9 @@ import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.SystemProcess;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
-import io.javaclasses.filehub.storage.tokenStorage.LoggedIdUserRecord;
-import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
-import io.javaclasses.filehub.storage.tokenStorage.Token;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
@@ -85,7 +85,7 @@ public class LoggingIn implements SystemProcess<LogInUser, Token> {
 
         LocalDate expirationDate = LocalDate.now(ServerTimeZone.get()).plus(EXPIRATION_INTERVAL);
         Token token = new Token(loggedInUsersStorage.generateId());
-        LoggedIdUserRecord loggedIdUser = new LoggedIdUserRecord(token, user.id(), expirationDate);
+        LoggedInUserRecord loggedIdUser = new LoggedInUserRecord(token, user.id(), expirationDate);
         loggedInUsersStorage.add(loggedIdUser);
 
         if (logger.isDebugEnabled()) {

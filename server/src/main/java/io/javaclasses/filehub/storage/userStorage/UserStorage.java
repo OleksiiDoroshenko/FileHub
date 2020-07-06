@@ -3,7 +3,8 @@ package io.javaclasses.filehub.storage.userStorage;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.storage.InMemoryRecordStorage;
 
-import java.util.*;
+import java.util.Optional;
+
 
 /**
  * Storage for saving {@link UserRecord}.
@@ -11,7 +12,7 @@ import java.util.*;
 public class UserStorage extends InMemoryRecordStorage<UserRecord, UserId> {
 
     /**
-     * Returns {@link Optional<UserRecord>} by {@link LoginName}.
+     * Returns {@link Optional <UserRecord>} by {@link LoginName}.
      *
      * @param loginName user login name.
      * @return {@link Optional<UserRecord>}.

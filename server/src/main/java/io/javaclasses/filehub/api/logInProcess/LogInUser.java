@@ -4,8 +4,6 @@ import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.Command;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

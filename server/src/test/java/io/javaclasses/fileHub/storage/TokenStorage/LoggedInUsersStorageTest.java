@@ -9,12 +9,12 @@ import io.javaclasses.filehub.web.ServerTimeZone;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @DisplayName("TokenStorage should: ")
 public class LoggedInUsersStorageTest {

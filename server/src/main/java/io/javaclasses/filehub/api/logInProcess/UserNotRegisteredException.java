@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.api.logInProcess;
 
-import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 
 /**
@@ -9,7 +8,7 @@ import io.javaclasses.filehub.storage.userStorage.UserStorage;
 public class UserNotRegisteredException extends RuntimeException {
 
     /**
-     * Returns instance of {@link UserAlreadyExistsException}.
+     * Returns instance of {@link UserNotRegisteredException}.
      *
      * @param message error message that describes what went wrong.
      */

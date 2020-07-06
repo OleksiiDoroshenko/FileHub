@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 @DisplayName("TokenValue should: ")
-public class LoggedInUserRecoedTest {
+public class LoggedInUserRecordTest {
 
     @DisplayName("throw exception if parameters are null.")
     @Test

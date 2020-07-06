@@ -4,7 +4,6 @@ import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.SystemProcess;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
-import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
 import io.javaclasses.filehub.storage.tokenStorage.LoggedIdUserRecord;
 import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.tokenStorage.Token;
@@ -48,8 +47,8 @@ public class LoggingIn implements SystemProcess<LogInUser, Token> {
      *
      * @param logIn user credentials.
      * @return user session token.
-     * @throws UserAlreadyExistsException      if user with provided in parameters
-     *                                         logIn already exists in {@link UserStorage}.
+     * @throws UserNotRegisteredException      if user with provided in parameters
+     *                                         does not exists in {@link UserStorage}.
      * @throws InvalidUserCredentialsException if user credentials are invalid.
      */
     @SuppressWarnings("LocalDateTemporalAmount")

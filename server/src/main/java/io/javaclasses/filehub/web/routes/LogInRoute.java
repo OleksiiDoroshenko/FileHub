@@ -19,7 +19,10 @@ import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
-import static javax.servlet.http.HttpServletResponse.*;
+import static javax.servlet.http.HttpServletResponse.SC_ACCEPTED;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
+import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * The {@link Route} that handles user log in request.
@@ -58,8 +61,8 @@ public class LogInRoute implements Route {
                 logger.debug("trying to log in user" + request.body() + " .");
             }
 
-            LogInUser logInUser = parser.fromJson(request.body(), LogInUser.class);
-            Token tokenValue = new LoggingIn(userStorage, loggedInUsersStorage).handle(logInUser);
+            LogInUser logInUser = parseCommand(request);
+            Token tokenValue = processCommand(logInUser);
 
             if (logger.isDebugEnabled()) {
                 logger.debug("User logging in completed successfully. User's token" + tokenValue.value() + ".");
@@ -67,7 +70,7 @@ public class LogInRoute implements Route {
 
             response.status(SC_ACCEPTED);
 
-            return new Gson().toJson(tokenValue);
+            return parser.toJson(tokenValue);
 
         } catch (UserNotRegisteredException e) {
 
@@ -94,6 +97,14 @@ public class LogInRoute implements Route {
             response.status(SC_INTERNAL_SERVER_ERROR);
             return "Internal server error.";
         }
+    }
+
+    private Token processCommand(LogInUser logInUser) {
+        return new LoggingIn(userStorage, loggedInUsersStorage).handle(logInUser);
+    }
+
+    private LogInUser parseCommand(Request request) {
+        return parser.fromJson(request.body(), LogInUser.class);
     }
 
     /**

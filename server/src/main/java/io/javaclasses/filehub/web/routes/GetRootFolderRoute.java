@@ -54,8 +54,8 @@ public class GetRootFolderRoute implements Route {
         checkNotNull(response);
 
         if (logger.isInfoEnabled()) {
-            logger.info(format("Request: %s with body: %s and token: %s.",
-                    request.pathInfo(), request.body(), request.headers("token")));
+            logger.info(format("Request: %s with body: %s.",
+                    request.pathInfo(), request.body()));
         }
 
         response.type("application/json");

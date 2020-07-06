@@ -50,7 +50,6 @@ public class LogInRoute implements Route {
      * @param request  HTTP request.
      * @param response HTTP response.
      * @return server response body.
-     * @throws Exception if something went wrong.
      */
     @Override
     public Object handle(Request request, Response response) {

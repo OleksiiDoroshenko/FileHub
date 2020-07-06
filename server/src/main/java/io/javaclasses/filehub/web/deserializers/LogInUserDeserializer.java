@@ -4,7 +4,6 @@ import com.google.gson.*;
 import io.javaclasses.filehub.api.logInProcess.LogInUser;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
-import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +45,7 @@ public class LogInUserDeserializer implements JsonDeserializer<LogInUser> {
                 logger.debug("Deserialization completed. Object: " + command.toString() + ".");
             }
             return command;
-        } catch (Exception e) {
+        } catch (NullPointerException | ClassCastException e) {
             throw new JsonParseException("Can not parse request body.");
         }
     }

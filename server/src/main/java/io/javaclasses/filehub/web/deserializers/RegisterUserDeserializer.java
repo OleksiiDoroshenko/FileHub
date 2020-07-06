@@ -44,7 +44,7 @@ public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> 
                 logger.debug("Deserialization completed. Object: " + command.toString() + ".");
             }
             return command;
-        } catch (Exception e) {
+        }catch (NullPointerException | ClassCastException e) {
             throw new JsonParseException("Can not parse request body.");
         }
     }

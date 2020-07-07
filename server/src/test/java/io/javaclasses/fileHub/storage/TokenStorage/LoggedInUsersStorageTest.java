@@ -1,9 +1,9 @@
 package io.javaclasses.fileHub.storage.TokenStorage;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.tokenStorage.Token;
-import io.javaclasses.filehub.storage.tokenStorage.LoggedIdUserRecord;
-import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.web.ServerTimeZone;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ public class LoggedInUsersStorageTest {
         LoggedInUsersStorage storage = new LoggedInUsersStorage();
         Token token = addValidRecordToStorage(storage);
 
-        Optional<LoggedIdUserRecord> optional = storage.get(token);
+        Optional<LoggedInUserRecord> optional = storage.get(token);
         assertTrue(optional.isPresent(),
                 "TokenStorage can not find saved TokenRecord.");
     }
@@ -34,7 +34,7 @@ public class LoggedInUsersStorageTest {
     @SuppressWarnings("LocalDateTemporalAmount")
     private Token addValidRecordToStorage(LoggedInUsersStorage storage) {
         Token id = new Token("test");
-        LoggedIdUserRecord record = new LoggedIdUserRecord(id, new UserId("test"),
+        LoggedInUserRecord record = new LoggedInUserRecord(id, new UserId("test"),
                 LocalDate.now(ServerTimeZone.get()).plus(Period.ofDays(3)));
         return storage.add(record);
     }
@@ -45,7 +45,7 @@ public class LoggedInUsersStorageTest {
         LoggedInUsersStorage storage = new LoggedInUsersStorage();
         Token token = addRecordWithExpiredToken(storage);
 
-        Optional<LoggedIdUserRecord> optional = storage.get(token);
+        Optional<LoggedInUserRecord> optional = storage.get(token);
         assertTrue(!optional.isPresent(),
                 "TokenStorage returns record with expired token, but should not.");
     }
@@ -53,7 +53,7 @@ public class LoggedInUsersStorageTest {
     @SuppressWarnings("LocalDateTemporalAmount")
     private Token addRecordWithExpiredToken(LoggedInUsersStorage storage) {
         Token id = new Token("test");
-        LoggedIdUserRecord record = new LoggedIdUserRecord(id, new UserId("test"),
+        LoggedInUserRecord record = new LoggedInUserRecord(id, new UserId("test"),
                 LocalDate.now(ServerTimeZone.get()).minus(Period.ofDays(3)));
         return storage.add(record);
     }

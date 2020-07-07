@@ -1,7 +1,6 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
-import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.routes.GetRootFolderRoute;
@@ -28,7 +27,6 @@ public class WebApplication {
     private static UserStorage userStorage;
     private static FolderStorage folderStorage;
     private static LoggedInUsersStorage loggedInUsersStorage;
-    private static ThreadLocal<LoggedInUserRecord> loggedInUser;
 
     public static void main(String[] args) {
         new WebApplication().start();
@@ -50,17 +48,16 @@ public class WebApplication {
     private static void initStorage() {
         userStorage = new UserStorage();
         loggedInUsersStorage = new LoggedInUsersStorage();
-        loggedInUser = new ThreadLocal<>();
         folderStorage = new FolderStorage();
     }
 
     private static void registerRoutes() {
-        Filter filter = new AuthenticationFilter(loggedInUsersStorage, loggedInUser);
+        Filter filter = new AuthenticationFilter(loggedInUsersStorage);
 
         post("/register", new RegistrationRoute(userStorage, folderStorage));
         post("/login", new LogInRoute(userStorage, loggedInUsersStorage));
 
         before("/folder/root", filter);
-        get("/folder/root", new GetRootFolderRoute(userStorage, loggedInUser));
+        get("/folder/root", new GetRootFolderRoute(userStorage));
     }
 }

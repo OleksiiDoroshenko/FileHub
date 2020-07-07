@@ -34,7 +34,7 @@ public class AuthenticationFilterTest {
         Request request = createMockRequest(record.id().value());
         Response response = createMockResponse();
 
-        AuthenticationFilter filter = new AuthenticationFilter(loggedInUsersStorage, loggedInUser);
+        AuthenticationFilter filter = new AuthenticationFilter(loggedInUsersStorage);
 
         try {
             filter.handle(request, response);
@@ -56,7 +56,7 @@ public class AuthenticationFilterTest {
         Request request = createMockRequest(record.id().value());
         Response response = createMockResponse();
 
-        AuthenticationFilter filter = new AuthenticationFilter(loggedInUsersStorage, loggedInUser);
+        AuthenticationFilter filter = new AuthenticationFilter(loggedInUsersStorage);
 
         try {
             assertThrows(HaltException.class, () -> {

@@ -8,6 +8,7 @@ import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.web.CurrentUser;
 import io.javaclasses.filehub.web.ServerTimeZone;
 import io.javaclasses.filehub.web.routes.GetRootFolderRoute;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -31,14 +33,13 @@ public class GetRootFolderRouteTest {
     public void validRequestsTest() {
 
         UserStorage userStorage = new UserStorage();
-        ThreadLocal<LoggedInUserRecord> loggedInUser = new ThreadLocal<>();
 
         FolderId rootId = new FolderId("Test");
 
         LoggedInUserRecord userRecord = createAndAddLoggedInUser(userStorage, rootId);
-        loggedInUser.set(userRecord);
+        CurrentUser.set(userRecord);
 
-        GetRootFolderRoute route = new GetRootFolderRoute(userStorage, loggedInUser);
+        GetRootFolderRoute route = new GetRootFolderRoute(userStorage);
 
         Request request = createMockRequest();
         Response response = createMockResponse();
@@ -62,12 +63,11 @@ public class GetRootFolderRouteTest {
     public void invalidRequestsTest() {
 
         UserStorage userStorage = new UserStorage();
-        ThreadLocal<LoggedInUserRecord> loggedInUser = new ThreadLocal<>();
 
         LoggedInUserRecord userRecord = createLoggedInUserRecord();
-        loggedInUser.set(userRecord);
+        CurrentUser.set(userRecord);
 
-        GetRootFolderRoute route = new GetRootFolderRoute(userStorage, loggedInUser);
+        GetRootFolderRoute route = new GetRootFolderRoute(userStorage);
 
         Request request = createMockRequest();
         Response response = createMockResponse();
@@ -75,7 +75,7 @@ public class GetRootFolderRouteTest {
         try {
 
             route.handle(request, response);
-            assertEquals(SC_CONFLICT, response.status(),
+            assertEquals(SC_UNAUTHORIZED, response.status(),
                     "Handle method does not throws exception when " +
                             "request is invalid but return specific status.");
 

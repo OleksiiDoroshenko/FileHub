@@ -23,19 +23,15 @@ public class AuthenticationFilter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
     private final LoggedInUsersStorage loggedInUsersStorage;
-    private final ThreadLocal<LoggedInUserRecord> loggedInUser;
 
     /**
      * Returns instance of {@link AuthenticationFilter} class.
+     *  @param loggedInUsersStorage logged in user storage.
      *
-     * @param loggedInUsersStorage logged in user storage.
-     * @param loggedInUser         logged in user.
      */
-    public AuthenticationFilter(LoggedInUsersStorage loggedInUsersStorage,
-                                ThreadLocal<LoggedInUserRecord> loggedInUser) {
+    public AuthenticationFilter(LoggedInUsersStorage loggedInUsersStorage) {
 
         this.loggedInUsersStorage = checkNotNull(loggedInUsersStorage);
-        this.loggedInUser = checkNotNull(loggedInUser);
     }
 
     /**
@@ -72,7 +68,7 @@ public class AuthenticationFilter implements Filter {
                         userRecord.get().userId()));
             }
 
-            loggedInUser.set(userRecord.get());
+            CurrentUser.set(userRecord.get());
 
         } catch (NullPointerException e) {
 

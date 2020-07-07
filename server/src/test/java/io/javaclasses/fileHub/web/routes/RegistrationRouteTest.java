@@ -1,6 +1,8 @@
 package io.javaclasses.fileHub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.folderStorage.FolderId;
+import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +27,8 @@ public class RegistrationRouteTest {
     @Test
     public void validRequestsTest() {
         UserStorage storage = new UserStorage();
-        RegistrationRoute route = new RegistrationRoute(storage);
+        FolderStorage folderStorage = new FolderStorage();
+        RegistrationRoute route = new RegistrationRoute(storage, folderStorage);
 
         String validRequestBody = "{\"login\":\"test\", \"password\":\"test123456\"}";
 
@@ -58,7 +61,8 @@ public class RegistrationRouteTest {
     @MethodSource("invalidRequestBody")
     public void invalidRequestsTest(String body) {
         UserStorage storage = new UserStorage();
-        RegistrationRoute route = new RegistrationRoute(storage);
+        FolderStorage folderStorage = new FolderStorage();
+        RegistrationRoute route = new RegistrationRoute(storage, folderStorage);
 
         Request request = createMockRequest(body);
         Response response = createMockResponse();
@@ -80,6 +84,7 @@ public class RegistrationRouteTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(UserStorage.class, new UserStorage());
+        tester.setDefault(FolderStorage.class, new FolderStorage());
 
         tester.testAllPublicConstructors(RegistrationRoute.class);
         tester.testAllPublicStaticMethods(RegistrationRoute.class);

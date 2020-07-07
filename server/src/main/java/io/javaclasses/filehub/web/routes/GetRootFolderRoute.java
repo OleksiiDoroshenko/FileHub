@@ -7,6 +7,7 @@ import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
 import io.javaclasses.filehub.storage.folderStorage.FolderId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.web.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -16,9 +17,9 @@ import spark.Route;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 /**
  * The {@link Route} that handles get root folder requests.
@@ -26,18 +27,15 @@ import static javax.servlet.http.HttpServletResponse.SC_OK;
 public class GetRootFolderRoute implements Route {
 
     private final static Logger logger = LoggerFactory.getLogger(GetRootFolderRoute.class);
-    private final ThreadLocal<LoggedInUserRecord> loggedInUser;
     private final UserStorage userStorage;
 
     /**
      * Returns instance of {@link GetRootFolderRoute} class.
+     *  @param userStorage  user storage.
      *
-     * @param userStorage  user storage.
-     * @param loggedInUser logged in user.
      */
-    public GetRootFolderRoute(UserStorage userStorage, ThreadLocal<LoggedInUserRecord> loggedInUser) {
+    public GetRootFolderRoute(UserStorage userStorage) {
         this.userStorage = checkNotNull(userStorage);
-        this.loggedInUser = checkNotNull(loggedInUser);
     }
 
     /**
@@ -85,7 +83,7 @@ public class GetRootFolderRoute implements Route {
                 logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
             }
 
-            response.status(SC_CONFLICT);
+            response.status(SC_UNAUTHORIZED);
             return e.getMessage();
 
         } catch (NullPointerException e) {
@@ -113,7 +111,7 @@ public class GetRootFolderRoute implements Route {
      * @return logged in user.
      */
     private LoggedInUserRecord getLoggedInUser() {
-        return loggedInUser.get();
+        return CurrentUser.get();
     }
 
     /**

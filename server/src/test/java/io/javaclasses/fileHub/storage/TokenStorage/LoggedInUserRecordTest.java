@@ -1,8 +1,8 @@
 package io.javaclasses.fileHub.storage.TokenStorage;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.tokenStorage.LoggedIdUserRecord;
-import io.javaclasses.filehub.storage.tokenStorage.Token;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.web.ServerTimeZone;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +23,7 @@ public class LoggedInUserRecordTest {
         tester.setDefault(UserId.class, new UserId(""));
         tester.setDefault(LocalDate.class, LocalDate.now(ServerTimeZone.get()));
 
-        tester.testAllPublicConstructors(LoggedIdUserRecord.class);
-        tester.testAllPublicStaticMethods(LoggedIdUserRecord.class);
+        tester.testAllPublicConstructors(LoggedInUserRecord.class);
+        tester.testAllPublicStaticMethods(LoggedInUserRecord.class);
     }
 }

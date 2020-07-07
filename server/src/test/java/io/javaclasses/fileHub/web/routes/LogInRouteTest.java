@@ -4,7 +4,8 @@ import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
-import io.javaclasses.filehub.storage.tokenStorage.LoggedInUsersStorage;
+import io.javaclasses.filehub.storage.folderStorage.FolderId;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
@@ -41,7 +42,8 @@ public class LogInRouteTest {
         String validRequestBody = format("{\"login\":\"%s\", \"password\":\"%s\"}", loginName, password);
 
         String passwordHash = PasswordHasher.getHash(new Password(password));
-        userStorage.add(new UserRecord(new UserId("test"), new LoginName(loginName), passwordHash));
+        FolderId rootFolder = new FolderId("test");
+        userStorage.add(new UserRecord(new UserId("test"), new LoginName(loginName), passwordHash, rootFolder));
 
         Request request = createMockRequest(validRequestBody);
         Response response = createMockResponse();

@@ -3,6 +3,7 @@ package io.javaclasses.fileHub.storage.userStorage;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
+import io.javaclasses.filehub.storage.folderStorage.FolderId;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
@@ -79,7 +80,8 @@ public class UserStorageTest {
         storage.add(record);
 
         UserId id = new UserId(storage.generateId());
-        UserRecord recordCopy = new UserRecord(id, record.loginName(), "password");
+        FolderId rootFolder = new FolderId("test");
+        UserRecord recordCopy = new UserRecord(id, record.loginName(), "password", rootFolder);
 
         storage.add(recordCopy);
 
@@ -102,7 +104,9 @@ public class UserStorageTest {
         LoginName login = new LoginName(generateRandomName());
         Password password = new Password("Test123456");
         UserId id = new UserId(storage.generateId());
-        return new UserRecord(id, login, password.value());
+        FolderId rootFolder = new FolderId("test");
+
+        return new UserRecord(id, login, password.value(), rootFolder);
     }
 
     private String generateRandomName() {

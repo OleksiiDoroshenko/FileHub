@@ -1,10 +1,15 @@
 package io.javaclasses.fileHub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.api.PasswordHasher;
+import io.javaclasses.filehub.api.registrationProcess.LoginName;
+import io.javaclasses.filehub.api.registrationProcess.Password;
 import io.javaclasses.filehub.storage.folderStorage.FolderId;
-import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
+import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
+import io.javaclasses.filehub.storage.userStorage.UserId;
+import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
-import io.javaclasses.filehub.web.routes.RegistrationRoute;
+import io.javaclasses.filehub.web.routes.LogInRoute;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,35 +20,55 @@ import spark.Response;
 
 import java.util.stream.Stream;
 
+import static java.lang.String.format;
 import static javax.servlet.http.HttpServletResponse.SC_ACCEPTED;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@DisplayName("RegistrationRoute should: ")
-public class RegistrationRouteTest {
+@DisplayName("LogInRoute should: ")
+public class LogInRouteTest {
 
     @DisplayName("process valid requests.")
     @Test
     public void validRequestsTest() {
-        UserStorage storage = new UserStorage();
-        FolderStorage folderStorage = new FolderStorage();
-        RegistrationRoute route = new RegistrationRoute(storage, folderStorage);
+        UserStorage userStorage = new UserStorage();
+        LoggedInUsersStorage loggedInUsersStorage = new LoggedInUsersStorage();
+        LogInRoute route = new LogInRoute(userStorage, loggedInUsersStorage);
 
-        String validRequestBody = "{\"login\":\"test\", \"password\":\"test123456\"}";
+        String loginName = "test";
+        String password = "test123456";
+
+        String validRequestBody = format("{\"login\":\"%s\", \"password\":\"%s\"}", loginName, password);
+
+
+        UserRecord record = createValidUserRecord(loginName, password);
+        userStorage.add(record);
 
         Request request = createMockRequest(validRequestBody);
         Response response = createMockResponse();
 
         try {
 
-            route.handle(request, response);
-            assertEquals(response.status(), SC_ACCEPTED,
+            String token = String.valueOf(route.handle(request, response));
+
+            assertEquals(SC_ACCEPTED, response.status(),
                     "Handle method throws exception when request is valid.");
+            assertNotNull(token,
+                    "Logging in process does not return token after processing valid request, but it should.");
         } catch (Exception exception) {
 
-            fail("RegistrationRoute should not throw any exceptions.");
+            fail("LogInRoute should not throw any exceptions. Exception message " + exception.getMessage());
         }
+    }
+
+    private UserRecord createValidUserRecord(String loginName, String password) {
+
+        String passwordHash = PasswordHasher.getHash(new Password(password));
+        FolderId rootFolder = new FolderId("test");
+
+        return new UserRecord(new UserId("test"), new LoginName(loginName), passwordHash, rootFolder);
     }
 
     private static Stream<Arguments> invalidRequestBody() {
@@ -60,9 +85,9 @@ public class RegistrationRouteTest {
     @ParameterizedTest
     @MethodSource("invalidRequestBody")
     public void invalidRequestsTest(String body) {
-        UserStorage storage = new UserStorage();
-        FolderStorage folderStorage = new FolderStorage();
-        RegistrationRoute route = new RegistrationRoute(storage, folderStorage);
+        UserStorage userStorage = new UserStorage();
+        LoggedInUsersStorage loggedInUsersStorage = new LoggedInUsersStorage();
+        LogInRoute route = new LogInRoute(userStorage, loggedInUsersStorage);
 
         Request request = createMockRequest(body);
         Response response = createMockResponse();
@@ -70,11 +95,11 @@ public class RegistrationRouteTest {
         try {
 
             route.handle(request, response);
-            assertEquals(response.status(), SC_BAD_REQUEST,
+            assertEquals(SC_BAD_REQUEST, response.status(),
                     "Handle method does not throws exception when request is invalid.");
         } catch (Exception exception) {
 
-            fail("RegistrationRoute should not throw any exceptions.");
+            fail("LogInRoute should not throw any exceptions.");
         }
     }
 
@@ -84,15 +109,16 @@ public class RegistrationRouteTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(UserStorage.class, new UserStorage());
-        tester.setDefault(FolderStorage.class, new FolderStorage());
+        tester.setDefault(LoggedInUsersStorage.class, new LoggedInUsersStorage());
 
-        tester.testAllPublicConstructors(RegistrationRoute.class);
-        tester.testAllPublicStaticMethods(RegistrationRoute.class);
+        tester.testAllPublicConstructors(LogInRoute.class);
+        tester.testAllPublicStaticMethods(LogInRoute.class);
     }
 
     private Response createMockResponse() {
         return new Response() {
             int status;
+            String responseBody;
 
             @Override
             public void type(String contentType) {
@@ -106,6 +132,10 @@ public class RegistrationRouteTest {
             @Override
             public int status() {
                 return status;
+            }
+
+            public String responseBody() {
+                return responseBody;
             }
         };
     }

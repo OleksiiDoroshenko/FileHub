@@ -18,7 +18,7 @@ dependencies {
     testCompile group: 'com.google.guava', name: 'guava-testlib', version: "${guava_version}"
 
     compile group: 'org.slf4j', name: 'slf4j-api', version: "${logger_version}"
-    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: "${logger_version}"
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: "${logger_version}"
 
     compile "com.sparkjava:spark-core:${spark_core_version}"
     compile "com.sparkjava:spark-template-velocity:${spark_template_version}"

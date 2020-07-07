@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.registrationProcess;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

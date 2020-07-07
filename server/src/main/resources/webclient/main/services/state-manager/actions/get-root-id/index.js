@@ -12,7 +12,7 @@ export default class GetRootIdAction extends Action {
    */
   async apply(stateManager, apiService) {
     return await apiService.getRoot().then(response => {
-      const id = response.folder.id;
+      const id = response.value;
       return id;
     }).catch(error => {
       alert(error.message);

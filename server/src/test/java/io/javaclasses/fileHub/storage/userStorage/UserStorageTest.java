@@ -3,9 +3,10 @@ package io.javaclasses.fileHub.storage.userStorage;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
+import io.javaclasses.filehub.storage.folderStorage.FolderId;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
-import io.javaclasses.filehub.storage.userStorage.UserRecordStorage;
+import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,16 +14,18 @@ import java.nio.charset.Charset;
 import java.util.Optional;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("UserRecordStorage should: ")
-public class UserRecordStorageTest {
+public class UserStorageTest {
 
     @DisplayName("correctly add, check if present and get record.")
     @Test
     public void storageContainsUserTest() {
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         UserRecord record = createValidRecord(storage);
 
         UserId id = storage.add(record);
@@ -38,7 +41,7 @@ public class UserRecordStorageTest {
     @Test
     public void storageRemoveUserTest() {
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         UserRecord record = createValidRecord(storage);
 
         UserId id = storage.add(record);
@@ -57,7 +60,7 @@ public class UserRecordStorageTest {
     @Test
     public void storageReturnAllUserRecordsTest() {
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         int listLength = 5;
 
         for (int i = 0; i < listLength; i++) {
@@ -71,13 +74,14 @@ public class UserRecordStorageTest {
     @Test
     public void storageAddAlreadyExistedRecordTest() {
 
-        UserRecordStorage storage = new UserRecordStorage();
+        UserStorage storage = new UserStorage();
         UserRecord record = createValidRecord(storage);
 
         storage.add(record);
 
         UserId id = new UserId(storage.generateId());
-        UserRecord recordCopy = new UserRecord(id, record.loginName(), "password");
+        FolderId rootFolder = new FolderId("test");
+        UserRecord recordCopy = new UserRecord(id, record.loginName(), "password", rootFolder);
 
         storage.add(recordCopy);
 
@@ -92,15 +96,17 @@ public class UserRecordStorageTest {
 
         NullPointerTester tester = new NullPointerTester();
 
-        tester.testAllPublicConstructors(UserRecordStorage.class);
-        tester.testAllPublicStaticMethods(UserRecordStorage.class);
+        tester.testAllPublicConstructors(UserStorage.class);
+        tester.testAllPublicStaticMethods(UserStorage.class);
     }
 
-    private UserRecord createValidRecord(UserRecordStorage storage) {
+    private UserRecord createValidRecord(UserStorage storage) {
         LoginName login = new LoginName(generateRandomName());
         Password password = new Password("Test123456");
         UserId id = new UserId(storage.generateId());
-        return new UserRecord(id, login, password.value());
+        FolderId rootFolder = new FolderId("test");
+
+        return new UserRecord(id, login, password.value(), rootFolder);
     }
 
     private String generateRandomName() {

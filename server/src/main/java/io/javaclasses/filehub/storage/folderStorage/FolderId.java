@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 @Immutable
 public final class FolderId implements RecordId {
 
-    @Nullable
     private final String value;
 
     /**
@@ -19,7 +18,7 @@ public final class FolderId implements RecordId {
      *
      * @param value value of identifier.
      */
-    public FolderId(@Nullable String value) {
+    public FolderId(String value) {
         this.value = value;
     }
 

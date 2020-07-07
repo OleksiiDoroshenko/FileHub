@@ -26,10 +26,10 @@ public final class UserRecord implements Record<UserId> {
     /**
      * Returns instance of {@link UserRecord} class.
      *
-     * @param id         user id.
+     * @param id         user identifier.
      * @param loginName  user login.
      * @param password   user password.
-     * @param rootFolder user root folder id.
+     * @param rootFolder user root folder identifier.
      */
     public UserRecord(UserId id, LoginName loginName, String password, FolderId rootFolder) {
         this.loginName = checkNotNull(loginName);
@@ -42,14 +42,23 @@ public final class UserRecord implements Record<UserId> {
         }
     }
 
+    /**
+     * @return user login name.
+     */
     public LoginName loginName() {
         return loginName;
     }
 
+    /**
+     * @return user password hash.
+     */
     public String password() {
         return password;
     }
 
+    /**
+     * @return user root folder.
+     */
     public FolderId rootFolder() {
         return rootFolder;
     }

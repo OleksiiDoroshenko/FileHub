@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.storage.loggedInUsersStorage;
 
+import com.google.common.base.Objects;
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
 
@@ -22,6 +23,19 @@ public final class Token implements RecordId {
         this.value = checkNotNull(value);
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Token token = (Token) o;
+        return Objects.equal(value, token.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
+    }
 
     @Override
     public String value() {

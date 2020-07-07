@@ -1,4 +1,4 @@
-package io.javaclasses.fileHub.storage.TokenStorage;
+package io.javaclasses.fileHub.storage.loggedInUserStorage;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-@DisplayName("TokenValue should: ")
+@DisplayName("LoggedInUserRecord should: ")
 public class LoggedInUserRecordTest {
 
     @DisplayName("throw exception if parameters are null.")

@@ -49,7 +49,7 @@ public class GetRootFolderRouteTest {
             Object handle = route.handle(request, response);
             assertNotNull(handle, "Handle method should return not null value.");
             assertEquals(SC_OK, response.status(),
-                    "Handle method does not throws exception when request is valid.");
+                    "Handle method does not throw exception when request is valid.");
 
         } catch (Exception exception) {
 

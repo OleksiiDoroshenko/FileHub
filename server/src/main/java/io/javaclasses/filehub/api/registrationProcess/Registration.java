@@ -59,11 +59,52 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
 
             throw new UserAlreadyExistsException("User with the same name already exists.");
         }
-        String passwordHash = PasswordHasher.getHash(registerUser.password());
-        UserId id = new UserId(userStorage.generateId());
-        FolderId rootFolderId = new FolderId(folderStorage.generateId());
-        UserRecord record = new UserRecord(id, loginName, passwordHash, rootFolderId);
+        String passwordHash = createPasswordHash(registerUser.password());
+        UserId id = createUserId();
+        FolderId rootFolderId = createFolderId();
+        UserRecord record = createUserRecord(loginName, passwordHash, id, rootFolderId);
 
         return userStorage.add(record);
+    }
+
+    /**
+     * Creates new user record.
+     *
+     * @param loginName    user login name.
+     * @param passwordHash user password hash.
+     * @param id           user identifier.
+     * @param rootFolderId user root folder id.
+     * @return user record.
+     */
+    private UserRecord createUserRecord(LoginName loginName, String passwordHash, UserId id, FolderId rootFolderId) {
+        return new UserRecord(id, loginName, passwordHash, rootFolderId);
+    }
+
+    /**
+     * Creates new folder id.
+     *
+     * @return folder id.
+     */
+    private FolderId createFolderId() {
+        return new FolderId(folderStorage.generateId());
+    }
+
+    /**
+     * Creates new user id.
+     *
+     * @return user id.
+     */
+    private UserId createUserId() {
+        return new UserId(userStorage.generateId());
+    }
+
+    /**
+     * Hashes user password using {@link PasswordHasher}.
+     *
+     * @param password user password.
+     * @return password hash.
+     */
+    private String createPasswordHash(Password password) {
+        return PasswordHasher.getHash(password);
     }
 }

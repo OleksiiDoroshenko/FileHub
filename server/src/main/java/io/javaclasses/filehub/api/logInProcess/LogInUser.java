@@ -27,10 +27,16 @@ public final class LogInUser implements Command {
         this.password = checkNotNull(password);
     }
 
+    /**
+     * @return user login.
+     */
     public LoginName loginName() {
         return loginName;
     }
 
+    /**
+     * @return user password.
+     */
     public Password password() {
         return password;
     }

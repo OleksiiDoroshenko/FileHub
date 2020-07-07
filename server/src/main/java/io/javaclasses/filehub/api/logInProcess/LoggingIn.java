@@ -7,6 +7,7 @@ import io.javaclasses.filehub.api.registrationProcess.Password;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
+import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;
@@ -48,10 +49,9 @@ public class LoggingIn implements SystemProcess<LogInUser, Token> {
      * @param logIn user credentials.
      * @return user session token.
      * @throws UserNotRegisteredException      if user with provided in parameters
-     *                                         does not exists in {@link UserStorage}.
+     *                                         does not exist in {@link UserStorage}.
      * @throws InvalidUserCredentialsException if user credentials are invalid.
      */
-    @SuppressWarnings("LocalDateTemporalAmount")
     @Override
     public Token handle(LogInUser logIn) {
         LoginName loginName = logIn.loginName();
@@ -73,8 +73,7 @@ public class LoggingIn implements SystemProcess<LogInUser, Token> {
 
         UserRecord user = userRecord.get();
         String passwordHash = PasswordHasher.getHash(password);
-        if (!(user.loginName().value().equals(loginName.value()) &&
-                user.password().equals(passwordHash))) {
+        if (!user.password().equals(passwordHash)) {
 
             if (logger.isErrorEnabled()) {
                 logger.error(format("Wrong login name or password. Login: %s, Password: %s.",
@@ -83,9 +82,9 @@ public class LoggingIn implements SystemProcess<LogInUser, Token> {
             throw new InvalidUserCredentialsException("Wrong login or password.");
         }
 
-        LocalDate expirationDate = LocalDate.now(ServerTimeZone.get()).plus(EXPIRATION_INTERVAL);
-        Token token = new Token(loggedInUsersStorage.generateId());
-        LoggedInUserRecord loggedIdUser = new LoggedInUserRecord(token, user.id(), expirationDate);
+        LocalDate expirationDate = calcExpirationDate();
+        Token token = createToken();
+        LoggedInUserRecord loggedIdUser = createLoggedInUser(user.id(), expirationDate, token);
         loggedInUsersStorage.add(loggedIdUser);
 
         if (logger.isDebugEnabled()) {
@@ -93,5 +92,35 @@ public class LoggingIn implements SystemProcess<LogInUser, Token> {
                     loggedIdUser.id().value(), user.id()));
         }
         return loggedIdUser.id();
+    }
+
+    /**
+     * Creates new logged in user with passed parameters.
+     *
+     * @param userId         user identifier.
+     * @param expirationDate token expiration date.
+     * @param token          token.
+     * @return logged in user.
+     */
+    private LoggedInUserRecord createLoggedInUser(UserId userId, LocalDate expirationDate, Token token) {
+        return new LoggedInUserRecord(token, userId, expirationDate);
+    }
+
+    /**
+     * Creates new token.
+     *
+     * @return token.
+     */
+    private Token createToken() {
+        return new Token(loggedInUsersStorage.generateId());
+    }
+
+    /**
+     * Calculates token expiration date.
+     *
+     * @return expiration date.
+     */
+    private LocalDate calcExpirationDate() {
+        return LocalDate.now(ServerTimeZone.get()).plus(EXPIRATION_INTERVAL);
     }
 }

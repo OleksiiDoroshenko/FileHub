@@ -39,11 +39,12 @@ public class LogInRouteTest {
 
         String loginName = "test";
         String password = "test123456";
+
         String validRequestBody = format("{\"login\":\"%s\", \"password\":\"%s\"}", loginName, password);
 
-        String passwordHash = PasswordHasher.getHash(new Password(password));
-        FolderId rootFolder = new FolderId("test");
-        userStorage.add(new UserRecord(new UserId("test"), new LoginName(loginName), passwordHash, rootFolder));
+
+        UserRecord record = createValidUserRecord(loginName, password);
+        userStorage.add(record);
 
         Request request = createMockRequest(validRequestBody);
         Response response = createMockResponse();
@@ -60,6 +61,14 @@ public class LogInRouteTest {
 
             fail("LogInRoute should not throw any exceptions. Exception message " + exception.getMessage());
         }
+    }
+
+    private UserRecord createValidUserRecord(String loginName, String password) {
+
+        String passwordHash = PasswordHasher.getHash(new Password(password));
+        FolderId rootFolder = new FolderId("test");
+
+        return new UserRecord(new UserId("test"), new LoginName(loginName), passwordHash, rootFolder);
     }
 
     private static Stream<Arguments> invalidRequestBody() {

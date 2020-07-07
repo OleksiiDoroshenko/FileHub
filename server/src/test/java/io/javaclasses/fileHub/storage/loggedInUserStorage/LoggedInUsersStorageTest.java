@@ -1,4 +1,4 @@
-package io.javaclasses.fileHub.storage.TokenStorage;
+package io.javaclasses.fileHub.storage.loggedInUserStorage;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
@@ -16,7 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-@DisplayName("TokenStorage should: ")
+@DisplayName("LoggedInUsersStorage should: ")
 public class LoggedInUsersStorageTest {
 
     @DisplayName("correctly return existed record by its value.")

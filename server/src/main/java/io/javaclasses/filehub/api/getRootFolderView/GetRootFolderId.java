@@ -34,7 +34,7 @@ public class GetRootFolderId implements SystemView<RootFolderId, FolderId> {
      *
      * @param query command to be processed.
      * @return root folder id.
-     * @throws UserNotRegisteredException if {@link UserStorage} does not contains specific {@link UserId}.
+     * @throws UserNotRegisteredException if {@link UserStorage} does not contain specific {@link UserId}.
      */
     @Override
     public FolderId handle(RootFolderId query) {

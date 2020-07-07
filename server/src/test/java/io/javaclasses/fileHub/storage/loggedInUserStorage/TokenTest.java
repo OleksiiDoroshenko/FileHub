@@ -1,4 +1,4 @@
-package io.javaclasses.fileHub.storage.TokenStorage;
+package io.javaclasses.fileHub.storage.loggedInUserStorage;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;

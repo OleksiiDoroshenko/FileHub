@@ -2,7 +2,7 @@ package io.javaclasses.fileHub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
-import io.javaclasses.filehub.storage.folderStorage.FolderId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserId;
@@ -18,7 +18,6 @@ import spark.Response;
 
 import java.time.LocalDate;
 
-import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +33,7 @@ public class GetRootFolderRouteTest {
 
         UserStorage userStorage = new UserStorage();
 
-        FolderId rootId = new FolderId("Test");
+        FileSystemItemId rootId = new FileSystemItemId("Test");
 
         LoggedInUserRecord userRecord = createAndAddLoggedInUser(userStorage, rootId);
         CurrentUser.set(userRecord);
@@ -85,7 +84,7 @@ public class GetRootFolderRouteTest {
         }
     }
 
-    private LoggedInUserRecord createAndAddLoggedInUser(UserStorage storage, FolderId rootId) {
+    private LoggedInUserRecord createAndAddLoggedInUser(UserStorage storage, FileSystemItemId rootId) {
         UserId userId = new UserId("Test");
         LoggedInUserRecord loggedInUser = new LoggedInUserRecord(new Token("test"),
                 userId, LocalDate.now(ServerTimeZone.get()));

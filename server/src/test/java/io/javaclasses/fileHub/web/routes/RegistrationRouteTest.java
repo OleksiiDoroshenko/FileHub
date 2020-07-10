@@ -1,8 +1,7 @@
 package io.javaclasses.fileHub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.folderStorage.FolderId;
-import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import org.junit.jupiter.api.DisplayName;

@@ -29,11 +29,13 @@ dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-params:${junit_Params_Version}")
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${junit_Engine_Version}"
 
-
     compile group: 'com.google.code.gson', name: 'gson', version: "${gson_version}"
 
     errorprone("com.google.errorprone:error_prone_core:${error_prone_core_version}")
     errorproneJavac("com.google.errorprone:javac:${error_prone_javac_version}")
+
+    testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: "${equalsverefier_version}"
+
 }
 
 tasks.withType(JavaCompile).configureEach {

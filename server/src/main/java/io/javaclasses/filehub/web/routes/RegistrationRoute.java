@@ -6,7 +6,7 @@ import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.registrationProcess.RegisterUser;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.api.registrationProcess.UserAlreadyExistsException;
-import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.InvalidUserCredentialsException;

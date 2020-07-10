@@ -1,8 +1,10 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileStorage;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.web.routes.GetFolderContentRoute;
 import io.javaclasses.filehub.web.routes.GetRootFolderRoute;
 import io.javaclasses.filehub.web.routes.LogInRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
@@ -27,6 +29,7 @@ public class WebApplication {
     private static final int PORT = 8080;
     private static UserStorage userStorage;
     private static FolderStorage folderStorage;
+    private static FileStorage fileStorage;
     private static LoggedInUsersStorage loggedInUsersStorage;
 
     public static void main(String[] args) {
@@ -50,6 +53,7 @@ public class WebApplication {
         userStorage = new UserStorage();
         loggedInUsersStorage = new LoggedInUsersStorage();
         folderStorage = new FolderStorage();
+        fileStorage = new FileStorage();
     }
 
     private static void registerRoutes() {
@@ -60,6 +64,9 @@ public class WebApplication {
 
         before("/folder/root", filter);
         get("/folder/root", new GetRootFolderRoute(userStorage));
+
+        before("/folder/:id/content", filter);
+        get("/folder/:id/content", new GetFolderContentRoute(folderStorage, fileStorage));
 
         after(((request, response) -> CurrentUser.clear()));
     }

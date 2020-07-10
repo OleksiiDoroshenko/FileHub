@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import io.javaclasses.filehub.api.getRootFolderView.GetRootFolderId;
 import io.javaclasses.filehub.api.getRootFolderView.RootFolderId;
 import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
-import io.javaclasses.filehub.storage.folderStorage.FolderId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.CurrentUser;
@@ -25,7 +25,7 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 /**
  * The {@link Route} that handles get root folder requests.
  */
-public class GetRootFolderRoute implements Route {
+public class GetRootFolderRoute extends AuthenticatedRoute {
 
     private final static Logger logger = LoggerFactory.getLogger(GetRootFolderRoute.class);
     private final UserStorage userStorage;
@@ -65,10 +65,10 @@ public class GetRootFolderRoute implements Route {
             }
 
             LoggedInUserRecord loggedInUserRecord = getLoggedInUser();
-            RootFolderId query = createQuery(loggedInUserRecord);
             GetRootFolderId view = createView();
+            RootFolderId query = createQuery(loggedInUserRecord);
 
-            FolderId id = view.handle(query);
+            FileSystemItemId id = view.handle(query);
 
             if (logger.isDebugEnabled()) {
                 logger.debug(format("Getting user root folder was completed successfully. Root folder id: %s.",
@@ -108,15 +108,6 @@ public class GetRootFolderRoute implements Route {
 
     }
 
-    /**
-     * @return logged in user.
-     */
-    private LoggedInUserRecord getLoggedInUser() {
-        if (!CurrentUser.isPresent()) {
-            throw new UserNotLoggedInException("User is not logged in the system.");
-        }
-        return CurrentUser.get();
-    }
 
     /**
      * Crates new instance of {@link GetRootFolderId} class.

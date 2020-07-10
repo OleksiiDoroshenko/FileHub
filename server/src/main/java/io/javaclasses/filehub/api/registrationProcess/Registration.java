@@ -2,8 +2,10 @@ package io.javaclasses.filehub.api.registrationProcess;
 
 import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.SystemProcess;
-import io.javaclasses.filehub.storage.folderStorage.FolderId;
-import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
@@ -61,23 +63,38 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
         }
         String passwordHash = createPasswordHash(registerUser.password());
         UserId id = createUserId();
-        FolderId rootFolderId = createFolderId();
-        UserRecord record = createUserRecord(loginName, passwordHash, id, rootFolderId);
+        FileSystemItemId rootFileSystemItemId = createFolderId();
+        UserRecord record = createUserRecord(loginName, passwordHash, id, rootFileSystemItemId);
+        createAndAddUserRootFolder(record);
 
         return userStorage.add(record);
     }
 
     /**
+     * Creates and adds to the {@link FolderStorage} new record for user root folder.
+     *
+     * @param user owner of the root folder.
+     */
+    private void createAndAddUserRootFolder(UserRecord user) {
+        FileSystemItemId id = user.rootFolderId();
+        FileSystemItemName name = new FileSystemItemName("root");
+        UserId ownerId = user.id();
+        FolderRecord rootFolder = new FolderRecord(id, name, null, ownerId);
+
+        folderStorage.add(rootFolder);
+    }
+
+    /**
      * Creates new user record.
      *
-     * @param loginName    user login name.
-     * @param passwordHash user password hash.
-     * @param id           user identifier.
-     * @param rootFolderId user root folder id.
+     * @param loginName            user login name.
+     * @param passwordHash         user password hash.
+     * @param id                   user identifier.
+     * @param rootFileSystemItemId user root folder id.
      * @return user record.
      */
-    private UserRecord createUserRecord(LoginName loginName, String passwordHash, UserId id, FolderId rootFolderId) {
-        return new UserRecord(id, loginName, passwordHash, rootFolderId);
+    private UserRecord createUserRecord(LoginName loginName, String passwordHash, UserId id, FileSystemItemId rootFileSystemItemId) {
+        return new UserRecord(id, loginName, passwordHash, rootFileSystemItemId);
     }
 
     /**
@@ -85,8 +102,8 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      *
      * @return folder id.
      */
-    private FolderId createFolderId() {
-        return new FolderId(folderStorage.generateId());
+    private FileSystemItemId createFolderId() {
+        return new FileSystemItemId(folderStorage.generateId());
     }
 
     /**

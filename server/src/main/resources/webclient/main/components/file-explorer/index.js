@@ -188,6 +188,7 @@ export default class FileExplorerPage extends StateAwareComponent {
       } else {
         alert(`User can not be loaded.\n${error.message}`);
       }
+      this.stateManager.dispatch(new ClearErrorAction('userLoadingError'));
     });
     this.stateManager.onStateChanged('user', (state) => {
       this.username = state.user.name;

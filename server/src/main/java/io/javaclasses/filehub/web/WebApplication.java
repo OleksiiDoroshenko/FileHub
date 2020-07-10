@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Filter;
 
+import static spark.Spark.after;
 import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.port;
@@ -59,5 +60,7 @@ public class WebApplication {
 
         before("/folder/root", filter);
         get("/folder/root", new GetRootFolderRoute(userStorage));
+
+        after(((request, response) -> CurrentUser.clear()));
     }
 }

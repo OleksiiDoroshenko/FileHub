@@ -8,6 +8,7 @@ import io.javaclasses.filehub.storage.folderStorage.FolderId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.CurrentUser;
+import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -31,8 +32,8 @@ public class GetRootFolderRoute implements Route {
 
     /**
      * Returns instance of {@link GetRootFolderRoute} class.
-     *  @param userStorage  user storage.
      *
+     * @param userStorage user storage.
      */
     public GetRootFolderRoute(UserStorage userStorage) {
         this.userStorage = checkNotNull(userStorage);
@@ -111,6 +112,9 @@ public class GetRootFolderRoute implements Route {
      * @return logged in user.
      */
     private LoggedInUserRecord getLoggedInUser() {
+        if (!CurrentUser.isPresent()) {
+            throw new UserNotLoggedInException("User is not logged in the system.");
+        }
         return CurrentUser.get();
     }
 

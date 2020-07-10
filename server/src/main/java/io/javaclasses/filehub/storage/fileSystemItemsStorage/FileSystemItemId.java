@@ -4,6 +4,8 @@ import com.google.common.base.Objects;
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * An identifier for {@link FolderRecord} and {@link FileRecord}.
  */
@@ -18,7 +20,7 @@ public final class FileSystemItemId implements RecordId {
      * @param value value of identifier.
      */
     public FileSystemItemId(String value) {
-        this.value = value;
+        this.value = checkNotNull(value);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api.getFolderContentView;
 
+import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
 
 import javax.annotation.Nullable;
@@ -39,5 +40,19 @@ public final class FolderContentDTO {
     @Nullable
     public List<FolderDTO> folders() {
         return folders;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FolderContentDTO that = (FolderContentDTO) o;
+        return Objects.equal(files, that.files) &&
+                Objects.equal(folders, that.folders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(files, folders);
     }
 }

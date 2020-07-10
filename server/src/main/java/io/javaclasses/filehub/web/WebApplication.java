@@ -68,6 +68,6 @@ public class WebApplication {
         before("/folder/:id/content", filter);
         get("/folder/:id/content", new GetFolderContentRoute(folderStorage, fileStorage));
 
-        after(((request, response) -> CurrentUser.clear()));
+        after((request, response) -> CurrentUser.clear());
     }
 }

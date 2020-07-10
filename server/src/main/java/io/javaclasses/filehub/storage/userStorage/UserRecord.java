@@ -42,23 +42,14 @@ public final class UserRecord implements Record<UserId> {
         }
     }
 
-    /**
-     * @return user login name.
-     */
     public LoginName loginName() {
         return loginName;
     }
 
-    /**
-     * @return user password hash.
-     */
     public String password() {
         return password;
     }
 
-    /**
-     * @return user root folder.
-     */
     public FileSystemItemId rootFolderId() {
         return rootFolderId;
     }

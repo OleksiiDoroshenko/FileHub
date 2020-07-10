@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api.getFolderContentView;
 
+import com.google.common.base.Objects;
 import com.google.errorprone.annotations.Immutable;
 import com.google.gson.annotations.SerializedName;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
@@ -46,5 +47,20 @@ public final class FolderDTO {
 
     public FileSystemItemId parentId() {
         return parentId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FolderDTO folderDTO = (FolderDTO) o;
+        return Objects.equal(name, folderDTO.name) &&
+                Objects.equal(id, folderDTO.id) &&
+                Objects.equal(parentId, folderDTO.parentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name, id, parentId);
     }
 }

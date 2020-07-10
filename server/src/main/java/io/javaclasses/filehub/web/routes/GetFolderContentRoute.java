@@ -167,7 +167,8 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
             logger.debug("Trying to parse folder id.");
         }
 
-        String id = request.pathInfo().split("/")[2];
+        String separator = "/";
+        String id = request.pathInfo().split(separator)[2];
 
         if (logger.isDebugEnabled()) {
             logger.debug(format("Folder id was parsed successfully. Id: %s", id));

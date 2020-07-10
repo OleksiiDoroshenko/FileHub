@@ -19,9 +19,6 @@ public class CurrentUser {
         user.set(userRecord);
     }
 
-    /**
-     * @return current logged in user.
-     */
     public static LoggedInUserRecord get() {
         return user.get();
     }

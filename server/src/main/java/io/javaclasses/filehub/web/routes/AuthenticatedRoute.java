@@ -10,7 +10,10 @@ import spark.Route;
  */
 public abstract class AuthenticatedRoute implements Route {
     /**
+     * Checks if {@link CurrentUser} contain logged in user.
+     *
      * @return logged in user.
+     * @throws UserNotLoggedInException if there is no logged in user in {@link CurrentUser}.
      */
     LoggedInUserRecord getLoggedInUser() {
         if (!CurrentUser.isPresent()) {

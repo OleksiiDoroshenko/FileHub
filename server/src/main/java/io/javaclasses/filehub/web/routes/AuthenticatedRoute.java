@@ -5,6 +5,9 @@ import io.javaclasses.filehub.web.CurrentUser;
 import io.javaclasses.filehub.web.UserNotLoggedInException;
 import spark.Route;
 
+/**
+ * The abstract base {@link Route} that provides current logged in user.
+ */
 public abstract class AuthenticatedRoute implements Route {
     /**
      * @return logged in user.

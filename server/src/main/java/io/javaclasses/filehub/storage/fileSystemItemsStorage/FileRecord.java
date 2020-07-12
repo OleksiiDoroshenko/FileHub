@@ -5,8 +5,6 @@ import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 
-import javax.annotation.Nullable;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -19,7 +17,6 @@ public final class FileRecord implements FileSystemItem {
 
     private final FileSystemItemName name;
 
-    @Nullable
     private final FileSystemItemId parentId;
 
     private final FileSize size;
@@ -30,7 +27,8 @@ public final class FileRecord implements FileSystemItem {
 
     /**
      * Returns instance of {@link FileRecord} class.
-     *  @param id       file identifier.
+     *
+     * @param id       file identifier.
      * @param name     file name.
      * @param parentId file parent identifier.
      * @param size     file size.

@@ -6,7 +6,6 @@ import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.web.NotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,7 +76,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * @return folder DTO list.
      */
     private List<FolderDto> getChildrenFolders(FileSystemItemId folderId, UserId userId) {
-        List<FolderRecord> children = folderStorage.getChildren(folderId, userId);
+        List<FolderRecord> children = folderStorage.all(folderId, userId);
 
         return children.stream()
                 .map(this::createFolderDto)
@@ -102,7 +101,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * @return file list.
      */
     private List<FileDto> getChildrenFiles(FileSystemItemId folderId, UserId userId) {
-        List<FileRecord> children = fileStorage.getChildren(folderId, userId);
+        List<FileRecord> children = fileStorage.all(folderId, userId);
 
         return children.stream()
                 .map(this::createFileDto)

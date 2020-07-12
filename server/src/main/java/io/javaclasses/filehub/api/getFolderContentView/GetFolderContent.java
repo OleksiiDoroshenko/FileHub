@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -70,6 +71,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
 
     /**
      * Returns subfolders of the folder with queried identifier.
+     * <p>Sorts folders by their name.</p>
      *
      * @param folderId parent folder identifier.
      * @param userId   owner of the folders.
@@ -80,6 +82,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
 
         return children.stream()
                 .map(this::createFolderDto)
+                .sorted(comparing(FolderDto::name))
                 .collect(toList());
     }
 
@@ -95,6 +98,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
 
     /**
      * Gets all files that are placed in folder with queried identifier.
+     * <p>Sorts files by their name.</p>
      *
      * @param folderId parent folder identifier.
      * @param userId   owner of the folders.
@@ -105,6 +109,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
 
         return children.stream()
                 .map(this::createFileDto)
+                .sorted(comparing(FileDto::name))
                 .collect(toList());
     }
 

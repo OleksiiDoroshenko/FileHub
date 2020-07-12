@@ -3,7 +3,6 @@ package io.javaclasses.filehub.storage.fileSystemItemsStorage;
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
-import io.javaclasses.filehub.api.getFolderContentView.FileType;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 
 import javax.annotation.Nullable;
@@ -27,29 +26,25 @@ public final class FileRecord implements FileSystemItem {
 
     private final FileMimeType mimeType;
 
-    private final FileType type;
     private final UserId ownerId;
 
     /**
      * Returns instance of {@link FileRecord} class.
-     *
-     * @param id       file identifier.
+     *  @param id       file identifier.
      * @param name     file name.
      * @param parentId file parent identifier.
      * @param size     file size.
      * @param mimeType file mimeType.
-     * @param type     file type.
      * @param ownerId  file owner identifier.
      */
     public FileRecord(FileSystemItemId id, FileSystemItemName name, FileSystemItemId parentId,
-                      FileSize size, FileMimeType mimeType, FileType type, UserId ownerId) {
+                      FileSize size, FileMimeType mimeType, UserId ownerId) {
 
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.parentId = checkNotNull(parentId);
         this.size = checkNotNull(size);
         this.mimeType = checkNotNull(mimeType);
-        this.type = checkNotNull(type);
         this.ownerId = checkNotNull(ownerId);
     }
 
@@ -81,7 +76,4 @@ public final class FileRecord implements FileSystemItem {
         return mimeType;
     }
 
-    public FileType type() {
-        return type;
-    }
 }

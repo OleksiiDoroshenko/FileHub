@@ -8,7 +8,7 @@ import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The {@link Query} that represents client intention of getting folder content.
+ * The intention of the client to get the contents of the folder.
  */
 @Immutable
 public final class FolderContent implements Query {
@@ -19,7 +19,7 @@ public final class FolderContent implements Query {
     /**
      * Returns instance of {@link FolderContent} class.
      *
-     * @param folderId     identifier of the folder which content should be retrieved.
+     * @param folderId     an identifier of the folder whose content should be retrieved.
      * @param loggedInUser folder owner.
      */
     public FolderContent(FileSystemItemId folderId, LoggedInUserRecord loggedInUser) {

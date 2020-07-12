@@ -4,16 +4,20 @@ import io.javaclasses.filehub.api.SystemView;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.*;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
+import io.javaclasses.filehub.web.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
+import static java.util.stream.Collectors.toList;
 
 /**
  * The {@link SystemView} that handles {@link GetFolderContent} query.
  */
-public class GetFolderContent implements SystemView<FolderContent, FolderContentDTO> {
+public class GetFolderContent implements SystemView<FolderContent, FolderContentDto> {
 
     private final FolderStorage folderStorage;
     private final FileStorage fileStorage;
@@ -39,15 +43,17 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * @return folder content.
      */
     @Override
-    public FolderContentDTO handle(FolderContent query) {
+    public FolderContentDto process(FolderContent query) {
 
         checkNotNull(query);
 
-        FileSystemItemId folderId = checkNotNull(query.folderId());
-        LoggedInUserRecord record = checkNotNull(query.loggedInUser());
+        FileSystemItemId folderId = query.folderId();
+        LoggedInUserRecord record = query.loggedInUser();
 
-        List<FileDTO> files = getChildrenFiles(folderId, record.userId());
-        List<FolderDTO> folders = getChildrenFolders(folderId, record.userId());
+        checkOnExistence(folderId);
+
+        List<FileDto> files = getChildrenFiles(folderId, record.userId());
+        List<FolderDto> folders = getChildrenFolders(folderId, record.userId());
 
         return createFolderContent(files, folders);
     }
@@ -59,35 +65,33 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * @param folders folders that are placed in folder with queried identifier.
      * @return DTO of the folder content.
      */
-    private FolderContentDTO createFolderContent(List<FileDTO> files, List<FolderDTO> folders) {
-        return new FolderContentDTO(files, folders);
+    private FolderContentDto createFolderContent(List<FileDto> files, List<FolderDto> folders) {
+        return new FolderContentDto(files, folders);
     }
 
     /**
-     * Gets all folders that are placed in folder with queried identifier.
+     * Returns subfolders of the folder with queried identifier.
      *
      * @param folderId parent folder identifier.
      * @param userId   owner of the folders.
-     * @return folder list.
+     * @return folder DTO list.
      */
-    private List<FolderDTO> getChildrenFolders(FileSystemItemId folderId, UserId userId) {
+    private List<FolderDto> getChildrenFolders(FileSystemItemId folderId, UserId userId) {
         List<FolderRecord> children = folderStorage.getChildren(folderId, userId);
-        List<FolderDTO> result = new ArrayList<>();
 
-        children.forEach(child -> {
-            result.add(createFolderDTO(child));
-        });
-        return result;
+        return children.stream()
+                .map(this::createFolderDto)
+                .collect(toList());
     }
 
     /**
-     * Creates {@link FolderDTO} based on set {@link FolderRecord}.
+     * Creates {@link FolderDto} based on set {@link FolderRecord}.
      *
-     * @param child base for {@link FolderDTO}.
+     * @param child base for {@link FolderDto}.
      * @return created DTO.
      */
-    private FolderDTO createFolderDTO(FolderRecord child) {
-        return new FolderDTO(child.name(), child.id(), child.parentId());
+    private FolderDto createFolderDto(FolderRecord child) {
+        return new FolderDto(child.name(), child.id(), child.parentId());
     }
 
     /**
@@ -97,24 +101,37 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * @param userId   owner of the folders.
      * @return file list.
      */
-    private List<FileDTO> getChildrenFiles(FileSystemItemId folderId, UserId userId) {
+    private List<FileDto> getChildrenFiles(FileSystemItemId folderId, UserId userId) {
         List<FileRecord> children = fileStorage.getChildren(folderId, userId);
-        List<FileDTO> result = new ArrayList<>();
 
-        children.forEach(child -> {
-            result.add(createFileDTO(child));
-        });
-        return result;
+        return children.stream()
+                .map(this::createFileDto)
+                .collect(toList());
     }
 
     /**
-     * Creates {@link FileDTO} based on set {@link FileRecord}.
+     * Creates {@link FileDto} based on set {@link FileRecord}.
      *
-     * @param child base for {@link FileDTO}.
+     * @param child base for {@link FileDto}.
      * @return created DTO.
      */
-    private FileDTO createFileDTO(FileRecord child) {
-        return new FileDTO(child.name(), child.id(), child.parentId(), child.size(), child.mimeType(), child.type());
+    private FileDto createFileDto(FileRecord child) {
+        return new FileDto(child.name(), child.id(), child.size(), child.mimeType());
+    }
+
+    /**
+     * Checks if FileHub application storage has folder with required identifier.
+     *
+     * @param folderId folder identifier.
+     * @throws NotFoundException if storage does not contain folder with required identifier.
+     */
+    private void checkOnExistence(FileSystemItemId folderId) {
+        Optional<FolderRecord> record = folderStorage.get(folderId);
+
+        if (!record.isPresent()) {
+            throw new NotFoundException(format("Folder with this id %s is not found.", folderId.value()));
+        }
+
     }
 }
 

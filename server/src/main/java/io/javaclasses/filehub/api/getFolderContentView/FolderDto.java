@@ -13,39 +13,39 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * DTO for {@link FolderRecord}.
  */
 @Immutable
-public final class FolderDTO {
+public final class FolderDto {
 
     @SerializedName("name")
-    private final FileSystemItemName name;
+    private final String name;
 
     @SerializedName("id")
-    private final FileSystemItemId id;
+    private final String id;
 
     @SerializedName("parentId")
-    private final FileSystemItemId parentId;
+    private final String parentId;
 
     /**
-     * Returns instance of {@link FolderDTO} class.
+     * Returns instance of {@link FolderDto} class.
      *
      * @param name     folder name.
      * @param id       folder identifier.
      * @param parentId folder parent identifier.
      */
-    public FolderDTO(FileSystemItemName name, FileSystemItemId id, FileSystemItemId parentId) {
-        this.name = checkNotNull(name);
-        this.id = checkNotNull(id);
-        this.parentId = checkNotNull(parentId);
+    public FolderDto(FileSystemItemName name, FileSystemItemId id, FileSystemItemId parentId) {
+        this.name = checkNotNull(name.value());
+        this.id = checkNotNull(id.value());
+        this.parentId = checkNotNull(parentId.value());
     }
 
-    public FileSystemItemName name() {
+    public String name() {
         return name;
     }
 
-    public FileSystemItemId id() {
+    public String id() {
         return id;
     }
 
-    public FileSystemItemId parentId() {
+    public String parentId() {
         return parentId;
     }
 
@@ -53,7 +53,7 @@ public final class FolderDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FolderDTO folderDTO = (FolderDTO) o;
+        FolderDto folderDTO = (FolderDto) o;
         return Objects.equal(name, folderDTO.name) &&
                 Objects.equal(id, folderDTO.id) &&
                 Objects.equal(parentId, folderDTO.parentId);

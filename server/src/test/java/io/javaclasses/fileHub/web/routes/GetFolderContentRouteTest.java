@@ -3,7 +3,6 @@ package io.javaclasses.fileHub.web.routes;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
-import io.javaclasses.filehub.api.getFolderContentView.FileType;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.*;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
@@ -125,8 +124,7 @@ public class GetFolderContentRouteTest {
         FileSystemItemName name = new FileSystemItemName("");
         FileSize size = new FileSize(0);
         FileMimeType mimeType = new FileMimeType("");
-        FileType type = new FileType("");
-        return new FileRecord(id, name, parentId, size, mimeType, type, ownerId);
+        return new FileRecord(id, name, parentId, size, mimeType, ownerId);
     }
 
     private FileStorage createFileStorage() {

@@ -3,7 +3,6 @@ package io.javaclasses.fileHub.storage.fileSystemItemsStorage;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
-import io.javaclasses.filehub.api.getFolderContentView.FileType;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
@@ -22,7 +21,6 @@ public class FileRecordTest {
         tester.setDefault(FileSystemItemName.class, new FileSystemItemName(""));
         tester.setDefault(FileSize.class, new FileSize(0));
         tester.setDefault(FileMimeType.class, new FileMimeType(""));
-        tester.setDefault(FileType.class, new FileType(""));
         tester.setDefault(UserId.class, new UserId(""));
 
 

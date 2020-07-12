@@ -11,34 +11,32 @@ import java.util.List;
  *
  * <p>Include files and folders.</p>
  */
-public final class FolderContentDTO {
+public final class FolderContentDto {
 
-    @Nullable
     @SerializedName("files")
-    private final List<FileDTO> files;
+    private final List<FileDto> files;
 
-    @Nullable
     @SerializedName("folders")
-    private final List<FolderDTO> folders;
+    private final List<FolderDto> folders;
 
     /**
-     * Returns instance of {@link FolderContentDTO} class.
+     * Returns instance of {@link FolderContentDto} class.
      *
      * @param files   list of files.
      * @param folders list of folders.
      */
-    FolderContentDTO(@Nullable List<FileDTO> files, @Nullable List<FolderDTO> folders) {
+    FolderContentDto(List<FileDto> files, List<FolderDto> folders) {
         this.files = files;
         this.folders = folders;
     }
 
     @Nullable
-    public List<FileDTO> files() {
+    public List<FileDto> files() {
         return files;
     }
 
     @Nullable
-    public List<FolderDTO> folders() {
+    public List<FolderDto> folders() {
         return folders;
     }
 
@@ -46,7 +44,7 @@ public final class FolderContentDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FolderContentDTO that = (FolderContentDTO) o;
+        FolderContentDto that = (FolderContentDto) o;
         return Objects.equal(files, that.files) &&
                 Objects.equal(folders, that.folders);
     }

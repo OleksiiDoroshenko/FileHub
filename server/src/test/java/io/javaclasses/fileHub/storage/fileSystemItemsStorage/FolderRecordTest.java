@@ -1,10 +1,6 @@
 package io.javaclasses.fileHub.storage.fileSystemItemsStorage;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
-import io.javaclasses.filehub.api.getFolderContentView.FileSize;
-import io.javaclasses.filehub.api.getFolderContentView.FileType;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;

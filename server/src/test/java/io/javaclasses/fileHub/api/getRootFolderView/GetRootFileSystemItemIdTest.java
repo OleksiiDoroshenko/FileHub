@@ -37,7 +37,7 @@ public class GetRootFileSystemItemIdTest {
 
 
         try {
-            FileSystemItemId actualId = view.handle(query);
+            FileSystemItemId actualId = view.process(query);
 
             assertEquals(rootId, actualId, "Returns incorrect root folder id.");
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class GetRootFileSystemItemIdTest {
         try {
 
             assertThrows(UserNotRegisteredException.class, () -> {
-                view.handle(query);
+                view.process(query);
             }, "Does not throw UserNotRegisteredException when user is not exist in storage, but should.");
         } catch (Exception e) {
 

@@ -9,18 +9,22 @@ import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileRecord;
 @Immutable
 public final class FileSize {
 
-    private final long size;
+    private final long value;
 
     /**
      * Returns instance of {@link FileSize} class.
      *
-     * @param size file size.
+     * @param value file size.
      */
-    public FileSize(long size) {
-        this.size = size;
+    public FileSize(long value) {
+
+        if (value < 0) {
+            throw new IllegalArgumentException("File size can not be negative.");
+        }
+        this.value = value;
     }
 
-    public long size() {
-        return size;
+    public long value() {
+        return value;
     }
 }

@@ -33,7 +33,7 @@ public class GetFolderContentTest {
         FolderContent query = createQuery(parentId, ownerId);
 
         try {
-            FolderContentDTO content = view.handle(query);
+            FolderContentDto content = view.process(query);
             assertEquals(numberOfElements, content.files().size(),
                     "GetFolderContent return invalid file list.");
             assertEquals(numberOfElements, content.folders().size(),
@@ -78,8 +78,7 @@ public class GetFolderContentTest {
         FileSystemItemName name = new FileSystemItemName("");
         FileSize size = new FileSize(0);
         FileMimeType mimeType = new FileMimeType("");
-        FileType type = new FileType("");
-        return new FileRecord(id, name, parentId, size, mimeType, type, ownerId);
+        return new FileRecord(id, name, parentId, size, mimeType, ownerId);
     }
 
     private FileStorage createFileStorage() {

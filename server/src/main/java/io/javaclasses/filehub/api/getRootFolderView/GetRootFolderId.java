@@ -1,12 +1,12 @@
 package io.javaclasses.filehub.api.getRootFolderView;
 
 import io.javaclasses.filehub.api.SystemView;
-import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.web.UserNotLoggedInException;
 
 import java.util.Optional;
 
@@ -34,7 +34,7 @@ public class GetRootFolderId implements SystemView<RootFolderId, FileSystemItemI
      *
      * @param query command to be processed.
      * @return root folder id.
-     * @throws UserNotRegisteredException if {@link UserStorage} does not contain specific {@link UserId}.
+     * @throws UserNotLoggedInException if {@link UserStorage} does not contain specific {@link UserId}.
      */
     @Override
     public FileSystemItemId process(RootFolderId query) {
@@ -45,8 +45,18 @@ public class GetRootFolderId implements SystemView<RootFolderId, FileSystemItemI
         Optional<UserRecord> record = userStorage.get(loggedInUser.userId());
 
         if (!record.isPresent()) {
-            throw new UserNotRegisteredException(format("User with %s is not registered.", loggedInUser.userId()));
+            throw new UserNotLoggedInException(format("User with %s is not logged in.", loggedInUser.userId()));
         }
-        return record.get().rootFolderId();
+        return getRootFolderId(record.get());
+    }
+
+    /**
+     * Returns user root folder id.
+     *
+     * @param user user record.
+     * @return root folder id.
+     */
+    private FileSystemItemId getRootFolderId(UserRecord user) {
+        return user.rootFolderId();
     }
 }

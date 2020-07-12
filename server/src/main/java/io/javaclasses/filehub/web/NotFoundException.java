@@ -3,7 +3,7 @@ package io.javaclasses.filehub.web;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemsStorage;
 
 /**
- * An exception is thrown when file system item was not found in {@link FileSystemItemsStorage}.
+ * An exception that is thrown when file system item was not found in {@link FileSystemItemsStorage}.
  */
 public class NotFoundException extends RuntimeException {
     /**

@@ -7,6 +7,7 @@ import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
+import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -76,7 +77,7 @@ public class GetRootFolderRoute extends AuthenticatedRoute {
             response.status(SC_OK);
             return new Gson().toJson(id);
 
-        } catch (UserNotRegisteredException e) {
+        } catch (UserNotLoggedInException e) {
 
             if (logger.isErrorEnabled()) {
                 logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));

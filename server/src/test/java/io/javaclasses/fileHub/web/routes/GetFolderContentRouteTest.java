@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @DisplayName("GetFolderContentRoute should: ")
 public class GetFolderContentRouteTest {
 
-    @DisplayName("process valid requests.")
+    @DisplayName("process request with an existing folder.")
     @Test
     public void validRequestsTest() {
         LoggedInUserRecord userRecord = createLoggedInUserRecord();
@@ -46,11 +46,11 @@ public class GetFolderContentRouteTest {
 
         try {
 
-            Object handle = route.handle(request, response);
+            Object result = route.handle(request, response);
 
-            assertNotNull(handle, "Handle method should return not null value.");
+            assertNotNull(result, "Handle method should return not null result.");
             assertEquals(SC_OK, response.status(),
-                    "Handle method does not throw exception when request is valid.");
+                    "Handle method should return status 200 when request is valid.");
 
         } catch (Exception exception) {
 
@@ -58,7 +58,7 @@ public class GetFolderContentRouteTest {
         }
     }
 
-    @DisplayName("return error responses when requests are invalid.")
+    @DisplayName("return error responses when requested folder is not found.")
     @Test
     public void invalidRequestsTest() {
 
@@ -77,8 +77,7 @@ public class GetFolderContentRouteTest {
 
             route.handle(request, response);
             assertEquals(SC_NOT_FOUND, response.status(),
-                    "Handle method does not throws exception when " +
-                            "request is invalid but return specific status.");
+                    "Handle method should return status 404 when requested folder foes not exist.");
 
         } catch (Exception exception) {
 
@@ -135,7 +134,7 @@ public class GetFolderContentRouteTest {
         return new FolderStorage();
     }
 
-    @DisplayName("throw exception if parameters are null.")
+    @DisplayName("not except null parameters.")
     @Test
     public void nullPointerTest() {
 

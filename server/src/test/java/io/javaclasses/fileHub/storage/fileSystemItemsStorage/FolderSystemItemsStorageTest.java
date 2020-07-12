@@ -12,20 +12,22 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+
 @DisplayName("FolderStorage should:")
 public class FolderSystemItemsStorageTest {
 
-    @DisplayName("correctly return children of the folder")
+    @DisplayName("return children of the folder")
     @Test
-    public void storageGetChildrenTest() {
+    public void storageGetSubFoldersTest() {
         FolderStorage storage = createStorage();
         FileSystemItemId parentId = createFolderId(storage);
         UserId ownerId = createOwnerId();
         prepareStorage(storage, parentId, ownerId);
 
-        List<FolderRecord> children = storage.getChildren(parentId, ownerId);
+        List<FolderRecord> children = storage.all(parentId, ownerId);
 
-        Assertions.assertEquals(storage.all().size(), children.size(),
+        assertIterableEquals(storage.all(), children,
                 "Storage method getChildren returns incorrect result.");
     }
 

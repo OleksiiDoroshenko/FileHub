@@ -44,7 +44,7 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
     }
 
     /**
-     * Handles client get folder content request.
+     * Handles a request from the client to retrieve folder content.
      *
      * @param request  HTTP request.
      * @param response HTTP response.
@@ -52,9 +52,6 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
      */
     @Override
     public Object handle(Request request, Response response) {
-
-        checkNotNull(request);
-        checkNotNull(response);
 
         try {
 
@@ -87,8 +84,8 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
 
         } catch (UserNotLoggedInException e) {
 
-            if (logger.isErrorEnabled()) {
-                logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
+            if (logger.isDebugEnabled()) {
+                logger.debug(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
             }
 
             response.status(SC_UNAUTHORIZED);
@@ -96,8 +93,8 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
 
         } catch (NotFoundException e) {
 
-            if (logger.isErrorEnabled()) {
-                logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
+            if (logger.isDebugEnabled()) {
+                logger.debug(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
             }
 
             response.status(SC_NOT_FOUND);
@@ -146,8 +143,7 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
             logger.debug("Trying to parse folder id.");
         }
 
-        String separator = "/";
-        String id = request.pathInfo().split(separator)[2];
+        String id = request.params(":id");
 
         if (logger.isDebugEnabled()) {
             logger.debug(format("Folder id was parsed successfully. Id: %s", id));

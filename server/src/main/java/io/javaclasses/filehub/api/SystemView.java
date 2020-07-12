@@ -9,10 +9,10 @@ package io.javaclasses.filehub.api;
 public interface SystemView<Q extends Query, R> {
 
     /**
-     * Handles {@link Query} that was requested by client.
+     * Processes {@link Query} that was requested by client.
      *
      * @param query command to be processed.
      * @return result of handling {@link Query}.
      */
-    R handle(Q query);
+    R process(Q query);
 }

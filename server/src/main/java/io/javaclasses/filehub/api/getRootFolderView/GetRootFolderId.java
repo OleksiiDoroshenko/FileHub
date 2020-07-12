@@ -37,7 +37,7 @@ public class GetRootFolderId implements SystemView<RootFolderId, FileSystemItemI
      * @throws UserNotRegisteredException if {@link UserStorage} does not contain specific {@link UserId}.
      */
     @Override
-    public FileSystemItemId handle(RootFolderId query) {
+    public FileSystemItemId process(RootFolderId query) {
 
         checkNotNull(query);
 

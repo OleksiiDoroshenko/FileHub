@@ -5,13 +5,13 @@ import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemsStor
 /**
  * An exception is thrown when file system item was not found in {@link FileSystemItemsStorage}.
  */
-public class FileSystemItemNotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
     /**
-     * Returns instance of {@link FileSystemItemNotFoundException} class.
+     * Returns instance of {@link NotFoundException} class.
      *
      * @param message error message that describes what went wrong.
      */
-    public FileSystemItemNotFoundException(String message) {
+    public NotFoundException(String message) {
         super(message);
     }
 }

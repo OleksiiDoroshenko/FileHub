@@ -2,23 +2,19 @@ package io.javaclasses.filehub.web.routes;
 
 import com.google.gson.Gson;
 import io.javaclasses.filehub.api.getFolderContentView.FolderContent;
-import io.javaclasses.filehub.api.getFolderContentView.FolderContentDTO;
+import io.javaclasses.filehub.api.getFolderContentView.FolderContentDto;
 import io.javaclasses.filehub.api.getFolderContentView.GetFolderContent;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileStorage;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
-import io.javaclasses.filehub.web.CurrentUser;
-import io.javaclasses.filehub.web.FileSystemItemNotFoundException;
+import io.javaclasses.filehub.web.NotFoundException;
 import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
@@ -75,14 +71,12 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
                 throw new UserNotLoggedInException("Logged in user was not found.");
             }
             FileSystemItemId folderId = getFolderId(request);
-            checkId(folderId);
-
             LoggedInUserRecord loggedInUser = getLoggedInUser();
 
             GetFolderContent view = createView();
             FolderContent query = createQuery(folderId, loggedInUser);
 
-            FolderContentDTO content = view.handle(query);
+            FolderContentDto content = view.process(query);
 
             if (logger.isDebugEnabled()) {
                 logger.debug("Getting folder content was completed successfully.");
@@ -100,7 +94,7 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
             response.status(SC_UNAUTHORIZED);
             return e.getMessage();
 
-        } catch (FileSystemItemNotFoundException e) {
+        } catch (NotFoundException e) {
 
             if (logger.isErrorEnabled()) {
                 logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
@@ -118,21 +112,6 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
             response.status(SC_INTERNAL_SERVER_ERROR);
             return "Internal Server Error.";
         }
-    }
-
-    /**
-     * Checks if FileHub application storage has folder with required identifier.
-     *
-     * @param folderId folder identifier.
-     * @throws FileSystemItemNotFoundException if storage does not contain folder with required identifier.
-     */
-    private void checkId(FileSystemItemId folderId) {
-        Optional<FolderRecord> record = folderStorage.get(folderId);
-
-        if (!record.isPresent()) {
-            throw new FileSystemItemNotFoundException(format("Folder with this id %s is not found.", folderId.value()));
-        }
-
     }
 
     /**

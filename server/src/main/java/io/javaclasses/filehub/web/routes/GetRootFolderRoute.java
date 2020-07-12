@@ -7,8 +7,6 @@ import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
-import io.javaclasses.filehub.web.CurrentUser;
-import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -68,7 +66,7 @@ public class GetRootFolderRoute extends AuthenticatedRoute {
             GetRootFolderId view = createView();
             RootFolderId query = createQuery(loggedInUserRecord);
 
-            FileSystemItemId id = view.handle(query);
+            FileSystemItemId id = view.process(query);
 
             if (logger.isDebugEnabled()) {
                 logger.debug(format("Getting user root folder was completed successfully. Root folder id: %s.",

@@ -16,7 +16,7 @@ public class CreateFolder implements Command {
     private final UserId ownerId;
 
     /**
-     * Returns instance of {@link CreateFolder} class with set {@link FileSystemItemId} and {@link UserId}.
+     * Returns instance of {@link CreateFolder} with set {@link FileSystemItemId} and {@link UserId}.
      *
      * @param parentId parent folder identifier.
      * @param ownerId  owner identifier.

@@ -33,7 +33,7 @@ public class CreateFolderRoute extends AuthenticatedRoute {
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of {@link CreateFolderRoute} class.
+     * Returns instance of {@link CreateFolderRoute} with set {@link FolderStorage}.
      *
      * @param folderStorage folder storage.
      */

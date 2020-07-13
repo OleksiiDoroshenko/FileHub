@@ -6,7 +6,7 @@ package io.javaclasses.filehub.api.folderCreationProcess;
 public class UserNotOwnerException extends RuntimeException {
 
     /**
-     * Returns instance of {@link UserNotOwnerException} class with set error message.
+     * Returns instance of {@link UserNotOwnerException} with set error message.
      *
      * @param message error message that describes what went wrong.
      */

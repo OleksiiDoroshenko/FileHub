@@ -8,7 +8,7 @@ import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 public class FolderNotFoundException extends RuntimeException {
 
     /**
-     * Returns instance of {@link FolderNotFoundException} class.
+     * Returns instance of {@link FolderNotFoundException} with set error message.
      *
      * @param message error message that describes what went wrong.
      */

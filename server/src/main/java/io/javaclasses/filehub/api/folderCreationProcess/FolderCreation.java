@@ -28,7 +28,7 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of {@link FolderCreation} class with set {@link FolderStorage}.
+     * Returns instance of {@link FolderCreation} with set {@link FolderStorage}.
      *
      * @param folderStorage folder storage.
      */
@@ -66,9 +66,11 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
      * @param ownerId owner identifier.
      */
     private void ownershipVerification(FileSystemItemId id, UserId ownerId) {
+
         FolderRecord record = folderStorage.get(id).get();
 
         if (!record.ownerId().equals(ownerId)) {
+
             throw new UserNotOwnerException(format("User with %s is not owner of the folder with %s.",
                     id, ownerId));
         }
@@ -94,7 +96,8 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
 
     /**
      * Creates folder name.
-     * <p>All new folders will be created with {@value NEW_FOLDER_NAME} name plus number.
+     * <p>
+     * All new folders will be created with {@value NEW_FOLDER_NAME} name plus number.
      * This number is calculated based on previous folder name number.
      * for example : "New Folder0", "New Folder1" ... and so on.
      * </p>

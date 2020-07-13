@@ -3,6 +3,7 @@ package io.javaclasses.filehub.web.routes;
 import com.google.gson.Gson;
 import io.javaclasses.filehub.api.folderCreationProcess.CreateFolder;
 import io.javaclasses.filehub.api.folderCreationProcess.FolderCreation;
+import io.javaclasses.filehub.api.folderCreationProcess.UserNotOwnerException;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
@@ -17,6 +18,7 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
@@ -75,6 +77,10 @@ public class CreateFolderRoute extends AuthenticatedRoute {
 
             return makeErrorResponse(response, e, SC_UNAUTHORIZED);
 
+        } catch (UserNotOwnerException e) {
+
+            return makeErrorResponse(response, e, SC_CONFLICT);
+
         } catch (Exception e) {
 
             return makeErrorResponse(response, e, SC_INTERNAL_SERVER_ERROR);
@@ -109,7 +115,7 @@ public class CreateFolderRoute extends AuthenticatedRoute {
     private String makeErrorResponse(Response response, Exception exception, int responseStatus) {
 
         if (logger.isInfoEnabled()) {
-            logger.info("New folder creation failed with exception:\n {}. \nServer response status {}."
+            logger.info("New folder creation failed with exception:\n {} \nServer response status {}."
                     , exception.getMessage(), responseStatus);
         }
 

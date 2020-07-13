@@ -45,16 +45,33 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
      */
     @Override
     public FileSystemItemId handle(CreateFolder command) {
+
         checkNotNull(command);
 
         FileSystemItemId parentId = getParentId(command);
         UserId ownerId = getOwnerId(command);
 
         checkOnExistence(parentId);
+        ownershipVerification(parentId, ownerId);
 
         FolderRecord folder = createFolder(parentId, ownerId);
 
         return folderStorage.add(folder);
+    }
+
+    /**
+     * Checks if provided user is owner of the folder with set {@link FileSystemItemId}.
+     *
+     * @param id      folder identifier.
+     * @param ownerId owner identifier.
+     */
+    private void ownershipVerification(FileSystemItemId id, UserId ownerId) {
+        FolderRecord record = folderStorage.get(id).get();
+
+        if (!record.ownerId().equals(ownerId)) {
+            throw new UserNotOwnerException(format("User with %s is not owner of the folder with %s.",
+                    id, ownerId));
+        }
     }
 
     /**

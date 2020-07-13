@@ -40,4 +40,9 @@ public final class FileSystemItemId implements RecordId {
     public int hashCode() {
         return Objects.hashCode(value);
     }
+
+    @Override
+    public String toString() {
+        return "id:" + value;
+    }
 }

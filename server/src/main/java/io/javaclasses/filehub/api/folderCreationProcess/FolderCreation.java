@@ -6,13 +6,16 @@ import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
-import io.javaclasses.filehub.web.NotFoundException;
+import io.javaclasses.filehub.web.FolderNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -20,11 +23,12 @@ import static java.util.stream.Collectors.toList;
  */
 public class FolderCreation implements SystemProcess<CreateFolder, FileSystemItemId> {
 
+    private static final Logger logger = LoggerFactory.getLogger(FolderCreation.class);
     private static final String NEW_FOLDER_NAME = "New Folder";
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of {@link FolderCreation} class.
+     * Returns instance of {@link FolderCreation} class with set {@link FolderStorage}.
      *
      * @param folderStorage folder storage.
      */
@@ -54,7 +58,8 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
     }
 
     /**
-     * Creates new {@link FolderRecord}.
+     * Creates new {@link FolderRecord} with set {@link FileSystemItemId} as parent identifier
+     * and {@link UserId} as owner identifier.
      *
      * @param parentId parent folder identifier.
      * @param ownerId  owner identifier.
@@ -64,8 +69,8 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
 
         FileSystemItemId id = createFolderId();
 
-        List<FolderRecord> subfolders = folderStorage.all(parentId, ownerId);
-        FileSystemItemName name = createFolderName(subfolders);
+        List<FolderRecord> subfolders = folderStorage.subFolders(parentId);
+        FileSystemItemName name = generateFolderName(subfolders);
 
         return new FolderRecord(id, name, parentId, ownerId);
     }
@@ -73,25 +78,14 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
     /**
      * Creates folder name.
      * <p>All new folders will be created with {@value NEW_FOLDER_NAME} name plus number.
-     * This number is calculated based on previous folder name number.</p>
+     * This number is calculated based on previous folder name number.
+     * for example : "New Folder0", "New Folder1" ... and so on.
+     * </p>
      *
      * @param folders folders that are placed in the same parent folder.
      * @return folder name.
      */
-    private FileSystemItemName createFolderName(List<FolderRecord> folders) {
-
-        int folderNumber = getNextFolderNumber(folders);
-
-        return new FileSystemItemName(NEW_FOLDER_NAME + folderNumber);
-    }
-
-    /**
-     * Calculates next number that will be added to new folder name.
-     *
-     * @param folders folders that are placed in the same parent folder.
-     * @return next folder name number.
-     */
-    private int getNextFolderNumber(List<FolderRecord> folders) {
+    private static FileSystemItemName generateFolderName(List<FolderRecord> folders) {
 
         List<Integer> numbers = new ArrayList<>();
 
@@ -107,7 +101,9 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
             }
         }
 
-        return numbers.stream().max(Integer::compareTo).orElse(0);
+        int folderNumber = numbers.stream().max(Integer::compareTo).orElse(0);
+
+        return new FileSystemItemName(NEW_FOLDER_NAME + folderNumber);
     }
 
     /**
@@ -130,7 +126,10 @@ public class FolderCreation implements SystemProcess<CreateFolder, FileSystemIte
         Optional<FolderRecord> record = folderStorage.get(id);
 
         if (!record.isPresent()) {
-            throw new NotFoundException("Parent folder not found.");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Folder with {} was not found.", id);
+            }
+            throw new FolderNotFoundException(format("Folder with %s was not found.", id));
         }
     }
 

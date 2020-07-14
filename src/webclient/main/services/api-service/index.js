@@ -69,9 +69,7 @@ export default class ApiService {
   /**
    * Returns specific error instance from response code.
    * @param {Response} response - server response.
-   * @param {Object} model - model of requested item.
-   * @param {string} model.type - model type.
-   * @param {string} model.name - model name.
+   * @param {FolderModel|FileModel} model - model of requested item.
    * @return {Promise<AuthorizationError|Error|ServerValidationErrors>}
    */
   async getError(response, model) {
@@ -115,10 +113,7 @@ export default class ApiService {
 
   /**
    * Sends request to the server for getting folder content.
-   * @param {Object} model - model of requested item.
-   * @param {string} model.type - model type.
-   * @param {string} model.name - model name.
-   * @param {string} model.folderId - folder id which content should be requested.
+   * @param {FolderModel} model - model of requested item.
    * @return {Promise<Response>}
    */
   getItems(model) {
@@ -135,14 +130,12 @@ export default class ApiService {
     });
   }
 
+
   /**
    * Sends request to server for uploading new file.
-   * @param {Object} model - model of requested item.
-   * @param {string} model.type - model type.
-   * @param {string} model.name - model name.
-   * @param {string} model.id - folder id where file will be loaded.
+   * @param {FolderModel} model - model of requested item.
    * @param {File} file - file to be loaded.
-   * @returns {Promise<>}
+   * @return {Promise<Response>}
    */
   uploadFile(model, file) {
     return fetch(`/folder/${model.id}/file`, {
@@ -163,11 +156,8 @@ export default class ApiService {
 
   /**
    * Sends request to server for deleting file by its id.
-   * @param {Object} model - model of requested item.
-   * @param {string} model.type - model type.
-   * @param {string} model.name - model name.
-   * @param {string} model.id - file id that should be deleted.
-   * @returns {Promise<Response>} server response or error.
+   * @param {FileModel} model - model of requested item.
+   * @return {Promise<Response>} server response or error.
    */
   deleteFile(model) {
     return fetch(`/file/${model.id}`, {
@@ -185,11 +175,8 @@ export default class ApiService {
 
   /**
    * Sends request to server for deleting folder by its id.
-   * @param {Object} model - model of requested item.
-   * @param {string} model.type - model type.
-   * @param {string} model.name - model name.
-   * @param {string} model.id - file id that should be deleted.
-   * @returns {Promise<Response>} server response or error.
+   * @param {FolderModel} model - model of requested item.
+   * @return {Promise<Response>} server response or error.
    */
   deleteFolder(model) {
     return fetch(`/folder/${model.id}`, {
@@ -227,11 +214,8 @@ export default class ApiService {
 
   /**
    * Sends request to the server for getting file's blob.
-   * @param {Object} model - file model.
-   * @param {string} model.id - model id.name.
-   * @param {string} model.type - model type.
-   * @param {string} model.name - model
-   * @returns {Promise<Response>}
+   * @param {FileModel} model - file model.
+   * @return {Promise<Response>}
    */
   getFile(model) {
     return fetch(`/file/${model.id}`, {
@@ -248,7 +232,7 @@ export default class ApiService {
 
   /**
    * Sends request to the server for getting user by its token.
-   * @returns {Promise<Response>}
+   * @return {Promise<Response>}
    */
   getUser() {
     return fetch('/user', {

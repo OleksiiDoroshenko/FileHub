@@ -7,6 +7,7 @@ export default class FileModel {
   _name;
   _size;
   _mimeType;
+  TYPE = 'file';
 
   /**
    * Returns instance of {@link FileModel} with set parameters.
@@ -62,5 +63,13 @@ export default class FileModel {
    */
   get mimeType() {
     return this._mimeType;
+  }
+
+  /**
+   * Returns 'file' constant.
+   * @return {string} constant value.
+   */
+  get type() {
+    return this.TYPE;
   }
 }

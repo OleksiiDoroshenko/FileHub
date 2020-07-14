@@ -6,6 +6,7 @@ export default class FolderModel {
   _id;
   _parentId;
   _name;
+  TYPE = 'folder';
 
   /**
    * Returns instance of {@link FolderModel} with set parameters.
@@ -41,5 +42,13 @@ export default class FolderModel {
    */
   get name() {
     return this._name;
+  }
+
+  /**
+   * Returns 'folder' constant.
+   * @return {string} constant value.
+   */
+  get type() {
+    return this.TYPE;
   }
 }

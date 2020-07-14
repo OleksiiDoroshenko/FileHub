@@ -1,13 +1,14 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemsStorage;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 
 /**
- * An exception that is thrown when file system item was not found in {@link FileSystemItemsStorage}.
+ * An exception that is thrown when folder was not found in {@link FolderStorage}.
  */
 public class FolderNotFoundException extends RuntimeException {
+
     /**
-     * Returns instance of {@link FolderNotFoundException} class.
+     * Returns instance of {@link FolderNotFoundException} with set error message.
      *
      * @param message error message that describes what went wrong.
      */

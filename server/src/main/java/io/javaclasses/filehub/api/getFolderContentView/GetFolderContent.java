@@ -133,7 +133,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
         Optional<FolderRecord> record = folderStorage.get(folderId);
 
         if (!record.isPresent()) {
-            throw new FolderNotFoundException(format("Folder with this id %s is not found.", folderId.value()));
+            throw new FolderNotFoundException(format("Folder with this id \"%s\" is not found.", folderId.value()));
         }
 
     }

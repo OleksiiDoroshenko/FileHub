@@ -41,7 +41,7 @@ public class GetFolderContentRouteTest {
 
         GetFolderContentRoute route = new GetFolderContentRoute(folderStorage, fileStorage);
 
-        Request request = createMockRequest();
+        Request request = createMockRequestWith(parentId);
         Response response = createMockResponse();
 
         try {
@@ -68,6 +68,8 @@ public class GetFolderContentRouteTest {
         FolderStorage folderStorage = createFolderStorage();
         FileStorage fileStorage = createFileStorage();
 
+        prepareFolderStorage(folderStorage, userRecord);
+
         GetFolderContentRoute route = new GetFolderContentRoute(folderStorage, fileStorage);
 
         Request request = createMockRequest();
@@ -83,6 +85,30 @@ public class GetFolderContentRouteTest {
 
             fail("GetRootFolderRoute should not throw any exceptions. Exception: " + exception.getClass());
         }
+    }
+
+    private Request createMockRequestWith(FileSystemItemId id) {
+
+        return new Request() {
+
+            @Override
+            public String pathInfo() {
+                return "/folder/id/content";
+            }
+
+            @Override
+            public String params(String param) {
+                return id.value();
+            }
+        };
+    }
+
+    private void prepareFolderStorage(FolderStorage folderStorage, LoggedInUserRecord record) {
+
+        FileSystemItemId id = new FileSystemItemId(folderStorage.generateId());
+        FileSystemItemName name = new FileSystemItemName("");
+        FolderRecord root = new FolderRecord(id, name, null, record.userId());
+        folderStorage.add(root);
     }
 
     private LoggedInUserRecord createLoggedInUserRecord() {
@@ -151,6 +177,7 @@ public class GetFolderContentRouteTest {
             int status;
             String responseBody;
 
+
             @Override
             public void type(String contentType) {
             }
@@ -177,6 +204,11 @@ public class GetFolderContentRouteTest {
             @Override
             public String pathInfo() {
                 return "/folder/id/content";
+            }
+
+            @Override
+            public String params(String param) {
+                return "id";
             }
         };
     }

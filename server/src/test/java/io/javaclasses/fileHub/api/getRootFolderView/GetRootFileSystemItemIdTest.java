@@ -12,6 +12,7 @@ import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.ServerTimeZone;
+import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -66,7 +67,7 @@ public class GetRootFileSystemItemIdTest {
 
         try {
 
-            assertThrows(UserNotRegisteredException.class, () -> {
+            assertThrows(UserNotLoggedInException.class, () -> {
                 view.process(query);
             }, "Does not throw UserNotRegisteredException when user is not exist in storage, but should.");
         } catch (Exception e) {

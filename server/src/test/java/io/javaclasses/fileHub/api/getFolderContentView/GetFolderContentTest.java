@@ -61,9 +61,16 @@ public class GetFolderContentTest {
 
     private void prepareStorage(FileStorage fileStorage, FolderStorage folderStorage,
                                 int numberOfElements, FileSystemItemId parentId, UserId ownerId) {
+
+        FolderRecord root = new FolderRecord(parentId, new FileSystemItemName(""), null, ownerId);
+        folderStorage.add(root);
+
         for (int i = 0; i < numberOfElements; i++) {
-            fileStorage.add(createFileRecord(parentId, ownerId, fileStorage));
-            folderStorage.add(createFolderRecord(parentId, ownerId, folderStorage));
+            FileRecord fileRecord = createFileRecord(parentId, ownerId, fileStorage);
+            fileStorage.add(fileRecord);
+
+            FolderRecord folderRecord = createFolderRecord(parentId, ownerId, folderStorage);
+            folderStorage.add(folderRecord);
         }
     }
 
@@ -76,7 +83,7 @@ public class GetFolderContentTest {
     private FileRecord createFileRecord(FileSystemItemId parentId, UserId ownerId, FileStorage storage) {
         FileSystemItemId id = new FileSystemItemId(storage.generateId());
         FileSystemItemName name = new FileSystemItemName("");
-        FileSize size = new FileSize(0);
+        FileSize size = new FileSize(1);
         FileMimeType mimeType = new FileMimeType("");
         return new FileRecord(id, name, parentId, size, mimeType, ownerId);
     }

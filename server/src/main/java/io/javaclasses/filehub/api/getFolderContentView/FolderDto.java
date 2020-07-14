@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -21,6 +22,7 @@ public final class FolderDto {
     @SerializedName("id")
     private final String id;
 
+    @Nullable
     @SerializedName("parentId")
     private final String parentId;
 
@@ -31,10 +33,10 @@ public final class FolderDto {
      * @param id       folder identifier.
      * @param parentId folder parent identifier.
      */
-    public FolderDto(FileSystemItemName name, FileSystemItemId id, FileSystemItemId parentId) {
+    public FolderDto(FileSystemItemName name, FileSystemItemId id, @Nullable FileSystemItemId parentId) {
         this.name = checkNotNull(name.value());
         this.id = checkNotNull(id.value());
-        this.parentId = checkNotNull(parentId.value());
+        this.parentId = parentId == null ? null : parentId.value();
     }
 
     public String name() {

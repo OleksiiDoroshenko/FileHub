@@ -22,7 +22,7 @@ public final class FileDto {
     private final String id;
 
     @SerializedName("size")
-    private final String size;
+    private final long size;
 
     @SerializedName("mimeType")
     private final String mimeType;
@@ -40,7 +40,7 @@ public final class FileDto {
 
         this.name = checkNotNull(name.value());
         this.id = checkNotNull(id.value());
-        this.size = String.valueOf(size.value());
+        this.size = size.value();
         this.mimeType = checkNotNull(mimeType.value());
     }
 
@@ -53,7 +53,7 @@ public final class FileDto {
         return id;
     }
 
-    public String size() {
+    public long size() {
         return size;
     }
 

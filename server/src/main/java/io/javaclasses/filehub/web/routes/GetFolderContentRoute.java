@@ -8,7 +8,7 @@ import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileStorage;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
-import io.javaclasses.filehub.web.NotFoundException;
+import io.javaclasses.filehub.web.FolderNotFoundException;
 import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +91,7 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
             response.status(SC_UNAUTHORIZED);
             return e.getMessage();
 
-        } catch (NotFoundException e) {
+        } catch (FolderNotFoundException e) {
 
             if (logger.isDebugEnabled()) {
                 logger.debug(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));

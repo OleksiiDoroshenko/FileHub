@@ -21,7 +21,7 @@ public class FileDtoTest {
 
         tester.setDefault(FileSystemItemId.class, new FileSystemItemId(""));
         tester.setDefault(FileSystemItemName.class, new FileSystemItemName(""));
-        tester.setDefault(FileSize.class, new FileSize(0));
+        tester.setDefault(FileSize.class, new FileSize(1));
         tester.setDefault(FileMimeType.class, new FileMimeType(""));
         tester.setDefault(UserId.class, new UserId(""));
 

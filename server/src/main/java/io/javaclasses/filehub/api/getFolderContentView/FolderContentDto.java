@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * DTO for file system folder content.
  *
@@ -26,8 +28,8 @@ public final class FolderContentDto {
      * @param folders list of folders.
      */
     FolderContentDto(List<FileDto> files, List<FolderDto> folders) {
-        this.files = files;
-        this.folders = folders;
+        this.files = checkNotNull(files);
+        this.folders = checkNotNull(folders);
     }
 
     @Nullable

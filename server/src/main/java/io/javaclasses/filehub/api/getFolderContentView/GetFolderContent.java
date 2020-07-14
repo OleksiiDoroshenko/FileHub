@@ -4,7 +4,7 @@ import io.javaclasses.filehub.api.SystemView;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.*;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
-import io.javaclasses.filehub.web.NotFoundException;
+import io.javaclasses.filehub.web.FolderNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -127,13 +127,13 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * Checks if FileHub application storage has folder with required identifier.
      *
      * @param folderId folder identifier.
-     * @throws NotFoundException if storage does not contain folder with required identifier.
+     * @throws FolderNotFoundException if storage does not contain folder with required identifier.
      */
     private void checkOnExistence(FileSystemItemId folderId) {
         Optional<FolderRecord> record = folderStorage.get(folderId);
 
         if (!record.isPresent()) {
-            throw new NotFoundException(format("Folder with this id %s is not found.", folderId.value()));
+            throw new FolderNotFoundException(format("Folder with this id \"%s\" is not found.", folderId.value()));
         }
 
     }

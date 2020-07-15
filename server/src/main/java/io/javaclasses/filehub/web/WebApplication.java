@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileDataStorage;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileStorage;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
@@ -28,6 +29,7 @@ public class WebApplication {
     private static FolderStorage folderStorage;
     private static FileStorage fileStorage;
     private static LoggedInUsersStorage loggedInUsersStorage;
+    private static FileDataStorage fileDataStorage;
 
     public static void main(String[] args) {
         new WebApplication().start();
@@ -51,6 +53,7 @@ public class WebApplication {
         loggedInUsersStorage = new LoggedInUsersStorage();
         folderStorage = new FolderStorage();
         fileStorage = new FileStorage();
+        fileDataStorage = new FileDataStorage();
     }
 
     private static void registerRoutes() {
@@ -65,8 +68,10 @@ public class WebApplication {
         before("/folder/:id/content", filter);
         get("/folder/:id/content", new GetFolderContentRoute(folderStorage, fileStorage));
 
-        before("/folder/:id/folder", filter);
-        post("/folder/:id/folder", new CreateFolderRoute(folderStorage));
+        before("/folder/:id/file", filter);
+        post("/folder/:id/file", "multipart/form-data",
+                new UploadFileRoute(fileStorage, fileDataStorage, folderStorage));
+
 
         after((request, response) -> CurrentUser.clear());
     }

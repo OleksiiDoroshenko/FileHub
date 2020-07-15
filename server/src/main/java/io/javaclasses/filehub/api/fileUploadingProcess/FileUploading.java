@@ -52,6 +52,10 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
     @Override
     public FileSystemItemId handle(UploadFile command) {
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("Trying to handle \"UploadFile\" command.");
+        }
+
         FileSystemItemId parentId = getParentId(command);
         UserId ownerId = getOwnerId(command);
         File uploadedFile = getFile(command);
@@ -65,6 +69,9 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
         fileDataStorage.add(fileData);
         fileStorage.add(file);
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("Handling \"UploadFile\" command was completed successfully.");
+        }
         return file.id();
     }
 

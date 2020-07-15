@@ -3,12 +3,15 @@ package io.javaclasses.filehub.web.routes;
 import io.javaclasses.filehub.api.fileUploadingProcess.File;
 import io.javaclasses.filehub.api.fileUploadingProcess.FileUploading;
 import io.javaclasses.filehub.api.fileUploadingProcess.UploadFile;
+import io.javaclasses.filehub.api.folderCreationProcess.UserNotOwnerException;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.*;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
+import io.javaclasses.filehub.web.FolderNotFoundException;
 import io.javaclasses.filehub.web.RequestId;
+import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -23,6 +26,11 @@ import java.io.InputStream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
+import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 /**
  * The {@link Route} that handles upload file client requests.
@@ -38,9 +46,9 @@ public class UploadFileRoute extends AuthenticatedRoute {
      * Returns instance of {@link UploadFileRoute} with set
      * {@link FileStorage}, {@link FileDataStorage} and {@link FolderStorage}.
      *
-     * @param fileStorage
-     * @param fileDataStorage
-     * @param folderStorage
+     * @param fileStorage     file storage.
+     * @param fileDataStorage file data storage.
+     * @param folderStorage   folder storage.
      */
     public UploadFileRoute(FileStorage fileStorage, FileDataStorage fileDataStorage, FolderStorage folderStorage) {
 
@@ -57,7 +65,14 @@ public class UploadFileRoute extends AuthenticatedRoute {
      * @return server response.
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
+
+        if (logger.isInfoEnabled()) {
+            logger.info("Trying to handle {} with body:{}.", request.pathInfo(), request.body());
+        }
+
+        response.type("application/json");
+
         try {
 
             FileSystemItemId parentId = RequestId.parse(request);
@@ -69,12 +84,28 @@ public class UploadFileRoute extends AuthenticatedRoute {
 
             process.handle(command);
 
-            return 200;
+            return SC_OK;
+
+        } catch (FolderNotFoundException e) {
+
+            return makeErrorResponse(response, e, SC_NOT_FOUND);
+
+        } catch (UserNotLoggedInException e) {
+
+            return makeErrorResponse(response, e, SC_UNAUTHORIZED);
+
+        } catch (UserNotOwnerException e) {
+
+            return makeErrorResponse(response, e, SC_CONFLICT);
 
         } catch (IOException | ServletException e) {
-            return SC_BAD_REQUEST;
-        }
 
+            return makeErrorResponse(response, e, SC_BAD_REQUEST);
+
+        } catch (Exception e) {
+
+            return makeErrorResponse(response, e, SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

@@ -136,14 +136,15 @@ export default class ApiService {
    * @returns {Promise<>}
    */
   uploadFile(parentId, file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
     return fetch(`/folder/${parentId}/file`, {
       method: 'POST',
       headers: {
         token: localStorage.getItem('token'),
       },
-      body: {
-        file: file,
-      },
+      body: formData,
     }).then(async (response) => {
       if (response.ok) {
         return 200;

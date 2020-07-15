@@ -28,7 +28,7 @@ export default class DownloadFileAction extends Action {
     return apiService.getFile(id)
       .then((file) => {
         this.downloadFileService.download(file, this.model.name);
-      }).catch(error => {
+      }).catch((error) => {
         stateManager.mutate(new ItemsDownloadingErrorMutator(error));
       }).finally(() => {
         stateManager.mutate(new RemoveItemFromDownloadingListMutator(id));

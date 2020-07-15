@@ -2,11 +2,10 @@
  * Responsible for current state of the application data and all manipulations with it.
  */
 export default class StateManager extends EventTarget {
-
   /**
    * Returns instance of {@link StateManager} class.
    * <p> Adds set event handler for state properties.
-   * @param {object} initialState - initial state of {@link FileExplorerPage} content.
+   * @param {Object} initialState - initial state of {@link FileExplorerPage} content.
    * @param {ApiService} apiService - instance of {@link ApiService}.
    */
   constructor(initialState, apiService) {
@@ -36,6 +35,7 @@ export default class StateManager extends EventTarget {
   /**
    * Sends this {@link StateManager} and this.{@link ApiService}.
    * @param {Action} action - class that extends {@link Action}.
+   * @return {Promise}
    */
   async dispatch(action) {
     return await action.apply(this, this.apiService);

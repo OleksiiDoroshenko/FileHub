@@ -1,5 +1,4 @@
 export default class DownloadFileService {
-
   /**
    * Downloads file.
    * @param {Blob} file - file for downloading.

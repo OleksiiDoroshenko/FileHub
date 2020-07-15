@@ -17,7 +17,7 @@ export default class RemoveItemFromDownloadingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    let set = new Set(state.downloadingItemIds);
+    const set = new Set(state.downloadingItemIds);
     if (set.has(this.itemId)) {
       set.delete(this.itemId);
     }

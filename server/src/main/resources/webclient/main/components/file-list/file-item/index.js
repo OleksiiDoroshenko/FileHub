@@ -15,6 +15,7 @@ export default class FileItem extends ListItem {
             </td>
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
                 <span>${this.model.name}</span>
+                <input data-render="name-input" value=${this.model.name}>
             </td>
             <td class="items">${this.model.size}</td>
             <td class="clickable">
@@ -27,8 +28,12 @@ export default class FileItem extends ListItem {
             `;
   }
 
-
+  /**
+   * @inheritoc
+   * @private
+   */
   _initInnerComponents() {
+    this.rootElement.setAttribute('tabindex', 1);
     this._deleteIcon = this.rootElement.querySelector('[data-render="delete"]');
   }
 
@@ -50,7 +55,7 @@ export default class FileItem extends ListItem {
 
   /**
    * Adds listener for clicking downloading icon.
-   * @param handler
+   * @param {function} handler - function to be called.
    */
   addDownloadHandler(handler) {
     const icon = this.rootElement.querySelector('[data-render="download"]');
@@ -58,5 +63,4 @@ export default class FileItem extends ListItem {
       handler(this.model);
     });
   }
-
 }

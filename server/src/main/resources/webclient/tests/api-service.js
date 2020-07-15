@@ -1,10 +1,10 @@
-import ApiService from '../main/services/api-service';
-import UserData from '../models/user-data';
+import ApiService from '../main/services/api-service/index.js';
+import UserData from '../models/user-data/index.js';
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
-import AuthorizationError from '../models/errors/authorization-error';
-import ServerValidationErrors from '../models/errors/server-validation-errors';
-import VerificationError from '../models/errors/verification-error';
-import NotFoundError from '../models/errors/not-found-error';
+import AuthorizationError from '../models/errors/authorization-error/index.js';
+import ServerValidationErrors from '../models/errors/server-validation-errors/index.js';
+import VerificationError from '../models/errors/verification-error/index.js';
+import NotFoundError from '../models/errors/not-found-error/index.js';
 
 const {module, test} = QUnit;
 const service = new ApiService();
@@ -307,6 +307,74 @@ export default module('API service test', function(hook) {
   test('Downloading file method should handle 401 error', async (assert) => {
     _testAuthorizationServerError('get', assert,
       'express:/file/:id', service, 'getFile');
+  });
+
+  test('Get folder method should send proper request with correct data.', async (assert) => {
+    assert.expect(3);
+    const matcher = 'express:/folder/:id';
+    const itemId = '0';
+    const folder = {name: 'test', id: itemId, parentId: '1', type: 'folder'};
+    fetchMock.once(matcher, (((url) => {
+      const id = url.split('/')[2];
+      assert.strictEqual(id, itemId, 'Should send proper id.');
+      return {
+        status: 200,
+        body: {
+          folder,
+        },
+      };
+    })));
+    await service.getFolder(itemId)
+      .then((response) => {
+        assert.deepEqual(response.folder, folder, 'Should return proper code.');
+      });
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Get folder method should handle 404 error', async (assert) => {
+    _testNotFoundError('get', assert,
+      'express:/folder/:id', service, 'getFolder');
+  });
+
+  test('Get folder method should handle 500 error', async (assert) => {
+    _testInternalServerError('get', assert,
+      'express:/folder/:id', service, 'getFolder');
+  });
+
+  test('Get folder method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('get', assert,
+      'express:/folder/:id', service, 'getFolder');
+  });
+
+  test('Rename method should send proper request with correct data.', async (assert) => {
+    assert.expect(3);
+    const matcher = 'express:/item/:id';
+    const itemId = '0';
+    const newName = 'New';
+    fetchMock.once(matcher, (((url, req) => {
+      const id = url.split('/')[2];
+      const name = req.body.name;
+      assert.strictEqual(itemId, id, 'Should send proper id.');
+      assert.strictEqual(newName, name, 'Should send proper name.');
+      return 200;
+    })));
+    await service.renameItem({id: itemId, name: newName});
+    assert.ok(fetchMock.done(matcher), 'Should send only one request');
+  });
+
+  test('Rename method should handle 404 error', async (assert) => {
+    _testNotFoundError('put', assert,
+      'express:/item/:id', service, 'renameItem');
+  });
+
+  test('Rename method should handle 500 error', async (assert) => {
+    _testInternalServerError('put', assert,
+      'express:/item/:id', service, 'renameItem');
+  });
+
+  test('Rename method should handle 401 error', async (assert) => {
+    _testAuthorizationServerError('put', assert,
+      'express:/item/:id', service, 'renameItem');
   });
 
   async function _testInternalServerError(fetchMethod, assert, matcher, service, method) {

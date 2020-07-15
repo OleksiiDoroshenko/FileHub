@@ -1,4 +1,4 @@
-import TitleService from '../main/services/change-title';
+import TitleService from '../main/services/change-title/index.js';
 
 const {module, test} = QUnit;
 

@@ -21,11 +21,11 @@ export default class Validator {
     return new Promise(((resolve, reject) => {
       if (login.length < minLength) {
         reject(new VerificationError('login',
-            `Login should be longer than ${minLength} symbols.`));
+          `Login should be longer than ${minLength} symbols.`));
       }
       if (!rules.test(login)) {
         reject(new VerificationError('login',
-            'Login should contains only latin letters or numbers.'));
+          'Login should contains only latin letters or numbers.'));
       }
       resolve();
     }));
@@ -46,11 +46,11 @@ export default class Validator {
     return new Promise(((resolve, reject) => {
       if (password.length < minLength) {
         reject(new VerificationError('password',
-            `Password should be longer than ${minLength} symbols.`));
+          `Password should be longer than ${minLength} symbols.`));
       }
       if (!rules.test(password)) {
         reject(new VerificationError('password',
-            'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
+          'Password should contain at least 1 uppercase and lowercase letters and 1 digit.'));
       }
       resolve();
     }));

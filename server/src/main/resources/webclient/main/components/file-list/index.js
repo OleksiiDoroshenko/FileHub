@@ -9,6 +9,8 @@ export default class FileList extends Component {
   _uploadingItems = new Set();
   _deletingItems = new Set();
   _downloadingItems = new Set();
+  _renamingItems = new Set();
+  _editingItemId = null;
 
   /**
    * Returns instance of {@link FileList}.
@@ -47,18 +49,48 @@ export default class FileList extends Component {
     this._renderItems();
   }
 
+  /**
+   * Sets user items, and calls method for their rendering.
+   * @param {[ListItem]} items - user items.
+   */
   set uploadingItems(items) {
     this._uploadingItems = items;
     this._renderItems();
   }
 
+  /**
+   * Sets deleting items, and calls method for their rendering.
+   * @param {[ListItem]} items - user items.
+   */
   set deletingItems(items) {
     this._deletingItems = items;
     this._renderItems();
   }
 
+  /**
+   * Sets downloading items, and calls method for their rendering.
+   * @param {[ListItem]} items - user items.
+   */
   set downloadingItems(items) {
     this._downloadingItems = items;
+    this._renderItems();
+  }
+
+  /**
+   * Sets renaming items, and calls method for their rendering.
+   * @param {[ListItem]} items - items to be renamed.
+   */
+  set renamingItems(items) {
+    this._renamingItems = items;
+    this._renderItems();
+  }
+
+  /**
+   * Sets item id that should be shifted into editing state.
+   * @param {string} value - item id.
+   */
+  set editingItemId(value) {
+    this._editingItemId = value;
     this._renderItems();
   }
 
@@ -98,6 +130,7 @@ export default class FileList extends Component {
       'folder': {
         item = new FolderItem(container, {model});
         item.addUploadFileHandler(this._onUploadClickHandler);
+        item.onNameDoubleClick(this._onFolderNameDoubleClickHandler);
         break;
       }
       case
@@ -116,7 +149,13 @@ export default class FileList extends Component {
     if (this._downloadingItems.has(model.id)) {
       item.isProcessing(true, 'file-downloading');
     }
+    if (this._editingItemId === model.id) {
+      item.editing = true;
+      this._editingItemId = null;
+    }
     item.addDeleteHandler(this._onDeleteHandler);
+    item.onClickHandler(this._onItemClickHandler);
+    item.onRename(this._onRenameHandler);
     return item;
   }
 
@@ -151,4 +190,27 @@ export default class FileList extends Component {
     this._onDownloadHandler = handler;
   }
 
+  /**
+   * Sets double click folder name  handler.
+   * @param {function} handler - handler;
+   */
+  onFolderNameDoubleClick(handler) {
+    this._onFolderNameDoubleClickHandler = handler;
+  }
+
+  /**
+   * Sets item click handler.
+   * @param {function} handler - handler;
+   */
+  onItemClick(handler) {
+    this._onItemClickHandler = handler;
+  }
+
+  /**
+   * Sets rename item handler.
+   * @param {function} handler - handler;
+   */
+  onRename(handler) {
+    this._onRenameHandler = handler;
+  }
 }

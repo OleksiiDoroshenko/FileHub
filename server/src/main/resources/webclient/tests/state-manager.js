@@ -1,28 +1,39 @@
-import ApiService from '../main/services/api-service';
-import StateManager from '../main/services/state-manager';
+import ApiService from '../main/services/api-service/index.js';
+import StateManager from '../main/services/state-manager/index.js';
 import Mutator from '../main/services/state-manager/mutators/mutator.js';
 import Action from '../main/services/state-manager/actions/action.js';
-import ItemsLoadingMutator from '../main/services/state-manager/mutators/items-loading-mutator';
-import ItemsLoadingErrorMutator from '../main/services/state-manager/mutators/items-loading-error-mutator';
-import ItemsMutator from '../main/services/state-manager/mutators/items-mutator';
-import FolderIdMutator from '../main/services/state-manager/mutators/folder-id-mutator';
-import AddItemToUploadingListMutator from '../main/services/state-manager/mutators/add-item-to-uploading-list-mutator';
+import ItemsLoadingMutator from '../main/services/state-manager/mutators/items-loading-mutator/index.js';
+import ItemsLoadingErrorMutator from '../main/services/state-manager/mutators/items-loading-error-mutator/index.js';
+import ItemsMutator from '../main/services/state-manager/mutators/items-mutator/index.js';
+import FolderIdMutator from '../main/services/state-manager/mutators/folder-id-mutator/index.js';
+import AddItemToUploadingListMutator
+  from '../main/services/state-manager/mutators/add-item-to-uploading-list-mutator/index.js';
 import RemoveItemToUploadingListMutator
-  from '../main/services/state-manager/mutators/remove-item-from-uploading-list-mutator';
-import UserLoadingMutator from '../main/services/state-manager/mutators/user-loading-mutator';
-import UserLoadingError from '../main/services/state-manager/mutators/user-loading-error-mutator';
+  from '../main/services/state-manager/mutators/remove-item-from-uploading-list-mutator/index.js';
+import UserLoadingMutator from '../main/services/state-manager/mutators/user-loading-mutator/index.js';
+import UserLoadingError from '../main/services/state-manager/mutators/user-loading-error-mutator/index.js';
 import RemoveItemFromDeletingListMutator
-  from '../main/services/state-manager/mutators/remove-item-from-deleting-list-mutator';
-import AddItemToDeletingListMutator from '../main/services/state-manager/mutators/add-item-to-deleting-list-mutator';
-import ItemsDeletingErrorMutator from '../main/services/state-manager/mutators/items-deleting-error-mutator';
-import ItemsDownloadingErrorMutator from '../main/services/state-manager/mutators/items-downloading-error-mutator';
+  from '../main/services/state-manager/mutators/remove-item-from-deleting-list-mutator/index.js';
+import AddItemToDeletingListMutator
+  from '../main/services/state-manager/mutators/add-item-to-deleting-list-mutator/index.js';
+import ItemsDeletingErrorMutator from '../main/services/state-manager/mutators/items-deleting-error-mutator/index.js';
+import ItemsDownloadingErrorMutator
+  from '../main/services/state-manager/mutators/items-downloading-error-mutator/index.js';
 import RemoveItemFromDownloadingListMutator
-  from '../main/services/state-manager/mutators/remove-item-from-downloading-list-mutator';
-import AddItemToDownloadingListMutator from '../main/services/state-manager/mutators/add-item-to-download-list-mutator';
-import ItemUploadingErrorMutator from '../main/services/state-manager/mutators/item-uploading-error-mutator';
-import DownloadFileService from '../main/services/download-file-service';
-import DownloadFileAction from '../main/services/state-manager/actions/download-file';
-import NotFoundError from '../models/errors/not-found-error';
+  from '../main/services/state-manager/mutators/remove-item-from-downloading-list-mutator/index.js';
+import AddItemToDownloadingListMutator
+  from '../main/services/state-manager/mutators/add-item-to-download-list-mutator/index.js';
+import ItemUploadingErrorMutator from '../main/services/state-manager/mutators/item-uploading-error-mutator/index.js';
+import FolderLoadingMutator from '../main/services/state-manager/mutators/folder-loading-mutator/index.js';
+import FolderLoadingErrorMutator from '../main/services/state-manager/mutators/folder-loading-error-mutator/index.js';
+import FolderMutator from '../main/services/state-manager/mutators/folder-mutator/index.js';
+import ItemsRenamingErrorMutator from '../main/services/state-manager/mutators/item-renaming-error-mutator/index.js';
+import RemoveItemFromRenamingListMutator
+  from '../main/services/state-manager/mutators/remove-item-from-renaming-list-mutator/index.js';
+import AddItemToRenamingListMutator
+  from '../main/services/state-manager/mutators/add-item-to-renaming-list-mutator/index.js';
+import FolderCreatingMutator from '../main/services/state-manager/mutators/folder-creating-mutator/index.js';
+import FolderCreatingErrorMutator from '../main/services/state-manager/mutators/folder-creating-error-mutator/index.js';
 
 const {module, test} = QUnit;
 
@@ -157,6 +168,56 @@ export default module('State manager test: ', function(hook) {
       _testMutator(assert, mutator, 'downloadingError', error);
     });
 
+    test('Folder loading mutator should change state\'s isFolderLoading state', async (assert) => {
+      const mutator = new FolderLoadingMutator(true);
+      _testMutator(assert, mutator, 'isFolderLoading', true);
+    });
+
+    test('Folder loading error mutator should change state\'s folderLoadingError field.', async (assert) => {
+      const error = new Error('test');
+      const mutator = new FolderLoadingErrorMutator(error);
+      _testMutator(assert, mutator, 'folderLoadingError', error);
+    });
+
+    test('Folder mutator should change state\'s folder field.', async (assert) => {
+      const folder = {name: 'test', id: '0', parentId: '1', type: 'folder'};
+      const mutator = new FolderMutator(folder);
+      _testMutatorWithDeepEqual(assert, mutator, 'folder', folder);
+    });
+
+    test('Add to renaming list mutator should change state\'s renaming list', async (assert) => {
+      stateManager = new StateManager({renamingItemIds: new Set()}, new ApiService());
+      const itemId = '1';
+      const resultList = new Set(itemId);
+      const mutator = new AddItemToRenamingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'renamingItemIds', resultList);
+    });
+
+    test('Remove from renaming list mutator should change state\'s renaming list', async (assert) => {
+      const itemId = '1';
+      stateManager = new StateManager({renamingItemIds: new Set(itemId)}, new ApiService());
+      const resultList = new Set();
+      const mutator = new RemoveItemFromRenamingListMutator(itemId);
+      _testMutatorWithDeepEqual(assert, mutator, 'renamingItemIds', resultList);
+    });
+
+    test('Items renaming error mutator should change state\'s renamingError field', async (assert) => {
+      const error = new Error('test');
+      const mutator = new ItemsRenamingErrorMutator(error);
+      _testMutator(assert, mutator, 'renamingError', error);
+    });
+
+    test('Folder creating mutator should change state\'s isFolderCreating state', async (assert) => {
+      const mutator = new FolderCreatingMutator(true);
+      _testMutator(assert, mutator, 'isFolderCreating', true);
+    });
+
+    test('Folder creating error mutator should change state\'s folderCreatingError field.', async (assert) => {
+      const error = new Error('test');
+      const mutator = new FolderCreatingErrorMutator(error);
+      _testMutator(assert, mutator, 'folderCreatingError', error);
+    });
+
     function _testMutator(assert, mutator, field, value) {
       assert.notStrictEqual(stateManager.state[field], value, `should not be equal future ${field}`);
       stateManager.mutate(mutator);
@@ -168,73 +229,5 @@ export default module('State manager test: ', function(hook) {
       stateManager.mutate(mutator);
       assert.deepEqual(stateManager.state[field], value, `'should change state's ${field} field'`);
     }
-  });
-
-  module('Action test: ', function(hook) {
-    test('Download file action should call specific steps', async (assert) => {
-      assert.expect(8);
-      const fileId = '0';
-      const testBlob = new Blob(['smth'], {type: `text/txt`});
-      const testFileName = 'test';
-
-      let apiService = new ApiService();
-      apiService.getFile = async (id) => {
-        assert.strictEqual(id, fileId, 'Api service method should be called with proper id.');
-        return testBlob;
-      };
-
-      let stateManager = new StateManager({}, apiService);
-      stateManager.mutate = (mutator) => {
-        if (mutator instanceof AddItemToDownloadingListMutator) {
-          assert.strictEqual(mutator.itemId, fileId, 'Mutator should be created with proper params.');
-          assert.step('AddItemToDownloadingListMutator');
-        } else if (mutator instanceof RemoveItemFromDownloadingListMutator) {
-          assert.strictEqual(mutator.itemId, fileId, 'Mutator should be created with proper params.');
-          assert.step('RemoveItemFromDownloadingListMutator');
-        }
-      };
-
-      let downloadService = new DownloadFileService();
-      downloadService.download = (blob, fileName) => {
-        assert.strictEqual(blob.parts, testBlob.parts, 'Download file service\'s method should be called with proper blob param.');
-        assert.strictEqual(fileName, testFileName,
-          'Download file service\'s method should be called with proper file name param.');
-      };
-
-      const action = new DownloadFileAction({id: fileId, name: testFileName}, downloadService);
-      await action.apply(stateManager, apiService);
-      assert.verifySteps(['AddItemToDownloadingListMutator', 'RemoveItemFromDownloadingListMutator']);
-    });
-
-    test('Download file action test when error was raised.', async (assert) => {
-      assert.expect(7);
-      const fileId = '0';
-      const testFileName = 'test';
-
-      let apiService = new ApiService();
-      apiService.getFile = async (id) => {
-        assert.strictEqual(id, fileId, 'Api service method should be called with proper id.');
-        return new NotFoundError('', '');
-      };
-
-      let stateManager = new StateManager({}, apiService);
-      stateManager.mutate = (mutator) => {
-        if (mutator instanceof AddItemToDownloadingListMutator) {
-          assert.strictEqual(mutator.itemId, fileId, 'Mutator should be created with proper params.');
-          assert.step('AddItemToDownloadingListMutator');
-        } else if (mutator instanceof RemoveItemFromDownloadingListMutator) {
-          assert.strictEqual(mutator.itemId, fileId, 'Mutator should be created with proper params.');
-          assert.step('RemoveItemFromDownloadingListMutator');
-        } else if (mutator instanceof ItemsDownloadingErrorMutator) {
-          assert.step('ItemsDownloadingErrorMutator');
-        }
-      };
-
-      let downloadService = new DownloadFileService();
-      const action = new DownloadFileAction({id: fileId, name: testFileName}, downloadService);
-      await action.apply(stateManager, apiService);
-      assert.verifySteps(['AddItemToDownloadingListMutator', 'ItemsDownloadingErrorMutator',
-        'RemoveItemFromDownloadingListMutator']);
-    });
   });
 });

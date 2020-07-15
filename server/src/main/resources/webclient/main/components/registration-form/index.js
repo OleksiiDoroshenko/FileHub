@@ -97,20 +97,20 @@ export default class RegistrationForm extends Component {
         this._errorHandler(error);
         reject('login');
       }),
-      passwordValid.catch((error) => {
+        passwordValid.catch((error) => {
+          this._errorHandler(error);
+          reject('password');
+        }),
+        confirmPasswordValid.catch((error) => {
+          this._errorHandler(error);
+          reject('confirm');
+        })])
+        .then(() => {
+          resolve('general');
+        }).catch((error) => {
         this._errorHandler(error);
-        reject('password');
-      }),
-      confirmPasswordValid.catch((error) => {
-        this._errorHandler(error);
-        reject('confirm');
-      })])
-          .then(() => {
-            resolve('general');
-          }).catch((error) => {
-            this._errorHandler(error);
-            reject();
-          });
+        reject();
+      });
     });
   }
 

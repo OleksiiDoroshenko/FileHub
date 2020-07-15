@@ -5,7 +5,7 @@ import ItemsLoadingErrorMutator from '../../mutators/items-loading-error-mutator
 import FolderIdMutator from '../../mutators/folder-id-mutator/index.js';
 
 /**
- * Gets up-to-date user files from {@link AppService} and writes it into {@link StateManager} state
+ * Gets up-to-date user files from {@link ApiService} and writes it into {@link StateManager} state
  * by using {@link Mutator}.
  */
 export default class GetItemsAction extends Action {

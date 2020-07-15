@@ -1,4 +1,4 @@
-import Validator from '../main/services/validator';
+import Validator from '../main/services/validator/index.js';
 
 const {module, test} = QUnit;
 

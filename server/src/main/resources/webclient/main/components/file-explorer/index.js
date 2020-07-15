@@ -14,6 +14,9 @@ import GetUserAction from '../../services/state-manager/actions/get-user/index.j
 import ClearErrorAction from '../../services/state-manager/actions/clear-error/index.js';
 import DownloadFileAction from '../../services/state-manager/actions/download-file/index.js';
 import DownloadFileService from '../../services/download-file-service/index.js';
+import GetFolderAction from '../../services/state-manager/actions/get-folder/index.js';
+import RenameItemAction from '../../services/state-manager/actions/rename-item/index.js';
+import CreateFolderAction from '../../services/state-manager/actions/create-folder/index.js';
 
 /**
  * Renders file explorer page.
@@ -30,6 +33,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     if (this.id === 'root') {
       this._getRootFolder();
     } else {
+      this.stateManager.dispatch(new GetFolderAction(this.id));
       this.stateManager.dispatch(new GetItemsAction(this.id));
     }
     this.stateManager.dispatch(new GetUserAction());
@@ -52,19 +56,22 @@ export default class FileExplorerPage extends StateAwareComponent {
                       <span data-render="username"></span>
                   </li>
                   <li class="logout" data-toggle="tooltip" data-placement="top" title="Log out">
-                      <a href="#/login" data-render="log-out">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
+                      <a href="#/login" data-render="log-out">Log out <i class="glyphicon glyphicon-log-out"></i></a>
+                   </li>
               </ul>
-              <a href="file-explorer-index.html" data-toggle="tooltip" data-placement="top" title="Root page">
+              <a href="#/file-explorer/folder/root" data-toggle="tooltip" data-placement="top" title="Root page">
                   <h1 class="file-explorer">File Explorer</h1></a>
           </header>
           <div class="content">
               <header class="path-manager">
                   <div class="form-group">
                       <ul class="list-inline col-sm-4 current-position-menu">
-                          <li><a href="#" data-toggle="tooltip" data-placement="top" title="Root page">
-                              <i class="glyphicon glyphicon-folder-open"></i></a></li>
+                          <li data-render="step-back">
+                            <i class="glyphicon glyphicon-folder-open"></i>
+                          </li>
                           <li>/</li>
-                          <li data-toggle="tooltip" data-placement="top" title="Current path">Root</li>
+                          <li data-toggle="tooltip" data-placement="top" 
+                          title="Current path" data-render="dir-name">Loading...</li>
                       </ul>
                   </div>
                   <div class="btn-menu" data-render="btn-menu">
@@ -111,9 +118,11 @@ export default class FileExplorerPage extends StateAwareComponent {
     const uploadHandler = (id, file) => {
       this.stateManager.dispatch(new UploadFileAction(id, file));
     };
+
     this.fileList.onUploadClick(uploadHandler);
+
     this._uploadFileBtn.addEventListener('click', () => {
-      new FileBrowserService().selectFile().then(file => {
+      new FileBrowserService().selectFile().then((file) => {
         uploadHandler(this.id, file);
       });
     });
@@ -126,8 +135,40 @@ export default class FileExplorerPage extends StateAwareComponent {
     const downloadHandler = (model) => {
       this.stateManager.dispatch(new DownloadFileAction(model, new DownloadFileService()));
     };
-
     this.fileList.onDownload(downloadHandler);
+
+    this.fileList.onFolderNameDoubleClick((model) => {
+      this._changeHashId(model.id);
+    });
+
+    const onItemClickHandler = (item, event) => {
+      if (event.detail !== 1) {
+        return;
+      }
+      if (item.editing) {
+        return;
+      }
+      if (item.selected) {
+        item.editing = true;
+      } else {
+        item.selected = true;
+      }
+    };
+    this.fileList.onItemClick(onItemClickHandler);
+
+    const onRenameHandler = (model) => {
+      this.stateManager.dispatch(new RenameItemAction(model));
+    };
+    this.fileList.onRename(onRenameHandler);
+
+    createDirBtn.addEventListener('click', () => {
+      const model = {id: this.id, type: 'folder'};
+      const createFolderAction = new CreateFolderAction(model);
+      this.stateManager.dispatch(createFolderAction)
+        .then((id) => {
+          this.fileList.editingItemId = id;
+        });
+    });
   }
 
   /**
@@ -207,6 +248,29 @@ export default class FileExplorerPage extends StateAwareComponent {
         this.stateManager.dispatch(new ClearErrorAction('downloadingError'));
       }
     });
+
+    this.stateManager.onStateChanged('folder', (state) => {
+      this._changeDirectoryPath(state.folder);
+    });
+    this.stateManager.onStateChanged('folderLoadingError', (state) => {
+      const error = state.folderLoadingError;
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('folderLoadingError'));
+      }
+    });
+
+    this.stateManager.onStateChanged('renamingError', (state) => {
+      const error = state.renamingError;
+      if (error) {
+        this._standardErrorHandler(error);
+        this.stateManager.dispatch(new ClearErrorAction('renamingError'));
+      }
+    });
+    this.stateManager.onStateChanged('renamingItemIds', (state) => {
+      this._uploadFileBtn.isLoadingClass = 'blink';
+      this.fileList.renamingItems = state.renamingItemIds;
+    });
   }
 
   /**
@@ -231,7 +295,6 @@ export default class FileExplorerPage extends StateAwareComponent {
 
   /**
    * Gets users folder id and calls method to update hash.
-   * @returns {Promise<void>}
    * @private
    */
   async _getRootFolder() {
@@ -264,5 +327,17 @@ export default class FileExplorerPage extends StateAwareComponent {
   set username(name) {
     const username = this.rootElement.querySelector('[data-render="username"]');
     username.innerText = name;
+  }
+
+  _changeDirectoryPath(folder) {
+    const dirName = this.rootElement.querySelector('[data-render="dir-name"]');
+    dirName.innerHTML = folder.name;
+    if (folder.parentId) {
+      const stepBack = this.rootElement.querySelector('[data-render="step-back"]');
+      stepBack.innerHTML = `<a href="#/file-explorer/folder/${folder.parentId}" data-render="step-back" 
+                                data-toggle="tooltip" data-placement="top" title="Step back">
+                                <i class="glyphicon glyphicon-folder-open"></i>
+                            </a>`;
+    }
   }
 }

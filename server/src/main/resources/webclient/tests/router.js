@@ -1,8 +1,8 @@
-import LoginPage from '../main/components/login-page';
-import ErrorPage from '../main/components/error-page';
+import LoginPage from '../main/components/login-page/index.js';
+import ErrorPage from '../main/components/error-page/index.js';
 import Router from '../main/router.js';
-import ApiService from '../main/services/api-service';
-import StateManager from '../main/services/state-manager';
+import ApiService from '../main/services/api-service/index.js';
+import StateManager from '../main/services/state-manager/index.js';
 
 const {module, test} = QUnit;
 

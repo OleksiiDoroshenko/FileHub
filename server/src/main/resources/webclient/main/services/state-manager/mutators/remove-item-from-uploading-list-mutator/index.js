@@ -17,7 +17,7 @@ export default class RemoveItemToUploadingListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    let set = new Set(state.uploadingItemIds);
+    const set = new Set(state.uploadingItemIds);
     if (set.has(this.itemId)) {
       set.delete(this.itemId);
     }

@@ -11,7 +11,7 @@ import ItemsDeletingErrorMutator from '../../mutators/items-deleting-error-mutat
 export default class DeleteItemAction extends Action {
   /**
    * Returns instance of {@link DeleteItemAction}.
-   * @param {Object} model - model if list item {@link ListItem}.
+   * @param {Object} model - model of list item {@link ListItem}.
    * @param {string} model.id - model id.
    * @param {string} model.parentId - model parentId.
    */
@@ -32,7 +32,7 @@ export default class DeleteItemAction extends Action {
       if (stateManager.state.folderId === parentId) {
         stateManager.dispatch(new GetItemsAction(parentId));
       }
-    }).catch(error => {
+    }).catch((error) => {
       stateManager.mutate(new ItemsDeletingErrorMutator(error));
     }).finally(() => {
       stateManager.mutate(new RemoveItemFromDeletingListMutator(id));

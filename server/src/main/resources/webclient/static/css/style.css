@@ -177,6 +177,23 @@ a:hover {
     table-layout: fixed;
 }
 
+.table tr:focus {
+    background-color: #e2e2e2;
+    outline-color: snow;
+}
+
+.table .editing .name span {
+    display: none;
+}
+
+.table .name input {
+    display: none;
+}
+
+.table .editing .name input {
+    display: block;
+}
+
 .file-container {
     height: 500px;
     overflow-y: scroll;
@@ -390,6 +407,11 @@ a:hover {
     }
 }
 
-.file-deleting, .file-uploading, .file-downloading {
+.file-deleting .glyphicon, .file-uploading .glyphicon,
+.file-downloading .glyphicon {
     pointer-events: none;
+}
+
+.name span a {
+    cursor: pointer;
 }

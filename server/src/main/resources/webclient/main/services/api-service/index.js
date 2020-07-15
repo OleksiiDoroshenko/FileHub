@@ -7,7 +7,6 @@ import NotFoundError from '../../../models/errors/not-found-error/index.js';
  * Implements login and registration methods logic.
  */
 export default class ApiService {
-
   /**
    * Sends request yo the server for user log in.
    * @param {UserData} userData - instance of {@link UserData}.
@@ -56,7 +55,6 @@ export default class ApiService {
    * {@link VerificationError}. If everything is alright method resolve contains redirection to {@link LoginPage}
    */
   register(userData) {
-  console.log(userData);
     return fetch('/register', {
       method: 'POST',
       body: JSON.stringify(userData),
@@ -78,7 +76,7 @@ export default class ApiService {
     switch (response.status) {
       case 401: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text.length > 0 ? text : message;
         });
         return new AuthorizationError(message);
@@ -95,7 +93,7 @@ export default class ApiService {
       }
       case 404: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text;
         });
         return new NotFoundError(message, requestedItem);
@@ -105,7 +103,7 @@ export default class ApiService {
       }
       default: {
         let message = response.statusText;
-        await response.text().then(text => {
+        await response.text().then((text) => {
           message = text;
         });
         return new Error(message);
@@ -184,9 +182,50 @@ export default class ApiService {
   }
 
   /**
+   * Sends request for renaming list item.
+   * @param {Object} model - item model.
+   * @return {Promise<Response>} - server response.
+   */
+  renameItem(model) {
+    return fetch(`/item/${model.id}/`, {
+      method: 'PUT',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+      body: {
+        name: model.name,
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return 200;
+      }
+      throw await this.getError(response, model.type);
+    });
+  }
+
+  /**
+   * Sends request to the server for creating new folder.
+   * @param {Object} model - item model in which should be created new folder.
+   * @return {Promise<Response>} - server response.
+   */
+  createFolder(model) {
+    return fetch(`/folder/${model.id}/folder`, {
+      method: 'POST',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw await this.getError(response, model.type);
+    });
+  }
+
+  /**
    * Sends request to server for logging out current user.
    * Regardless of the answer removes current token from local storage.
-   * @returns {Promise<Response>}
+   * @return {Promise<Response>}
    */
   logOut() {
     return fetch('/logout', {
@@ -206,7 +245,7 @@ export default class ApiService {
   /**
    * Sends request to the server for getting file's blob.
    * @param {string} id - file id.
-   * @returns {Promise<Response>}
+   * @return {Promise<Response>}
    */
   getFile(id) {
     return fetch(`/file/${id}`, {
@@ -231,6 +270,20 @@ export default class ApiService {
         return response.json();
       }
       throw await this.getError(response, 'User');
+    });
+  }
+
+  getFolder(id) {
+    return fetch(`/folder/${id}`, {
+      method: 'GET',
+      headers: {
+        token: localStorage.getItem('token'),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw await this.getError(response);
     });
   }
 }

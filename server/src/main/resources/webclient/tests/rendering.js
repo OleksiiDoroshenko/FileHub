@@ -1,10 +1,10 @@
-import Button from '../main/components/button';
-import FormInput from '../main/components/form-input';
-import FormActions from '../main/components/form-actions';
-import LoginPage from '../main/components/login-page';
-import RegistrationPage from '../main/components/registration-page';
-import ErrorPage from '../main/components/error-page';
-import FileList from '../main/components/file-list';
+import Button from '../main/components/button/index.js';
+import FormInput from '../main/components/form-input/index.js';
+import FormActions from '../main/components/form-actions/index.js';
+import LoginPage from '../main/components/login-page/index.js';
+import RegistrationPage from '../main/components/registration-page/index.js';
+import ErrorPage from '../main/components/error-page/index.js';
+import FileList from '../main/components/file-list/index.js';
 
 const {module, test} = QUnit;
 
@@ -74,7 +74,7 @@ export default module('Components rendering test: ', function(hook) {
     test('File list should render files that were sent by constructor.', (assert) => {
       const name = 'Test';
       const items = [{id: '1', parentId: '0', name: 'Test', itemsAmount: '0', type: 'folder'}];
-      const fileList = new FileList(fixture, {items});
+      new FileList(fixture, {items});
       const result = fixture.querySelector('[data-render="table"] a').innerText;
       assert.strictEqual(result, name, 'Should render files that were sent by constructor.');
     });

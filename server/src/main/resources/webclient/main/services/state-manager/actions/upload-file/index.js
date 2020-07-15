@@ -30,7 +30,7 @@ export default class UploadFileAction extends Action {
         if (stateManager.state.folderId === this.parentId) {
           stateManager.dispatch(new GetItemsAction(this.parentId));
         }
-      }).catch(error => {
+      }).catch((error) => {
       stateManager.mutate(new ItemUploadingErrorMutator(error));
     }).finally(() => {
       stateManager.mutate(new RemoveItemToUploadingListMutator(this.parentId));

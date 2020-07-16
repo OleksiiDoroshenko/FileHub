@@ -6,11 +6,19 @@ import io.javaclasses.filehub.storage.RecordId;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * The identifier of the {@link FolderRecord}.
+ */
 @Immutable
 public final class FolderId implements RecordId {
 
     private final String value;
 
+    /**
+     * Creates instance of {@link FolderId} with set value.
+     *
+     * @param value identifier value.
+     */
     public FolderId(String value) {
         this.value = checkNotNull(value);
     }

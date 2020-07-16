@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage.fileSystemItemsStorage;
 
 import com.google.common.base.Objects;
+import io.javaclasses.filehub.api.fileUploadingProcess.FileContent;
 import io.javaclasses.filehub.storage.Record;
 
 import java.util.Arrays;
@@ -8,38 +9,38 @@ import java.util.Arrays;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Data structure for saving file data in the {@link FileDataStorage}.
+ * Data structure for saving file data in the {@link FileContentStorage}.
  */
-public class FileDataRecord implements Record<FileSystemItemId> {
+public class FileContentRecord implements Record<FileId> {
 
-    private final byte[] data;
-    private final FileSystemItemId id;
+    private final FileContent data;
+    private final FileId id;
 
     /**
-     * Returns instance of {@link FileDataRecord} with set {@link FileSystemItemId} and data.
+     * Creates instance of {@link FileContentRecord} with set {@link FileId} and data.
      *
      * @param id   record identifier.
      * @param data file data.
      */
-    public FileDataRecord(FileSystemItemId id, byte[] data) {
+    public FileContentRecord(FileId id, FileContent data) {
 
         this.id = checkNotNull(id);
         this.data = checkNotNull(data);
     }
 
     @Override
-    public FileSystemItemId id() {
+    public FileId id() {
         return id;
     }
 
-    public byte[] data() {
+    public FileContent data() {
         return data;
     }
 
     @Override
     public String toString() {
         return "FileDataRecord{" +
-                "data=" + Arrays.toString(data) +
+                "data=" + data +
                 ", id=" + id +
                 '}';
     }
@@ -48,13 +49,13 @@ public class FileDataRecord implements Record<FileSystemItemId> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FileDataRecord that = (FileDataRecord) o;
-        return Arrays.equals(data, that.data) &&
+        FileContentRecord that = (FileContentRecord) o;
+        return Objects.equal(data, that.data) &&
                 Objects.equal(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(Arrays.hashCode(data), id);
+        return Objects.hashCode(data, id);
     }
 }

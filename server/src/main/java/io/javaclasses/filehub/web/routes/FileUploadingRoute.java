@@ -1,16 +1,17 @@
 package io.javaclasses.filehub.web.routes;
 
 import io.javaclasses.filehub.api.fileUploadingProcess.File;
+import io.javaclasses.filehub.api.fileUploadingProcess.FileContent;
 import io.javaclasses.filehub.api.fileUploadingProcess.FileUploading;
 import io.javaclasses.filehub.api.fileUploadingProcess.UploadFile;
-import io.javaclasses.filehub.api.folderCreationProcess.UserNotOwnerException;
+import io.javaclasses.filehub.api.folderCreationProcess.AccessDeniedException;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.*;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.web.FolderNotFoundException;
-import io.javaclasses.filehub.web.RequestId;
+import io.javaclasses.filehub.web.RequestIdParser;
 import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,22 +39,22 @@ public class FileUploadingRoute extends AuthenticatedRoute {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUploadingRoute.class);
     private static final String REQUEST_PART = "file";
-    private final FileDataStorage fileDataStorage;
+    private final FileContentStorage fileContentStorage;
     private final FileStorage fileStorage;
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of {@link FileUploadingRoute} with set parameters.
+     * Creates instance of {@link FileUploadingRoute} with set parameters.
      *
-     * @param fileStorage     file storage.
-     * @param fileDataStorage file data storage.
-     * @param folderStorage   folder storage.
+     * @param fileStorage        file storage.
+     * @param fileContentStorage file data storage.
+     * @param folderStorage      folder storage.
      */
-    public FileUploadingRoute(FileStorage fileStorage, FileDataStorage fileDataStorage, FolderStorage folderStorage) {
+    public FileUploadingRoute(FileStorage fileStorage, FileContentStorage fileContentStorage, FolderStorage folderStorage) {
 
         this.fileStorage = checkNotNull(fileStorage);
         this.folderStorage = checkNotNull(folderStorage);
-        this.fileDataStorage = checkNotNull(fileDataStorage);
+        this.fileContentStorage = checkNotNull(fileContentStorage);
     }
 
     /**
@@ -75,13 +76,17 @@ public class FileUploadingRoute extends AuthenticatedRoute {
         try {
 
             File file = getFile(request);
-            FileSystemItemId parentId = RequestId.parse(request);
+            FolderId parentId = RequestIdParser.parseFolderId(request);
             LoggedInUserRecord record = getLoggedInUser();
 
             FileUploading process = createProcess();
             UploadFile command = createCommand(parentId, record.userId(), file);
 
             process.handle(command);
+
+            if (logger.isInfoEnabled()) {
+                logger.info("Uploading file was completed successfully.");
+            }
 
             response.status(SC_OK);
             return "Success";
@@ -94,7 +99,7 @@ public class FileUploadingRoute extends AuthenticatedRoute {
 
             return makeErrorResponse(response, e, SC_UNAUTHORIZED);
 
-        } catch (UserNotOwnerException e) {
+        } catch (AccessDeniedException e) {
 
             return makeErrorResponse(response, e, SC_CONFLICT);
 
@@ -116,7 +121,7 @@ public class FileUploadingRoute extends AuthenticatedRoute {
      * @param file     file to be uploaded.
      * @return created command
      */
-    private UploadFile createCommand(FileSystemItemId parentId, UserId ownerId, File file) {
+    private UploadFile createCommand(FolderId parentId, UserId ownerId, File file) {
 
         return new UploadFile(parentId, ownerId, file);
     }
@@ -128,11 +133,11 @@ public class FileUploadingRoute extends AuthenticatedRoute {
      */
     private FileUploading createProcess() {
 
-        return new FileUploading(fileDataStorage, fileStorage, folderStorage);
+        return new FileUploading(folderStorage, fileStorage, fileContentStorage);
     }
 
     /**
-     * Gets file from {@link Request}.
+     * Gets {@link File} from {@link Request}.
      *
      * @param request HTTP request.
      * @return file.
@@ -162,8 +167,9 @@ public class FileUploadingRoute extends AuthenticatedRoute {
         FileSystemItemName name = new FileSystemItemName(uploadedFile.getSubmittedFileName());
         FileMimeType mimeType = new FileMimeType(uploadedFile.getContentType());
         FileSize size = new FileSize(uploadedFile.getSize());
+        FileContent content = new FileContent(data);
 
-        return new File(data, name, mimeType, size);
+        return new File(content, name, mimeType, size);
     }
 
     /**
@@ -177,7 +183,7 @@ public class FileUploadingRoute extends AuthenticatedRoute {
     private String makeErrorResponse(Response response, Exception exception, int responseStatus) {
 
         if (logger.isInfoEnabled()) {
-            logger.info("New folder creation failed with exception:\n {} \nServer response status {}."
+            logger.info("Uploading file failed with exception:\n {} \nServer response status {}."
                     , exception.getMessage(), responseStatus);
         }
 

@@ -2,6 +2,7 @@ package io.javaclasses.fileHub.api.fileUploadingProcess;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.fileUploadingProcess.File;
+import io.javaclasses.filehub.api.fileUploadingProcess.FileContent;
 import io.javaclasses.filehub.api.fileUploadingProcess.UploadFile;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
@@ -20,7 +21,7 @@ public class UploadFileTest {
         NullPointerTester tester = new NullPointerTester();
 
         tester.setDefault(File.class, new File(
-                new byte[0],
+                new FileContent(new byte[0]),
                 new FileSystemItemName(""),
                 new FileMimeType(""),
                 new FileSize(1)));

@@ -1,6 +1,7 @@
 package io.javaclasses.fileHub.storage.fileSystemItemsStorage;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.api.fileUploadingProcess.FileContent;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileContentRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileId;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -16,6 +17,7 @@ public class FileContentRecordTest {
         NullPointerTester tester = new NullPointerTester();
 
         tester.setDefault(FileId.class, new FileId(""));
+        tester.setDefault(FileContent.class, new FileContent(new byte[0]));
 
         tester.testAllPublicConstructors(FileContentRecord.class);
         tester.testAllPublicStaticMethods(FileContentRecord.class);

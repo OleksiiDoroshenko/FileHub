@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.fileUploadingProcess;
 
 import io.javaclasses.filehub.api.SystemProcess;
-import io.javaclasses.filehub.api.folderCreationProcess.UserNotOwnerException;
+import io.javaclasses.filehub.api.folderCreationProcess.AccessDeniedException;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.*;
@@ -18,55 +18,55 @@ import static java.lang.String.format;
 /**
  * Process in the FilHub application that handles {@link UploadFile} command.
  */
-public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId> {
+public class FileUploading implements SystemProcess<UploadFile, FileId> {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUploading.class);
-    private final FileDataStorage fileDataStorage;
+    private final FileContentStorage fileContentStorage;
     private final FileStorage fileStorage;
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of the {@link FileUploading} process with set parameters.
+     * Creates instance of the {@link FileUploading} process with set parameters.
      *
-     * @param fileDataStorage storage with file data.
-     * @param fileStorage     filesStorage.
-     * @param folderStorage   folder storage.
+     * @param folderStorage      folder storage.
+     * @param fileStorage        filesStorage.
+     * @param fileContentStorage storage with file data.
      */
-    public FileUploading(FileDataStorage fileDataStorage, FileStorage fileStorage, FolderStorage folderStorage) {
+    public FileUploading(FolderStorage folderStorage, FileStorage fileStorage, FileContentStorage fileContentStorage) {
 
-        this.fileDataStorage = checkNotNull(fileDataStorage);
-        this.fileStorage = checkNotNull(fileStorage);
         this.folderStorage = checkNotNull(folderStorage);
+        this.fileStorage = checkNotNull(fileStorage);
+        this.fileContentStorage = checkNotNull(fileContentStorage);
 
     }
 
     /**
      * Handles {@link UploadFile} command.
      * <p>Creates new {@link FileRecord} and adds it to the {@link FileStorage},
-     * Creates new {@link FileDataRecord} and adds it to the {@link FileDataStorage}.</p>
+     * Creates new {@link FileContentRecord} and adds it to the {@link FileContentStorage}.</p>
      *
      * @param command command to be processed.
      * @return an identifier of the uploaded file.
      */
     @Override
-    public FileSystemItemId handle(UploadFile command) {
+    public FileId handle(UploadFile command) {
 
         if (logger.isDebugEnabled()) {
             logger.debug("Trying to handle \"UploadFile\" command.");
         }
 
-        FileSystemItemId parentId = getParentId(command);
+        FolderId parentId = getParentId(command);
         UserId ownerId = getOwnerId(command);
         File uploadedFile = getFile(command);
 
         checkOnExistence(parentId);
-        ownershipVerification(parentId, ownerId);
+        verifyOwnership(parentId, ownerId);
 
         FileRecord file = createFileRecord(parentId, ownerId, uploadedFile);
-        FileDataRecord fileData = createFileDataRecord(file.id(), uploadedFile.data());
+        FileContentRecord fileData = createFileDataRecord(file.id(), uploadedFile.data());
 
 
-        FileSystemItemId id = addToStorage(file, fileData);
+        FileId id = addToStorage(file, fileData);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Handling \"UploadFile\" command was completed successfully.");
@@ -75,28 +75,28 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
     }
 
     /**
-     * Adds set {@link FileRecord} to the {@link FileStorage} and {@link FileDataRecord} to the {@link FileDataStorage}.
+     * Adds set {@link FileRecord} to the {@link FileStorage} and {@link FileContentRecord} to the {@link FileContentStorage}.
      * <p>If {@link FileStorage} already contains {@link FileRecord} with the same {@link FileSystemItemName} this
      * record will be rewritten with new record but with the same identifier.
-     * {@link FileDataRecord} also will be rewritten.</p>
+     * {@link FileContentRecord} also will be rewritten.</p>
      *
      * @param file     file information.
      * @param fileData file data.
      * @return an identifier under which records were saved.
      */
-    private FileSystemItemId addToStorage(FileRecord file, FileDataRecord fileData) {
+    private FileId addToStorage(FileRecord file, FileContentRecord fileData) {
 
         Optional<FileRecord> record = fileStorage.get(file.name());
 
         if (!record.isPresent()) {
 
             fileStorage.add(file);
-            fileDataStorage.add(fileData);
+            fileContentStorage.add(fileData);
 
             return file.id();
         }
 
-        FileSystemItemId id = record.get().id();
+        FileId id = record.get().id();
 
         rewriteFileInStorage(id, file);
         rewriteFileDataInStorage(id, fileData);
@@ -105,33 +105,33 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
     }
 
     /**
-     * Rewrites old {@link FileDataRecord} in the {@link FileDataStorage}.
+     * Rewrites old {@link FileContentRecord} in the {@link FileContentStorage}.
      *
-     * <p>Saves previous {@link FileSystemItemId} with new data.</p>
+     * <p>Saves previous {@link FileId} with new data.</p>
      *
-     * @param id     identifier of the {@link FileDataRecord} that should be rewritten.
+     * @param id     identifier of the {@link FileContentRecord} that should be rewritten.
      * @param record record where the data will be taken from.
      */
-    private void rewriteFileDataInStorage(FileSystemItemId id, FileDataRecord record) {
+    private void rewriteFileDataInStorage(FileId id, FileContentRecord record) {
 
-        byte[] data = record.data();
+        FileContent data = record.data();
 
-        FileDataRecord newRecord = new FileDataRecord(id, data);
-        fileDataStorage.add(newRecord);
+        FileContentRecord newRecord = new FileContentRecord(id, data);
+        fileContentStorage.add(newRecord);
     }
 
     /**
      * Rewrites old {@link FileRecord} in the {@link FileStorage}.
      *
-     * <p>Saves previous {@link FileSystemItemId} with new data.</p>
+     * <p>Saves previous {@link FileId} with new data.</p>
      *
      * @param id     identifier of the {@link FileRecord} that should be rewritten.
      * @param record record where the data will be taken from.
      */
-    private void rewriteFileInStorage(FileSystemItemId id, FileRecord record) {
+    private void rewriteFileInStorage(FileId id, FileRecord record) {
 
         FileSystemItemName name = record.name();
-        FileSystemItemId parentId = record.parentId();
+        FolderId parentId = record.parentId();
         FileSize size = record.size();
         FileMimeType mimeType = record.mimeType();
         UserId ownerId = record.ownerId();
@@ -141,15 +141,15 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
     }
 
     /**
-     * Creates new instance of {@link FileDataRecord} with set {@link FileSystemItemId} and data.
+     * Creates new instance of {@link FileContentRecord} with set {@link FileId} and data.
      *
      * @param id   file identifier.
      * @param data representation of the file in the byte array form.
      * @return created record.
      */
-    private FileDataRecord createFileDataRecord(FileSystemItemId id, byte[] data) {
+    private FileContentRecord createFileDataRecord(FileId id, FileContent data) {
 
-        return new FileDataRecord(id, data);
+        return new FileContentRecord(id, data);
     }
 
     /**
@@ -160,9 +160,9 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
      * @param uploadedFile file information.
      * @return created record.
      */
-    private FileRecord createFileRecord(FileSystemItemId parentId, UserId ownerId, File uploadedFile) {
+    private FileRecord createFileRecord(FolderId parentId, UserId ownerId, File uploadedFile) {
 
-        FileSystemItemId id = createFileRecordId();
+        FileId id = createFileRecordId();
         FileSystemItemName name = uploadedFile.name();
         FileSize size = uploadedFile.size();
         FileMimeType mimeType = uploadedFile.mimeType();
@@ -171,13 +171,13 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
     }
 
     /**
-     * Creates new instance of {@link FileSystemItemId} for {@link FileRecord}.
+     * Creates new instance of {@link FileId} for {@link FileRecord}.
      *
      * @return created identifier.
      */
-    private FileSystemItemId createFileRecordId() {
+    private FileId createFileRecordId() {
 
-        return new FileSystemItemId(fileStorage.generateId());
+        return new FileId(fileStorage.generateId());
     }
 
     /**
@@ -208,24 +208,24 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
      * @param command command for getting file.
      * @return file.
      */
-    private FileSystemItemId getParentId(UploadFile command) {
+    private FolderId getParentId(UploadFile command) {
 
         return command.parentId();
     }
 
     /**
-     * Checks if provided user is owner of the folder with set {@link FileSystemItemId}.
+     * Checks if provided user is owner of the folder with set {@link FolderId}.
      *
      * @param id      folder identifier.
      * @param ownerId owner identifier.
      */
-    private void ownershipVerification(FileSystemItemId id, UserId ownerId) {
+    private void verifyOwnership(FolderId id, UserId ownerId) {
 
         FolderRecord record = folderStorage.get(id).get();
 
         if (!record.ownerId().equals(ownerId)) {
 
-            throw new UserNotOwnerException(format("User with %s is not owner of the folder with %s.",
+            throw new AccessDeniedException(format("User with %s is not owner of the folder with %s.",
                     id, ownerId));
         }
     }
@@ -235,7 +235,7 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
      *
      * @param id folder identifier.
      */
-    private void checkOnExistence(FileSystemItemId id) {
+    private void checkOnExistence(FolderId id) {
 
         Optional<FolderRecord> record = folderStorage.get(id);
 

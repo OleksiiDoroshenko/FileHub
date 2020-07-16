@@ -6,11 +6,19 @@ import io.javaclasses.filehub.storage.RecordId;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * The identifier of the {@link FileRecord}.
+ */
 @Immutable
 public final class FileId implements RecordId {
 
     private final String value;
 
+    /**
+     * Creates instance of {@link FileId} with set value.
+     *
+     * @param value identifier value.
+     */
     public FileId(String value) {
         this.value = checkNotNull(value);
     }

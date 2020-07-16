@@ -2,6 +2,7 @@ package io.javaclasses.fileHub.api.fileUploadingProcess;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.fileUploadingProcess.File;
+import io.javaclasses.filehub.api.fileUploadingProcess.FileContent;
 import io.javaclasses.filehub.api.fileUploadingProcess.FileUploading;
 import io.javaclasses.filehub.api.fileUploadingProcess.UploadFile;
 import io.javaclasses.filehub.api.folderCreationProcess.AccessDeniedException;
@@ -144,12 +145,12 @@ public class FileUploadingTest {
 
     private File createFile() {
 
-        byte[] data = new byte[0];
+        FileContent content = new FileContent(new byte[0]);
         FileSystemItemName name = new FileSystemItemName("");
         FileMimeType mimeType = new FileMimeType("");
         FileSize size = new FileSize(0);
 
-        return new File(data, name, mimeType, size);
+        return new File(content, name, mimeType, size);
     }
 
     private FolderId createParentId(FolderStorage storage) {

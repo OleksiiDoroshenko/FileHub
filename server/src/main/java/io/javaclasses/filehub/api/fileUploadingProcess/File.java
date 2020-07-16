@@ -5,8 +5,6 @@ import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
 
-import java.util.Arrays;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -14,9 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * <p>Used for saving information about file that was passed in the client request.</p>
  */
-public class File {
-
-    private final byte[] data;
+public final class File {
 
     private final FileSystemItemName name;
 
@@ -24,23 +20,25 @@ public class File {
 
     private final FileSize size;
 
+    private final FileContent data;
+
     /**
-     * Returns instance of {@link File} with set parameters.
+     * Creates instance of {@link File} with set parameters.
      *
-     * @param data     representation of the file in the byte array form.
+     * @param content  representation of the file in the byte array form.
      * @param name     file name.
      * @param mimeType file mimeType.
      * @param size     file size in bytes.
      */
-    public File(byte[] data, FileSystemItemName name, FileMimeType mimeType, FileSize size) {
+    public File(FileContent content, FileSystemItemName name, FileMimeType mimeType, FileSize size) {
 
-        this.data = checkNotNull(data);
+        this.data = checkNotNull(content);
         this.name = checkNotNull(name);
         this.mimeType = checkNotNull(mimeType);
         this.size = checkNotNull(size);
     }
 
-    public byte[] data() {
+    public FileContent data() {
         return data;
     }
 
@@ -59,7 +57,7 @@ public class File {
     @Override
     public String toString() {
         return "File{" +
-                "data=" + Arrays.toString(data) +
+                "data=" + data.toString() +
                 ", name=" + name.value() +
                 ", mimeType=" + mimeType.value() +
                 ", size=" + size.value() +
@@ -71,14 +69,14 @@ public class File {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         File file = (File) o;
-        return Arrays.equals(data, file.data) &&
-                Objects.equal(name, file.name) &&
+        return Objects.equal(name, file.name) &&
                 Objects.equal(mimeType, file.mimeType) &&
-                Objects.equal(size, file.size);
+                Objects.equal(size, file.size) &&
+                Objects.equal(data, file.data);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(Arrays.hashCode(data), name, mimeType, size);
+        return Objects.hashCode(name, mimeType, size, data);
     }
 }

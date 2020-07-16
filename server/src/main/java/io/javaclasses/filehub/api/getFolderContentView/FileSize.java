@@ -1,10 +1,9 @@
 package io.javaclasses.filehub.api.getFolderContentView;
 
-import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileRecord;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Size of the {@link FileRecord}.

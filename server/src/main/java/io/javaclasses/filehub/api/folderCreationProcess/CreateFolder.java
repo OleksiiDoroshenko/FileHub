@@ -8,7 +8,7 @@ import io.javaclasses.filehub.storage.userStorage.UserId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The {@link Command} for creating new {@link FolderRecord}.
+ * The {@link Command} for creating new folder.
  */
 public class CreateFolder implements Command {
 

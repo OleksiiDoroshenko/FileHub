@@ -32,7 +32,7 @@ export default class FileExplorerPage extends StateAwareComponent {
     } else {
       this.stateManager.dispatch(new GetItemsAction(this.id));
     }
-    this.stateManager.dispatch(new GetUserAction());
+    //this.stateManager.dispatch(new GetUserAction());
     new TitleService().changeTitle('File Explorer');
   }
 

@@ -6,6 +6,7 @@ import io.javaclasses.filehub.storage.RecordStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,5 +28,16 @@ public abstract class FileSystemItemsStorage<T extends FileSystemItem<I>, I exte
     public synchronized List<T> all(FolderId id, UserId ownerId) {
         return all().stream().filter(item -> item.parentId() != null
                 && item.parentId().equals(id) && item.ownerId().equals(ownerId)).collect(toList());
+    }
+
+    /**
+     * Gets {@link FileSystemItem} by its name.
+     *
+     * @param name item name.
+     * @return {@link Optional<FileSystemItem>} if item is present in the storage /
+     * empty {@link Optional} if item does not exist in the storage;
+     */
+    public Optional<T> get(FileSystemItemName name) {
+        return all().stream().filter(item -> item.name().equals(name)).findAny();
     }
 }

@@ -8,7 +8,7 @@ import io.javaclasses.filehub.storage.userStorage.UserId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Data structure for saving folder in the {@link FileStorage}.
+ * Data structure for saving file in the {@link FileStorage}.
  */
 @Immutable
 public final class FileRecord implements FileSystemItem<FileId> {

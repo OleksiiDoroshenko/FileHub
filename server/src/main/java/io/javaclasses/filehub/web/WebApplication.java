@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileContentStorage;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileStorage;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
@@ -24,10 +25,11 @@ public class WebApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(WebApplication.class);
     private static final int PORT = 8080;
-    private static UserStorage userStorage;
-    private static FolderStorage folderStorage;
-    private static FileStorage fileStorage;
-    private static LoggedInUsersStorage loggedInUsersStorage;
+    private UserStorage userStorage;
+    private FolderStorage folderStorage;
+    private FileStorage fileStorage;
+    private LoggedInUsersStorage loggedInUsersStorage;
+    private FileContentStorage fileContentStorage;
 
     public static void main(String[] args) {
         new WebApplication().start();
@@ -46,15 +48,17 @@ public class WebApplication {
         registerRoutes();
     }
 
-    private static void initStorage() {
+    private void initStorage() {
         userStorage = new UserStorage();
         loggedInUsersStorage = new LoggedInUsersStorage();
         folderStorage = new FolderStorage();
         fileStorage = new FileStorage();
+        fileContentStorage = new FileContentStorage();
     }
 
-    private static void registerRoutes() {
+    private void registerRoutes() {
         Filter filter = new AuthenticationFilter(loggedInUsersStorage);
+        Filter multiPartFilter = new MultiPartAuthenticationFilter(loggedInUsersStorage);
 
         post("/register", new RegistrationRoute(userStorage, folderStorage));
         post("/login", new LogInRoute(userStorage, loggedInUsersStorage));
@@ -67,6 +71,11 @@ public class WebApplication {
 
         before("/folder/:id/folder", filter);
         post("/folder/:id/folder", new CreateFolderRoute(folderStorage));
+
+        before("/folder/:id/file", multiPartFilter);
+        post("/folder/:id/file", "multipart/form-data",
+                new FileUploadingRoute(fileStorage, fileContentStorage, folderStorage));
+
 
         after((request, response) -> CurrentUser.clear());
     }

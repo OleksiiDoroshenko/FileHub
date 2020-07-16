@@ -39,13 +39,14 @@ export default class FileItem extends ListItem {
    * @private
    */
   _getFileIcon(mimeType) {
+    const type = mimeType.split('/')[0];
     const icons = {
       img: 'glyphicon-picture',
       text: 'glyphicon-book',
       video: 'glyphicon-film',
       audio: 'glyphicon-music',
     };
-    return icons[mimeType] ? icons[mimeType] : 'glyphicon-file';
+    return icons[type] ? icons[type] : 'glyphicon-file';
   }
 
   /**

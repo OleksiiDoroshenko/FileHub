@@ -58,6 +58,7 @@ public class WebApplication {
 
     private static void registerRoutes() {
         Filter filter = new AuthenticationFilter(loggedInUsersStorage);
+        Filter multiPartFilter = new MultiPartAuthenticationFilter(loggedInUsersStorage);
 
         post("/register", new RegistrationRoute(userStorage, folderStorage));
         post("/login", new LogInRoute(userStorage, loggedInUsersStorage));
@@ -68,9 +69,9 @@ public class WebApplication {
         before("/folder/:id/content", filter);
         get("/folder/:id/content", new GetFolderContentRoute(folderStorage, fileStorage));
 
-        before("/folder/:id/file", filter);
+        before("/folder/:id/file", multiPartFilter);
         post("/folder/:id/file", "multipart/form-data",
-                new UploadFileRoute(fileStorage, fileDataStorage, folderStorage));
+                new FileUploadingRoute(fileStorage, fileDataStorage, folderStorage));
 
 
         after((request, response) -> CurrentUser.clear());

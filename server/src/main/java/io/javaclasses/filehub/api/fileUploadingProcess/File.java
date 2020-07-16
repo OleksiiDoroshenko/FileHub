@@ -1,8 +1,11 @@
 package io.javaclasses.filehub.api.fileUploadingProcess;
 
+import com.google.common.base.Objects;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+
+import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -51,5 +54,31 @@ public class File {
 
     public FileSize size() {
         return size;
+    }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "data=" + Arrays.toString(data) +
+                ", name=" + name +
+                ", mimeType=" + mimeType +
+                ", size=" + size +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        File file = (File) o;
+        return Arrays.equals(data, file.data) &&
+                Objects.equal(name, file.name) &&
+                Objects.equal(mimeType, file.mimeType) &&
+                Objects.equal(size, file.size);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(Arrays.hashCode(data), name, mimeType, size);
     }
 }

@@ -17,12 +17,16 @@ import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.utils.IOUtils;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -35,22 +39,22 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 /**
  * The {@link Route} that handles upload file client requests.
  */
-public class UploadFileRoute extends AuthenticatedRoute {
+public class FileUploadingRoute extends AuthenticatedRoute {
 
-    private static final Logger logger = LoggerFactory.getLogger(UploadFileRoute.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileUploadingRoute.class);
     private final FileDataStorage fileDataStorage;
     private final FileStorage fileStorage;
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of {@link UploadFileRoute} with set
+     * Returns instance of {@link FileUploadingRoute} with set
      * {@link FileStorage}, {@link FileDataStorage} and {@link FolderStorage}.
      *
      * @param fileStorage     file storage.
      * @param fileDataStorage file data storage.
      * @param folderStorage   folder storage.
      */
-    public UploadFileRoute(FileStorage fileStorage, FileDataStorage fileDataStorage, FolderStorage folderStorage) {
+    public FileUploadingRoute(FileStorage fileStorage, FileDataStorage fileDataStorage, FolderStorage folderStorage) {
 
         this.fileStorage = checkNotNull(fileStorage);
         this.folderStorage = checkNotNull(folderStorage);
@@ -75,9 +79,9 @@ public class UploadFileRoute extends AuthenticatedRoute {
 
         try {
 
+            File file = getFile(request);
             FileSystemItemId parentId = RequestId.parse(request);
             LoggedInUserRecord record = getLoggedInUser();
-            File file = getFile(request);
 
             FileUploading process = createProcess();
             UploadFile command = createCommand(parentId, record.userId(), file);
@@ -98,7 +102,7 @@ public class UploadFileRoute extends AuthenticatedRoute {
 
             return makeErrorResponse(response, e, SC_CONFLICT);
 
-        } catch (IOException | ServletException e) {
+        } catch (IOException | ServletException | NullPointerException e) {
 
             return makeErrorResponse(response, e, SC_BAD_REQUEST);
 
@@ -142,19 +146,13 @@ public class UploadFileRoute extends AuthenticatedRoute {
      */
     private File getFile(Request request) throws IOException, ServletException {
 
-        request.attribute("org.eclipse.jetty.multipartConfig",
-                new MultipartConfigElement(null, 100000000,
-                        100000000, 1024));
-
         Part uploadedFile = request.raw().getPart("file");
         InputStream in = uploadedFile.getInputStream();
 
         byte[] data = new byte[in.available()];
         in.read(data);
 
-        File file = createFile(data, uploadedFile);
-        uploadedFile.delete();
-        return file;
+        return createFile(data, uploadedFile);
     }
 
     /**
@@ -169,6 +167,7 @@ public class UploadFileRoute extends AuthenticatedRoute {
         FileSystemItemName name = new FileSystemItemName(uploadedFile.getSubmittedFileName());
         FileMimeType mimeType = new FileMimeType(uploadedFile.getContentType());
         FileSize size = new FileSize(uploadedFile.getSize());
+
         return new File(data, name, mimeType, size);
     }
 

@@ -69,6 +69,9 @@ public class WebApplication {
         before("/folder/:id/content", filter);
         get("/folder/:id/content", new GetFolderContentRoute(folderStorage, fileStorage));
 
+        before("/folder/:id/folder", filter);
+        post("/folder/:id/folder", new CreateFolderRoute(folderStorage));
+
         before("/folder/:id/file", multiPartFilter);
         post("/folder/:id/file", "multipart/form-data",
                 new FileUploadingRoute(fileStorage, fileDataStorage, folderStorage));

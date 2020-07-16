@@ -26,8 +26,7 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of the {@link FileUploading} process with set {@link FileDataStorage}, {@link FileStorage} and
-     * {@link FolderStorage} parameters.
+     * Returns instance of the {@link FileUploading} process with set parameters.
      *
      * @param fileDataStorage storage with file data.
      * @param fileStorage     filesStorage.
@@ -75,6 +74,16 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
         return id;
     }
 
+    /**
+     * Adds set {@link FileRecord} to the {@link FileStorage} and {@link FileDataRecord} to the {@link FileDataStorage}.
+     * <p>If {@link FileStorage} already contains {@link FileRecord} with the same {@link FileSystemItemName} this
+     * record will be rewritten with new record but with the same identifier.
+     * {@link FileDataRecord} also will be rewritten.</p>
+     *
+     * @param file     file information.
+     * @param fileData file data.
+     * @return an identifier under which records were saved.
+     */
     private FileSystemItemId addToStorage(FileRecord file, FileDataRecord fileData) {
 
         Optional<FileRecord> record = fileStorage.get(file.name());

@@ -30,7 +30,6 @@ public class MultiPartAuthenticationFilter extends AuthenticationFilter {
                 new MultipartConfigElement("/tmp",
                         100000000, 100000000, 1024));
 
-        Part uploadedFile = request.raw().getPart("file");
         super.handle(request, response);
     }
 }

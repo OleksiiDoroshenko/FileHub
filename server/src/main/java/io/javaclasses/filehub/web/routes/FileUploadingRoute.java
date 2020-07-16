@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.web.routes;
 
-import com.google.gson.Gson;
 import io.javaclasses.filehub.api.fileUploadingProcess.File;
 import io.javaclasses.filehub.api.fileUploadingProcess.FileUploading;
 import io.javaclasses.filehub.api.fileUploadingProcess.UploadFile;
@@ -44,8 +43,7 @@ public class FileUploadingRoute extends AuthenticatedRoute {
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of {@link FileUploadingRoute} with set
-     * {@link FileStorage}, {@link FileDataStorage} and {@link FolderStorage}.
+     * Returns instance of {@link FileUploadingRoute} with set parameters.
      *
      * @param fileStorage     file storage.
      * @param fileDataStorage file data storage.
@@ -111,7 +109,7 @@ public class FileUploadingRoute extends AuthenticatedRoute {
     }
 
     /**
-     * Creates new {@link UploadFile} command with set {@link FileSystemItemId}, {@link UserId} and {@link File}.
+     * Creates new {@link UploadFile} command with set parameters.
      *
      * @param parentId parent folder identifier.
      * @param ownerId  owner identifier.
@@ -124,8 +122,7 @@ public class FileUploadingRoute extends AuthenticatedRoute {
     }
 
     /**
-     * Creates new {@link FileUploading} process with set {@link FileDataStorage}, {@link FileStorage}
-     * and {@link FolderStorage}.
+     * Creates new {@link FileUploading} process.
      *
      * @return created process.
      */

@@ -16,7 +16,7 @@ export default class FileItem extends ListItem {
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
                 <span>${this.model.name}</span>
             </td>
-            <td class="items">${this.model.size}</td>
+            <td class="items">${this._calculateSize()}</td>
             <td class="clickable">
                 <div data-render="clickable">
                     <i class="glyphicon glyphicon-download" data-render="download"></i>
@@ -48,6 +48,21 @@ export default class FileItem extends ListItem {
     };
     return icons[type] ? icons[type] : 'glyphicon-file';
   }
+
+  /**
+     * Converts file size to general view.
+     * @param {number} size - file seze.
+     * @return {string} converted string.
+     * @private
+     */
+    _calculateSize() {
+      const size = this.model.size;
+      if (size === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+      const i = Math.floor(Math.log(size) / Math.log(k));
+      return parseFloat((size / Math.pow(k, i)).toFixed(0)) + ' ' + sizes[i];
+    }
 
   /**
    * Adds listener for clicking downloading icon.

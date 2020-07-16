@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web.routes;
 
+import com.google.gson.Gson;
 import io.javaclasses.filehub.api.fileUploadingProcess.File;
 import io.javaclasses.filehub.api.fileUploadingProcess.FileUploading;
 import io.javaclasses.filehub.api.fileUploadingProcess.UploadFile;
@@ -17,16 +18,11 @@ import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.utils.IOUtils;
 
-import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -42,6 +38,7 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 public class FileUploadingRoute extends AuthenticatedRoute {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUploadingRoute.class);
+    private static final String REQUEST_PART = "file";
     private final FileDataStorage fileDataStorage;
     private final FileStorage fileStorage;
     private final FolderStorage folderStorage;
@@ -88,7 +85,8 @@ public class FileUploadingRoute extends AuthenticatedRoute {
 
             process.handle(command);
 
-            return SC_OK;
+            response.status(SC_OK);
+            return "Success";
 
         } catch (FolderNotFoundException e) {
 
@@ -146,7 +144,7 @@ public class FileUploadingRoute extends AuthenticatedRoute {
      */
     private File getFile(Request request) throws IOException, ServletException {
 
-        Part uploadedFile = request.raw().getPart("file");
+        Part uploadedFile = request.raw().getPart(REQUEST_PART);
         InputStream in = uploadedFile.getInputStream();
 
         byte[] data = new byte[in.available()];

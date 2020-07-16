@@ -1,12 +1,11 @@
 package io.javaclasses.fileHub.storage.fileSystemItemsStorage;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +20,7 @@ public class FolderSystemItemsStorageTest {
     @Test
     public void storageGetSubFoldersTest() {
         FolderStorage storage = createStorage();
-        FileSystemItemId parentId = createFolderId(storage);
+        FolderId parentId = createFolderId(storage);
         UserId ownerId = createOwnerId();
         prepareStorage(storage, parentId, ownerId);
 
@@ -35,15 +34,15 @@ public class FolderSystemItemsStorageTest {
         return new UserId("test");
     }
 
-    private FileSystemItemId createFolderId(FolderStorage storage) {
-        return new FileSystemItemId(storage.generateId());
+    private FolderId createFolderId(FolderStorage storage) {
+        return new FolderId(storage.generateId());
     }
 
-    private void prepareStorage(FolderStorage storage, FileSystemItemId parentId, UserId ownerId) {
-        FileSystemItemId id;
+    private void prepareStorage(FolderStorage storage, FolderId parentId, UserId ownerId) {
+        FolderId id;
         FileSystemItemName name;
         for (int i = 0; i < 3; i++) {
-            id = new FileSystemItemId(storage.generateId());
+            id = new FolderId(storage.generateId());
             name = new FileSystemItemName("");
             storage.add(new FolderRecord(id, name, parentId, ownerId));
         }

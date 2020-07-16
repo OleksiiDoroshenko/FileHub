@@ -2,7 +2,8 @@ package io.javaclasses.fileHub.api.getFolderContentView;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.getFolderContentView.FolderContent;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserId;
@@ -21,7 +22,7 @@ public class FolderContentTest {
     public void nullPointerTest() {
         NullPointerTester tester = new NullPointerTester();
 
-        tester.setDefault(FileSystemItemId.class, new FileSystemItemId(""));
+        tester.setDefault(FolderId.class, new FolderId(""));
         tester.setDefault(LoggedInUserRecord.class, new LoggedInUserRecord(new Token(""), new UserId(""),
                 LocalDate.now(ServerTimeZone.get()).plus(Period.ofDays(1))));
 

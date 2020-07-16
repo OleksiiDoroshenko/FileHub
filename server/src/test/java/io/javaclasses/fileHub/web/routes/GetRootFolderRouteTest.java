@@ -2,7 +2,7 @@ package io.javaclasses.fileHub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserId;
@@ -33,7 +33,7 @@ public class GetRootFolderRouteTest {
 
         UserStorage userStorage = new UserStorage();
 
-        FileSystemItemId rootId = new FileSystemItemId("Test");
+        FolderId rootId = new FolderId("Test");
 
         LoggedInUserRecord userRecord = createAndAddLoggedInUser(userStorage, rootId);
         CurrentUser.set(userRecord);
@@ -84,7 +84,7 @@ public class GetRootFolderRouteTest {
         }
     }
 
-    private LoggedInUserRecord createAndAddLoggedInUser(UserStorage storage, FileSystemItemId rootId) {
+    private LoggedInUserRecord createAndAddLoggedInUser(UserStorage storage, FolderId rootId) {
         UserId userId = new UserId("Test");
         LoggedInUserRecord loggedInUser = new LoggedInUserRecord(new Token("test"),
                 userId, LocalDate.now(ServerTimeZone.get()));

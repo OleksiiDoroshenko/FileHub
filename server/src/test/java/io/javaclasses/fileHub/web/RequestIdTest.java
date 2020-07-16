@@ -1,7 +1,7 @@
 package io.javaclasses.fileHub.web;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.web.RequestId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ public class RequestIdTest {
     @Test
     public void testRequestIdParsing() {
         Request request = createMockRequestWithValidId();
-        FileSystemItemId id = RequestId.parse(request);
+        FolderId id = RequestId.parse(request);
 
         assertNotNull(id, "Parsed id should not be null.");
     }

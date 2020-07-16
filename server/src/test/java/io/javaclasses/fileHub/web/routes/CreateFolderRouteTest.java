@@ -1,10 +1,8 @@
 package io.javaclasses.fileHub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.folderCreationProcess.CreateFolder;
-import io.javaclasses.filehub.api.folderCreationProcess.FolderCreation;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
@@ -34,7 +32,7 @@ public class CreateFolderRouteTest {
     @Test
     public void testRouteCorrectSuccessResponse() {
         FolderStorage storage = createFolderStorage();
-        FileSystemItemId parentId = generateParentId(storage);
+        FolderId parentId = generateParentId(storage);
         LoggedInUserRecord record = createLoggedInUser();
 
         prepareCurrentUser(record);
@@ -94,7 +92,7 @@ public class CreateFolderRouteTest {
 
         FolderStorage storage = createFolderStorage();
         CreateFolderRoute route = createRoute(storage);
-        FileSystemItemId parentId = generateParentId(storage);
+        FolderId parentId = generateParentId(storage);
 
         UserId unLoggedInUserId = generateUserId();
 
@@ -120,7 +118,7 @@ public class CreateFolderRouteTest {
     public void testRouteUserNotOwnerResponse() {
         FolderStorage storage = createFolderStorage();
         LoggedInUserRecord record = createLoggedInUser();
-        FileSystemItemId parentId = generateParentId(storage);
+        FolderId parentId = generateParentId(storage);
         UserId ownerId = generateUserId();
 
         prepareCurrentUser(record);
@@ -158,7 +156,7 @@ public class CreateFolderRouteTest {
         return new UserId("sdjfjsd");
     }
 
-    private void prepareStorage(FolderStorage storage, FileSystemItemId id, UserId ownerId) {
+    private void prepareStorage(FolderStorage storage, FolderId id, UserId ownerId) {
 
         FileSystemItemName name = new FileSystemItemName("");
         FolderRecord record = new FolderRecord(id, name, null, ownerId);
@@ -178,8 +176,8 @@ public class CreateFolderRouteTest {
         CurrentUser.set(loggedInUser);
     }
 
-    private FileSystemItemId generateParentId(FolderStorage storage) {
-        return new FileSystemItemId(storage.generateId());
+    private FolderId generateParentId(FolderStorage storage) {
+        return new FolderId(storage.generateId());
     }
 
     private FolderStorage createFolderStorage() {
@@ -190,7 +188,7 @@ public class CreateFolderRouteTest {
         return new CreateFolderRoute(storage);
     }
 
-    private Request createMockRequestWith(FileSystemItemId parentId) {
+    private Request createMockRequestWith(FolderId parentId) {
         return new Request() {
 
             @Override

@@ -3,9 +3,9 @@ package io.javaclasses.fileHub.api.folderCreationProcess;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.folderCreationProcess.CreateFolder;
 import io.javaclasses.filehub.api.folderCreationProcess.FolderCreation;
-import io.javaclasses.filehub.api.folderCreationProcess.UserNotOwnerException;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.api.folderCreationProcess.AccessDeniedException;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
@@ -33,7 +33,7 @@ public class FolderCreationTest {
     public void testNewFolderCreation() {
 
         FolderStorage storage = createFolderStorage();
-        FileSystemItemId parentId = generateParentId(storage);
+        FolderId parentId = generateParentId(storage);
         LoggedInUserRecord record = createLoggedInUser();
 
         prepareCurrentUser(record);
@@ -43,7 +43,7 @@ public class FolderCreationTest {
         FolderCreation process = createProcess(storage);
 
         try {
-            FileSystemItemId createdFolderId = process.handle(command);
+            FolderId createdFolderId = process.handle(command);
 
             assertNotNull(storage.get(createdFolderId), "CreationProcess does not create new folder.");
 
@@ -59,7 +59,7 @@ public class FolderCreationTest {
     public void testProcessThrowsFolderNotFoundException() {
 
         FolderStorage storage = createFolderStorage();
-        FileSystemItemId parentId = generateParentId(storage);
+        FolderId parentId = generateParentId(storage);
         LoggedInUserRecord record = createLoggedInUser();
 
         prepareCurrentUser(record);
@@ -86,7 +86,7 @@ public class FolderCreationTest {
     public void testProcessThrowsUserNotOwnerException() {
 
         FolderStorage storage = createFolderStorage();
-        FileSystemItemId parentId = generateParentId(storage);
+        FolderId parentId = generateParentId(storage);
         LoggedInUserRecord record = createLoggedInUser();
         UserId ownerId = generateUserId();
 
@@ -98,7 +98,7 @@ public class FolderCreationTest {
 
         try {
 
-            assertThrows(UserNotOwnerException.class, () -> process.handle(command),
+            assertThrows(AccessDeniedException.class, () -> process.handle(command),
                     "CreationProcess does not throw \"UserNotOwnerException\"" +
                             " when set user is not the owner of required parent folder.");
 
@@ -114,7 +114,7 @@ public class FolderCreationTest {
         return new UserId("sdjfjsd");
     }
 
-    private void prepareStorage(FolderStorage storage, FileSystemItemId id, UserId ownerId) {
+    private void prepareStorage(FolderStorage storage, FolderId id, UserId ownerId) {
 
         FileSystemItemName name = new FileSystemItemName("");
         FolderRecord record = new FolderRecord(id, name, null, ownerId);
@@ -138,11 +138,11 @@ public class FolderCreationTest {
         CurrentUser.set(loggedInUser);
     }
 
-    private FileSystemItemId generateParentId(FolderStorage storage) {
-        return new FileSystemItemId(storage.generateId());
+    private FolderId generateParentId(FolderStorage storage) {
+        return new FolderId(storage.generateId());
     }
 
-    private CreateFolder createCommand(FileSystemItemId parentId, UserId ownerId) {
+    private CreateFolder createCommand(FolderId parentId, UserId ownerId) {
         return new CreateFolder(parentId, ownerId);
     }
 

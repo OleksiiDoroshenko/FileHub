@@ -26,7 +26,9 @@ export default class GetItemsAction extends Action {
     apiService.getItems(this.id)
       .then((response) => {
         stateManager.mutate(new FolderIdMutator(this.id));
-        stateManager.mutate(new ItemsMutator(response.items));
+        const folders = response.folders;
+        const files = response.files;
+        stateManager.mutate(new ItemsMutator(folders.concat(files)));
       }).catch((e) => {
       stateManager.mutate(new ItemsLoadingErrorMutator(e));
     }).finally(() => {

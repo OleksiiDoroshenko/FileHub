@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import io.javaclasses.filehub.api.getRootFolderView.GetRootFolderId;
 import io.javaclasses.filehub.api.getRootFolderView.RootFolderId;
 import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
-import io.javaclasses.filehub.storage.folderStorage.FolderId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
-import io.javaclasses.filehub.web.CurrentUser;
+import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -24,15 +24,15 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 /**
  * The {@link Route} that handles get root folder requests.
  */
-public class GetRootFolderRoute implements Route {
+public class GetRootFolderRoute extends AuthenticatedRoute {
 
     private final static Logger logger = LoggerFactory.getLogger(GetRootFolderRoute.class);
     private final UserStorage userStorage;
 
     /**
      * Returns instance of {@link GetRootFolderRoute} class.
-     *  @param userStorage  user storage.
      *
+     * @param userStorage user storage.
      */
     public GetRootFolderRoute(UserStorage userStorage) {
         this.userStorage = checkNotNull(userStorage);
@@ -64,10 +64,10 @@ public class GetRootFolderRoute implements Route {
             }
 
             LoggedInUserRecord loggedInUserRecord = getLoggedInUser();
-            RootFolderId query = createQuery(loggedInUserRecord);
             GetRootFolderId view = createView();
+            RootFolderId query = createQuery(loggedInUserRecord);
 
-            FolderId id = view.handle(query);
+            FileSystemItemId id = view.process(query);
 
             if (logger.isDebugEnabled()) {
                 logger.debug(format("Getting user root folder was completed successfully. Root folder id: %s.",
@@ -77,7 +77,7 @@ public class GetRootFolderRoute implements Route {
             response.status(SC_OK);
             return new Gson().toJson(id);
 
-        } catch (UserNotRegisteredException e) {
+        } catch (UserNotLoggedInException e) {
 
             if (logger.isErrorEnabled()) {
                 logger.error(format("Error %s occurred. With message: %s.", e.getClass(), e.getMessage()));
@@ -107,12 +107,6 @@ public class GetRootFolderRoute implements Route {
 
     }
 
-    /**
-     * @return logged in user.
-     */
-    private LoggedInUserRecord getLoggedInUser() {
-        return CurrentUser.get();
-    }
 
     /**
      * Crates new instance of {@link GetRootFolderId} class.

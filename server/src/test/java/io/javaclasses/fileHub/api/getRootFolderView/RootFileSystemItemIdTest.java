@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 @DisplayName("RootFolderId should: ")
-public class RootFolderIdTest {
+public class RootFileSystemItemIdTest {
 
     @DisplayName("throw exception if constructor parameters are null.")
     @Test

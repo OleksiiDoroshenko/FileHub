@@ -2,7 +2,7 @@ package io.javaclasses.fileHub.api.registrationProcess;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.*;
-import io.javaclasses.filehub.storage.folderStorage.FolderStorage;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import org.junit.jupiter.api.DisplayName;

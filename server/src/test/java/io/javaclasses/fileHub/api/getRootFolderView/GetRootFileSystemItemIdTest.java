@@ -5,13 +5,14 @@ import io.javaclasses.filehub.api.getRootFolderView.GetRootFolderId;
 import io.javaclasses.filehub.api.getRootFolderView.RootFolderId;
 import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
-import io.javaclasses.filehub.storage.folderStorage.FolderId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.ServerTimeZone;
+import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 @DisplayName("GetRootFolderId should: ")
-public class GetRootFolderIdTest {
+public class GetRootFileSystemItemIdTest {
 
     @DisplayName("successfully process valid query.")
     @Test
@@ -31,13 +32,13 @@ public class GetRootFolderIdTest {
 
         UserStorage storage = new UserStorage();
         GetRootFolderId view = new GetRootFolderId(storage);
-        FolderId rootId = new FolderId("test");
+        FileSystemItemId rootId = new FileSystemItemId("test");
         LoggedInUserRecord loggedInUser = createAndAddLoggedInUser(storage, rootId);
         RootFolderId query = new RootFolderId(loggedInUser);
 
 
         try {
-            FolderId actualId = view.handle(query);
+            FileSystemItemId actualId = view.process(query);
 
             assertEquals(rootId, actualId, "Returns incorrect root folder id.");
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class GetRootFolderIdTest {
         }
     }
 
-    private LoggedInUserRecord createAndAddLoggedInUser(UserStorage storage, FolderId rootId) {
+    private LoggedInUserRecord createAndAddLoggedInUser(UserStorage storage, FileSystemItemId rootId) {
         UserId userId = new UserId("Test");
         LoggedInUserRecord loggedInUser = new LoggedInUserRecord(new Token("test"),
                 userId, LocalDate.now(ServerTimeZone.get()));
@@ -66,8 +67,8 @@ public class GetRootFolderIdTest {
 
         try {
 
-            assertThrows(UserNotRegisteredException.class, () -> {
-                view.handle(query);
+            assertThrows(UserNotLoggedInException.class, () -> {
+                view.process(query);
             }, "Does not throw UserNotRegisteredException when user is not exist in storage, but should.");
         } catch (Exception e) {
 

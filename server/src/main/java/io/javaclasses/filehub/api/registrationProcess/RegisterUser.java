@@ -20,7 +20,7 @@ public final class RegisterUser implements Command {
     private final Password password;
 
     /**
-     * Returns instance of {@link RegisterUser} command.
+     * Creates instance of {@link RegisterUser} command.
      *
      * <p>
      * Validates passed parameters and throws {@link InvalidUserCredentialsException}

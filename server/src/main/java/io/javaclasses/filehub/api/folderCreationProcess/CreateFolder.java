@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.folderCreationProcess;
 
 import io.javaclasses.filehub.api.Command;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 
@@ -12,22 +12,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class CreateFolder implements Command {
 
-    private final FileSystemItemId parentId;
+    private final FolderId parentId;
     private final UserId ownerId;
 
     /**
-     * Returns instance of {@link CreateFolder} with set {@link FileSystemItemId} and {@link UserId}.
+     * Creates instance of {@link CreateFolder} with set {@link FolderId} and {@link UserId}.
      *
      * @param parentId parent folder identifier.
      * @param ownerId  owner identifier.
      */
-    public CreateFolder(FileSystemItemId parentId, UserId ownerId) {
+    public CreateFolder(FolderId parentId, UserId ownerId) {
 
         this.parentId = checkNotNull(parentId);
         this.ownerId = checkNotNull(ownerId);
     }
 
-    public FileSystemItemId parentId() {
+    public FolderId parentId() {
         return parentId;
     }
 

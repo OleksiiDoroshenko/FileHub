@@ -22,7 +22,7 @@ public final class FolderContentDto {
     private final List<FolderDto> folders;
 
     /**
-     * Returns instance of {@link FolderContentDto} class.
+     * Creates instance of {@link FolderContentDto} class.
      *
      * @param files   list of files.
      * @param folders list of folders.

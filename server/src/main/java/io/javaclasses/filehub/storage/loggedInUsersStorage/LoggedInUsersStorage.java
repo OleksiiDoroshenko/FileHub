@@ -12,7 +12,7 @@ import java.util.Optional;
 public class LoggedInUsersStorage extends InMemoryRecordStorage<LoggedInUserRecord, Token> {
 
     /**
-     * Returns token record by its value.
+     * Creates token record by its value.
      *
      * <p>Not return token if its expiration date passed.</p>
      *

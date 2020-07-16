@@ -14,7 +14,7 @@ public final class FileSystemItemName {
     private final String value;
 
     /**
-     * Returns instance of {@link FileSystemItemName} class.
+     * Creates instance of {@link FileSystemItemName} class.
      *
      * @param value folder name.
      */

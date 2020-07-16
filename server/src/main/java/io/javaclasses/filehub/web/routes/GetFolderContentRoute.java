@@ -5,7 +5,7 @@ import io.javaclasses.filehub.api.getFolderContentView.FolderContent;
 import io.javaclasses.filehub.api.getFolderContentView.FolderContentDto;
 import io.javaclasses.filehub.api.getFolderContentView.GetFolderContent;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileStorage;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.web.FolderNotFoundException;
@@ -67,7 +67,7 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
 
                 throw new UserNotLoggedInException("Logged in user was not found.");
             }
-            FileSystemItemId folderId = getFolderId(request);
+            FolderId folderId = getFolderId(request);
             LoggedInUserRecord loggedInUser = getLoggedInUser();
 
             GetFolderContent view = createView();
@@ -118,7 +118,7 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
      * @param loggedInUser logged in user.
      * @return created query.
      */
-    private FolderContent createQuery(FileSystemItemId folderId, LoggedInUserRecord loggedInUser) {
+    private FolderContent createQuery(FolderId folderId, LoggedInUserRecord loggedInUser) {
         return new FolderContent(folderId, loggedInUser);
     }
 
@@ -137,7 +137,7 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
      * @param request client HTTP request.
      * @return folder identifier.
      */
-    private FileSystemItemId getFolderId(Request request) {
+    private FolderId getFolderId(Request request) {
 
         if (logger.isDebugEnabled()) {
             logger.debug("Trying to parse folder id.");
@@ -148,6 +148,6 @@ public class GetFolderContentRoute extends AuthenticatedRoute {
         if (logger.isDebugEnabled()) {
             logger.debug(format("Folder id was parsed successfully. Id: %s", id));
         }
-        return new FileSystemItemId(id);
+        return new FolderId(id);
     }
 }

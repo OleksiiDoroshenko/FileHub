@@ -12,7 +12,7 @@ import java.util.Optional;
 public class UserStorage extends InMemoryRecordStorage<UserRecord, UserId> {
 
     /**
-     * Returns {@link Optional <UserRecord>} by {@link LoginName}.
+     * Creates {@link Optional <UserRecord>} by {@link LoginName}.
      *
      * @param loginName user login name.
      * @return {@link Optional<UserRecord>}.

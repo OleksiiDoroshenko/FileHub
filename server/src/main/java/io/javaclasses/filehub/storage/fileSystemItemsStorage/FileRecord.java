@@ -11,13 +11,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Data structure for saving folder in the {@link FileStorage}.
  */
 @Immutable
-public final class FileRecord implements FileSystemItem {
+public final class FileRecord implements FileSystemItem<FileId> {
 
-    private final FileSystemItemId id;
+    private final FileId id;
 
     private final FileSystemItemName name;
 
-    private final FileSystemItemId parentId;
+    private final FolderId parentId;
 
     private final FileSize size;
 
@@ -26,7 +26,7 @@ public final class FileRecord implements FileSystemItem {
     private final UserId ownerId;
 
     /**
-     * Returns instance of {@link FileRecord} class.
+     * Creates instance of {@link FileRecord} class.
      *
      * @param id       file identifier.
      * @param name     file name.
@@ -35,7 +35,7 @@ public final class FileRecord implements FileSystemItem {
      * @param mimeType file mimeType.
      * @param ownerId  file owner identifier.
      */
-    public FileRecord(FileSystemItemId id, FileSystemItemName name, FileSystemItemId parentId,
+    public FileRecord(FileId id, FileSystemItemName name, FolderId parentId,
                       FileSize size, FileMimeType mimeType, UserId ownerId) {
 
         this.id = checkNotNull(id);
@@ -52,7 +52,7 @@ public final class FileRecord implements FileSystemItem {
     }
 
     @Override
-    public FileSystemItemId parentId() {
+    public FolderId parentId() {
         return parentId;
     }
 
@@ -62,7 +62,7 @@ public final class FileRecord implements FileSystemItem {
     }
 
     @Override
-    public FileSystemItemId id() {
+    public FileId id() {
         return id;
     }
 

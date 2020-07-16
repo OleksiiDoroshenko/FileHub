@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import spark.Request;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -18,12 +18,12 @@ public final class RequestId {
      * @param request client HTTP request.
      * @return folder identifier.
      */
-    public static FileSystemItemId parse(Request request) {
+    public static FolderId parse(Request request) {
 
         checkNotNull(request);
 
         String id = request.params(ID_PARAMETER);
 
-        return new FileSystemItemId(id);
+        return new FolderId(id);
     }
 }

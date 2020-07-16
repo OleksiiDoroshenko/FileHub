@@ -14,7 +14,7 @@ public final class Password {
     private final String value;
 
     /**
-     * Returns instance of {@link Password} class.
+     * Creates instance of {@link Password} class.
      *
      * @param value user password.
      * @throws InvalidUserCredentialsException if password is not valid.

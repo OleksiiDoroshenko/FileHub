@@ -3,8 +3,8 @@ package io.javaclasses.filehub.api.getFolderContentView;
 import com.google.common.base.Objects;
 import com.google.errorprone.annotations.Immutable;
 import com.google.gson.annotations.SerializedName;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -27,15 +27,15 @@ public final class FolderDto {
     private final String parentId;
 
     /**
-     * Returns instance of {@link FolderDto} class.
+     * Creates instance of {@link FolderDto} class.
      *
      * @param name     folder name.
      * @param id       folder identifier.
      * @param parentId folder parent identifier.
      */
-    public FolderDto(FileSystemItemName name, FileSystemItemId id, @Nullable FileSystemItemId parentId) {
-        this.name = checkNotNull(name.value());
-        this.id = checkNotNull(id.value());
+    public FolderDto(FileSystemItemName name, FolderId id, @Nullable FolderId parentId) {
+        this.name = checkNotNull(name).value();
+        this.id = checkNotNull(id).value();
         this.parentId = parentId == null ? null : parentId.value();
     }
 

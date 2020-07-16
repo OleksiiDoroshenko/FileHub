@@ -14,7 +14,7 @@ public final class LoginName {
     private final String loginName;
 
     /**
-     * Returns instance of {@link LoginName} class.
+     * Creates instance of {@link LoginName} class.
      *
      * @param value user login name.
      * @throws InvalidUserCredentialsException if login name is not valid.

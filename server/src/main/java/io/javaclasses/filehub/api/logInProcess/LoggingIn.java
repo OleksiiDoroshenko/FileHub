@@ -33,7 +33,7 @@ public class LoggingIn implements SystemProcess<LogInUser, Token> {
     private final LoggedInUsersStorage loggedInUsersStorage;
 
     /**
-     * Returns instance of {@link LoggingIn} class.
+     * Creates instance of {@link LoggingIn} class.
      *
      * @param userStorage          storage with registered users.
      * @param loggedInUsersStorage storage with tokens for registered users.

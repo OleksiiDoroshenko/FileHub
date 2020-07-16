@@ -17,7 +17,7 @@ export default class FileItem extends ListItem {
                 <span>${this.model.name}</span>
                 <input data-render="name-input" value=${this.model.name}>
             </td>
-            <td class="items">${this.model.size}</td>
+            <td class="items">${this._calculateSize()}</td>
             <td class="clickable">
                 <div data-render="clickable">
                     <i class="glyphicon glyphicon-download" data-render="download"></i>
@@ -44,14 +44,30 @@ export default class FileItem extends ListItem {
    * @private
    */
   _getFileIcon(mimeType) {
+    const type = mimeType.split('/')[0];
     const icons = {
       img: 'glyphicon-picture',
       text: 'glyphicon-book',
       video: 'glyphicon-film',
       audio: 'glyphicon-music',
     };
-    return icons[mimeType] ? icons[mimeType] : 'glyphicon-file';
+    return icons[type] ? icons[type] : 'glyphicon-file';
   }
+
+  /**
+     * Converts file size to general view.
+     * @param {number} size - file seze.
+     * @return {string} converted string.
+     * @private
+     */
+    _calculateSize() {
+      const size = this.model.size;
+      if (size === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+      const i = Math.floor(Math.log(size) / Math.log(k));
+      return parseFloat((size / Math.pow(k, i)).toFixed(0)) + ' ' + sizes[i];
+    }
 
   /**
    * Adds listener for clicking downloading icon.

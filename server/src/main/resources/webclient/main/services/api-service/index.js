@@ -17,12 +17,12 @@ export default class ApiService {
   logIn(userData) {
     return fetch('/login', {
       method: 'POST',
-      body: userData,
+      body: JSON.stringify(userData),
     }).then(async (response) => {
       if (response.ok) {
         const result = response.json();
         return await result.then((body) => {
-          localStorage.setItem('token', body.token);
+          localStorage.setItem('token', body.value);
         });
       }
       throw await this.getError(response, 'User');
@@ -55,6 +55,7 @@ export default class ApiService {
    * {@link VerificationError}. If everything is alright method resolve contains redirection to {@link LoginPage}
    */
   register(userData) {
+  console.log(userData);
     return fetch('/register', {
       method: 'POST',
       body: JSON.stringify(userData),
@@ -74,7 +75,8 @@ export default class ApiService {
    */
   async getError(response, requestedItem) {
     switch (response.status) {
-      case 401: {
+      case 401:
+      case 409:{
         let message = response.statusText;
         await response.text().then((text) => {
           message = text.length > 0 ? text : message;
@@ -102,11 +104,7 @@ export default class ApiService {
         return new Error(response.statusText);
       }
       default: {
-        let message = response.statusText;
-        await response.text().then((text) => {
-          message = text;
-        });
-        return new Error(message);
+        return new Error(response.statusText);
       }
     }
   }
@@ -137,14 +135,15 @@ export default class ApiService {
    * @returns {Promise<>}
    */
   uploadFile(parentId, file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
     return fetch(`/folder/${parentId}/file`, {
       method: 'POST',
       headers: {
         token: localStorage.getItem('token'),
       },
-      body: {
-        file: file,
-      },
+      body: formData,
     }).then(async (response) => {
       if (response.ok) {
         return 200;

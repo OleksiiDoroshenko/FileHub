@@ -15,7 +15,7 @@ public final class FileSize {
     private final long value;
 
     /**
-     * Returns instance of {@link FileSize} class.
+     * Creates instance of {@link FileSize} class.
      *
      * @param value file size in bites.
      */

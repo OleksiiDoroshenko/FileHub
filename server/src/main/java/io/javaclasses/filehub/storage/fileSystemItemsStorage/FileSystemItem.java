@@ -1,14 +1,15 @@
 package io.javaclasses.filehub.storage.fileSystemItemsStorage;
 
 import io.javaclasses.filehub.storage.Record;
+import io.javaclasses.filehub.storage.RecordId;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 
 /**
  * An abstract base for all file system items.
  */
-public interface FileSystemItem extends Record<FileSystemItemId> {
+public interface FileSystemItem<I extends RecordId> extends Record<I> {
 
-    FileSystemItemId parentId();
+    FolderId parentId();
 
     UserId ownerId();
 

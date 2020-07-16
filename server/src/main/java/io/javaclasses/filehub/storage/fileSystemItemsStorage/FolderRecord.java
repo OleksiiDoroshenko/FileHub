@@ -11,27 +11,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Data structure for saving folder in the {@link FolderStorage}.
  */
 @Immutable
-public final class FolderRecord implements FileSystemItem {
+public final class FolderRecord implements FileSystemItem<FolderId> {
 
-    private final FileSystemItemId id;
+    private final FolderId id;
 
     private final FileSystemItemName name;
 
     @Nullable
-    private final FileSystemItemId parentId;
+    private final FolderId parentId;
 
     private final UserId ownerId;
 
     /**
-     * Returns instance of {@link FolderRecord} class.
+     * Creates instance of {@link FolderRecord} class.
      *
      * @param id       folder identifier.
      * @param name     folder name.
      * @param parentId folder parent identifier.
      * @param ownerId  folder owner identifier.
      */
-    public FolderRecord(FileSystemItemId id, FileSystemItemName name,
-                        @Nullable FileSystemItemId parentId, UserId ownerId) {
+    public FolderRecord(FolderId id, FileSystemItemName name,
+                        @Nullable FolderId parentId, UserId ownerId) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.parentId = parentId;
@@ -44,7 +44,7 @@ public final class FolderRecord implements FileSystemItem {
     }
 
     @Override
-    public FileSystemItemId parentId() {
+    public FolderId parentId() {
         return parentId;
     }
 
@@ -54,7 +54,7 @@ public final class FolderRecord implements FileSystemItem {
     }
 
     @Override
-    public FileSystemItemId id() {
+    public FolderId id() {
         return id;
     }
 }

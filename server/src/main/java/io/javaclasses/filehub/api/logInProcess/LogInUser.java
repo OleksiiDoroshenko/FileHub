@@ -17,7 +17,7 @@ public final class LogInUser implements Command {
     private final Password password;
 
     /**
-     * Returns instance of {@link LogInUser} class.
+     * Creates instance of {@link LogInUser} class.
      *
      * @param loginName user login name.
      * @param password  user password.

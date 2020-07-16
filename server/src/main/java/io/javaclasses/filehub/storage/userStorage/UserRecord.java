@@ -4,7 +4,7 @@ import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Registration;
 import io.javaclasses.filehub.storage.Record;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,18 +20,18 @@ public final class UserRecord implements Record<UserId> {
     private final LoginName loginName;
     private final String password;
     private final UserId id;
-    private final FileSystemItemId rootFolderId;
+    private final FolderId rootFolderId;
 
 
     /**
-     * Returns instance of {@link UserRecord} class.
+     * Creates instance of {@link UserRecord} class.
      *
-     * @param id         user identifier.
-     * @param loginName  user login.
-     * @param password   user password.
+     * @param id           user identifier.
+     * @param loginName    user login.
+     * @param password     user password.
      * @param rootFolderId user root folder identifier.
      */
-    public UserRecord(UserId id, LoginName loginName, String password, FileSystemItemId rootFolderId) {
+    public UserRecord(UserId id, LoginName loginName, String password, FolderId rootFolderId) {
         this.loginName = checkNotNull(loginName);
         this.password = checkNotNull(password);
         this.id = checkNotNull(id);
@@ -50,7 +50,7 @@ public final class UserRecord implements Record<UserId> {
         return password;
     }
 
-    public FileSystemItemId rootFolderId() {
+    public FolderId rootFolderId() {
         return rootFolderId;
     }
 

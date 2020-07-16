@@ -8,7 +8,7 @@ import io.javaclasses.filehub.storage.userStorage.UserStorage;
 public class UserNotRegisteredException extends RuntimeException {
 
     /**
-     * Returns instance of {@link UserNotRegisteredException}.
+     * Creates instance of {@link UserNotRegisteredException}.
      *
      * @param message error message that describes what went wrong.
      */

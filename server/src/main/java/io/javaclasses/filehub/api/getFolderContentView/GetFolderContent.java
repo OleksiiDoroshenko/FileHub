@@ -23,7 +23,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
     private final FileStorage fileStorage;
 
     /**
-     * Returns instance of {@link GetFolderContent} class.
+     * Creates instance of {@link GetFolderContent} class.
      *
      * @param folderStorage folder storage.
      * @param fileStorage   file storage.
@@ -47,7 +47,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
 
         checkNotNull(query);
 
-        FileSystemItemId folderId = query.folderId();
+        FolderId folderId = query.folderId();
         LoggedInUserRecord record = query.loggedInUser();
 
         checkOnExistence(folderId);
@@ -77,7 +77,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * @param userId   owner of the folders.
      * @return folder DTO list.
      */
-    private List<FolderDto> getChildrenFolders(FileSystemItemId folderId, UserId userId) {
+    private List<FolderDto> getChildrenFolders(FolderId folderId, UserId userId) {
         List<FolderRecord> children = folderStorage.all(folderId, userId);
 
         return children.stream()
@@ -104,7 +104,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * @param userId   owner of the folders.
      * @return file list.
      */
-    private List<FileDto> getChildrenFiles(FileSystemItemId folderId, UserId userId) {
+    private List<FileDto> getChildrenFiles(FolderId folderId, UserId userId) {
         List<FileRecord> children = fileStorage.all(folderId, userId);
 
         return children.stream()
@@ -129,7 +129,7 @@ public class GetFolderContent implements SystemView<FolderContent, FolderContent
      * @param folderId folder identifier.
      * @throws FolderNotFoundException if storage does not contain folder with required identifier.
      */
-    private void checkOnExistence(FileSystemItemId folderId) {
+    private void checkOnExistence(FolderId folderId) {
         Optional<FolderRecord> record = folderStorage.get(folderId);
 
         if (!record.isPresent()) {

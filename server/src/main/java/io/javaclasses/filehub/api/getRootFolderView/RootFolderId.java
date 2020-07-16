@@ -13,7 +13,7 @@ public class RootFolderId implements Query {
     private final LoggedInUserRecord loggedInUser;
 
     /**
-     * Returns instance of {@link RootFolderId} class.
+     * Creates instance of {@link RootFolderId} class.
      *
      * @param loggedInUser logged in user.
      */

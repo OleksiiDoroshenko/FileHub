@@ -3,8 +3,7 @@ package io.javaclasses.filehub.web.routes;
 import com.google.gson.Gson;
 import io.javaclasses.filehub.api.getRootFolderView.GetRootFolderId;
 import io.javaclasses.filehub.api.getRootFolderView.RootFolderId;
-import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
 import io.javaclasses.filehub.web.UserNotLoggedInException;
@@ -30,7 +29,7 @@ public class GetRootFolderRoute extends AuthenticatedRoute {
     private final UserStorage userStorage;
 
     /**
-     * Returns instance of {@link GetRootFolderRoute} class.
+     * Creates instance of {@link GetRootFolderRoute} class.
      *
      * @param userStorage user storage.
      */
@@ -67,7 +66,7 @@ public class GetRootFolderRoute extends AuthenticatedRoute {
             GetRootFolderId view = createView();
             RootFolderId query = createQuery(loggedInUserRecord);
 
-            FileSystemItemId id = view.process(query);
+            FolderId id = view.process(query);
 
             if (logger.isDebugEnabled()) {
                 logger.debug(format("Getting user root folder was completed successfully. Root folder id: %s.",

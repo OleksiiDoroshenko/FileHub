@@ -2,8 +2,8 @@ package io.javaclasses.filehub.api.registrationProcess;
 
 import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.SystemProcess;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
@@ -25,7 +25,7 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
 
 
     /**
-     * Returns instance of {@link Registration} class.
+     * Creates instance of {@link Registration} class.
      *
      * @param userStorage   user storage.
      * @param folderStorage folder storage.
@@ -63,7 +63,7 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
         }
         String passwordHash = createPasswordHash(registerUser.password());
         UserId id = createUserId();
-        FileSystemItemId rootFileSystemItemId = createFolderId();
+        FolderId rootFileSystemItemId = createFolderId();
         UserRecord record = createUserRecord(loginName, passwordHash, id, rootFileSystemItemId);
         createAndAddUserRootFolder(record);
 
@@ -76,7 +76,7 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      * @param user owner of the root folder.
      */
     private void createAndAddUserRootFolder(UserRecord user) {
-        FileSystemItemId id = user.rootFolderId();
+        FolderId id = user.rootFolderId();
         FileSystemItemName name = new FileSystemItemName("root");
         UserId ownerId = user.id();
         FolderRecord rootFolder = new FolderRecord(id, name, null, ownerId);
@@ -93,7 +93,8 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      * @param rootFileSystemItemId user root folder id.
      * @return user record.
      */
-    private UserRecord createUserRecord(LoginName loginName, String passwordHash, UserId id, FileSystemItemId rootFileSystemItemId) {
+    private UserRecord createUserRecord(LoginName loginName, String passwordHash, UserId id,
+                                        FolderId rootFileSystemItemId) {
         return new UserRecord(id, loginName, passwordHash, rootFileSystemItemId);
     }
 
@@ -102,8 +103,8 @@ public class Registration implements SystemProcess<RegisterUser, UserId> {
      *
      * @return folder id.
      */
-    private FileSystemItemId createFolderId() {
-        return new FileSystemItemId(folderStorage.generateId());
+    private FolderId createFolderId() {
+        return new FolderId(folderStorage.generateId());
     }
 
     /**

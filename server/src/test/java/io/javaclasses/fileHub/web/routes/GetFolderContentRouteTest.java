@@ -35,7 +35,7 @@ public class GetFolderContentRouteTest {
         FolderStorage folderStorage = createFolderStorage();
         FileStorage fileStorage = createFileStorage();
         int numberOfElements = 3;
-        FileSystemItemId parentId = createParentId();
+        FolderId parentId = createParentId();
         UserId ownerId = createOwnerId();
         prepareStorage(fileStorage, folderStorage, numberOfElements, parentId, ownerId);
 
@@ -87,7 +87,7 @@ public class GetFolderContentRouteTest {
         }
     }
 
-    private Request createMockRequestWith(FileSystemItemId id) {
+    private Request createMockRequestWith(FolderId id) {
 
         return new Request() {
 
@@ -105,7 +105,7 @@ public class GetFolderContentRouteTest {
 
     private void prepareFolderStorage(FolderStorage folderStorage, LoggedInUserRecord record) {
 
-        FileSystemItemId id = new FileSystemItemId(folderStorage.generateId());
+        FolderId id = new FolderId(folderStorage.generateId());
         FileSystemItemName name = new FileSystemItemName("");
         FolderRecord root = new FolderRecord(id, name, null, record.userId());
         folderStorage.add(root);
@@ -119,12 +119,12 @@ public class GetFolderContentRouteTest {
         return new UserId("test");
     }
 
-    private FileSystemItemId createParentId() {
-        return new FileSystemItemId("id");
+    private FolderId createParentId() {
+        return new FolderId("id");
     }
 
     private void prepareStorage(FileStorage fileStorage, FolderStorage folderStorage,
-                                int numberOfElements, FileSystemItemId parentId, UserId ownerId) {
+                                int numberOfElements, FolderId parentId, UserId ownerId) {
         folderStorage.add(createRootFolder(parentId, ownerId));
 
         for (int i = 0; i < numberOfElements; i++) {
@@ -133,19 +133,19 @@ public class GetFolderContentRouteTest {
         }
     }
 
-    private FolderRecord createRootFolder(FileSystemItemId id, UserId ownerId) {
+    private FolderRecord createRootFolder(FolderId id, UserId ownerId) {
         FileSystemItemName name = new FileSystemItemName("root");
         return new FolderRecord(id, name, null, ownerId);
     }
 
-    private FolderRecord createFolderRecord(FileSystemItemId parentId, UserId ownerId, FolderStorage storage) {
-        FileSystemItemId id = new FileSystemItemId(storage.generateId());
+    private FolderRecord createFolderRecord(FolderId parentId, UserId ownerId, FolderStorage storage) {
+        FolderId id = new FolderId(storage.generateId());
         FileSystemItemName name = new FileSystemItemName("");
         return new FolderRecord(id, name, parentId, ownerId);
     }
 
-    private FileRecord createFileRecord(FileSystemItemId parentId, UserId ownerId, FileStorage storage) {
-        FileSystemItemId id = new FileSystemItemId(storage.generateId());
+    private FileRecord createFileRecord(FolderId parentId, UserId ownerId, FileStorage storage) {
+        FileId id = new FileId(storage.generateId());
         FileSystemItemName name = new FileSystemItemName("");
         FileSize size = new FileSize(0);
         FileMimeType mimeType = new FileMimeType("");

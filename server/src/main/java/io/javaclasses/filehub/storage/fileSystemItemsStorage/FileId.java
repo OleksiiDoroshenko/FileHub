@@ -6,20 +6,12 @@ import io.javaclasses.filehub.storage.RecordId;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * An identifier for {@link FolderRecord} and {@link FileRecord}.
- */
 @Immutable
-public final class FileSystemItemId implements RecordId {
+public final class FileId implements RecordId {
 
     private final String value;
 
-    /**
-     * Returns instance of {@link FileSystemItemId} class.
-     *
-     * @param value value of identifier.
-     */
-    public FileSystemItemId(String value) {
+    public FileId(String value) {
         this.value = checkNotNull(value);
     }
 
@@ -29,11 +21,18 @@ public final class FileSystemItemId implements RecordId {
     }
 
     @Override
+    public String toString() {
+        return "FileId{" +
+                "value='" + value + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FileSystemItemId that = (FileSystemItemId) o;
-        return Objects.equal(value, that.value);
+        FileId fileId = (FileId) o;
+        return Objects.equal(value, fileId.value);
     }
 
     @Override

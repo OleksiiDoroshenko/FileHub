@@ -1,9 +1,7 @@
 package io.javaclasses.fileHub.storage.fileSystemItemsStorage;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -4,10 +4,7 @@ import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileStorage;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUsersStorage;
 import io.javaclasses.filehub.storage.userStorage.UserStorage;
-import io.javaclasses.filehub.web.routes.GetFolderContentRoute;
-import io.javaclasses.filehub.web.routes.GetRootFolderRoute;
-import io.javaclasses.filehub.web.routes.LogInRoute;
-import io.javaclasses.filehub.web.routes.RegistrationRoute;
+import io.javaclasses.filehub.web.routes.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Filter;
@@ -67,6 +64,9 @@ public class WebApplication {
 
         before("/folder/:id/content", filter);
         get("/folder/:id/content", new GetFolderContentRoute(folderStorage, fileStorage));
+
+        before("/folder/:id/folder", filter);
+        post("/folder/:id/folder", new CreateFolderRoute(folderStorage));
 
         after((request, response) -> CurrentUser.clear());
     }

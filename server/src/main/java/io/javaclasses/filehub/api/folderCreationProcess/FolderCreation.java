@@ -19,7 +19,7 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Process in the FileHub application that handles {@link CreateFolder} command.
+ * The {@link SystemProcess} in the FileHub application that handles {@link CreateFolder} command.
  */
 public class FolderCreation implements SystemProcess<CreateFolder, FolderId> {
 

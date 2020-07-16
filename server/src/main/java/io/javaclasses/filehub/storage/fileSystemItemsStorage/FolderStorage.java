@@ -5,7 +5,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Storage for saving {@link FolderRecord}.
+ * Implementation of {@link FileSystemItemsStorage} that saves {@link FolderRecord}.
  */
 public class FolderStorage extends FileSystemItemsStorage<FolderRecord, FolderId> {
 

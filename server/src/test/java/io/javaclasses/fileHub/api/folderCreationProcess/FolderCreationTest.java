@@ -110,6 +110,17 @@ public class FolderCreationTest {
 
     }
 
+    @DisplayName("not except null parameters.")
+    @Test
+    public void nullPointerTest() {
+        NullPointerTester tester = new NullPointerTester();
+
+        tester.setDefault(FolderStorage.class, new FolderStorage());
+
+        tester.testAllPublicConstructors(FolderCreation.class);
+        tester.testAllPublicStaticMethods(FolderCreation.class);
+    }
+
     private UserId generateUserId() {
         return new UserId("sdjfjsd");
     }
@@ -150,14 +161,4 @@ public class FolderCreationTest {
         return new FolderStorage();
     }
 
-    @DisplayName("not except null parameters.")
-    @Test
-    public void nullPointerTest() {
-        NullPointerTester tester = new NullPointerTester();
-
-        tester.setDefault(FolderStorage.class, new FolderStorage());
-
-        tester.testAllPublicConstructors(FolderCreation.class);
-        tester.testAllPublicStaticMethods(FolderCreation.class);
-    }
 }

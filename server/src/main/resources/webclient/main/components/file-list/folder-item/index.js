@@ -18,9 +18,9 @@ export default class FolderItem extends ListItem {
                 <span>
                 <a data-render="name">${this.model.name}</a>
                 </span>
-                <input data-render="name-input" value=${this.model.name}>
+                <input data-render="name-input">
             </td>
-            <td class="items">${this.model.itemsAmount} items</td>
+            <td class="items"></td>
             <td class="clickable">
             <div data-render="clickable">
                 <i class="glyphicon glyphicon-upload" data-render="upload"></i>
@@ -38,6 +38,9 @@ export default class FolderItem extends ListItem {
   _initInnerComponents() {
     this.rootElement.setAttribute('tabindex', 1);
     this._deleteIcon = this.rootElement.querySelector('[data-render="delete"]');
+
+       this._input = this.rootElement.querySelector('[data-render="name-input"]');
+        this._input.setAttribute('value', this.model.name);
   }
 
 

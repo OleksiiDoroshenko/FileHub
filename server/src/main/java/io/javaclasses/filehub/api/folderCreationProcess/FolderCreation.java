@@ -115,15 +115,15 @@ public class FolderCreation implements SystemProcess<CreateFolder, FolderId> {
         for (FolderRecord folder : foldersWithSimilarNames) {
             String[] name = folder.name().value().split(NEW_FOLDER_NAME);
             try {
-                numbers.add(Integer.parseInt(name[name.length - 1]));
+                numbers.add(Integer.parseInt(name[name.length - 1].trim()));
             } catch (NumberFormatException e) {
                 continue;
             }
         }
 
         int folderNumber = numbers.stream().max(Integer::compareTo).orElse(0);
-
-        return new FileSystemItemName(NEW_FOLDER_NAME + folderNumber);
+        folderNumber++;
+        return new FileSystemItemName(NEW_FOLDER_NAME + " " + folderNumber);
     }
 
     /**

@@ -6,7 +6,6 @@ import ErrorPage from './components/error-page/index.js';
 import ApiService from './services/api-service/index.js';
 import FileExplorerPage from './components/file-explorer/index.js';
 import StateManager from './services/state-manager/index.js';
-import MockServer from './services/mock-server/index.js';
 
 /**
  * Implements entry point for rendering every application page.
@@ -24,9 +23,9 @@ export default class Application extends Component {
    */
   _initInnerComponents() {
     const root = this.container.querySelector('.app');
-    if (window.devMode) {
-      new MockServer();
-    }
+//    if (window.devMode) {
+//      new MockServer();
+//    }
     const service = new ApiService();
     const stateManager = new StateManager(
       {

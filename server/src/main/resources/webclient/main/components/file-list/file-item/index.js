@@ -15,7 +15,7 @@ export default class FileItem extends ListItem {
             </td>
             <td class="name" data-toggle="tooltip" data-placement="top" title=${this.model.name}>
                 <span>${this.model.name}</span>
-                <input data-render="name-input" value=${this.model.name}>
+                <input data-render="name-input">
             </td>
             <td class="items">${this._calculateSize()}</td>
             <td class="clickable">
@@ -35,6 +35,9 @@ export default class FileItem extends ListItem {
   _initInnerComponents() {
     this.rootElement.setAttribute('tabindex', 1);
     this._deleteIcon = this.rootElement.querySelector('[data-render="delete"]');
+
+    this._input = this.rootElement.querySelector('[data-render="name-input"]');
+    this._input.setAttribute('value', this.model.name);
   }
 
   /**

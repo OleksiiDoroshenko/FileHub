@@ -9,7 +9,7 @@ import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.web.FolderNotFoundException;
-import io.javaclasses.filehub.web.RequestId;
+import io.javaclasses.filehub.web.RequestIdParser;
 import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +59,7 @@ public class CreateFolderRoute extends AuthenticatedRoute {
         response.type("application/json");
 
         try {
-            FolderId parentFolderId = RequestId.parse(request);
+            FolderId parentFolderId = RequestIdParser.parseFolderId(request);
             LoggedInUserRecord userRecord = getLoggedInUser();
 
             FolderCreation process = createProcess();

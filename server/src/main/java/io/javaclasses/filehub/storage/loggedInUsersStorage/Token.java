@@ -15,7 +15,7 @@ public final class Token implements RecordId {
     private final String value;
 
     /**
-     * Returns instance of {@link Token} class.
+     * Creates instance of {@link Token} class.
      *
      * @param value token value.
      */

@@ -14,7 +14,7 @@ public final class FileMimeType {
     private final String value;
 
     /**
-     * Returns instance of {@link FileMimeType} class.
+     * Creates instance of {@link FileMimeType} class.
      *
      * @param value mimeType value.
      */

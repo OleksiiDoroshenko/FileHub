@@ -1,8 +1,8 @@
 package io.javaclasses.fileHub.storage.fileSystemItemsStorage;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,7 @@ public class FolderRecordTest {
     @Test
     public void nullPointerTest() {
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(FileSystemItemId.class, new FileSystemItemId(""));
+        tester.setDefault(FolderId.class, new FolderId(""));
         tester.setDefault(FileSystemItemName.class, new FileSystemItemName(""));
         tester.setDefault(UserId.class, new UserId(""));
 

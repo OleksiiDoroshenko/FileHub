@@ -14,7 +14,7 @@ public final class UserId implements RecordId {
     private final String value;
 
     /**
-     * Returns instance of {@link UserId} class.
+     * Creates instance of {@link UserId} class.
      *
      * @param value user identifier.
      */

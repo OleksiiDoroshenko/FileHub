@@ -1,8 +1,8 @@
 package io.javaclasses.fileHub.web;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
-import io.javaclasses.filehub.web.RequestId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
+import io.javaclasses.filehub.web.RequestIdParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import spark.Request;
@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("RequestId service should: ")
-public class RequestIdTest {
+public class RequestIdParserTest {
 
     @DisplayName("correctly parse id from the request.")
     @Test
     public void testRequestIdParsing() {
         Request request = createMockRequestWithValidId();
-        FileSystemItemId id = RequestId.parse(request);
+        FolderId id = RequestIdParser.parseFolderId(request);
 
         assertNotNull(id, "Parsed id should not be null.");
     }
@@ -28,7 +28,7 @@ public class RequestIdTest {
         Request request = createMockRequestWithInvalidId();
 
         assertThrows(NullPointerException.class, () -> {
-            RequestId.parse(request);
+            RequestIdParser.parseFolderId(request);
         }, "RequestId service does not throw NullPointerException when requested id is null, but should.");
     }
 
@@ -38,7 +38,7 @@ public class RequestIdTest {
 
         NullPointerTester tester = new NullPointerTester();
 
-        tester.testAllPublicStaticMethods(RequestId.class);
+        tester.testAllPublicStaticMethods(RequestIdParser.class);
     }
 
     private Request createMockRequestWithInvalidId() {

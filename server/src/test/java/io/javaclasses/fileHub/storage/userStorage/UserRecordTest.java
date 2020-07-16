@@ -3,7 +3,7 @@ package io.javaclasses.fileHub.storage.userStorage;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
 import io.javaclasses.filehub.api.registrationProcess.Password;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.storage.userStorage.UserRecord;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ public class UserRecordTest {
         LoginName login = new LoginName("test");
         Password password = new Password("test123456");
         UserId id = new UserId("test");
-        FileSystemItemId rootFolder = new FileSystemItemId("test");
+        FolderId rootFolder = new FolderId("test");
 
         UserRecord record = new UserRecord(id, login, password.value(), rootFolder);
 
@@ -37,7 +37,7 @@ public class UserRecordTest {
         tester.setDefault(LoginName.class, new LoginName("test"));
         tester.setDefault(Password.class, new Password("tesT123456"));
         tester.setDefault(UserId.class, new UserId("Test"));
-        tester.setDefault(FileSystemItemId.class, new FileSystemItemId("Test"));
+        tester.setDefault(FolderId.class, new FolderId("Test"));
 
 
         tester.testAllPublicConstructors(UserRecord.class);

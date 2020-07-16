@@ -3,9 +3,8 @@ package io.javaclasses.fileHub.api.getRootFolderView;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.getRootFolderView.GetRootFolderId;
 import io.javaclasses.filehub.api.getRootFolderView.RootFolderId;
-import io.javaclasses.filehub.api.logInProcess.UserNotRegisteredException;
 import io.javaclasses.filehub.api.registrationProcess.LoginName;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.Token;
 import io.javaclasses.filehub.storage.userStorage.UserId;
@@ -32,13 +31,13 @@ public class GetRootFileSystemItemIdTest {
 
         UserStorage storage = new UserStorage();
         GetRootFolderId view = new GetRootFolderId(storage);
-        FileSystemItemId rootId = new FileSystemItemId("test");
+        FolderId rootId = new FolderId("test");
         LoggedInUserRecord loggedInUser = createAndAddLoggedInUser(storage, rootId);
         RootFolderId query = new RootFolderId(loggedInUser);
 
 
         try {
-            FileSystemItemId actualId = view.process(query);
+            FolderId actualId = view.process(query);
 
             assertEquals(rootId, actualId, "Returns incorrect root folder id.");
         } catch (Exception e) {
@@ -47,7 +46,7 @@ public class GetRootFileSystemItemIdTest {
         }
     }
 
-    private LoggedInUserRecord createAndAddLoggedInUser(UserStorage storage, FileSystemItemId rootId) {
+    private LoggedInUserRecord createAndAddLoggedInUser(UserStorage storage, FolderId rootId) {
         UserId userId = new UserId("Test");
         LoggedInUserRecord loggedInUser = new LoggedInUserRecord(new Token("test"),
                 userId, LocalDate.now(ServerTimeZone.get()));

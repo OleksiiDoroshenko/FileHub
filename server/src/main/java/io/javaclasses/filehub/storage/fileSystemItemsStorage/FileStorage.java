@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.storage.fileSystemItemsStorage;
 
 /**
- * Storage for saving {@link FileRecord}.
+ * Implementation of {@link FileSystemItemsStorage} that saves {@link FileRecord}.
  */
-public class FileStorage extends FileSystemItemsStorage<FileRecord> {
+public class FileStorage extends FileSystemItemsStorage<FileRecord, FileId> {
 }

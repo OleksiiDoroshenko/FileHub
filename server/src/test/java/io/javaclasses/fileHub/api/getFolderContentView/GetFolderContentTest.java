@@ -25,7 +25,7 @@ public class GetFolderContentTest {
         FolderStorage folderStorage = createFolderStorage();
         FileStorage fileStorage = createFileStorage();
         int numberOfElements = 3;
-        FileSystemItemId parentId = createParentId();
+        FolderId parentId = createParentId();
         UserId ownerId = createOwnerId();
         prepareStorage(fileStorage, folderStorage, numberOfElements, parentId, ownerId);
 
@@ -44,7 +44,7 @@ public class GetFolderContentTest {
         }
     }
 
-    private FolderContent createQuery(FileSystemItemId folderId, UserId ownerId) {
+    private FolderContent createQuery(FolderId folderId, UserId ownerId) {
         Token token = new Token("");
         LocalDate expirationDate = LocalDate.now(ServerTimeZone.get()).plus(Period.ofDays(3));
         LoggedInUserRecord loggedInUser = new LoggedInUserRecord(token, ownerId, expirationDate);
@@ -55,12 +55,12 @@ public class GetFolderContentTest {
         return new UserId("test");
     }
 
-    private FileSystemItemId createParentId() {
-        return new FileSystemItemId("parent");
+    private FolderId createParentId() {
+        return new FolderId("parent");
     }
 
     private void prepareStorage(FileStorage fileStorage, FolderStorage folderStorage,
-                                int numberOfElements, FileSystemItemId parentId, UserId ownerId) {
+                                int numberOfElements, FolderId parentId, UserId ownerId) {
 
         FolderRecord root = new FolderRecord(parentId, new FileSystemItemName(""), null, ownerId);
         folderStorage.add(root);
@@ -74,14 +74,14 @@ public class GetFolderContentTest {
         }
     }
 
-    private FolderRecord createFolderRecord(FileSystemItemId parentId, UserId ownerId, FolderStorage storage) {
-        FileSystemItemId id = new FileSystemItemId(storage.generateId());
+    private FolderRecord createFolderRecord(FolderId parentId, UserId ownerId, FolderStorage storage) {
+        FolderId id = new FolderId(storage.generateId());
         FileSystemItemName name = new FileSystemItemName("");
         return new FolderRecord(id, name, parentId, ownerId);
     }
 
-    private FileRecord createFileRecord(FileSystemItemId parentId, UserId ownerId, FileStorage storage) {
-        FileSystemItemId id = new FileSystemItemId(storage.generateId());
+    private FileRecord createFileRecord(FolderId parentId, UserId ownerId, FileStorage storage) {
+        FileId id = new FileId(storage.generateId());
         FileSystemItemName name = new FileSystemItemName("");
         FileSize size = new FileSize(1);
         FileMimeType mimeType = new FileMimeType("");

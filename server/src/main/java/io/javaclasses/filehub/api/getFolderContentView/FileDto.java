@@ -3,8 +3,8 @@ package io.javaclasses.filehub.api.getFolderContentView;
 import com.google.common.base.Objects;
 import com.google.errorprone.annotations.Immutable;
 import com.google.gson.annotations.SerializedName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileRecord;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -28,14 +28,14 @@ public final class FileDto {
     private final String mimeType;
 
     /**
-     * Returns instance of {@link FileDto} class.
+     * Creates instance of {@link FileDto} class.
      *
      * @param name     file name.
      * @param id       file identifier.
      * @param size     file size.
      * @param mimeType file mimeType.
      */
-    public FileDto(FileSystemItemName name, FileSystemItemId id,
+    public FileDto(FileSystemItemName name, FileId id,
                    FileSize size, FileMimeType mimeType) {
 
         this.name = checkNotNull(name.value());

@@ -19,7 +19,7 @@ public final class LoggedInUserRecord implements Record<Token> {
     private final LocalDate expirationDate;
 
     /**
-     * Returns instance of {@link LoggedInUserRecord} class.
+     * Creates instance of {@link LoggedInUserRecord} class.
      *
      * @param token          token value.
      * @param userId         user token.

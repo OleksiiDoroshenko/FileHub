@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage.fileSystemItemsStorage;
 
 import io.javaclasses.filehub.storage.InMemoryRecordStorage;
+import io.javaclasses.filehub.storage.RecordId;
 import io.javaclasses.filehub.storage.RecordStorage;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 
@@ -14,17 +15,17 @@ import static java.util.stream.Collectors.toList;
  *
  * @param <T> instance of {@link FileSystemItem}.
  */
-public abstract class FileSystemItemsStorage<T extends FileSystemItem>
-        extends InMemoryRecordStorage<T, FileSystemItemId> {
+public abstract class FileSystemItemsStorage<T extends FileSystemItem<I>, I extends RecordId>
+        extends InMemoryRecordStorage<T, I> {
 
     /**
-     * Returns file system items with passed in the parameters parent and owner identifiers.
+     * Creates file system items with passed in the parameters parent and owner identifiers.
      *
      * @param id      parent folder identifier.
      * @param ownerId owner identifier.
      * @return list that contains all folder children.
      */
-    public synchronized List<T> all(FileSystemItemId id, UserId ownerId) {
+    public synchronized List<T> all(FolderId id, UserId ownerId) {
         return all().stream().filter(item -> item.parentId() != null
                 && item.parentId().equals(id) && item.ownerId().equals(ownerId)).collect(toList());
     }

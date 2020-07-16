@@ -7,7 +7,7 @@ import io.javaclasses.filehub.storage.userStorage.UserStorage;
  */
 public class UserAlreadyExistsException extends RuntimeException {
     /**
-     * Returns instance of {@link UserAlreadyExistsException}.
+     * Creates instance of {@link UserAlreadyExistsException}.
      *
      * @param message error message that describes what went wrong.
      */

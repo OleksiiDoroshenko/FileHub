@@ -3,13 +3,13 @@ package io.javaclasses.filehub.api.folderCreationProcess;
 /**
  * An exception that is thrown when user that is not the owner of the folder trying to manipulate with this folder.
  */
-public class UserNotOwnerException extends RuntimeException {
+public class AccessDeniedException extends RuntimeException {
 
     /**
-     * Returns instance of {@link UserNotOwnerException} with set error message.
+     * Creates instance of {@link AccessDeniedException} with set error message.
      *
      * @param message error message that describes what went wrong.
      */
-    public UserNotOwnerException(String message) {
+    public AccessDeniedException(String message) {
     }
 }

@@ -3,13 +3,13 @@ package io.javaclasses.filehub.web.routes;
 import com.google.gson.Gson;
 import io.javaclasses.filehub.api.folderCreationProcess.CreateFolder;
 import io.javaclasses.filehub.api.folderCreationProcess.FolderCreation;
-import io.javaclasses.filehub.api.folderCreationProcess.UserNotOwnerException;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.api.folderCreationProcess.AccessDeniedException;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderStorage;
 import io.javaclasses.filehub.storage.loggedInUsersStorage.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import io.javaclasses.filehub.web.FolderNotFoundException;
-import io.javaclasses.filehub.web.RequestId;
+import io.javaclasses.filehub.web.RequestIdParser;
 import io.javaclasses.filehub.web.UserNotLoggedInException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class CreateFolderRoute extends AuthenticatedRoute {
     private final FolderStorage folderStorage;
 
     /**
-     * Returns instance of {@link CreateFolderRoute} with set {@link FolderStorage}.
+     * Creates instance of {@link CreateFolderRoute} with set {@link FolderStorage}.
      *
      * @param folderStorage folder storage.
      */
@@ -59,13 +59,13 @@ public class CreateFolderRoute extends AuthenticatedRoute {
         response.type("application/json");
 
         try {
-            FileSystemItemId parentFolderId = RequestId.parse(request);
+            FolderId parentFolderId = RequestIdParser.parseFolderId(request);
             LoggedInUserRecord userRecord = getLoggedInUser();
 
             FolderCreation process = createProcess();
             CreateFolder command = createCommand(parentFolderId, userRecord.userId());
 
-            FileSystemItemId folderId = process.handle(command);
+            FolderId folderId = process.handle(command);
 
             return makeSuccessResponse(response, folderId);
 
@@ -77,7 +77,7 @@ public class CreateFolderRoute extends AuthenticatedRoute {
 
             return makeErrorResponse(response, e, SC_UNAUTHORIZED);
 
-        } catch (UserNotOwnerException e) {
+        } catch (AccessDeniedException e) {
 
             return makeErrorResponse(response, e, SC_CONFLICT);
 
@@ -94,7 +94,7 @@ public class CreateFolderRoute extends AuthenticatedRoute {
      * @param folderId created folder identifier.
      * @return response body.
      */
-    private String makeSuccessResponse(Response response, FileSystemItemId folderId) {
+    private String makeSuccessResponse(Response response, FolderId folderId) {
 
         if (logger.isInfoEnabled()) {
             logger.info("New folder was created successfully. New folder {}.", folderId);
@@ -125,13 +125,13 @@ public class CreateFolderRoute extends AuthenticatedRoute {
     }
 
     /**
-     * Creates new {@link CreateFolder} command with set {@link FileSystemItemId} and {@link UserId}.
+     * Creates new {@link CreateFolder} command with set {@link FolderId} and {@link UserId}.
      *
      * @param parentId an identifier of the future parent folder.
      * @param ownerId  an identifier of the future owner.
      * @return created command.
      */
-    private CreateFolder createCommand(FileSystemItemId parentId, UserId ownerId) {
+    private CreateFolder createCommand(FolderId parentId, UserId ownerId) {
 
         return new CreateFolder(parentId, ownerId);
     }

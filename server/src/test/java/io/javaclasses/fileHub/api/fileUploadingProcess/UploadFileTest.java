@@ -5,13 +5,13 @@ import io.javaclasses.filehub.api.fileUploadingProcess.File;
 import io.javaclasses.filehub.api.fileUploadingProcess.UploadFile;
 import io.javaclasses.filehub.api.getFolderContentView.FileMimeType;
 import io.javaclasses.filehub.api.getFolderContentView.FileSize;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
 import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemName;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FolderId;
 import io.javaclasses.filehub.storage.userStorage.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("UploadFile command should: ")
+@DisplayName("UploadFile command should")
 public class UploadFileTest {
 
     @DisplayName("not accept null parameters.")
@@ -25,7 +25,7 @@ public class UploadFileTest {
                 new FileMimeType(""),
                 new FileSize(1)));
 
-        tester.setDefault(FileSystemItemId.class, new FileSystemItemId(""));
+        tester.setDefault(FolderId.class, new FolderId(""));
         tester.setDefault(UserId.class, new UserId(""));
 
         tester.testConstructors(UploadFile.class, NullPointerTester.Visibility.PUBLIC);

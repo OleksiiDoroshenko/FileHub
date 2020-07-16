@@ -1,29 +1,29 @@
 package io.javaclasses.fileHub.storage.fileSystemItemsStorage;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileDataRecord;
-import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileSystemItemId;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileContentRecord;
+import io.javaclasses.filehub.storage.fileSystemItemsStorage.FileId;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("FileDataRecord should: ")
-public class FileDataRecordTest {
+public class FileContentRecordTest {
 
     @DisplayName("not except null parameters.")
     @Test
     public void nullPointerTest() {
         NullPointerTester tester = new NullPointerTester();
 
-        tester.setDefault(FileSystemItemId.class, new FileSystemItemId(""));
+        tester.setDefault(FileId.class, new FileId(""));
 
-        tester.testAllPublicConstructors(FileDataRecord.class);
-        tester.testAllPublicStaticMethods(FileDataRecord.class);
+        tester.testAllPublicConstructors(FileContentRecord.class);
+        tester.testAllPublicStaticMethods(FileContentRecord.class);
     }
 
     @DisplayName("correctly process equals contract.")
     @Test
     public void equalsContract() {
-        EqualsVerifier.simple().forClass(FileDataRecord.class).verify();
+        EqualsVerifier.simple().forClass(FileContentRecord.class).verify();
     }
 }

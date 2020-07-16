@@ -21,7 +21,7 @@ import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@DisplayName("FileUploadingRoute should: ")
+@DisplayName("FileUploadingRoute should")
 public class FileUploadingRouteTest {
 
     @DisplayName("not except null parameters.")
@@ -31,7 +31,7 @@ public class FileUploadingRouteTest {
 
         tester.setDefault(FileStorage.class, new FileStorage());
         tester.setDefault(FolderStorage.class, new FolderStorage());
-        tester.setDefault(FileDataStorage.class, new FileDataStorage());
+        tester.setDefault(FileContentStorage.class, new FileContentStorage());
 
         tester.testAllPublicConstructors(FileUploadingRoute.class);
         tester.testAllPublicStaticMethods(FileUploadingRoute.class);
@@ -41,16 +41,16 @@ public class FileUploadingRouteTest {
     @Test
     public void testRouteCorrectSuccessResponse() {
 
-        FileDataStorage fileDataStorage = createFileDataStorage();
+        FileContentStorage fileContentStorage = createFileDataStorage();
         FileStorage fileStorage = createFileStorage();
         FolderStorage folderStorage = createFolderStorage();
-        FileSystemItemId parentId = createParentId(folderStorage);
+        FolderId parentId = createParentId(folderStorage);
         LoggedInUserRecord record = createLoggedInUser();
 
         prepareCurrentUser(record);
         prepareFolderStorage(folderStorage, parentId, record.userId());
 
-        FileUploadingRoute route = createRoute(fileDataStorage, fileStorage, folderStorage);
+        FileUploadingRoute route = createRoute(fileContentStorage, fileStorage, folderStorage);
 
         Request request = createMockRequestWith(parentId);
         Response response = createMockResponse();
@@ -72,15 +72,15 @@ public class FileUploadingRouteTest {
     @Test
     public void testRouteFolderNotFoundResponse() {
 
-        FileDataStorage fileDataStorage = createFileDataStorage();
+        FileContentStorage fileContentStorage = createFileDataStorage();
         FileStorage fileStorage = createFileStorage();
         FolderStorage folderStorage = createFolderStorage();
-        FileSystemItemId parentId = createParentId(folderStorage);
+        FolderId parentId = createParentId(folderStorage);
         LoggedInUserRecord record = createLoggedInUser();
 
         prepareCurrentUser(record);
 
-        FileUploadingRoute route = createRoute(fileDataStorage, fileStorage, folderStorage);
+        FileUploadingRoute route = createRoute(fileContentStorage, fileStorage, folderStorage);
 
         Request request = createMockRequestWith(parentId);
         Response response = createMockResponse();
@@ -104,15 +104,15 @@ public class FileUploadingRouteTest {
 
         CurrentUser.clear();
 
-        FileDataStorage fileDataStorage = createFileDataStorage();
+        FileContentStorage fileContentStorage = createFileDataStorage();
         FileStorage fileStorage = createFileStorage();
         FolderStorage folderStorage = createFolderStorage();
-        FileSystemItemId parentId = createParentId(folderStorage);
+        FolderId parentId = createParentId(folderStorage);
         LoggedInUserRecord record = createLoggedInUser();
 
         prepareFolderStorage(folderStorage, parentId, record.userId());
 
-        FileUploadingRoute route = createRoute(fileDataStorage, fileStorage, folderStorage);
+        FileUploadingRoute route = createRoute(fileContentStorage, fileStorage, folderStorage);
 
         Request request = createMockRequestWith(parentId);
         Response response = createMockResponse();
@@ -133,17 +133,17 @@ public class FileUploadingRouteTest {
     @Test
     public void testRouteUserNotOwnerResponse() {
 
-        FileDataStorage fileDataStorage = createFileDataStorage();
+        FileContentStorage fileContentStorage = createFileDataStorage();
         FileStorage fileStorage = createFileStorage();
         FolderStorage folderStorage = createFolderStorage();
-        FileSystemItemId parentId = createParentId(folderStorage);
+        FolderId parentId = createParentId(folderStorage);
         LoggedInUserRecord record = createLoggedInUser();
         UserId ownerId = createUserId();
 
         prepareCurrentUser(record);
         prepareFolderStorage(folderStorage, parentId, ownerId);
 
-        FileUploadingRoute route = createRoute(fileDataStorage, fileStorage, folderStorage);
+        FileUploadingRoute route = createRoute(fileContentStorage, fileStorage, folderStorage);
 
         Request request = createMockRequestWith(parentId);
         Response response = createMockResponse();
@@ -164,16 +164,16 @@ public class FileUploadingRouteTest {
     @Test
     public void testRouteBadRequestResponse() {
 
-        FileDataStorage fileDataStorage = createFileDataStorage();
+        FileContentStorage fileContentStorage = createFileDataStorage();
         FileStorage fileStorage = createFileStorage();
         FolderStorage folderStorage = createFolderStorage();
-        FileSystemItemId parentId = createParentId(folderStorage);
+        FolderId parentId = createParentId(folderStorage);
         LoggedInUserRecord record = createLoggedInUser();
 
         prepareCurrentUser(record);
         prepareFolderStorage(folderStorage, parentId, record.userId());
 
-        FileUploadingRoute route = createRoute(fileDataStorage, fileStorage, folderStorage);
+        FileUploadingRoute route = createRoute(fileContentStorage, fileStorage, folderStorage);
 
         Request request = createInvalidMockRequestWith(parentId);
         Response response = createMockResponse();
@@ -195,7 +195,7 @@ public class FileUploadingRouteTest {
     }
 
 
-    private Request createInvalidMockRequestWith(FileSystemItemId parentId) {
+    private Request createInvalidMockRequestWith(FolderId parentId) {
         return new Request() {
 
             @Override
@@ -224,7 +224,7 @@ public class FileUploadingRouteTest {
         };
     }
 
-    private Request createMockRequestWith(FileSystemItemId parentId) {
+    private Request createMockRequestWith(FolderId parentId) {
         return new Request() {
 
             @Override
@@ -275,12 +275,12 @@ public class FileUploadingRouteTest {
         };
     }
 
-    private FileUploadingRoute createRoute(FileDataStorage fileDataStorage, FileStorage fileStorage,
+    private FileUploadingRoute createRoute(FileContentStorage fileContentStorage, FileStorage fileStorage,
                                            FolderStorage folderStorage) {
-        return new FileUploadingRoute(fileStorage, fileDataStorage, folderStorage);
+        return new FileUploadingRoute(fileStorage, fileContentStorage, folderStorage);
     }
 
-    private void prepareFolderStorage(FolderStorage storage, FileSystemItemId id, UserId ownerId) {
+    private void prepareFolderStorage(FolderStorage storage, FolderId id, UserId ownerId) {
 
         FileSystemItemName name = new FileSystemItemName("");
         FolderRecord record = new FolderRecord(id, name, null, ownerId);
@@ -289,8 +289,8 @@ public class FileUploadingRouteTest {
     }
 
 
-    private FileSystemItemId createParentId(FolderStorage storage) {
-        return new FileSystemItemId(storage.generateId());
+    private FolderId createParentId(FolderStorage storage) {
+        return new FolderId(storage.generateId());
     }
 
     private void prepareCurrentUser(LoggedInUserRecord loggedInUser) {
@@ -314,7 +314,7 @@ public class FileUploadingRouteTest {
         return new FileStorage();
     }
 
-    private FileDataStorage createFileDataStorage() {
-        return new FileDataStorage();
+    private FileContentStorage createFileDataStorage() {
+        return new FileContentStorage();
     }
 }

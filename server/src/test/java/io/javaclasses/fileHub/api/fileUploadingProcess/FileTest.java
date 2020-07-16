@@ -10,7 +10,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("File should: ")
+@DisplayName("File should")
 public class FileTest {
 
     @DisplayName("not accept null parameters.")

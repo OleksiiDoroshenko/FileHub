@@ -60,9 +60,9 @@ public class File {
     public String toString() {
         return "File{" +
                 "data=" + Arrays.toString(data) +
-                ", name=" + name +
-                ", mimeType=" + mimeType +
-                ", size=" + size +
+                ", name=" + name.value() +
+                ", mimeType=" + mimeType.value() +
+                ", size=" + size.value() +
                 '}';
     }
 

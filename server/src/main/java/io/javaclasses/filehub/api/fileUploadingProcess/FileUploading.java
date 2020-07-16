@@ -66,13 +66,69 @@ public class FileUploading implements SystemProcess<UploadFile, FileSystemItemId
         FileRecord file = createFileRecord(parentId, ownerId, uploadedFile);
         FileDataRecord fileData = createFileDataRecord(file.id(), uploadedFile.data());
 
-        fileDataStorage.add(fileData);
-        fileStorage.add(file);
+
+        FileSystemItemId id = addToStorage(file, fileData);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Handling \"UploadFile\" command was completed successfully.");
         }
-        return file.id();
+        return id;
+    }
+
+    private FileSystemItemId addToStorage(FileRecord file, FileDataRecord fileData) {
+
+        Optional<FileRecord> record = fileStorage.get(file.name());
+
+        if (!record.isPresent()) {
+
+            fileStorage.add(file);
+            fileDataStorage.add(fileData);
+
+            return file.id();
+        }
+
+        FileSystemItemId id = record.get().id();
+
+        rewriteFileInStorage(id, file);
+        rewriteFileDataInStorage(id, fileData);
+
+        return id;
+    }
+
+    /**
+     * Rewrites old {@link FileDataRecord} in the {@link FileDataStorage}.
+     *
+     * <p>Saves previous {@link FileSystemItemId} with new data.</p>
+     *
+     * @param id     identifier of the {@link FileDataRecord} that should be rewritten.
+     * @param record record where the data will be taken from.
+     */
+    private void rewriteFileDataInStorage(FileSystemItemId id, FileDataRecord record) {
+
+        byte[] data = record.data();
+
+        FileDataRecord newRecord = new FileDataRecord(id, data);
+        fileDataStorage.add(newRecord);
+    }
+
+    /**
+     * Rewrites old {@link FileRecord} in the {@link FileStorage}.
+     *
+     * <p>Saves previous {@link FileSystemItemId} with new data.</p>
+     *
+     * @param id     identifier of the {@link FileRecord} that should be rewritten.
+     * @param record record where the data will be taken from.
+     */
+    private void rewriteFileInStorage(FileSystemItemId id, FileRecord record) {
+
+        FileSystemItemName name = record.name();
+        FileSystemItemId parentId = record.parentId();
+        FileSize size = record.size();
+        FileMimeType mimeType = record.mimeType();
+        UserId ownerId = record.ownerId();
+
+        FileRecord newRecord = new FileRecord(id, name, parentId, size, mimeType, ownerId);
+        fileStorage.add(newRecord);
     }
 
     /**

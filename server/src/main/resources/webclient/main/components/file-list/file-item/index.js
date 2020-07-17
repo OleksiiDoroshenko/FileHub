@@ -49,7 +49,7 @@ export default class FileItem extends ListItem {
   _getFileIcon(mimeType) {
     const type = mimeType.split('/')[0];
     const icons = {
-      img: 'glyphicon-picture',
+      image: 'glyphicon-picture',
       text: 'glyphicon-book',
       video: 'glyphicon-film',
       audio: 'glyphicon-music',
